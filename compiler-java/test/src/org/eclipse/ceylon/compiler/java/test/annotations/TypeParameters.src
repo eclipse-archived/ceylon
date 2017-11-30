@@ -1,0 +1,151 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "A",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {
+                        "ceylon.language::Number<ceylon.language::Integer>",
+                        "ceylon.language::Destroyable"},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "B",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.IN,
+                satisfies = {},
+                caseTypes = {
+                        "ceylon.language::Number<ceylon.language::Integer>",
+                        "ceylon.language::String"}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "C",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Number<ceylon.language::Integer>"),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "D",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Number<ceylon.language::Integer>|ceylon.language::String")})
+public class TypeParameters<A extends .ceylon.language.Number<.ceylon.language.Integer> & .ceylon.language.Destroyable, B, C, D> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public TypeParameters(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D) {
+        this.$reified$A = $reified$A;
+        this.$reified$B = $reified$B;
+        this.$reified$C = $reified$C;
+        this.$reified$D = $reified$D;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "A",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                    satisfies = {
+                            "ceylon.language::Number<ceylon.language::Integer>",
+                            "ceylon.language::Destroyable"},
+                    caseTypes = {}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "B",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.IN,
+                    satisfies = {},
+                    caseTypes = {
+                            "ceylon.language::Number<ceylon.language::Integer>",
+                            "ceylon.language::String"}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "C",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {},
+                    defaultValue = "ceylon.language::Number<ceylon.language::Integer>"),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "D",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {},
+                    defaultValue = "ceylon.language::Number<ceylon.language::Integer>|ceylon.language::String")})
+    public final <A extends .ceylon.language.Number<.ceylon.language.Integer> & .ceylon.language.Destroyable, B, C, D>void m(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.annotations.TypeParameters(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.TypeParameters.class, $reified$A, $reified$B, $reified$C, $reified$D);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class typeParameters_ {
+    
+    private typeParameters_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "A",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                    satisfies = {
+                            "ceylon.language::Number<ceylon.language::Integer>",
+                            "ceylon.language::Destroyable"},
+                    caseTypes = {}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "B",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.IN,
+                    satisfies = {},
+                    caseTypes = {
+                            "ceylon.language::Number<ceylon.language::Integer>",
+                            "ceylon.language::String"}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "C",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {},
+                    defaultValue = "ceylon.language::Number<ceylon.language::Integer>"),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "D",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {},
+                    defaultValue = "ceylon.language::Number<ceylon.language::Integer>|ceylon.language::String")})
+    public static <A extends .ceylon.language.Number<.ceylon.language.Integer> & .ceylon.language.Destroyable, B, C, D>void typeParameters(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.annotations.typeParameters_.typeParameters(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}

@@ -1,0 +1,77 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug07xx;
+
+class Bug781Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug781Class() {
+    }
+    
+    public final void c() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class.class);
+}
+interface Bug781Interface {
+    
+    public abstract .java.lang.Object i();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface.class);
+}
+class Bug781_1<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug781_1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
+    Bug781_1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    private final <T extends .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781_1.class, $reified$T);
+    }
+}
+interface Bug781_2<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781_2$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug07xx$Bug781_2$impl();
+}
+final class Bug781_2$impl<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .java.io.Serializable {
+    
+    Bug781_2$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    private <T extends .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
+    }
+}
+public final class bug781_ {
+    
+    private bug781_() {
+    }
+    
+    public static <T extends .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void bug781(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.org.eclipse.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
+    }
+}

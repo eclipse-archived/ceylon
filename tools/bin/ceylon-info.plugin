@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon info" tool
+summary=Prints information about modules in repositories
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.info.CeylonInfoTool

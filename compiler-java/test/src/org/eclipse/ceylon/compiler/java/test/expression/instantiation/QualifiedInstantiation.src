@@ -1,0 +1,46 @@
+package org.eclipse.ceylon.compiler.java.test.expression.instantiation;
+
+class QualifiedInstantiation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    QualifiedInstantiation() {
+        final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner = new .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner("");
+    }
+    
+    class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner(final .java.lang.String s) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner.class));
+        }
+    }
+    
+    private final void m$priv$(final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation q) {
+        this.new Inner("");
+        q.new Inner("");
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation arg$0$callable$ = this;
+                .java.lang.String arg$0$0 = "";
+            }
+            returning arg$0$callable$.new Inner(arg$0$0);
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation arg$1$callable$ = q;
+                .java.lang.String arg$1$0 = "";
+            }
+            returning arg$1$callable$.new Inner(arg$1$0);
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.class);
+}

@@ -1,0 +1,51 @@
+/********************************************************************************
+ * Copyright (c) 2011-2017 Red Hat Inc. and/or its affiliates and others
+ *
+ * This program and the accompanying materials are made available under the 
+ * terms of the Apache License, Version 2.0 which is available at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0 
+ ********************************************************************************/
+package org.eclipse.ceylon.compiler.js;
+
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
+import org.eclipse.ceylon.model.typechecker.model.Constructor;
+import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
+
+public class ReturnConstructorVisitor extends Visitor {
+
+    private final Tree.Declaration node;
+    private final Constructor d;
+    private boolean ret;
+
+    public ReturnConstructorVisitor(Tree.Declaration constructorNode) {
+        node = constructorNode;
+        final Tree.Block block;
+        if (constructorNode instanceof Tree.Constructor) {
+            d = ((Tree.Constructor)node).getConstructor();
+            block = ((Tree.Constructor)node).getBlock();
+        } else if (constructorNode instanceof Tree.Enumerated) {
+            d = ((Tree.Enumerated)node).getEnumerated();
+            block = ((Tree.Enumerated)node).getBlock();
+        } else {
+            throw new CompilerErrorException("Bug in the JS compiler. "+
+                    "A ReturnConstructorVisitor must be created with an Enumerated or Constructor node.");
+        }
+        block.visit(this);
+    }
+
+    public void visit(Tree.Return that) {
+        if (that.getExpression() == null && !ret) {
+            if (d == ModelUtil.getContainingDeclarationOfScope(that.getScope())) {
+                ret = true;
+            }
+        }
+    }
+
+    public boolean isReturns() {
+        return ret;
+    }
+
+}

@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListExistsIsBool implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertConditionListExistsIsBool() {
+    }
+    
+    private final boolean m$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+        final long y$3;
+        final .java.lang.Object z$1;
+        .java.lang.Object z$0 = null;
+        if ((z$0 = x.getFromFirst(0L)) != null) {
+            z$1 = z$0;
+            .java.lang.Object y$2 = null;
+            if ((y$2 = z$1) instanceof .ceylon.language.Integer) {
+                y$3 = ((.ceylon.language.Integer)y$2).longValue();
+                long lhs$4 = y$3;
+                long rhs$5 = 0L;
+                if (lhs$4 > rhs$5) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "exists z=x[0]" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = z" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$4), .ceylon.language.Integer.instance(rhs$5)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "exists z=x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = z" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$2));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists z=x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = z" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0"));
+        }
+        return y$3 == 1L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertConditionListExistsIsBool.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertConditionListExistsIsBool.class);
+}

@@ -1,0 +1,46 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug57xx.bug5752;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug5752")
+final class bug5752_ {
+    
+    private bug5752_() {
+    }
+    
+    @.javax.persistence.Id
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String get_() {
+        return "";
+    }
+    
+    public static void set_(@.org.eclipse.ceylon.compiler.java.metadata.Name("bug5752")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String bug5752) {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug5752_2")
+final class bug5752_2_ {
+    
+    private bug5752_2_() {
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String get_() {
+        return "";
+    }
+    
+    @.javax.persistence.Id
+    public static void set_(@.org.eclipse.ceylon.compiler.java.metadata.Name("bug5752_2")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String bug5752_2) {
+    }
+}

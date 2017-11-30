@@ -1,0 +1,57 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug64xx;
+
+public class Bug6420 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug6420() {
+    }
+    
+    public final class SupAlias {
+        
+        private SupAlias() {
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6420.Sub Sub$new$(final .ceylon.language.Integer supAlias, final .ceylon.language.Character subAlias) {
+        return new Sub(supAlias, subAlias);
+    }
+    
+    public class Sub implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Sub(final .ceylon.language.Integer supAlias, final .ceylon.language.Character subAlias) {
+            this.supAlias = supAlias;
+            this.subAlias = subAlias;
+        }
+        private final .ceylon.language.Integer supAlias;
+        
+        public final .ceylon.language.Integer getSupAlias() {
+            return this.supAlias;
+        }
+        private final .ceylon.language.Character subAlias;
+        
+        public final .ceylon.language.Character getSubAlias() {
+            return this.subAlias;
+        }
+        
+        public final class SubAlias {
+            
+            private SubAlias() {
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6420.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6420.Sub.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6420();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6420.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6420.class);
+}

@@ -1,0 +1,96 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class)})
+class Bug2176C implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2176C() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("instance")
+    static final class Inner$instance {
+        
+        Inner$instance() {
+        }
+    }
+    private transient Inner $instance$Inner$instance = null;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.constructor::Bug2176C.Inner.instance")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("instance")
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner getInner$instance() {
+        if ($instance$Inner$instance == null) $instance$Inner$instance = new Inner((.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance)null);
+        return $instance$Inner$instance;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+    public class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("instance")
+        @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+        private Inner(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance $name$) {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class));
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$Inner$instance) {
+                $name$ = "getInner$instance";
+            } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.this, .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.class, $name$);
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug2176C_ {
+    
+    private bug2176C_() {
+    }
+    
+    static void bug2176C() {
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner> ref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$), "Bug2176C.Inner.instance(Bug2176C)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C)$param$0;
+                return $instance$.getInner$instance();
+            }
+        };
+        final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner inst = ref.$call$((.java.lang.Object)new .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176C());
+    }
+}

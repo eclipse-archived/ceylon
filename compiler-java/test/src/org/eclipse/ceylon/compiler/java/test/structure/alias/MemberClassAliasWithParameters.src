@@ -1,0 +1,113 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.MemberClassAlias.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member.class)})
+public class MemberClassAliasWithParameters_Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public MemberClassAliasWithParameters_Foo() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member Member$new$(final long i, final .java.lang.String s) {
+        return new Member(i, s);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String $default$Member$s(final long i) {
+        return "foo";
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member Member$new$(final long i) {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = $default$Member$s(i);
+            }
+            returning new Member(i, $ceylontmp$s$0);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class,
+            isStatic = false)
+    public class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+        final long i, @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+        @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+        @.org.eclipse.ceylon.common.NonNull
+        final .java.lang.String s) {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member.class));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member MemberClassAlias$new$(final long i, final .java.lang.String s) {
+        return new Member(i, s);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member MemberClassAlias$aliased$(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i, @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithParameters_Foo.Member")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class,
+            isStatic = false)
+    public final class MemberClassAlias {
+        
+        private MemberClassAlias() {
+        }
+    }
+    
+    private final void test$priv$() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member m = MemberClassAlias$new$(1L, "a");
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class);
+}
+final class memberClassAliasWithParametersMethod_ {
+    
+    private memberClassAliasWithParametersMethod_() {
+    }
+    
+    static void memberClassAliasWithParametersMethod() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member foo = new .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo().MemberClassAlias$new$(1L, "a");
+    }
+}

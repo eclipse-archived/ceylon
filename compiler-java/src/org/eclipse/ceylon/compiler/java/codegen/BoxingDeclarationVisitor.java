@@ -1,0 +1,581 @@
+/*
+ * Copyright Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the authors tag. All rights reserved.
+ *
+ * This copyrighted material is made available to anyone wishing to use,
+ * modify, copy, or redistribute it subject to the terms and conditions
+ * of the GNU General Public License version 2.
+ * 
+ * This particular file is subject to the "Classpath" exception as provided in the 
+ * LICENSE file that accompanied this code.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT A
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License,
+ * along with this distribution; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
+ */
+
+package org.eclipse.ceylon.compiler.java.codegen;
+
+import static org.eclipse.ceylon.compiler.java.codegen.AbstractTransformer.isPinnedType;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.ceylon.compiler.typechecker.tree.Node;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ForIterator;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.MethodArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PatternIterator;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StatementOrArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Variable;
+import org.eclipse.ceylon.model.loader.JvmBackendUtil;
+import org.eclipse.ceylon.model.typechecker.context.TypeCache;
+import org.eclipse.ceylon.model.typechecker.model.Class;
+import org.eclipse.ceylon.model.typechecker.model.ClassOrInterface;
+import org.eclipse.ceylon.model.typechecker.model.Declaration;
+import org.eclipse.ceylon.model.typechecker.model.Function;
+import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
+import org.eclipse.ceylon.model.typechecker.model.Functional;
+import org.eclipse.ceylon.model.typechecker.model.Parameter;
+import org.eclipse.ceylon.model.typechecker.model.Setter;
+import org.eclipse.ceylon.model.typechecker.model.Type;
+import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
+import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
+import org.eclipse.ceylon.model.typechecker.model.Value;
+
+public abstract class BoxingDeclarationVisitor extends Visitor {
+
+    protected abstract boolean isCeylonBasicType(Type type);
+    protected abstract boolean isNull(Type type);
+    protected abstract boolean isObject(Type type);
+    protected abstract boolean isCallable(Type type);
+    
+    /**
+     * Depends on:
+     * - type arguments and their declarations
+     * - the chain of refined declarations
+     * - erasure of the selected refined declaration
+     * Does not depend on boxing/erased/untrusted
+     */
+    protected abstract TypedDeclaration getRefinedDeclarationForWideningRules(TypedDeclaration typedDeclaration);
+    
+    /**
+     * Depends on:
+     * - union/intersection declaration
+     * - class being erased to Object by a list of cases
+     * - type parameter bounds being erased to Object by a list of cases
+     * Does not depend on boxing/erased/untrusted
+     */
+    protected abstract boolean hasErasure(Type type);
+    
+    /**
+     * Depends on:
+     * - union/intersection declaration
+     * - class being erased to Object by a list of cases
+     * Does not depend on boxing/erased/untrusted
+     */
+    protected abstract boolean willEraseToObject(Type type);
+    
+    /**
+     * Depends on the type arguments being:
+     * - erased union/intersections based on their declarations
+     * - variance info
+     * - nothing types
+     * - qualified types
+     * Does not depend on boxing/erased/untrusted
+     */
+    protected abstract boolean isRaw(Type type);
+    
+    /**
+     * Depends on:
+     * - type arguments and their declarations
+     * - the chain of refined declarations
+     * - erasure of the selected refined declaration
+     * Does not depend on boxing/untrusted
+     */
+    protected abstract boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration);
+    
+    /**
+     * Depends on:
+     * - isRaw
+     * - class being erased to Object by a list of cases
+     * - the inheritance change with isRaw
+     * - inter-dependent type parameters
+     * Does not depend on boxing/erased/untrusted
+     */
+    protected abstract boolean hasSubstitutedBounds(Type type);
+
+    /**
+     * This is used to keep track of some optimisations we do, such as inlining the following shortcuts:
+     * class X() extends T(){ m = function() => e; } and we need to be able to map back the lambda with
+     * the method it specifies, for boxing and all
+     */
+    private Map<Function,Function> optimisedMethodSpecifiersToMethods = new HashMap<Function, Function>();
+    
+    // This is mostly just for testing purposes. Using -Dceylon.compiler.forceBoxedLocals=true
+    // on the command line you can force all locals to be boxed (instead of the default unboxed)
+    private static final boolean forceBoxedLocals = Boolean.getBoolean("ceylon.compiler.forceBoxedLocals");
+    
+    @Override
+    public void visit(FunctionArgument that) {
+        super.visit(that);
+        that.getDeclarationModel().setUnboxed(false);
+    }
+    
+    @Override
+    public void visit(MethodArgument that) {
+        super.visit(that);
+        that.getDeclarationModel().setUnboxed(false);
+    }
+    
+    @Override
+    public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        Function model = that.getDeclarationModel();
+        visitMethod(that.getDeclarationModel(), that);
+        SpecifierExpression specifierExpression = that.getSpecifierExpression();
+        // See ClassTransformer.transformSpecifiedMethodBody for this logic
+        if(model != null
+                && model.isMember()
+                && specifierExpression != null
+                && specifierExpression.getExpression() != null){
+            boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
+            Term term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+            if (!isLazy && term instanceof Tree.FunctionArgument) {
+                // this is inlined for member methods, so the term should inherit our boxing specs
+                Function specifierModel = ((Tree.FunctionArgument)term).getDeclarationModel();
+                if(specifierModel != null){
+                    specifierModel.setUnboxed(model.getUnboxed());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void visit(Tree.MethodDefinition that) {
+        super.visit(that);
+        visitMethod(that.getDeclarationModel(), that);
+    }
+
+    private void visitMethod(Function method, Node that) {
+        boxMethod(method, that);
+        rawTypedDeclaration(method);
+        setErasureState(method);
+    }
+    
+    @Override
+    public void visit(FunctionalParameterDeclaration that) {
+        if (Strategy.createMethod(that.getParameterModel())) {
+            // Box the functional parameter as if it were a method
+            visitMethod((Function)that.getParameterModel().getModel(), that);
+            // Visit the parameters of the functional parameter
+            that.visitChildren(this);
+        } else {
+            super.visit(that);
+        }
+    }
+    
+    private void setErasureState(TypedDeclaration decl) {
+        // deal with invalid input
+        if(decl == null)
+            return;
+
+        Type type = decl.getType();
+        boolean erased = false;
+        boolean untrusted = false;
+        if(type != null){
+            if(hasErasure(type) || hasSubstitutedBounds(type) || type.isTypeConstructor()){
+                erased = true;
+            }
+            if(decl.isActual()
+                    && decl.getContainer() instanceof ClassOrInterface){
+                TypedDeclaration refinedDeclaration = getRefinedDeclarationForWideningRules(decl);
+                if(refinedDeclaration != null
+                        && refinedDeclaration != decl
+                        && decl.getUntrustedType() == null){
+                    // make sure the refined decl is set before we look at it
+                    setErasureState(refinedDeclaration);
+                }
+                // make sure we did not lose type information due to non-widening
+                if(isWideningTypedDeclaration(decl)){
+                    // widening means not trusting the type, otherwise we end up thinking that the type is
+                    // something it's not and regular erasure rules don't apply there
+                    untrusted = true;
+                    erased = true;
+                }
+            }
+        }
+        decl.setTypeErased(erased);
+        if (isPinnedType(decl)) {
+            untrusted = true;
+        }
+        decl.setUntrustedType(untrusted);
+    }
+
+    private void rawTypedDeclaration(TypedDeclaration decl) {
+        // deal with invalid input
+        if(decl == null)
+            return;
+
+        Type type = decl.getType();
+        if(type != null){
+            if(isRaw(type)) {
+                if (type.isCached()) {
+                    Type clone = type.clone();
+                    clone.setRaw(true);
+                    decl.setType(clone);
+                } else {
+                    type.setRaw(true);
+                }
+            }
+        }
+    }
+
+    private void boxMethod(Function method, Node that) {
+        // deal with invalid input
+        if(method == null)
+            return;
+        Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(method, optimisedMethodSpecifiersToMethods);
+        // deal with invalid input
+        if(refined == null
+                || (!(refined instanceof Function)))
+            return;
+        TypedDeclaration refinedMethod = (TypedDeclaration)refined;
+        if (method.getName() != null) {
+            // A Callable, which never have primitive parameters
+            setBoxingState(method, refinedMethod, that);
+        } else {
+            // Anonymous methods are always boxed
+            method.setUnboxed(false);
+        }
+    }
+
+    private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration, Node that) {
+        Type type = declaration.getType();
+        if(type == null){
+            // an error must have already been reported
+            return;
+        }
+        // fetch the real refined declaration if required
+        if (Decl.equal(declaration, refinedDeclaration)
+                && declaration instanceof FunctionOrValue
+                && ((FunctionOrValue)declaration).isParameter()
+                && declaration.getContainer() instanceof Class){
+            // maybe it is really inherited from a field?
+            FunctionOrValue methodOrValueForParam = (FunctionOrValue)declaration;
+            if(methodOrValueForParam != null){
+                // make sure we get the refined version of that member
+                refinedDeclaration = (TypedDeclaration) methodOrValueForParam.getRefinedDeclaration();
+            }
+        }
+        
+        // inherit underlying type constraints
+        if(!Decl.equal(refinedDeclaration, declaration)){
+            // simple case
+            if(type.getUnderlyingType() == null
+                && refinedDeclaration.getType() != null) {
+                if (type.isCached()) {
+                    type = type.clone();
+                }
+                type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+                declaration.setType(type);
+            }
+            // special case for variadics
+            if(Decl.isValueParameter(refinedDeclaration)){
+                Parameter parameter = ((FunctionOrValue) refinedDeclaration).getInitializerParameter();
+                if(parameter.isSequenced()){
+                    // inherit the underlying type of the iterated type
+                    Type refinedIteratedType = refinedDeclaration.getType().getTypeArgumentList().get(0);
+                    if(refinedIteratedType.getUnderlyingType() != null){
+                        Type ourIteratedType = type.getTypeArgumentList().get(0);
+                        if(ourIteratedType.getUnderlyingType() == null){
+                            if (ourIteratedType.isCached()) {
+                                ourIteratedType = ourIteratedType.clone();
+                            }
+                            ourIteratedType.setUnderlyingType(refinedIteratedType.getUnderlyingType());
+                            type.getTypeArgumentList().set(0, ourIteratedType);
+                            // make sure we remove those types from the cache otherwise UGLY things happen
+                            TypeCache cache = type.getDeclaration().getUnit().getCache();
+                            if(cache != null){
+                                cache.remove(ourIteratedType);
+                                cache.remove(type);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // abort if our boxing state has already been set
+        if(declaration.getUnboxed() != null)
+            return;
+        
+        // functional parameter return values are always boxed if we're not creating a method for them
+        if(declaration instanceof Function 
+                && ((Function)declaration).isParameter()
+                && !JvmBackendUtil.createMethod((Function)declaration)){
+            declaration.setUnboxed(false);
+            return;
+        }
+        
+        if (!Decl.equal(refinedDeclaration, declaration)) {
+            // make sure refined declarations have already been set
+            if(refinedDeclaration.getUnboxed() == null)
+                setBoxingState(refinedDeclaration, refinedDeclaration, that);
+            // inherit
+            declaration.setUnboxed(refinedDeclaration.getUnboxed());
+        } else if (declaration instanceof Function
+                && Strategy.useBoxedVoid((Function)declaration)
+                && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
+                && !CodegenUtil.isContainerFunctionalParameter(refinedDeclaration)
+                && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
+            declaration.setUnboxed(false);
+        } else if((isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
+           && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
+           && (refinedDeclaration.getContainer() instanceof Declaration == false || !CodegenUtil.isContainerFunctionalParameter(refinedDeclaration))
+           && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
+            boolean unbox = !forceBoxedLocals || !(declaration instanceof Value) || !Decl.isLocal(declaration) || Decl.isParameter(declaration) || Decl.isTransient(declaration);
+            // if we're a synthetic variable with unchecked nulls, don't force the null check
+            // until it's used later by user code
+            if(declaration.getOriginalDeclaration() != null
+                    && declaration.hasUncheckedNullType())
+                unbox = false;
+            declaration.setUnboxed(unbox);
+        } else if (Decl.isValueParameter(declaration)
+                && CodegenUtil.isContainerFunctionalParameter(declaration)
+                && JvmBackendUtil.createMethod((FunctionOrValue)declaration.getContainer())) {
+            Function functionalParameter = (Function)declaration.getContainer();
+            TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
+            if (Decl.equal(refinedFrom, functionalParameter) ) {
+                // Don't consider Anything to be unboxed, since this is a parameter
+                // not a method return type (where void would be considered unboxed).
+                if (declaration.getUnit().getAnythingType().isExactly(declaration.getType())
+                        || declaration.getUnit().isOptionalType(declaration.getType())) {
+                    declaration.setUnboxed(false);
+                } else {
+                    declaration.setUnboxed(true);
+                }
+            } else {
+                // make sure refined declarations have already been set
+                if(refinedFrom.getUnboxed() == null)
+                    setBoxingState(refinedFrom, refinedFrom, that);
+                // inherit
+                declaration.setUnboxed(refinedFrom.getUnboxed());
+            }
+        } else {   
+            declaration.setUnboxed(false);
+        }
+        
+        // Any "@boxed" or "@unboxed" compiler annotation overrides
+        boxFromAnnotation(declaration, that);
+    }
+
+    private void boxAttribute(TypedDeclaration declaration, Node that) {
+        // deal with invalid input
+        if(declaration == null)
+            return;
+        TypedDeclaration refinedDeclaration = null;
+        refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration, optimisedMethodSpecifiersToMethods);
+        // deal with invalid input
+        if(refinedDeclaration == null)
+            return;
+        setBoxingState(declaration, refinedDeclaration, that);
+    }
+    
+    private void boxFromAnnotation(TypedDeclaration declaration, Node that) {
+        // Let's see if the attribute has a "boxed" or "unboxed" annotation
+        // and set its state accordingly. NB this is not checked for validity!
+        if(that instanceof StatementOrArgument) {
+            if(CodegenUtil.hasCompilerAnnotation((StatementOrArgument)that, "boxed")) {
+                declaration.setUnboxed(false);
+            } else if(CodegenUtil.hasCompilerAnnotation((StatementOrArgument)that, "unboxed")) {
+                declaration.setUnboxed(true);
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Parameter that) {
+        super.visit(that);
+        TypedDeclaration declaration = that.getParameterModel().getModel();
+        visitAttributeOrParameter(declaration, that);
+    }
+    
+    @Override
+    public void visit(Tree.ValueParameterDeclaration that) {
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(AnyAttribute that) {
+        super.visit(that);
+        TypedDeclaration declaration = that.getDeclarationModel();
+        visitAttributeOrParameter(declaration, that);
+    }
+    
+    private void visitAttributeOrParameter(TypedDeclaration declaration, Node that) {
+        boxAttribute(declaration, that);
+        rawTypedDeclaration(declaration);
+        setErasureState(declaration);
+    }
+    
+    @Override
+    public void visit(AttributeDeclaration that) {
+        if(that.getSpecifierOrInitializerExpression() != null
+                && that.getDeclarationModel() != null
+                && that.getType() instanceof Tree.ValueModifier
+                && that.getDeclarationModel().getType().equals(that.getSpecifierOrInitializerExpression().getExpression().getTypeModel())){
+            that.getDeclarationModel().setType(that.getDeclarationModel().getType().withoutUnderlyingType());
+        }
+        super.visit(that);
+    }
+
+    @Override
+    public void visit(AttributeArgument that) {
+        super.visit(that);
+        boxAttribute(that.getDeclarationModel(), that);
+    }
+
+    @Override
+    public void visit(AttributeSetterDefinition that) {
+        super.visit(that);
+        Setter declaration = that.getDeclarationModel();
+        // deal with invalid input
+        if(declaration == null)
+            return;
+        // To determine boxing for a setter we use its parameter
+        TypedDeclaration paramDeclaration = declaration.getParameter().getModel();
+        boxAttribute(paramDeclaration, that);
+        // Now copy the settings from the parameter to the setter itself
+        declaration.setUnboxed(paramDeclaration.getUnboxed());
+        // Then we check if there are any overriding compiler annotations
+        boxFromAnnotation(declaration, that);
+        // And finally we copy the setting back again to make sure they're really the same
+        paramDeclaration.setUnboxed(declaration.getUnboxed());
+    }
+
+    @Override
+    public void visit(Variable that) {
+        super.visit(that);
+        TypedDeclaration declaration = that.getDeclarationModel();
+        // deal with invalid input
+        if(declaration == null)
+            return;
+        setBoxingState(declaration, declaration, that);
+        rawTypedDeclaration(declaration);
+        setErasureState(declaration);
+    }
+
+    @Override
+    public void visit(SpecifierStatement that) {
+        TypedDeclaration declaration = that.getDeclaration();
+        Function optimisedDeclaration = null;
+        // make sure we detect the shortcut refinement inlining cases
+        if(declaration instanceof Function){
+            if(that.getSpecifierExpression() != null
+                    && that.getSpecifierExpression() instanceof LazySpecifierExpression == false){
+                Tree.Term term = Decl.unwrapExpressionsUntilTerm(that.getSpecifierExpression().getExpression());
+                if(term != null
+                        && term instanceof Tree.FunctionArgument){
+                    optimisedDeclaration = ((Tree.FunctionArgument)term).getDeclarationModel();
+                    this.optimisedMethodSpecifiersToMethods.put(optimisedDeclaration, (Function) declaration);
+                }
+            }
+        }
+        try{
+            super.visit(that);
+        }finally{
+            if(optimisedDeclaration != null)
+                this.optimisedMethodSpecifiersToMethods.remove(optimisedDeclaration);
+        }
+        if(declaration == null)
+            return;
+        if(declaration instanceof Function){
+            visitMethod((Function) declaration, that);
+        }else if(declaration instanceof Value)
+            visitAttributeOrParameter(declaration, that);
+    }
+
+    @Override
+    public void visit(ForComprehensionClause that) {
+        super.visit(that);
+        // sort of a hack, because normal visiting rules would declare iterator variables to be potentially
+        // unboxed, but the implementation always boxes them for now, so override it after we visit the comprehension
+        ForIterator iter = that.getForIterator();
+        if (iter instanceof ValueIterator) {
+            // The exception to the "always boxed for now" rule is Java arrays
+            Type typeModel = iter.getSpecifierExpression().getExpression().getTypeModel();
+            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(
+                    (iter.getUnit().isJavaArrayType(typeModel) && ((ValueIterator) iter).getVariable().getDeclarationModel().getType().isSubtypeOf(iter.getUnit().getObjectType())));
+        } else if (iter instanceof PatternIterator) {
+            boxPattern(((PatternIterator) iter).getPattern());
+        }
+    }
+    
+    private void boxPattern(Tree.Pattern pattern) {
+        if (pattern instanceof Tree.KeyValuePattern) {
+            boxPattern(((Tree.KeyValuePattern)pattern).getKey());
+            boxPattern(((Tree.KeyValuePattern)pattern).getValue());
+        } else if (pattern instanceof Tree.TuplePattern) {
+            for (Tree.Pattern p : ((Tree.TuplePattern)pattern).getPatterns()) {
+                boxPattern(p);
+            }
+        } else if (pattern instanceof Tree.VariablePattern) {
+            ((Tree.VariablePattern)pattern).getVariable().getDeclarationModel().setUnboxed(false);
+        } else {
+            throw BugException.unhandledNodeCase(pattern);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeParameterDeclaration that) {
+        super.visit(that);
+        TypeParameter typeParameter = that.getDeclarationModel();
+        if(typeParameter != null){
+            visitTypeParameter(typeParameter);
+        }
+    }
+    
+    private void visitTypeParameter(TypeParameter typeParameter) {
+        if(typeParameter.hasNonErasedBounds() != null)
+            return;
+        for(Type pt : typeParameter.getSatisfiedTypes()){
+            if(!willEraseToObject(pt)){
+                typeParameter.setNonErasedBounds(true);
+                return;
+            }
+        }
+        typeParameter.setNonErasedBounds(false);
+        return;
+    }
+
+    // The following are not really necessary under normal circumstances,
+    // they explicitly set what is already set by default, but when using
+    // the -Dceylon.compiler.forceBoxedLocals option they are needed
+    
+    @Override
+    public void visit(ValueIterator that) {
+        super.visit(that);
+        // The variable in a for over a Range is always unboxed
+        if (that.getVariable() != null && that.getSpecifierExpression().getExpression().getTerm() instanceof Tree.RangeOp) {
+            that.getVariable().getDeclarationModel().setUnboxed(true);
+        }
+    }
+}

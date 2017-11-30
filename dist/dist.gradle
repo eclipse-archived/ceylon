@@ -1,0 +1,257 @@
+apply plugin : LifecycleBasePlugin
+apply plugin : CeylonBuildInfoPlugin
+apply plugin : CeylonCommonBuildProperties
+
+ext {
+    emdeddedRepoDir = "${buildDir}/embeddedRepository"
+}
+
+task setupRepo {
+    group 'Distribution'
+    dependsOn ':runtime-externals:setupRepo'
+    dependsOn ':runtime:publishInternal'
+}
+
+task installCompiler {
+    group 'Distribution'
+    dependsOn ':common:publishInternal'
+    dependsOn ':cli:publishInternal'
+    dependsOn ':langtools-classfile:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':typechecker:publishInternal'
+    dependsOn ':compiler-java:publishInternal'
+    dependsOn ':ant-plugin:publishInternal'
+    dependsOn ':bootstrap:publishInternal'
+    mustRunAfter setupRepo
+}
+
+task installRuntime {
+    group 'Distribution'
+    dependsOn ':common:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':tool-provider:publishInternal'
+    dependsOn ':language:publishInternal'
+    dependsOn ':java-main:publishInternal'
+    mustRunAfter setupRepo
+}
+
+task installJS {
+    group 'Distribution'
+    dependsOn ':common:publishInternal'
+    dependsOn ':cli:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':typechecker:publishInternal'
+    dependsOn ':compiler-js:publishInternal'
+    mustRunAfter setupRepo
+}
+
+task copyCompilerBinaries {
+
+    group 'Distribution'
+    description "Copies scripts and completions scripts to distribution bin area"
+    dependsOn ':cli:startScripts'
+}
+
+
+task copySupportFiles( type : Copy) {
+    group 'Distribution'
+    description "Copy licenses, samples, templates etc."
+    into distDir
+
+    from 'samples', {
+        include "helloworld/**"
+        include "no-module/**"
+        include "with-module/**"
+        include "interop-java/**"
+        include "plugin/**"
+        into 'samples'
+    }
+
+    from 'templates', {
+        into 'templates'
+    }
+
+    from 'contrib', {
+        into 'contrib'
+    }
+
+    from 'bin', {
+        into 'bin'
+    }
+
+    from rootProject.projectDir, {
+        include "LICENSE-ASL"
+        include "LICENSE-LGPL"
+        include "LICENSE-GPL-CP"
+    }
+
+    from projectDir, {
+        include 'NOTICE'
+        include "README.md"
+    }
+}
+
+task generateBuildId ( type : CeylonBuildIdGenerator ) {
+    group "Build"
+    description "Generates the BUILDID file"
+    outputFile "${distDir}/BUILDID"
+}
+
+
+task zip ( type : Zip ) {
+
+    dependsOn setupRepo, installCompiler, installJS
+    dependsOn copyCompilerBinaries, copySupportFiles
+    dependsOn installRuntime
+    dependsOn generateBuildId
+
+    group "Publish"
+    description "Creates the distribution Zip"
+    from distDir, {
+        include '**'
+        exclude 'bin/ceylon*'
+    }
+    from distDir, {
+        include 'bin/*.plugin'
+    }
+    from distDir, {
+        include 'bin/ceylon*'
+        exclude 'bin/*.plugin'
+        fileMode 0755
+    }
+    into "ceylon-${version}"
+    destinationDir buildDir
+    version = "${project.version}-${ceylonBuildInfo.revisionInfo}"
+    baseName = 'ceylon'
+
+    enabled = ceylonBuildInfo.revisionInfo != null
+}
+
+task publishInternal {
+    group 'Distribution'
+    description "Lifecycle task to coordinate all internal publish tasks"
+    dependsOn zip
+}
+
+task cleanRepo ( type : Delete ) {
+    group "clean"
+    description "Cleans the distribution area"
+    delete repoBinDir
+    delete repoLibDir
+    delete samplesDir
+    delete repoDir
+}
+
+task osgi {
+    dependsOn ':dist:osgi:publishInternal'
+}
+
+task 'osgi-p2' {
+    dependsOn ':dist:osgi:publishInternal'
+}
+
+task createAntEnvironmentForLinkedProjects ( type : Copy ) {
+    into { project.file("${linkedProjectRootDir}/ceylon") }
+
+    from distDir, {
+        into 'dist/dist'
+    }
+
+    from osgiDistDir, {
+        into 'dist/osgi/build/dist'
+    }
+
+    from "${project(':dist:osgi').projectDir}/p2", {
+        into 'dist/osgi/p2'
+    }
+
+    dependsOn publishInternal, osgi, 'osgi-p2'
+
+}
+
+// Mass-create linked projects
+['sdk'].each { linkedProject ->
+    ['','setup','status','update','clean'].each { linkedTask ->
+        String localTaskName = linkedTask.empty ? linkedProject : "${linkedTask}-${linkedProject}"
+        String linkedTaskName = linkedTask.empty ? 'publishInternal' : linkedTask
+        group "Linked Build for ${linkedProject} (Legacy)"
+        description "Ported task from Ant Build: Use ':linked:${linkedProject}:${linkedTask}' instead."
+        tasks.create(localTaskName) {
+            dependsOn ":linked:${linkedProject}:${linkedTaskName}", createAntEnvironmentForLinkedProjects
+        }
+    }
+}
+
+
+// dist: publish,ide-quick
+// publish: clean-projects,install-all,copy-dist-bin,publish-quick
+// install-all: setup-repo, install-compiler, install-js, copy-compiler-binaries
+//               copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+//               copy-licenses, install-runtime,
+//               add-module-descriptors, generate-buildid <-- ALL DONE
+// ide-quick:
+// copy-dist-bin: DONE
+// publish-quick: DONE
+// setup-repo: DONE
+// install-compiler: DONE
+// install-js: DONE
+// copy-compiler-binaries: DONE
+// install-runtime: install-common,install-model,install-cmr,install-tool-provider,install-language,
+//                  install-java-main,install-runtime-nodeps <-- ALL DONE
+// copy-herd
+// test
+// test-quick (test-item)
+//
+// update:
+// status:
+// release:
+// nightly:
+// git-status:
+// git-update:
+//
+// package: clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc,
+//          copy-dist-bin, zip
+//
+// osgi:
+// osgi-internal:
+// osgi-quick:
+// osgi-p2:
+// osgi-p2-internal:
+// osgi-p2-quick:
+//
+// generate-spec:
+// generate-apidoc:
+// generate--tooldoc:
+// generate-tooldoc-man:
+//
+
+// setup-sdk: DONE
+// setup-admins-sdk:
+// status-sdk: DONE
+// update-sdk: DONE
+// clean-sdk: DONE
+// sdk: DONE
+//
+// setup-ide:
+// setup-admins-ide:
+// status-ide:
+// update-ide:
+// clean-ide:
+// ide
+// ide-quick (ide-item)
+//
+// eclipse:
+// eclipse-switch-to-last-release-updates:
+// eclipse-switch-back-to-master:
+// eclipse-rebuild-last-release-updates:
+//
+// intellij:
+//
+// status-all: status,status-sdk,status-ide
+// update-all: update,update-sdk,update-ide
+// clean-all: clean,clean-projects,clean-sdk,clean-ide
+// do-all: dist,sdk,eclipse
+

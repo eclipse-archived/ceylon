@@ -1,0 +1,29 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug12xx;
+
+class Bug1287 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1287(final .java.lang.Object x) {
+        this.x = x;
+        class C implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            C() {
+            }
+            
+            public final .java.lang.String m(final .java.lang.String y) {
+                return getX$priv().toString() + y;
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1287.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1287.C.class));
+            }
+        }
+        new C().m("");
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1287.$TypeDescriptor;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1287.class);
+}

@@ -1,0 +1,107 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug23xx;
+
+public class Bug2335 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug2335() {
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D D$new$() {
+        return new D();
+    }
+    
+    public class D implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected D() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D.class));
+        }
+    }
+    
+    private final long m$priv$() {
+        final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335, ? extends .java.lang.Object> arr = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.this;
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .ceylon.language.Sequence<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D> ds = (.ceylon.language.Sequence<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335, ? extends .java.lang.Object> spread$0$iterable$ = arr;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D> iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D.class))){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = ((.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335)spread$0$element$).D$new$();
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ds2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335, ? extends .java.lang.Object> spread$1$iterable$ = arr;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335> spread$1$iterator$ = spread$1$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$1$element$;
+                            if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$1$element$ = .ceylon.language.Integer.instance(((.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335)(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335)spread$1$element$).m$priv$());
+                            }
+                            return spread$1$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335 opt = this;
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D ds3 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335 safe$2 = opt;
+            }
+            returning safe$2 != null ? safe$2.D$new$() : null;
+        );
+        return 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.Bug2335.class);
+}

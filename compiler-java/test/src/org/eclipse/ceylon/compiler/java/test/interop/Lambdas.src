@@ -1,0 +1,1895 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class toplevel_ {
+    
+    private toplevel_() {
+    }
+    
+    static void toplevel(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class toplevelSmall_ {
+    
+    private toplevelSmall_() {
+    }
+    
+    static void toplevelSmall(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.ceylon.language.SmallAnnotation$annotation$
+    final int i) {
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class toplevelVariadic_ {
+    
+    private toplevelVariadic_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static long toplevelVariadic() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning toplevelVariadic($ceylontmp$i$0);
+        );
+    }
+    
+    static long toplevelVariadic(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.org.eclipse.ceylon.compiler.java.metadata.Sequenced
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        return 1L;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class C implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected C() {
+        super();
+    }
+    
+    C(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.C.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.C.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class CSmall implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    CSmall(final int i) {
+        (
+            let
+            {
+                float $ceylontmp$v$1 = .org.eclipse.ceylon.compiler.java.test.interop.CSmall.$default$v(i);
+                this(i, $ceylontmp$v$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected CSmall() {
+        super();
+    }
+    
+    CSmall(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.ceylon.language.SmallAnnotation$annotation$
+    final int i, @.org.eclipse.ceylon.compiler.java.metadata.Name("v")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.ceylon.language.SmallAnnotation$annotation$
+    final float v) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static float $default$v(final int i) {
+        return (float)0.0;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.CSmall.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.CSmall.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1LocalClass"})
+final class lambdas_ {
+    
+    private lambdas_() {
+    }
+    
+    static void lambdas() {
+        final .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava j = new .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava();
+        j.<.ceylon.language.Boolean>consumer(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, .ceylon.language.Boolean.instance(true));
+        j.<.ceylon.language.Boolean>consumerStatic(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, .ceylon.language.Boolean.instance(true));
+        .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.<.ceylon.language.Boolean>consumerStatic(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#2") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#2")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, .ceylon.language.Boolean.instance(true));
+        j.<.ceylon.language.Boolean, .ceylon.language.Boolean>function(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#3") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Function<.ceylon.language.Boolean, .ceylon.language.Boolean>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#3")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return .ceylon.language.Boolean.instance(b);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean apply(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                return $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, .ceylon.language.Boolean.instance(true));
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class f_ implements .java.io.Serializable {
+            
+            private f_() {
+            }
+            
+            @.org.eclipse.ceylon.common.Nullable
+            .java.lang.Object f(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+            final long i) {
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+                    }
+                    returning null;
+                );
+            }
+        }
+        final f_ f = new f_();
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return f.f($ceylontmp$i);
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        final .ceylon.language.Callable<? extends .java.lang.Object> fval = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#4") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#4")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+                    }
+                    returning null;
+                );
+            }
+        };
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
+                return fval.$call$($ceylontmp$arg0);
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$integer = ((.ceylon.language.Integer)$param$0).longValue();
+                return new .ceylon.language.Integer($ceylontmp$integer);
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int arg0 = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.takeInt(arg0);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        fval.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Callable<? extends .java.lang.Object> refToIntMethod = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int arg0 = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.takeInt(arg0);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .java.util.function.IntConsumer fvalNothing = (.java.util.function.IntConsumer)(.java.lang.Object).ceylon.language.nothing_.get_();
+        j.intConsumer(fvalNothing);
+        j.overloadedFunction(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#5") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.OverloadedFunction()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#5")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("yes"));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.overloadedFunction2(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#6") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.OverloadedFunction2B()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#6")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("yes"));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.variadicFunction(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#7") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.VariadicFunction()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#7")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(args);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("ok"));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int... arg0) {
+                $callvariadic$(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(arg0));
+            }
+        });
+        j.intSupplier(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#8") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#8")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(args);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+                return .ceylon.language.Integer.instance(1L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        j.variadicFunction(new .org.eclipse.ceylon.compiler.java.test.interop.VariadicFunction(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(i);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.interop.toplevelVariadic_.toplevelVariadic(i));
+            }
+            
+            @.java.lang.Override
+            public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int... arg0) {
+                $callvariadic$(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(arg0));
+            }
+        });
+        j.intSupplier(new .java.util.function.IntSupplier(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(i);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.org.eclipse.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.interop.toplevelVariadic_.toplevelVariadic(i));
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        j.consumeTwoIntegers(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#9") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.ConsumeTwoIntegers()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#9")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final long b = ((.ceylon.language.Integer)$param$1).longValue();
+                return .ceylon.language.Integer.instance(a + b);
+            }
+            
+            @.java.lang.Override
+            public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0, @.org.eclipse.ceylon.compiler.java.metadata.Name("arg1")
+            final int arg1) {
+                $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
+            }
+        });
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> f1 = .ceylon.language.uncurry_.<.ceylon.language.Integer, .java.lang.Object, .ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>>uncurry(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer $instance$ = (.ceylon.language.Integer)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Integer other = (.ceylon.language.Integer)$param$0;
+                        return $instance$.plus(other);
+                    }
+                };
+            }
+        });
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class f2_ implements .java.io.Serializable {
+            
+            private f2_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            .ceylon.language.Callable<? extends .ceylon.language.Integer> f2() {
+                return .ceylon.language.uncurry_.<.ceylon.language.Integer, .java.lang.Object, .ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>>uncurry(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Integer $instance$ = (.ceylon.language.Integer)$param$0;
+                        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                                final .ceylon.language.Integer other = (.ceylon.language.Integer)$param$0;
+                                return $instance$.plus(other);
+                            }
+                        };
+                    }
+                });
+            }
+        }
+        final f2_ f2 = new f2_();
+        j.consumeTwoIntegers(new .org.eclipse.ceylon.compiler.java.test.interop.ConsumeTwoIntegers(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
+                final .ceylon.language.Integer $ceylontmp$arg1 = (.ceylon.language.Integer)$param$1;
+                return f1.$call$($ceylontmp$arg0, $ceylontmp$arg1);
+            }
+            
+            @.java.lang.Override
+            public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0, @.org.eclipse.ceylon.compiler.java.metadata.Name("arg1")
+            final int arg1) {
+                $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
+            }
+        });
+        j.consumeTwoIntegers((
+            let
+            {
+                final .ceylon.language.Callable<? extends .ceylon.language.Integer> $instance$ = f2.f2();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.interop.ConsumeTwoIntegers(){
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                    final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
+                    final .ceylon.language.Integer $ceylontmp$arg1 = (.ceylon.language.Integer)$param$1;
+                    return $instance$.$call$($ceylontmp$arg0, $ceylontmp$arg1);
+                }
+                
+                @.java.lang.Override
+                public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+                final int arg0, @.org.eclipse.ceylon.compiler.java.metadata.Name("arg1")
+                final int arg1) {
+                    $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
+                }
+            };
+        ));
+        new .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return f.f($ceylontmp$i);
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        final .java.lang.String s1 = .org.eclipse.ceylon.compiler.java.Util.checkNull(j.getStr());
+        final .java.lang.String s2 = .org.eclipse.ceylon.compiler.java.Util.checkNull(.org.eclipse.ceylon.compiler.java.Util.checkNull(j.getCharSequence()).toString());
+        final .java.lang.CharSequence cs2 = .org.eclipse.ceylon.compiler.java.Util.checkNull(j.getCharSequence());
+        j.setStr(s1);
+        j.setStr(cs2.toString());
+        j.setCharSequence(cs2);
+        j.setCharSequence(.ceylon.language.String.instance(s2).toString());
+        j.setCharSequence(cs2);
+        j.charSequences();
+        j.charSequences(.ceylon.language.String.instance("a").toString());
+        j.charSequences(.ceylon.language.String.instance("a").toString(), .ceylon.language.String.instance("b").toString());
+        j.<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava>arrays((long[])(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$2$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$2$reified$0, arg$2$0);
+        ).toArray(), (double[])(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Float.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$3$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Float>(arg$3$reified$0, arg$3$0);
+        ).toArray(), (byte[])(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Byte.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$4$0 = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Byte.instance((byte)1L);
+                        
+                        case 1: 
+                            return .ceylon.language.Byte.instance((byte)2L);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Byte>(arg$4$reified$0, arg$4$0);
+        ).toArray(), (boolean[])(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.Boolean.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$5$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Boolean, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Boolean>(arg$5$reified$0, arg$5$0);
+        ).toArray(), (.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava[])(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$6$reified$0 = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class), .ceylon.language.Null.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$6$0 = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class), .ceylon.language.null_.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return j;
+                        
+                        case 1: 
+                            return null;
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .ceylon.language.Array<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava>(arg$6$reified$0, arg$6$0);
+        ).toArray(), (.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava[])(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$0 = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class);
+                .ceylon.language.Iterable arg$7$0 = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return j;
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .ceylon.language.Array<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava>(arg$7$reified$0, arg$7$0);
+        ).toArray());
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("LocalClass")
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class LocalClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            LocalClass() {
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.interop.lambdas_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+        j.setKlass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class);
+        j.setKlass(LocalClass.class);
+        j.setKlass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.StaticMemberClass.class);
+        j.setKlass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.MemberClass.class);
+        j.klassMethod(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .java.lang.Class<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava> jklass1 = j.<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterised(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .java.lang.Class<? extends .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava> jklass2 = j.<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedCovariant(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .java.lang.Class<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava> jklass3 = j.<.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedWithBounds(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .ceylon.language.meta.model.Class klass = (.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.LambdasJava.class));
+        j.setKlass(.org.eclipse.ceylon.compiler.java.Util.javaClassForModel(klass));
+        j.klassMethod(.org.eclipse.ceylon.compiler.java.Util.javaClassForModel(klass));
+        j.intConsumer(null);
+        new .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava(null);
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.interop.toplevel_.toplevel($ceylontmp$i);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int $ceylontmp$i = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.interop.toplevelSmall_.toplevelSmall($ceylontmp$i);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#10") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntConsumer()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#10")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#11") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntConsumer()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#11")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final long $default$i() {
+                return 2L;
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final long $default$j(final long i) {
+                return 3L;
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                final long i = $default$i();
+                final long j = $default$j(i);
+                return $calltyped$(i, j);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                final long j = $default$j(i);
+                return $calltyped$(i, j);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                final long j = ((.ceylon.language.Integer)$param$1).longValue();
+                return $calltyped$(i, j);
+            }
+            
+            private .java.lang.Object $calltyped$(final long i, final long j) {
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intSupplier(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#12") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#12")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        j.intSuppliers();
+        j.intSuppliers(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#13") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#13")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        j.intSuppliers(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#14") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#14")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        }, new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#15") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#15")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(2L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        final .ceylon.language.Callable<? extends .java.lang.Object> tlref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.interop.toplevel_.toplevel($ceylontmp$i);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.lang.Object> tlrefSmall = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int $ceylontmp$i = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.interop.toplevelSmall_.toplevelSmall($ceylontmp$i);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.interop.C> cref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.interop.C>(.org.eclipse.ceylon.compiler.java.test.interop.C.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "C(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.interop.C $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return new .org.eclipse.ceylon.compiler.java.test.interop.C($ceylontmp$i);
+            }
+        };
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.interop.CSmall> crefSmall = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.interop.CSmall>(.org.eclipse.ceylon.compiler.java.test.interop.CSmall.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), "CSmall(Integer, Float=)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.interop.CSmall $call$(final .java.lang.Object $param$0) {
+                final int $ceylontmp$i = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return new .org.eclipse.ceylon.compiler.java.test.interop.CSmall($ceylontmp$i);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.interop.CSmall $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final int $ceylontmp$i = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                final float $ceylontmp$v = (float)((.ceylon.language.Float)$param$1).doubleValue();
+                return new .org.eclipse.ceylon.compiler.java.test.interop.CSmall($ceylontmp$i, $ceylontmp$v);
+            }
+        };
+        final .ceylon.language.Callable<? extends float[]> arrayRef = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<float[]>(.org.eclipse.ceylon.compiler.java.language.FloatArray.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), "FloatArray(Integer, Float=)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public float[] $call$(final .java.lang.Object $param$0) {
+                final int $ceylontmp$size = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return new float[$ceylontmp$size];
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public float[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final int $ceylontmp$size = .org.eclipse.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                final float $ceylontmp$element = (float)((.ceylon.language.Float)$param$1).doubleValue();
+                return .org.eclipse.ceylon.compiler.java.Util.fillArray(new float[$ceylontmp$size], $ceylontmp$element);
+            }
+        };
+        final .java.util.ArrayList<.ceylon.language.Integer> l = new .java.util.ArrayList<.ceylon.language.Integer>();
+        final long s = .org.eclipse.ceylon.compiler.java.Util.checkNull(.org.eclipse.ceylon.compiler.java.Util.checkNull(.org.eclipse.ceylon.compiler.java.Util.checkNull(l.stream()).filter(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#16") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Predicate<.ceylon.language.Integer>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#16")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Boolean.instance(.ceylon.language.Integer.getPositive(i));
+            }
+            
+            @.java.lang.Override
+            public boolean test(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Integer arg0) {
+                return $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0)).booleanValue();
+            }
+        })).mapToInt(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#17") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.ToIntFunction<.ceylon.language.Integer>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#17")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i);
+            }
+            
+            @.java.lang.Override
+            public int applyAsInt(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Integer arg0) {
+                return .org.eclipse.ceylon.compiler.java.Util.toInt($call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0)).longValue());
+            }
+        })).sum();
+        final .java.util.concurrent.ExecutorService mes = (.java.util.concurrent.ExecutorService)(.java.lang.Object).ceylon.language.nothing_.get_();
+        .java.util.concurrent.CompletableFuture.<.ceylon.language.Integer>supplyAsync(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#18") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Supplier<.ceylon.language.Integer>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#18")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(2L);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer get() {
+                return $call$();
+            }
+        }, (
+            let
+            {
+                final .java.util.concurrent.Executor $instance$ = mes;
+            }
+            returning new .java.util.concurrent.Executor(){
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Runnable $ceylontmp$arg0 = (.java.lang.Runnable)$param$0;
+                    return (
+                        let
+                        {
+                            $instance$.execute($ceylontmp$arg0);
+                        }
+                        returning null;
+                    );
+                }
+                
+                @.java.lang.Override
+                public void execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+                final .java.lang.Runnable arg0) {
+                    $call$(arg0);
+                }
+            };
+        ));
+        .java.util.concurrent.CompletableFuture.<.ceylon.language.Integer>supplyAsync(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#19") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Supplier<.ceylon.language.Integer>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#19")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(2L);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer get() {
+                return $call$();
+            }
+        });
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(.org.eclipse.ceylon.compiler.java.Util.checkNull(.java.util.concurrent.CompletableFuture.<.ceylon.language.String>supplyAsync(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#20") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Supplier<.ceylon.language.String>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#20")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance("Hello");
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.String get() {
+                return $call$();
+            }
+        })).<.ceylon.language.String>thenApply(new .java.util.function.Function<.ceylon.language.String, .ceylon.language.String>(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String $instance$ = (.ceylon.language.String)$param$0;
+                return .ceylon.language.String.instance($instance$.getUppercased());
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.String apply(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.String arg0) {
+                return $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        })).thenAccept(new .java.util.function.Consumer<.ceylon.language.String>(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.String arg0) {
+                $call$(arg0);
+            }
+        });
+        j.stringFunction(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#21") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.StringFunction()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#21")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(s);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return $call$(.ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0))).toString();
+            }
+        });
+        j.stringFunction(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#22") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.StringFunction()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#22")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String s = (.ceylon.language.String)$param$0;
+                return s;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$8 = $call$(.ceylon.language.String.instance(arg0));
+                    }
+                    returning $ceylontmp$8 != null ? $ceylontmp$8.toString() : null;
+                );
+            }
+        });
+        j.stringFunction(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#23") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.test.interop.StringFunction()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#23")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(s);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$9 = $call$(.ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0)));
+                    }
+                    returning $ceylontmp$9 != null ? $ceylontmp$9.toString() : null;
+                );
+            }
+        });
+        final .java.lang.String capturedString = "";
+        j.stringFunction2(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#24") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Function<.java.lang.String, .java.lang.String>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#24")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(capturedString);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String apply(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return $call$(.ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0))).toString();
+            }
+        });
+        final .ceylon.language.String capturedString2 = .ceylon.language.String.instance("");
+        j.stringFunction2(new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#25") @.org.eclipse.ceylon.compiler.java.metadata.Method .java.util.function.Function<.java.lang.String, .java.lang.String>()
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#25")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return capturedString2;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String apply(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$10 = $call$(.ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0)));
+                    }
+                    returning $ceylontmp$10 != null ? $ceylontmp$10.toString() : null;
+                );
+            }
+        });
+        final .ceylon.language.Callable<? extends .java.lang.Object> xf = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava $instance$ = j;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class)))), "Anything(Iterable<String>?)", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Iterable $ceylontmp$arg0 = (.java.lang.Iterable<.java.lang.String>)(.java.lang.Iterable)$param$0;
+                    return (
+                        let
+                        {
+                            $instance$.takeIterableString($ceylontmp$arg0);
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> xf2 = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava $instance$ = j;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Annotation.$TypeDescriptor$)), "Anything(Annotation?)", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.annotation.Annotation $ceylontmp$arg0 = (.java.lang.annotation.Annotation)$param$0;
+                    return (
+                        let
+                        {
+                            $instance$.takeAnnotation($ceylontmp$arg0);
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.CompileTimeError
+public final class bug6634_ {
+    
+    private bug6634_() {
+    }
+    
+    public static void bug6634() {
+        
+        final class longStream$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.java.util.stream.LongStream> {
+            
+            private longStream$getter$_() {
+            }
+            
+            public .java.util.stream.LongStream get_() {
+                return .org.eclipse.ceylon.compiler.java.Util.checkNull(.java.util.stream.LongStream.of(new long[]{
+                        1L,
+                        2L,
+                        3L}));
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.Getter<.java.util.stream.LongStream> longStream$getter$_ = new longStream$getter$_();
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map(new .java.util.function.LongUnaryOperator(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i);
+            }
+            
+            @.java.lang.Override
+            public long applyAsLong(final long arg0) {
+                return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
+            }
+        })).forEach(new .java.util.function.LongConsumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final long arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map(new .java.util.function.LongUnaryOperator(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Integer $ceylontmp$11 = i;
+                    }
+                    returning $ceylontmp$11 != null ? $ceylontmp$11 : .ceylon.language.Integer.instance(0L);
+                );
+            }
+            
+            @.java.lang.Override
+            public long applyAsLong(final long arg0) {
+                return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
+            }
+        })).forEach(new .java.util.function.LongConsumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final long arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        
+        final class integerStream$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.java.util.stream.Stream<.ceylon.language.Integer>> {
+            
+            private integerStream$getter$_() {
+            }
+            
+            public .java.util.stream.Stream<.ceylon.language.Integer> get_() {
+                return .org.eclipse.ceylon.compiler.java.Util.checkNull(.java.util.stream.Stream.<.ceylon.language.Integer>of(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)null, .ceylon.language.Integer.instance(3L)));
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.Getter<.java.util.stream.Stream<.ceylon.language.Integer>> integerStream$getter$_ = new integerStream$getter$_();
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Integer $ceylontmp$12 = i;
+                    }
+                    returning $ceylontmp$12 != null ? $ceylontmp$12 : .ceylon.language.Integer.instance(0L);
+                );
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return i;
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.java.lang.Object>map(new .java.util.function.Function(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object apply(final .java.lang.Object arg0) {
+                return $call$((.ceylon.language.Integer)arg0);
+            }
+        })).forEach(new .java.util.function.Consumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.Object arg0) {
+                $call$(arg0);
+            }
+        });
+        final .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> f = (
+            let
+            {
+                
+                class anonymous_31_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> {
+                    
+                    private anonymous_31_() {
+                    }
+                    
+                    @.java.lang.Override
+                    public final .java.lang.Object apply(final .ceylon.language.Integer i) {
+                        return null;
+                    }
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.interop.bug6634_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_31_.class));
+                    }
+                }
+            }
+            returning new anonymous_31_();
+        );
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (.ceylon.language.Integer)null;
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        try {
+            .org.eclipse.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+                
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i);
+                }
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                    return $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+                }
+            })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+                
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$val = $param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.print_.print($ceylontmp$val);
+                        }
+                        returning null;
+                    );
+                }
+                
+                @.java.lang.Override
+                public void accept(final .ceylon.language.Integer arg0) {
+                    $call$(arg0);
+                }
+            });
+        } catch (final .ceylon.language.AssertionError e) {
+            .ceylon.language.print_.print(.ceylon.language.String.instance("good"));
+        }
+        throw new .org.eclipse.ceylon.compiler.java.language.UnresolvedCompilationError("argument must be assignable to parameter \'arg0\' of \'map\' in \'LongStream\': \'Integer?(Integer?)\' is not assignable to \'LongUnaryOperator?\'");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.interop.bug6634_.bug6634();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.interop::LambdasJava")
+class Sub extends .org.eclipse.ceylon.compiler.java.test.interop.LambdasJava implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Sub() {
+        super();
+    }
+    
+    Sub(@.org.eclipse.ceylon.compiler.java.metadata.Name("c")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.util.function::IntConsumer")
+    final .java.util.function.IntConsumer c) {
+        super(c);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void runWithLock(@.org.eclipse.ceylon.compiler.java.metadata.Name("action")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("!()")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    final .ceylon.language.Callable<? extends .java.lang.Object> action) {
+        synchronizedRun(new .java.lang.Runnable(){
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                return action.$call$();
+            }
+            
+            @.java.lang.Override
+            public void run() {
+                $call$();
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Sub.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Sub.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.interop::InterfaceWithCoercedMembers"})
+class Sub2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.interop.InterfaceWithCoercedMembers, .java.io.Serializable {
+    
+    Sub2() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final void m(@.org.eclipse.ceylon.compiler.java.metadata.Name("cs")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.lang::CharSequence")
+    final .java.lang.CharSequence cs, @.org.eclipse.ceylon.compiler.java.metadata.Name("l")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.util.function::IntSupplier")
+    final .java.util.function.IntSupplier l) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Sub2.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Sub2.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class underlyingTypeTest_ {
+    
+    private underlyingTypeTest_() {
+    }
+    
+    static void underlyingTypeTest() {
+        final .ceylon.language.meta.model.Class<? extends short[], ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> x = (.ceylon.language.meta.model.Class<? extends short[], ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.Class<? extends short[], ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.language.ShortArray.$TypeDescriptor$);
+        final long s = 2L;
+        final short[] r = new short[(int)s];
+    }
+}

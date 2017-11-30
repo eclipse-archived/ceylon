@@ -1,0 +1,33 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug04xx;
+
+interface Bug445<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug04xx$Bug445$impl();
+}
+final class Bug445$impl<T> implements .java.io.Serializable {
+    
+    Bug445$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner() {
+        }
+        
+        private final void t$priv$(final T t) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug04xx.Bug445.class, .org.eclipse.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.Inner.class));
+        }
+    }
+}

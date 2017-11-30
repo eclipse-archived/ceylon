@@ -1,0 +1,81 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug2037_ {
+    
+    private bug2037_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2037(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    @.org.eclipse.ceylon.common.NonNull
+    @.javax.annotation.Generated("by me")
+    final .java.lang.String p1, @.org.eclipse.ceylon.compiler.java.metadata.Name("p2")
+    @.org.eclipse.ceylon.common.NonNull
+    @.javax.annotation.Generated("by me")
+    final .java.lang.String p2) {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug2037 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Bug2037() {
+        super();
+        this.p2 = null;
+        this.p1 = null;
+    }
+    
+    public Bug2037(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String p1, @.org.eclipse.ceylon.compiler.java.metadata.Name("p2")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+    @.javax.annotation.Generated("by me")
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String p2;
+    
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String getP2$priv$() {
+        return this.p2;
+    }
+    @.javax.annotation.Generated("by me")
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String p1;
+    
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String getP1$priv$() {
+        return this.p1;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final boolean equals(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    @.javax.annotation.Generated("by me")
+    final .java.lang.Object other) {
+        return false;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2037.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2037.class);
+}

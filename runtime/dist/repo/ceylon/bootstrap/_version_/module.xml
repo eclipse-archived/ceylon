@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.1" name="ceylon.bootstrap" slot="@ceylon-version@">
+    <properties>
+        <property name="groupId" value="org.ceylon-lang"/>
+    </properties>
+
+    <resources>
+        <resource-root path="ceylon.bootstrap-@ceylon-version@.jar"/>
+    </resources>
+
+    <main-class name="org.eclipse.ceylon.bootstrap.Main"/>
+
+    <dependencies>
+        <!-- bytecode analysis says it's not used -->
+        <module name="ceylon.runtime" slot="@ceylon-version@"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.logging" slot="7"/>
+    </dependencies>
+</module>

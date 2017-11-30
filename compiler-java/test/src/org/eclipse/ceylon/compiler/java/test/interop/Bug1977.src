@@ -1,0 +1,27 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+class Bug1977 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1977() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Bug1977.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Bug1977.class);
+}
+final class Bug1977Array {
+    
+    private Bug1977Array() {
+    }
+}
+final class bug1977_ {
+    
+    private bug1977_() {
+    }
+    
+    static void bug1977(final .org.eclipse.ceylon.compiler.java.test.interop.Bug1977[] array, final .org.eclipse.ceylon.compiler.java.test.interop.Bug1977 element) {
+        array[0] = element;
+    }
+}

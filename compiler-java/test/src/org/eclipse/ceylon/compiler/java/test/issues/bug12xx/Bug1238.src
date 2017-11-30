@@ -1,0 +1,22 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug12xx;
+
+class Teste extends .javax.swing.JFrame implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Teste() {
+        super();
+    }
+    
+    private final void teste$priv$() {
+        final .java.awt.Container container = .org.eclipse.ceylon.compiler.java.Util.checkNull(getContentPane());
+        container.setSize(300, 200);
+        .org.eclipse.ceylon.compiler.java.Util.checkNull(getContentPane()).setSize(new .java.awt.Dimension());
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1238 java = new .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1238(1);
+        java.m(1);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Teste.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Teste.class);
+}

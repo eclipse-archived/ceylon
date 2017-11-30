@@ -1,0 +1,62 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug13xx;
+
+public class Bug1395LinkedList<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1395LinkedList(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> $ceylontmp$values$0 = .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1395LinkedList.<Element>$default$values($reified$Element);
+                <Element>this($reified$Element, $ceylontmp$values$0);
+            }
+            returning null;
+        );
+    }
+    
+    public Bug1395LinkedList(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> values) {
+        this.$reified$Element = $reified$Element;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    public static <Element>.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> $default$values(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        return (.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1395LinkedList(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1395LinkedList.class, $reified$Element);
+    }
+}
+class Bug1395MyLinkedList<Element> extends .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1395LinkedList<Element> {
+    
+    Bug1395MyLinkedList(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> $ceylontmp$values$1 = .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1395MyLinkedList.<Element>$default$values($reified$Element);
+                <Element>this($reified$Element, $ceylontmp$values$1);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1395MyLinkedList(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> values) {
+        super($reified$Element, values);
+        this.$reified$Element = $reified$Element;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    public static <Element>.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> $default$values(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        return (.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1395MyLinkedList.class, $reified$Element);
+    }
+}

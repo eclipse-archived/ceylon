@@ -1,0 +1,17 @@
+package org.eclipse.ceylon.compiler.java.test.structure.importIt;
+
+class ImportMethodSingle implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ImportMethodSingle() {
+    }
+    
+    private final void m$priv$() {
+        .org.eclipse.ceylon.compiler.java.test.structure.importIt.pkg.m1_.m1();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.importIt.ImportMethodSingle.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.importIt.ImportMethodSingle.class);
+}

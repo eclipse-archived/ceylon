@@ -1,0 +1,8 @@
+   Emphasis
+
+        Here's a paragraph with some STRONG and some emph.
+
+        Here's a paragraph with some STRONG and some emph.
+
+        Here's a paragraph with some STRONG _AND_ SOME EMPH.
+

@@ -1,0 +1,93 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+public interface XIterable893<Element> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$XIterable893$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess();
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2();
+}
+public final class XIterable893$impl<Element> implements .java.io.Serializable {
+    
+    public XIterable893$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+public interface XSequential893<Element> extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<Element> {
+}
+public interface XSequence893<Element> extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XSequential893<Element> {
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getSuccess();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail1();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail2();
+}
+public interface XEmpty893 extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XSequential893<.java.lang.Object> {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XEmpty893.class);
+}
+public abstract class XSingleton893<Element> extends .java.lang.Object implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element>, .java.io.Serializable {
+    
+    protected XSingleton893(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element>($reified$Element, this);
+        this.fail2 = null;
+    }
+    
+    public XSingleton893(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element>($reified$Element, this);
+        this.fail2 = (.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element> $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$XIterable893$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$;
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getSuccess() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail1() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> fail2;
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail2() {
+        return this.fail2;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.XSingleton893.class, $reified$Element);
+    }
+}

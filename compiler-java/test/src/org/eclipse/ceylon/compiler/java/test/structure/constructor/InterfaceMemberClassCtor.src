@@ -1,0 +1,237 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+interface InterfaceMemberClassCtor {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i$param$);
+    
+    public abstract long SharedMember$i();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$);
+    
+    public abstract long SharedMember$other$i();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor.class);
+}
+final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
+    
+    InterfaceMemberClassCtor$impl(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor $this;
+    
+    public final long Member$i() {
+        return 0L;
+    }
+    
+    public static final class Member$other {
+        
+        Member$other() {
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other Member$other = null;
+    
+    public final long Member$other$i() {
+        return 1L;
+    }
+    
+    class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Member() {
+            (
+                let
+                {
+                    long $ceylontmp$i$0 = Member$i();
+                    this($ceylontmp$i$0);
+                }
+                returning null;
+            );
+        }
+        
+        Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other $name$) {
+            (
+                let
+                {
+                    long $ceylontmp$i$1 = Member$other$i();
+                    this($name$, $ceylontmp$i$1);
+                }
+                returning null;
+            );
+        }
+        
+        public Member(final long i$param$) {
+        }
+        
+        public Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other $name$, final long i$param$) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i$param$) {
+        return new SharedMember(i$param$);
+    }
+    
+    public final long SharedMember$i() {
+        return 2L;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = SharedMember$i();
+            }
+            returning new SharedMember($ceylontmp$i$2);
+        );
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$) {
+        return new SharedMember($name$, i$param$);
+    }
+    
+    public static final class SharedMember$other {
+        
+        SharedMember$other() {
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other SharedMember$other = null;
+    
+    public final long SharedMember$other$i() {
+        return 3L;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$) {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = SharedMember$other$i();
+            }
+            returning new SharedMember($name$, $ceylontmp$i$3);
+        );
+    }
+    
+    public class SharedMember implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public SharedMember(final long i$param$) {
+        }
+        
+        public SharedMember(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember.class));
+        }
+    }
+    
+    private void use$priv$(final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(0L);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(1L);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 2L);
+        $this.SharedMember$new$(3L);
+        $this.SharedMember$new$(4L);
+        $this.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 5L);
+        $this.$org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(6L);
+        $this.$org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(7L);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 8L);
+        $this.SharedMember$new$(9L);
+        $this.SharedMember$new$(10L);
+        $this.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 11L);
+        other.$org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(12L);
+        other.$org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(13L);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 14L);
+        other.SharedMember$new$(15L);
+        other.SharedMember$new$(16L);
+        other.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 17L);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor"})
+class InterfaceMemberClassCtorImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor, .java.io.Serializable {
+    
+    InterfaceMemberClassCtorImpl() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl(this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long SharedMember$i() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$i();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i$param$) {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$(i$param$);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long SharedMember$other$i() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$other$i();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$) {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$($name$);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$) {
+        return $org$eclipse$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$($name$, i$param$);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtorImpl.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtorImpl.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class useInterfaceMemberClassCtor_ {
+    
+    private useInterfaceMemberClassCtor_() {
+    }
+    
+    static void useInterfaceMemberClassCtor(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor")
+    final .org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
+        other.SharedMember$new$(0L);
+        other.SharedMember$new$(0L);
+        other.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 0L);
+    }
+}

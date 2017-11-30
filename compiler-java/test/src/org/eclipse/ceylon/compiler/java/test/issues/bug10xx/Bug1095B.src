@@ -1,0 +1,41 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug10xx;
+
+class Bug1095B implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1095B() {
+    }
+    
+    private final <Summand extends .ceylon.language.Summable<Summand>>void selfType$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Summand, final Summand x) {
+        final Summand y = (Summand)(.java.lang.Object)(
+            let
+            {
+                .ceylon.language.Summable<Summand> arg$0$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand arg$0$0 = (Summand)x;
+            }
+            returning arg$0$callable$.plus(arg$0$0);
+        );
+        final .ceylon.language.Summable<Summand> y2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)(
+            let
+            {
+                .ceylon.language.Summable<Summand> arg$1$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand arg$1$0 = (Summand)x;
+            }
+            returning arg$1$callable$.plus(arg$1$0);
+        );
+        final .ceylon.language.Summable<Summand> x2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+        final .ceylon.language.Summable<Summand> y3 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)(
+            let
+            {
+                .ceylon.language.Summable<Summand> arg$2$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand arg$2$0 = (Summand)x2;
+            }
+            returning arg$2$callable$.plus(arg$2$0);
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.class);
+}

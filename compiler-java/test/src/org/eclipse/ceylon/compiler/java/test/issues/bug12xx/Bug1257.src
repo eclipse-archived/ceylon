@@ -1,0 +1,47 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug12xx;
+
+final class bug1257SpreadTypeArg_ {
+    
+    private bug1257SpreadTypeArg_() {
+    }
+    
+    static <Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>void bug1257SpreadTypeArg(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Args args) {
+        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)args);
+    }
+}
+final class bug1257SpreadNoneptyTypeArg_ {
+    
+    private bug1257SpreadNoneptyTypeArg_() {
+    }
+    
+    static <Args extends .ceylon.language.Sequence<? extends .java.lang.Object>>void bug1257SpreadNoneptyTypeArg(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Args args) {
+        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args);
+    }
+}
+final class bug1257SpreadEmptyIterTypeArg_ {
+    
+    private bug1257SpreadEmptyIterTypeArg_() {
+    }
+    
+    static <Args extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>void bug1257SpreadEmptyIterTypeArg(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Args args) {
+        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, .org.eclipse.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)args));
+    }
+}
+final class bug1257SpreadNonemptyIterTypeArg_ {
+    
+    private bug1257SpreadNonemptyIterTypeArg_() {
+    }
+    
+    static <Args extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>void bug1257SpreadNonemptyIterTypeArg(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Args args) {
+        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)args));
+    }
+}
+final class bug1257SpreadUnkIterTypeArg_ {
+    
+    private bug1257SpreadUnkIterTypeArg_() {
+    }
+    
+    static <Args extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends Abs>, Abs>void bug1257SpreadUnkIterTypeArg(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Abs, final Args args) {
+        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, .org.eclipse.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends Abs>)(.ceylon.language.Iterable)args));
+    }
+}

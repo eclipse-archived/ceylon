@@ -1,0 +1,66 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+interface VarianceTop {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceTop.class);
+}
+interface VarianceMiddle extends .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceTop {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle.class);
+}
+interface VarianceBottom extends .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceBottom.class);
+}
+class VarianceClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected VarianceClass() {
+        super();
+        this.classAttr = null;
+    }
+    
+    VarianceClass(final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle classParam) {
+        this.classAttr = classParam;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle classAttr;
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle getClassAttr() {
+        return this.classAttr;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle m(final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
+        return param;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceClass.class);
+}
+class VarianceSubClass extends .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceClass {
+    
+    protected VarianceSubClass() {
+        super();
+        this.classAttr = null;
+    }
+    
+    VarianceSubClass(final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceBottom classParam) {
+        super(classParam);
+        this.classAttr = classParam;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceBottom classAttr;
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceBottom getClassAttr() {
+        return this.classAttr;
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceBottom m(final .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
+        return (.org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceBottom)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceSubClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.VarianceSubClass.class);
+}

@@ -1,0 +1,5 @@
+<overrides>
+    <module module="foo.user">
+        <add module="foo.provider" version="1" shared="true"/>
+    </module>
+</overrides>

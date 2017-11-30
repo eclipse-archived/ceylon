@@ -1,0 +1,1 @@
+return funmodstr$(this).hash;

@@ -1,0 +1,59 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug18xx;
+
+class Bug1888 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1888() {
+        super();
+        this.cycled = null;
+    }
+    
+    Bug1888(.java.lang.String cycled$param$) {
+        this.cycled = cycled$param$;
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> l = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1888.this.getCycled());
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+    }
+    private .java.lang.String cycled;
+    
+    public final .java.lang.String getCycled() {
+        return this.cycled;
+    }
+    
+    public final void setCycled(final .java.lang.String cycled) {
+        this.cycled = cycled;
+    }
+    
+    private final void f$priv$() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> l = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1888.this.getCycled());
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1888.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1888.class);
+}

@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon fat-jar" tool
+summary=Generate a Ceylon executable jar for a given module
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.fatjar.CeylonFatJarTool

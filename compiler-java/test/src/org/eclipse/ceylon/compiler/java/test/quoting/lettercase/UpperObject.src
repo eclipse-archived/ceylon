@@ -1,0 +1,98 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.lettercase;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+public final class Object implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private Object() {
+        this.InnerObject = null;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.class);
+    private transient .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Object
+    public final class InnerObject implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private InnerObject() {
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getInnerObject";
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.this, .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.class, $name$);
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        public final void m() {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject.class));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.quoting.lettercase::Object.InnerObject")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("InnerObject")
+    public final .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
+        if (InnerObject == null) InnerObject = new .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject();
+        return InnerObject;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void m() {
+        getInnerObject().m();
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object();
+            .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.quoting.lettercase::Object")
+    public static .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Object\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.Object.$TypeDescriptor$;
+    }
+}

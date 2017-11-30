@@ -1,0 +1,82 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Bug1975 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Bug1975() {
+        super();
+        this.g = null;
+        this.h = null;
+        this.i = null;
+    }
+    
+    Bug1975(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> f, @.org.eclipse.ceylon.compiler.java.metadata.Name("g")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> g, @.org.eclipse.ceylon.compiler.java.metadata.Name("h")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> h, @.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> i) {
+        this.g = g;
+        this.h = h;
+        this.i = i;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> g;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long g(@.org.eclipse.ceylon.compiler.java.metadata.Name("a")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String a) {
+        return g.$call$(.ceylon.language.String.instance(a)).longValue();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> h;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long h(@.org.eclipse.ceylon.compiler.java.metadata.Name("a")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String a) {
+        return h.$call$(.ceylon.language.String.instance(a)).longValue();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> i;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    private final long i$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("a")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String a) {
+        return i.$call$(.ceylon.language.String.instance(a)).longValue();
+    }
+    
+    private final void capture$priv$() {
+        i$priv$("");
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1975.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1975.class);
+}

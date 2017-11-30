@@ -1,0 +1,86 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+public final class goto_ {
+    
+    private goto_() {
+    }
+    private static final long $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.goto_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.goto_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.goto_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.goto_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'goto\' before it was set");
+        }
+    }
+}
+public final class module_ {
+    
+    private module_() {
+    }
+    private static final long $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'module\' before it was set");
+        }
+    }
+}
+public final class package_ {
+    
+    private package_() {
+    }
+    private static final long $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'package\' before it was set");
+        }
+    }
+}

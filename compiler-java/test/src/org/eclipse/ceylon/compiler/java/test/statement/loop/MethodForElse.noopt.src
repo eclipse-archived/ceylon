@@ -1,0 +1,54 @@
+package org.eclipse.ceylon.compiler.java.test.statement.loop;
+
+class MethodForElse implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodForElse() {
+    }
+    
+    public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
+        boolean doforelse$0 = true;
+        boolean loopentered$1 = false;
+        .java.lang.Object elem$2;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$3 = seq.iterator();
+        loop_0: while (!((elem$2 = i$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$1 = true;
+            final long i = ((.ceylon.language.Integer)elem$2).longValue();
+            loop_1: while (true) {
+                if (true) {
+                    boolean doforelse$4 = true;
+                    boolean loopentered$5 = false;
+                    .java.lang.Object elem$6;
+                    .ceylon.language.Iterator<? extends .ceylon.language.Integer> j$iterator$$7 = seq.iterator();
+                    loop_2: while (!((elem$6 = j$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
+                        loopentered$5 = true;
+                        final long j = ((.ceylon.language.Integer)elem$6).longValue();
+                        if (i > j) {
+                            doforelse$4 = false;
+                            break loop_2;
+                        }
+                    }
+                    if (!loopentered$5) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+                    if (doforelse$4) {
+                        return 1L;
+                    }
+                    break loop_1;
+                } else {
+                    break loop_1;
+                }
+            }
+            doforelse$0 = false;
+            break loop_0;
+        }
+        if (!loopentered$1) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        if (doforelse$0) {
+            return 0L;
+        }
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.loop.MethodForElse.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.loop.MethodForElse.class);
+}

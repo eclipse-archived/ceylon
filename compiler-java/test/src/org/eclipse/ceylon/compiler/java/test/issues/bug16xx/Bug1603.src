@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1603<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element> & .ceylon.language.Summable<Element>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1603(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.first = null;
+    }
+    
+    Bug1603(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element first, final long length) {
+        this.$reified$Element = $reified$Element;
+        this.first = first;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final Element first;
+    
+    public final Element getFirst() {
+        return this.first;
+    }
+    
+    public final boolean m1(final .java.lang.Object element) {
+        .java.lang.Object element$1;
+        if ((element$1 = element) instanceof .ceylon.language.Integer) {
+            final long element$2 = ((.ceylon.language.Integer)element$1).longValue();
+            if ((Element)getFirst() instanceof .ceylon.language.Integer) {
+                return element$2 <= ((.ceylon.language.Integer)getFirst()).longValue();
+            }
+        }
+        return false;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1603.class, $reified$Element);
+    }
+}

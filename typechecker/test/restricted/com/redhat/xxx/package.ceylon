@@ -1,0 +1,1 @@
+shared package org.eclipse.xxx;

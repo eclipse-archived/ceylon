@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon bootstrap" tool
+summary=Generates a Ceylon bootstrap script in the current directory
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.bootstrap.CeylonBootstrapTool

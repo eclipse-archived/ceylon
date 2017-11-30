@@ -1,0 +1,49 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("Bar")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug2284"},
+        companionClassName = "")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+interface bug2284$bug2284$2$bug2284$1$bug2284$4$Bar_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("Bar")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug2284"},
+        companionClassName = "")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface bug2284$bug2284$2$bug2284$1$bug2284$0$Bar_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "::bug2284$bug2284$2$bug2284$1$bug2284$0$Bar_",
+        "::bug2284$bug2284$2$bug2284$1$bug2284$4$Bar_"})
+public final class bug2284_ {
+    
+    private bug2284_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2284() {
+        if (1L == 1L) {
+            if (1L == 1L) {
+            } else {
+            }
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2284_.bug2284();
+    }
+}

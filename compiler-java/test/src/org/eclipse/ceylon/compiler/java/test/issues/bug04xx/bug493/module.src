@@ -1,0 +1,20 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug04xx.bug493;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Module(
+        name = "org.eclipse.ceylon.compiler.java.test.issues.bug04xx.bug493",
+        doc = "A JSON parser / serialiser",
+        by = {"St\u00e9phane \u00c9pardaud"},
+        version = "1",
+        dependencies = {@.org.eclipse.ceylon.compiler.java.metadata.Import(
+                name = "ceylon.language",
+                version = "1.3.4-SNAPSHOT")})
+@.ceylon.language.DocAnnotation$annotation$(description = "A JSON parser / serialiser")
+@.ceylon.language.AuthorsAnnotation$annotation$(authors = "St\u00e9phane \u00c9pardaud")
+final class $module_ {
+    
+    private $module_() {
+    }
+}

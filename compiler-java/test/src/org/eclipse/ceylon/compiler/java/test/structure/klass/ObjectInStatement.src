@@ -1,0 +1,39 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class ObjectInStatement implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ObjectInStatement() {
+    }
+    
+    private final void m$priv$() {
+        if (true) {
+            final long i = 1L;
+            
+            final class foo_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private foo_() {
+                    this.string = .ceylon.language.Integer.toString(i);
+                }
+                private final .java.lang.String string;
+                
+                @.java.lang.Override
+                public final .java.lang.String toString() {
+                    return this.string;
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.ObjectInStatement.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
+                }
+            }
+            final foo_ foo = new foo_();
+            final .java.lang.String s = foo.toString();
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.ObjectInStatement.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.ObjectInStatement.class);
+}

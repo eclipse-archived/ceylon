@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon assemble" tool
+summary=Generate a Ceylon assembly for a given module
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.assemble.CeylonAssembleTool

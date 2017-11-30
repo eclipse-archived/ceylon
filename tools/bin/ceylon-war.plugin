@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon war" tool
+summary=Generates a WAR file
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.war.CeylonWarTool

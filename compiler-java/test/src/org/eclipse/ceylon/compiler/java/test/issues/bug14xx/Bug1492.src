@@ -1,0 +1,234 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+class Bug1492_1a implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1492_1a(final .java.lang.Object a) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$b$0 = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1a.$default$b(a);
+                this(a, $ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1492_1a() {
+        super();
+        this.a = null;
+        this.b = null;
+    }
+    
+    Bug1492_1a(final .java.lang.Object a, final .java.lang.Object b) {
+        this.a = a;
+        this.b = b;
+    }
+    
+    public static .java.lang.Object $default$b(final .java.lang.Object a) {
+        return a;
+    }
+    private final .java.lang.Object a;
+    
+    public final .java.lang.Object getA() {
+        return this.a;
+    }
+    private final .java.lang.Object b;
+    
+    public final .java.lang.Object getB() {
+        return this.b;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1a.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1a.class);
+}
+class Bug1492_1b implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1492_1b(final .java.lang.Object a) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$b$1 = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1b.$default$b(a);
+                this(a, $ceylontmp$b$1);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1492_1b() {
+        super();
+        this.a = null;
+        this.b = null;
+    }
+    
+    Bug1492_1b(final .java.lang.Object a, final .java.lang.Object b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .java.lang.Object a;
+    
+    public final .java.lang.Object getA() {
+        return this.a;
+    }
+    private final .java.lang.Object b;
+    
+    public final .java.lang.Object getB() {
+        return this.b;
+    }
+    
+    public static .java.lang.Object $default$b(final .java.lang.Object a) {
+        return a;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1b.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1b.class);
+}
+class Bug1492_2a implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1492_2a(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$b$2 = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2a.$default$b(a);
+                this(a, $ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1492_2a() {
+        super();
+        this.a = null;
+        this.b = null;
+    }
+    
+    Bug1492_2a(final .ceylon.language.Callable<? extends .java.lang.Object> a, final .ceylon.language.Callable<? extends .java.lang.Object> b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return a.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> b;
+    
+    public final .java.lang.Object b() {
+        return b.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Object()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return a.$call$();
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2a.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2a.class);
+}
+class Bug1492_2b implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1492_2b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$b$3 = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2b.$default$b(a);
+                this(a, $ceylontmp$b$3);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1492_2b() {
+        super();
+        this.a = null;
+        this.b = null;
+    }
+    
+    Bug1492_2b(final .ceylon.language.Callable<? extends .java.lang.Object> a, final .ceylon.language.Callable<? extends .java.lang.Object> b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return a.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> b;
+    
+    public final .java.lang.Object b() {
+        return b.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        return a;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2b.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2b.class);
+}
+class Bug1492_3 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1492_3(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$b$5 = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_3.$default$b(a);
+                this(a, $ceylontmp$b$5);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1492_3() {
+        super();
+        this.a = null;
+        this.b = null;
+    }
+    
+    Bug1492_3(final .ceylon.language.Callable<? extends .java.lang.Object> a, final .ceylon.language.Callable<? extends .java.lang.Object> b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return a.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> b;
+    
+    public final .java.lang.Object b() {
+        return b.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Object()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return a.$call$();
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_3.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1492_3.class);
+}

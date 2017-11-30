@@ -1,0 +1,8 @@
+<overrides xmlns="http://www.ceylon-lang.org/xsd/overrides">
+    <replace
+            groupId="org.hibernate.javax.persistence"
+            artifactId="hibernate-jpa-2.1-api"
+            version="1.0.0.Final">
+        <with module="javax.javaeeapi" version="7.0"/>
+    </replace>
+</overrides>

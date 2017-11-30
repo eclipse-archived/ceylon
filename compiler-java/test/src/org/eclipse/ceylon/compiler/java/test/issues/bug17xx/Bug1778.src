@@ -1,0 +1,19 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug17xx;
+
+public final class bug1778_ {
+    
+    private bug1778_() {
+    }
+    
+    public static void bug1778() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1778<? extends .java.lang.Object> foo = new .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1778<.java.lang.Object>();
+        foo.bar(3);
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1778<.java.lang.Object> foo2 = new .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1778<.java.lang.Object>();
+        foo2.bar(3);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1778_.bug1778();
+    }
+}

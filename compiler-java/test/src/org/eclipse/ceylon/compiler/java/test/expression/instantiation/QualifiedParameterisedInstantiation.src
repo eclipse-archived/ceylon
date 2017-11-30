@@ -1,0 +1,51 @@
+package org.eclipse.ceylon.compiler.java.test.expression.instantiation;
+
+class QualifiedParameterisedInstantiation<G> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    QualifiedParameterisedInstantiation(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        this.$reified$G = $reified$G;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
+    
+    class Inner<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
+            this.$reified$T = $reified$T;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this.$reified$G), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.Inner.class, $reified$T));
+        }
+    }
+    
+    private final void m$priv$() {
+        final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = this;
+        this.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
+        other.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$0$callable$ = this;
+                .java.lang.String arg$0$0 = "";
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+            }
+            returning arg$0$callable$.new Inner<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$1$callable$ = other;
+                .java.lang.String arg$1$0 = "";
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+            }
+            returning arg$1$callable$.new Inner<.ceylon.language.Integer>(arg$1$reified$0, arg$1$0);
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, $reified$G);
+    }
+}

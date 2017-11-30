@@ -1,0 +1,107 @@
+package org.eclipse.ceylon.compiler.java.test.structure.mcr;
+
+interface InterfaceAliasedFormalMemberClass {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl $org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$impl();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member Member$new$();
+    
+    public void m1(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass qual);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass.class);
+}
+final class InterfaceAliasedFormalMemberClass$impl implements .java.io.Serializable {
+    
+    InterfaceAliasedFormalMemberClass$impl(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass $this;
+    
+    public abstract class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member.class));
+        }
+    }
+    
+    public void m1(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass qual) {
+        $this.Member$new$();
+        $this.Member$new$();
+        $this.Member$new$();
+        $this.Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
+    }
+}
+class InterfaceAliasedFormalMemberClass_sub implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass, .java.io.Serializable {
+    
+    InterfaceAliasedFormalMemberClass_sub() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl $org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl $org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this$;
+    }
+    
+    @.java.lang.Override
+    public final void m1(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass qual) {
+        $org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this$.m1(qual);
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member Alias$new$() {
+        return new Member();
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member Alias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public final class Alias {
+        
+        private Alias() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.Member Member$new$() {
+        return new Member();
+    }
+    
+    public class Member extends .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member {
+        
+        protected Member() {
+            $org$eclipse$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this$.super();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.Member.class));
+        }
+    }
+    
+    public final void m2(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub qual) {
+        Member$new$();
+        Member$new$();
+        this.Member$new$();
+        this.Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
+        Alias$new$();
+        Alias$new$();
+        this.Alias$new$();
+        this.Alias$new$();
+        qual.Alias$new$();
+        qual.Alias$new$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.class);
+}

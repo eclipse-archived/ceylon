@@ -1,0 +1,4 @@
+suppressWarnings("unusedDeclaration")
+void suppressesNothing() {
+    
+}

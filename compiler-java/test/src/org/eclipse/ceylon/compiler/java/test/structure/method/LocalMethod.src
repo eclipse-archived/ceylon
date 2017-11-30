@@ -1,0 +1,28 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class LocalMethod implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LocalMethod() {
+    }
+    
+    private final void m$priv$() {
+        
+        final class local_ implements .java.io.Serializable {
+            
+            private local_() {
+            }
+            
+            long local() {
+                return 0L;
+            }
+        }
+        final local_ local = new local_();
+        final long n = local.local();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.LocalMethod.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.LocalMethod.class);
+}

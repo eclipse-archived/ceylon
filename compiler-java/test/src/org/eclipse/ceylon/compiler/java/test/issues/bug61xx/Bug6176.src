@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug61xx;
+
+class Bug6176 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6176() {
+        this.i = ((.ceylon.language.Integer)(.java.lang.Object)<.ceylon.language.Category<? super .java.lang.Object>>get(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)).longValue();
+    }
+    
+    public final <X extends .ceylon.language.Category<? super .java.lang.Object>>X get(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        return (X)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    private final long i;
+    
+    public final long getI() {
+        return this.i;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug61xx.Bug6176.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug61xx.Bug6176.class);
+}

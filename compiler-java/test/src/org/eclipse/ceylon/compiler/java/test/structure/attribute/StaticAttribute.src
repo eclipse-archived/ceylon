@@ -1,0 +1,118 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+class StaticAttribute implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static final .java.lang.String nonSharedStat;
+    static {
+        nonSharedStat = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    private static final .java.lang.String getNonSharedStat$priv$() {
+        return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.nonSharedStat;
+    }
+    private static final .java.lang.String sharedStat;
+    static {
+        sharedStat = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public static final .java.lang.String getSharedStat() {
+        return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.sharedStat;
+    }
+    
+    private static final .java.lang.String getNonSharedStatGetter$priv$() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public static final .java.lang.String getSharedStatGetter() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    private static final .java.lang.String getNonSharedStatGetter2$priv$() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public static final .java.lang.String getSharedStatGetter2() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    private static .java.lang.String nonSharedVariableStat;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.nonSharedVariableStat = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    private static final .java.lang.String getNonSharedVariableStat$priv$() {
+        return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.nonSharedVariableStat;
+    }
+    
+    private static final void setNonSharedVariableStat$priv$(final .java.lang.String nonSharedVariableStat) {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.nonSharedVariableStat = nonSharedVariableStat;
+    }
+    private static .java.lang.String sharedVariableStat;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.sharedVariableStat = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public static final .java.lang.String getSharedVariableStat() {
+        return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.sharedVariableStat;
+    }
+    
+    public static final void setSharedVariableStat(final .java.lang.String sharedVariableStat) {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.sharedVariableStat = sharedVariableStat;
+    }
+    
+    private static final .java.lang.String getNonSharedVariableStatGetter$priv$() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    private static final void setNonSharedVariableStatGetter$priv$(final .java.lang.String nonSharedVariableStatGetter) {
+    }
+    
+    public static final .java.lang.String getSharedVariableStatGetter() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public static final void setSharedVariableStatGetter(final .java.lang.String sharedVariableStatGetter) {
+    }
+    
+    private static final .java.lang.String getNonSharedVariableStatGetter2$priv$() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    private static final void setNonSharedVariableStatGetter2$priv$(final .java.lang.String nonSharedVariableStatGetter2) {
+    }
+    
+    public static final .java.lang.String getSharedVariableStatGetter2() {
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public static final void setSharedVariableStatGetter2(final .java.lang.String sharedVariableStatGetter2) {
+    }
+    
+    public StaticAttribute() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class staticAttributeGeneric_ {
+    
+    private staticAttributeGeneric_() {
+    }
+    
+    static void staticAttributeGeneric() {
+        .java.lang.String s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStat();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStatGetter();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStatGetter2();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedVariableStat();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedVariableStatGetter();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedVariableStatGetter2();
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.setSharedVariableStat(s);
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.setSharedVariableStatGetter(s);
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttribute.setSharedVariableStatGetter2(s);
+    }
+}

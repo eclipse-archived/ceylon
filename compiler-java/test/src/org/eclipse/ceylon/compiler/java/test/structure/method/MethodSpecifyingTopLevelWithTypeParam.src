@@ -1,0 +1,33 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+final class methodSpecifyingTopLevelWithTypeParam_f_ {
+    
+    private methodSpecifyingTopLevelWithTypeParam_f_() {
+    }
+    
+    static <X, Y>X methodSpecifyingTopLevelWithTypeParam_f(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+class MethodSpecifyingTopLevelWithTypeParam<S, T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodSpecifyingTopLevelWithTypeParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$S = $reified$S;
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    private final .java.lang.String foo$priv$(final long i) {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<.ceylon.language.String, .ceylon.language.Integer>methodSpecifyingTopLevelWithTypeParam_f(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(i)).toString();
+    }
+    
+    private final S bar$priv$(final T y) {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<S, T>methodSpecifyingTopLevelWithTypeParam_f($reified$S, $reified$T, y);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam.class, $reified$S, $reified$T);
+    }
+}

@@ -1,0 +1,48 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+public final class objectDeclContainingClassWithCtor_ {
+    
+    private objectDeclContainingClassWithCtor_() {
+    }
+    
+    public static void objectDeclContainingClassWithCtor() {
+        
+        final class foo_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private foo_() {
+            }
+            
+            .java.lang.Object Bar$new$(foo_.Bar$baz $name$) {
+                return new Bar($name$);
+            }
+            
+            class Bar$baz {
+                
+                Bar$baz() {
+                }
+            }
+            
+            class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                private Bar(foo_.Bar$baz $name$) {
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.objectDeclContainingClassWithCtor_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.Bar.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.objectDeclContainingClassWithCtor_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
+            }
+        }
+        final foo_ foo = new foo_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.objectDeclContainingClassWithCtor_.objectDeclContainingClassWithCtor();
+    }
+}

@@ -1,0 +1,56 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.lettercase;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("ii")
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Container(
+        klass = .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i_.class,
+        isStatic = false)
+public interface i$ii_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("mi")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {
+                "i",
+                "m"},
+        companionClassName = "")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface i$m$mi_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i$ii_.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"::i$m$mi_"})
+public interface i_ {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i$impl_ $org$eclipse$ceylon$compiler$java$test$quoting$lettercase$i$impl_();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public void m();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i_.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class i$impl_ implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public i$impl_(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i_ $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i_ $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void m() {
+        final .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ a = (.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}

@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon classpath" tool
+summary=Prints a classpath suitable for passing to Java tools to run a given Ceylon module
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.classpath.CeylonClasspathTool

@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon new" tool
+summary=Generates a new Ceylon project
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.new_.CeylonNewTool

@@ -1,0 +1,49 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+public class Bug6324 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug6324() {
+    }
+    
+    private final void accept$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> something) {
+    }
+    
+    private final void fun$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324>(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Bug6324()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324 $call$() {
+                        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324.this;
+                    }
+                };
+                accept$priv$(arg$0$0);
+            }
+            returning null;
+        );
+        
+        final class something_ implements .java.io.Serializable {
+            
+            private something_() {
+            }
+            
+            .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324 something() {
+                return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324.this;
+            }
+        }
+        final something_ something = new something_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6324.class);
+}

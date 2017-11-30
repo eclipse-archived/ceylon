@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon plugin" tool
+summary=Manages Ceylon command-line plugins
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.plugin.CeylonPluginTool

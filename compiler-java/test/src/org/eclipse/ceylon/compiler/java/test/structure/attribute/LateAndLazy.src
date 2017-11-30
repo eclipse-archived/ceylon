@@ -1,0 +1,405 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+class LateAndLazy implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LateAndLazy() {
+        this.lateDefinite = null;
+        this.lateOptional = null;
+        this.$init$lateOptional = false;
+        this.lateVariableDefinite = null;
+        this.lateVariableOptional = null;
+        this.$init$lateVariableOptional = false;
+        this.lateDefinite2 = 0L;
+        this.$init$lateDefinite2 = false;
+        this.lateOptional2 = null;
+        this.$init$lateOptional2 = false;
+        this.lateVariableDefinite2 = 0L;
+        this.$init$lateVariableDefinite2 = false;
+        this.lateVariableOptional2 = null;
+        this.$init$lateVariableOptional2 = false;
+    }
+    private .java.lang.String lateDefinite;
+    
+    public final .java.lang.String getLateDefinite() {
+        if (this.lateDefinite != null) {
+            return this.lateDefinite;
+        } else {
+            this.lateDefinite = "";
+            return this.lateDefinite;
+        }
+    }
+    
+    public final void setLateDefinite(final .java.lang.String lateDefinite) {
+        if (this.lateDefinite == null) {
+            this.lateDefinite = lateDefinite;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    private .ceylon.language.String lateOptional;
+    private volatile transient boolean $init$lateOptional = false;
+    
+    public final .ceylon.language.String getLateOptional() {
+        if (this.$init$lateOptional) {
+            return this.lateOptional;
+        } else {
+            this.lateOptional = .ceylon.language.String.instance("");
+            this.$init$lateOptional = true;
+            return this.lateOptional;
+        }
+    }
+    
+    public final void setLateOptional(final .ceylon.language.String lateOptional) {
+        if (!this.$init$lateOptional) {
+            this.lateOptional = lateOptional;
+            this.$init$lateOptional = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    private .java.lang.String lateVariableDefinite;
+    
+    public final .java.lang.String getLateVariableDefinite() {
+        if (this.lateVariableDefinite != null) {
+            return this.lateVariableDefinite;
+        } else {
+            this.lateVariableDefinite = "";
+            return this.lateVariableDefinite;
+        }
+    }
+    
+    public final void setLateVariableDefinite(final .java.lang.String lateVariableDefinite) {
+        this.lateVariableDefinite = lateVariableDefinite;
+    }
+    private .ceylon.language.String lateVariableOptional;
+    private volatile transient boolean $init$lateVariableOptional = false;
+    
+    public final .ceylon.language.String getLateVariableOptional() {
+        if (this.$init$lateVariableOptional) {
+            return this.lateVariableOptional;
+        } else {
+            this.lateVariableOptional = .ceylon.language.String.instance("");
+            this.$init$lateVariableOptional = true;
+            return this.lateVariableOptional;
+        }
+    }
+    
+    public final void setLateVariableOptional(final .ceylon.language.String lateVariableOptional) {
+        this.lateVariableOptional = lateVariableOptional;
+        this.$init$lateVariableOptional = true;
+    }
+    private long lateDefinite2;
+    private volatile transient boolean $init$lateDefinite2 = false;
+    
+    public final long getLateDefinite2() {
+        if (this.$init$lateDefinite2) {
+            return this.lateDefinite2;
+        } else {
+            this.lateDefinite2 = .ceylon.language.system_.get_().getMilliseconds();
+            this.$init$lateDefinite2 = true;
+            return this.lateDefinite2;
+        }
+    }
+    
+    public final void setLateDefinite2(final long lateDefinite2) {
+        if (!this.$init$lateDefinite2) {
+            this.lateDefinite2 = lateDefinite2;
+            this.$init$lateDefinite2 = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    private .ceylon.language.Integer lateOptional2;
+    private volatile transient boolean $init$lateOptional2 = false;
+    
+    public final .ceylon.language.Integer getLateOptional2() {
+        if (this.$init$lateOptional2) {
+            return this.lateOptional2;
+        } else {
+            this.lateOptional2 = .ceylon.language.Integer.instance(.ceylon.language.system_.get_().getMilliseconds());
+            this.$init$lateOptional2 = true;
+            return this.lateOptional2;
+        }
+    }
+    
+    public final void setLateOptional2(final .ceylon.language.Integer lateOptional2) {
+        if (!this.$init$lateOptional2) {
+            this.lateOptional2 = lateOptional2;
+            this.$init$lateOptional2 = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    private long lateVariableDefinite2;
+    private volatile transient boolean $init$lateVariableDefinite2 = false;
+    
+    public final long getLateVariableDefinite2() {
+        if (this.$init$lateVariableDefinite2) {
+            return this.lateVariableDefinite2;
+        } else {
+            this.lateVariableDefinite2 = .ceylon.language.system_.get_().getMilliseconds();
+            this.$init$lateVariableDefinite2 = true;
+            return this.lateVariableDefinite2;
+        }
+    }
+    
+    public final void setLateVariableDefinite2(final long lateVariableDefinite2) {
+        this.lateVariableDefinite2 = lateVariableDefinite2;
+        this.$init$lateVariableDefinite2 = true;
+    }
+    private .ceylon.language.Integer lateVariableOptional2;
+    private volatile transient boolean $init$lateVariableOptional2 = false;
+    
+    public final .ceylon.language.Integer getLateVariableOptional2() {
+        if (this.$init$lateVariableOptional2) {
+            return this.lateVariableOptional2;
+        } else {
+            this.lateVariableOptional2 = .ceylon.language.Integer.instance(.ceylon.language.system_.get_().getMilliseconds());
+            this.$init$lateVariableOptional2 = true;
+            return this.lateVariableOptional2;
+        }
+    }
+    
+    public final void setLateVariableOptional2(final .ceylon.language.Integer lateVariableOptional2) {
+        this.lateVariableOptional2 = lateVariableOptional2;
+        this.$init$lateVariableOptional2 = true;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazy.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazy.class);
+}
+class LateAndLazyAndStatic implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static .java.lang.String lateDefinite;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite = null;
+    }
+    
+    public static final .java.lang.String getLateDefinite() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite != null) {
+            return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite = "";
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite;
+        }
+    }
+    
+    public static final void setLateDefinite(final .java.lang.String lateDefinite) {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite == null) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite = lateDefinite;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    private static .ceylon.language.String lateOptional;
+    private static volatile boolean $init$lateOptional = false;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional = null;
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional = false;
+    }
+    
+    public static final .ceylon.language.String getLateOptional() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional) {
+            return (.ceylon.language.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional = .ceylon.language.String.instance("");
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional = true;
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional;
+        }
+    }
+    
+    public static final void setLateOptional(final .ceylon.language.String lateOptional) {
+        if (!.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional = lateOptional;
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    private static .java.lang.String lateVariableDefinite;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableDefinite = null;
+    }
+    
+    public static final .java.lang.String getLateVariableDefinite() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableDefinite != null) {
+            return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableDefinite;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableDefinite = "";
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableDefinite;
+        }
+    }
+    
+    public static final void setLateVariableDefinite(final .java.lang.String lateVariableDefinite) {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableDefinite = lateVariableDefinite;
+    }
+    private static .ceylon.language.String lateVariableOptional;
+    private static volatile boolean $init$lateVariableOptional = false;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableOptional = null;
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateVariableOptional = false;
+    }
+    
+    public static final .ceylon.language.String getLateVariableOptional() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateVariableOptional) {
+            return (.ceylon.language.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableOptional;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableOptional = .ceylon.language.String.instance("");
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateVariableOptional = true;
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableOptional;
+        }
+    }
+    
+    public static final void setLateVariableOptional(final .ceylon.language.String lateVariableOptional) {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateVariableOptional = lateVariableOptional;
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateVariableOptional = true;
+    }
+    
+    public LateAndLazyAndStatic() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.class);
+}
+class LateHash implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LateHash() {
+        this.hash = 0L;
+        this.$init$hash = false;
+    }
+    private long hash;
+    private volatile transient boolean $init$hash = false;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        if (this.$init$hash) {
+            return (int)(
+                let
+                {
+                    long $ceylontmp$hash$0 = this.hash;
+                }
+                returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
+            );
+        } else {
+            this.hash = 10L;
+            this.$init$hash = true;
+            return (int)(
+                let
+                {
+                    long $ceylontmp$hash$1 = this.hash;
+                }
+                returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+            );
+        }
+    }
+    
+    public final void setHash(final long hash) {
+        if (!this.$init$hash) {
+            this.hash = hash;
+            this.$init$hash = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.LateHash.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.LateHash.class);
+}
+public final class lateDefinite_ {
+    
+    private lateDefinite_() {
+    }
+    private static .java.lang.String $object$;
+    
+    public static .java.lang.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$ != null) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$ = "";
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$;
+        }
+    }
+    
+    public static void set_(final .java.lang.String lateDefinite) {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$ == null) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$ = lateDefinite;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}
+public final class lateOptional_ {
+    
+    private lateOptional_() {
+    }
+    private static .ceylon.language.String $object$;
+    private static volatile boolean $init$$object$ = false;
+    
+    public static .ceylon.language.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$ = .ceylon.language.String.instance("");
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$ = true;
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$;
+        }
+    }
+    
+    public static void set_(final .ceylon.language.String lateOptional) {
+        if (!.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$ = lateOptional;
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}
+public final class lateVariableDefinite_ {
+    
+    private lateVariableDefinite_() {
+    }
+    private static .java.lang.String $object$;
+    
+    public static .java.lang.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableDefinite_.$object$ != null) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableDefinite_.$object$;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableDefinite_.$object$ = "";
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableDefinite_.$object$;
+        }
+    }
+    
+    public static void set_(final .java.lang.String lateVariableDefinite) {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableDefinite_.$object$ = lateVariableDefinite;
+    }
+}
+public final class lateVariableOptional_ {
+    
+    private lateVariableOptional_() {
+    }
+    private static .ceylon.language.String $object$;
+    private static volatile boolean $init$$object$ = false;
+    
+    public static .ceylon.language.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$object$;
+        } else {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$object$ = .ceylon.language.String.instance("");
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$init$$object$ = true;
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$object$;
+        }
+    }
+    
+    public static void set_(final .ceylon.language.String lateVariableOptional) {
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$object$ = lateVariableOptional;
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateVariableOptional_.$init$$object$ = true;
+    }
+}

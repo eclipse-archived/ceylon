@@ -1,0 +1,30 @@
+repositories {
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+}
+
+ext {
+    modelSrc = "${rootProject.projectDir}/../model/src"
+    modelDest = "${buildDir}/copiedSrc"
+}
+
+task copySrc(type : Copy) {
+    from modelSrc, {
+        include 'org/eclipse/ceylon/model/loader/OsgiVersion.java'
+    }
+    into modelDest
+}
+
+compileGroovy.dependsOn copySrc
+
+sourceSets {
+    main {
+        groovy {
+            srcDir modelDest
+        }
+    }
+}

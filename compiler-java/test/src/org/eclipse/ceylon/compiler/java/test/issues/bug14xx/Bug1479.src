@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+public class Bug1479<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1479(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.parent = null;
+    }
+    
+    public Bug1479(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T data) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> parent;
+    
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> getParent() {
+        if (this.parent != null) {
+            return this.parent;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'parent\'");
+        }
+    }
+    
+    public final void setParent(final .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> parent) {
+        if (this.parent == null) {
+            this.parent = parent;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1479.class, $reified$T);
+    }
+}

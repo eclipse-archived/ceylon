@@ -1,0 +1,81 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {
+                "a",
+                "b",
+                "c"}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {
+                "A",
+                "B",
+                "C"}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {})})
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {
+                true,
+                false}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {
+                false,
+                true}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {})})
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {
+                97,
+                98,
+                99}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {
+                65,
+                66,
+                67}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {})})
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {
+                1.0,
+                2.0,
+                3.0}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {
+                4.0,
+                5.0,
+                6.0}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {})})
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {
+                1L,
+                2L,
+                3L}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {
+                4L,
+                5L,
+                6L}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {})})
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {})})
+@.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = "::1.3.4-SNAPSHOT:ceylon.language::Vempty"),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {}),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = "::1.3.4-SNAPSHOT:ceylon.language::Vempty"),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {})})
+class SequenceDefaults_callsite implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SequenceDefaults_callsite() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.class);
+}

@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+final class bug6333_ {
+    
+    private bug6333_() {
+    }
+    
+    static void bug6333() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> tup = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("one"),
+                .ceylon.language.String.instance("two")});
+        {
+            .ceylon.language.Sequence sel$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)tup;
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(sel$0, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$))) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.String> tup$1 = (.ceylon.language.Sequence)sel$0;
+                final .ceylon.language.Sequence<? extends .ceylon.language.String> $pattern$tuple$2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)tup$1;
+                final .java.lang.String a = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$2).getFromFirst(0)).toString();
+                final .java.lang.String b = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$2).getFromFirst(1)).toString();
+                final .java.lang.String x = b;
+            } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+}

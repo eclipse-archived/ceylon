@@ -1,0 +1,17 @@
+package org.eclipse.ceylon.compiler.java.test.structure.importIt;
+
+class ImportCeylonLanguageType implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected ImportCeylonLanguageType() {
+        super();
+    }
+    
+    ImportCeylonLanguageType(final long n) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.importIt.ImportCeylonLanguageType.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.importIt.ImportCeylonLanguageType.class);
+}

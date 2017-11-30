@@ -1,0 +1,94 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+final class assertNotIsException_ {
+    
+    private assertNotIsException_() {
+    }
+    
+    static void assertNotIsException() {
+        try {
+            final double $float$1;
+            .java.lang.Object $float$0 = null;
+            if (!(($float$0 = .ceylon.language.Float.parse("brown")) instanceof .ceylon.language.ParseException)) {
+                $float$1 = ((.ceylon.language.Float)$float$0).doubleValue();
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is ParseException float = Float.parse(\"brown\")") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.ParseException.$TypeDescriptor$, $float$0), (.java.lang.Throwable)$float$0);
+            }
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            final .ceylon.language.ParseException c$3;
+            .java.lang.Object c$2 = null;
+            if ((c$2 = e.getCause()) instanceof .ceylon.language.ParseException) {
+                c$3 = (.ceylon.language.ParseException)c$2;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.ParseException.$TypeDescriptor$, c$2));
+            }
+            .ceylon.language.String lhs$4 = .ceylon.language.String.instance("illegal format for Float: unexpected character \'b\'");
+            .ceylon.language.String rhs$5 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.throwableMessage(c$3));
+            if (lhs$4.equals(rhs$5)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float: unexpected character \'b\'\"==c.message") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
+            }
+        }
+        try {
+            final double float2$9;
+            final double float1$7;
+            .java.lang.Object float1$6 = null;
+            if (!((float1$6 = .ceylon.language.Float.parse("brown")) instanceof .ceylon.language.ParseException)) {
+                float1$7 = ((.ceylon.language.Float)float1$6).doubleValue();
+                .java.lang.Object float2$8 = null;
+                if (!((float2$8 = .ceylon.language.Float.parse("1.0")) instanceof .ceylon.language.ParseException)) {
+                    float2$9 = ((.ceylon.language.Float)float2$8).doubleValue();
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "!is ParseException float1 = Float.parse(\"brown\")" + .java.lang.System.lineSeparator() + "\tviolated " + "!is ParseException float2 = Float.parse(\"1.0\")") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.ParseException.$TypeDescriptor$, float2$8), (.java.lang.Throwable)float2$8);
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is ParseException float1 = Float.parse(\"brown\")" + .java.lang.System.lineSeparator() + "\tuntested " + "!is ParseException float2 = Float.parse(\"1.0\")") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.ParseException.$TypeDescriptor$, float1$6), (.java.lang.Throwable)float1$6);
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+            final .ceylon.language.ParseException c$11;
+            .java.lang.Object c$10 = null;
+            if ((c$10 = e.getCause()) instanceof .ceylon.language.ParseException) {
+                c$11 = (.ceylon.language.ParseException)c$10;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.ParseException.$TypeDescriptor$, c$10));
+            }
+            .ceylon.language.String lhs$12 = .ceylon.language.String.instance("illegal format for Float: unexpected character \'b\'");
+            .ceylon.language.String rhs$13 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.throwableMessage(c$11));
+            if (lhs$12.equals(rhs$13)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float: unexpected character \'b\'\"==c.message") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$12, rhs$13));
+            }
+        }
+        try {
+            final double float2$17;
+            final double float1$15;
+            .java.lang.Object float1$14 = null;
+            if (!((float1$14 = .ceylon.language.Float.parse("1.0")) instanceof .ceylon.language.ParseException)) {
+                float1$15 = ((.ceylon.language.Float)float1$14).doubleValue();
+                .java.lang.Object float2$16 = null;
+                if (!((float2$16 = .ceylon.language.Float.parse("mauve")) instanceof .ceylon.language.ParseException)) {
+                    float2$17 = ((.ceylon.language.Float)float2$16).doubleValue();
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "!is ParseException float1 = Float.parse(\"1.0\")" + .java.lang.System.lineSeparator() + "\tviolated " + "!is ParseException float2 = Float.parse(\"mauve\")") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.ParseException.$TypeDescriptor$, float2$16), (.java.lang.Throwable)float2$16);
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is ParseException float1 = Float.parse(\"1.0\")" + .java.lang.System.lineSeparator() + "\tuntested " + "!is ParseException float2 = Float.parse(\"mauve\")") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.ParseException.$TypeDescriptor$, float1$14), (.java.lang.Throwable)float1$14);
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+            final .ceylon.language.ParseException c$19;
+            .java.lang.Object c$18 = null;
+            if ((c$18 = e.getCause()) instanceof .ceylon.language.ParseException) {
+                c$19 = (.ceylon.language.ParseException)c$18;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.ParseException.$TypeDescriptor$, c$18));
+            }
+            .ceylon.language.String lhs$20 = .ceylon.language.String.instance("illegal format for Float: unexpected character \'m\'");
+            .ceylon.language.String rhs$21 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.Util.throwableMessage(c$19));
+            if (lhs$20.equals(rhs$21)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float: unexpected character \'m\'\"==c.message") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$20, rhs$21));
+            }
+        }
+    }
+}

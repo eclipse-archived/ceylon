@@ -1,0 +1,1352 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_String$annotation$ {
+    
+    public abstract .java.lang.String[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_String$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_String,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_String implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_String() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_String(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_String(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::String*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+final class sequenceDefaults_String_ {
+    
+    private sequenceDefaults_String_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$seq$0 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_String_.sequenceDefaults_String$seq();
+            }
+            returning sequenceDefaults_String($ceylontmp$seq$0);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.StringValue({
+            "a",
+            "b",
+            "c"})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String$seq() {
+        return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"));
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::String*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+final class sequenceDefaults_String_Empty_ {
+    
+    private sequenceDefaults_String_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$seq$1 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_String_Empty_.sequenceDefaults_String_Empty$seq();
+            }
+            returning sequenceDefaults_String_Empty($ceylontmp$seq$1);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.StringValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String_Empty$seq() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::String*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$seq",
+        value = {
+                "A",
+                "B",
+                "C"})})
+final class sequenceArguments_String_ {
+    
+    private sequenceArguments_String_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceArguments_String() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String(new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("A"), .ceylon.language.String.instance("B"), .ceylon.language.String.instance("C")));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_String_Empty_ {
+    
+    private sequenceArguments_String_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceArguments_String_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_String((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Boolean$annotation$ {
+    
+    public abstract boolean[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_Boolean$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_Boolean implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_Boolean() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Boolean(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Boolean(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+final class sequenceDefaults_Boolean_ {
+    
+    private sequenceDefaults_Boolean_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> $ceylontmp$seq$2 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Boolean_.sequenceDefaults_Boolean$seq();
+            }
+            returning sequenceDefaults_Boolean($ceylontmp$seq$2);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.BooleanValue({
+            true,
+            false})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean$seq() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Boolean.instance(true),
+                .ceylon.language.Boolean.instance(false)});
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+final class sequenceDefaults_Boolean_Empty_ {
+    
+    private sequenceDefaults_Boolean_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> $ceylontmp$seq$3 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Boolean_Empty_.sequenceDefaults_Boolean_Empty$seq();
+            }
+            returning sequenceDefaults_Boolean_Empty($ceylontmp$seq$3);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.BooleanValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean_Empty$seq() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+@.org.eclipse.ceylon.compiler.java.metadata.BooleanExprs({@.org.eclipse.ceylon.compiler.java.metadata.BooleanValue(
+        name = "$arg$seq",
+        value = {
+                false,
+                true})})
+final class sequenceArguments_Boolean_ {
+    
+    private sequenceArguments_Boolean_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceArguments_Boolean() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.false_.$TypeDescriptor$, .ceylon.language.true_.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Boolean.instance(false),
+                .ceylon.language.Boolean.instance(true)}));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+@.org.eclipse.ceylon.compiler.java.metadata.BooleanExprs({@.org.eclipse.ceylon.compiler.java.metadata.BooleanValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_Boolean_Empty_ {
+    
+    private sequenceArguments_Boolean_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceArguments_Boolean_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Character$annotation$ {
+    
+    public abstract int[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_Character$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Character,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_Character implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_Character() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Character(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Character(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+final class sequenceDefaults_Character_ {
+    
+    private sequenceDefaults_Character_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$seq$4 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Character_.sequenceDefaults_Character$seq();
+            }
+            returning sequenceDefaults_Character($ceylontmp$seq$4);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.CharacterValue({
+            97,
+            98,
+            99})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character$seq() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.Tuple.instance(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Character.instance(97),
+                .ceylon.language.Character.instance(98),
+                .ceylon.language.Character.instance(99)});
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+final class sequenceDefaults_Character_Empty_ {
+    
+    private sequenceDefaults_Character_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$seq$5 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Character_Empty_.sequenceDefaults_Character_Empty$seq();
+            }
+            returning sequenceDefaults_Character_Empty($ceylontmp$seq$5);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.CharacterValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+@.org.eclipse.ceylon.compiler.java.metadata.CharacterExprs({@.org.eclipse.ceylon.compiler.java.metadata.CharacterValue(
+        name = "$arg$seq",
+        value = {
+                65,
+                66,
+                67})})
+final class sequenceArguments_Character_ {
+    
+    private sequenceArguments_Character_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceArguments_Character() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.Tuple.instance(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Character.instance(65),
+                .ceylon.language.Character.instance(66),
+                .ceylon.language.Character.instance(67)}));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+@.org.eclipse.ceylon.compiler.java.metadata.CharacterExprs({@.org.eclipse.ceylon.compiler.java.metadata.CharacterValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_Character_Empty_ {
+    
+    private sequenceArguments_Character_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceArguments_Character_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Character((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Float$annotation$ {
+    
+    public abstract double[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_Float$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Float,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_Float implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_Float() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Float(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Float(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+final class sequenceDefaults_Float_ {
+    
+    private sequenceDefaults_Float_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$seq$6 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Float_.sequenceDefaults_Float$seq();
+            }
+            returning sequenceDefaults_Float($ceylontmp$seq$6);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.FloatValue({
+            1.0,
+            2.0,
+            3.0})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float$seq() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Float>).ceylon.language.Tuple.instance(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Float.instance(1.0),
+                .ceylon.language.Float.instance(2.0),
+                .ceylon.language.Float.instance(3.0)});
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+final class sequenceDefaults_Float_Empty_ {
+    
+    private sequenceDefaults_Float_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$seq$7 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Float_Empty_.sequenceDefaults_Float_Empty$seq();
+            }
+            returning sequenceDefaults_Float_Empty($ceylontmp$seq$7);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.FloatValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+@.org.eclipse.ceylon.compiler.java.metadata.FloatExprs({@.org.eclipse.ceylon.compiler.java.metadata.FloatValue(
+        name = "$arg$seq",
+        value = {
+                4.0,
+                5.0,
+                6.0})})
+final class sequenceArguments_Float_ {
+    
+    private sequenceArguments_Float_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceArguments_Float() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float((.ceylon.language.Sequence<? extends .ceylon.language.Float>).ceylon.language.Tuple.instance(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Float.instance(4.0),
+                .ceylon.language.Float.instance(5.0),
+                .ceylon.language.Float.instance(6.0)}));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+@.org.eclipse.ceylon.compiler.java.metadata.FloatExprs({@.org.eclipse.ceylon.compiler.java.metadata.FloatValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_Float_Empty_ {
+    
+    private sequenceArguments_Float_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceArguments_Float_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Float((.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Integer$annotation$ {
+    
+    public abstract long[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_Integer$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_Integer implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_Integer() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Integer(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Integer(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Integer*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+final class sequenceDefaults_Integer_ {
+    
+    private sequenceDefaults_Integer_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$8 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Integer_.sequenceDefaults_Integer$seq();
+            }
+            returning sequenceDefaults_Integer($ceylontmp$seq$8);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue({
+            1L,
+            2L,
+            3L})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer$seq() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)});
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+final class sequenceDefaults_Integer_Empty_ {
+    
+    private sequenceDefaults_Integer_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Integer_Empty_.sequenceDefaults_Integer_Empty$seq();
+            }
+            returning sequenceDefaults_Integer_Empty($ceylontmp$seq$9);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+        name = "$arg$seq",
+        value = {
+                4L,
+                5L,
+                6L})})
+final class sequenceArguments_Integer_ {
+    
+    private sequenceArguments_Integer_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceArguments_Integer() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(4L),
+                .ceylon.language.Integer.instance(5L),
+                .ceylon.language.Integer.instance(6L)}));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_Integer_Empty_ {
+    
+    private sequenceArguments_Integer_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceArguments_Integer_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Object$annotation$ {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.EnumerationReference
+    public abstract .java.lang.Class<? extends .ceylon.language.Empty>[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_Object$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Object,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_Object implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_Object() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Object(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.Empty>parseEnumerationReferences(.ceylon.language.Empty.$TypeDescriptor$, anno.seq()));
+    }
+    
+    SequenceDefaults_Object(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{[]*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Empty, ? extends .java.lang.Object> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+final class sequenceDefaults_Object_ {
+    
+    private sequenceDefaults_Object_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Empty> $ceylontmp$seq$10 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Object_.sequenceDefaults_Object$seq();
+            }
+            returning sequenceDefaults_Object($ceylontmp$seq$10);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.ObjectValue({
+            .ceylon.language.empty_.class,
+            .ceylon.language.empty_.class})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object$seq() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.empty_>).ceylon.language.Tuple.instance(.ceylon.language.empty_.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.empty_.get_(),
+                .ceylon.language.empty_.get_()});
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("[][]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Empty> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+final class sequenceDefaults_Object_Empty_ {
+    
+    private sequenceDefaults_Object_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Empty> $ceylontmp$seq$11 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Object_Empty_.sequenceDefaults_Object_Empty$seq();
+            }
+            returning sequenceDefaults_Object_Empty($ceylontmp$seq$11);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.ObjectValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Empty>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("[][]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Empty> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+@.org.eclipse.ceylon.compiler.java.metadata.ObjectExprs({@.org.eclipse.ceylon.compiler.java.metadata.ObjectValue(
+        name = "$arg$seq",
+        value = {
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class})})
+final class sequenceArguments_Object_ {
+    
+    private sequenceArguments_Object_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceArguments_Object() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object((.ceylon.language.Sequence<? extends .ceylon.language.empty_>).ceylon.language.Tuple.instance(.ceylon.language.empty_.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.empty_.get_(),
+                .ceylon.language.empty_.get_(),
+                .ceylon.language.empty_.get_()}));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+@.org.eclipse.ceylon.compiler.java.metadata.ObjectExprs({@.org.eclipse.ceylon.compiler.java.metadata.ObjectValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_Object_Empty_ {
+    
+    private sequenceArguments_Object_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceArguments_Object_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Object((.ceylon.language.Iterable<? extends .ceylon.language.Empty, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Declaration$annotation$ {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.DeclarationReference
+    public abstract .java.lang.String[] seq();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface SequenceDefaults_Declaration$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
+final class SequenceDefaults_Declaration implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected SequenceDefaults_Declaration() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Declaration(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.Declaration>parseMetamodelReferences(.ceylon.language.meta.declaration.Declaration.$TypeDescriptor$, anno.seq()));
+    }
+    
+    SequenceDefaults_Declaration(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language.meta.declaration::Declaration*}")
+    final .ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.Declaration, ? extends .java.lang.Object> seq) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+final class sequenceDefaults_Declaration_ {
+    
+    private sequenceDefaults_Declaration_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> $ceylontmp$seq$12 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Declaration_.sequenceDefaults_Declaration$seq();
+            }
+            returning sequenceDefaults_Declaration($ceylontmp$seq$12);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.DeclarationValue({"::1.3.4-SNAPSHOT:ceylon.language::Vempty"})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration$seq() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ValueDeclaration>).ceylon.language.Tuple.instance(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.3.4-SNAPSHOT"), "ceylon.language", "1.3.4-SNAPSHOT").findPackage("ceylon.language").getValue("empty")});
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.meta.declaration::ValueDeclaration[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+final class sequenceDefaults_Declaration_Empty_ {
+    
+    private sequenceDefaults_Declaration_Empty_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> $ceylontmp$seq$13 = .org.eclipse.ceylon.compiler.java.test.annotations.sequenceDefaults_Declaration_Empty_.sequenceDefaults_Declaration_Empty$seq();
+            }
+            returning sequenceDefaults_Declaration_Empty($ceylontmp$seq$13);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.DeclarationValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration_Empty(@.org.eclipse.ceylon.compiler.java.metadata.Name("seq")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.meta.declaration::ValueDeclaration[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> seq) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+@.org.eclipse.ceylon.compiler.java.metadata.DeclarationExprs({@.org.eclipse.ceylon.compiler.java.metadata.DeclarationValue(
+        name = "$arg$seq",
+        value = {"::1.3.4-SNAPSHOT:ceylon.language::Vempty"})})
+final class sequenceArguments_Declaration_ {
+    
+    private sequenceArguments_Declaration_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceArguments_Declaration() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration((.ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ValueDeclaration>).ceylon.language.Tuple.instance(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.3.4-SNAPSHOT"), "ceylon.language", "1.3.4-SNAPSHOT").findPackage("ceylon.language").getValue("empty")}));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+@.org.eclipse.ceylon.compiler.java.metadata.DeclarationExprs({@.org.eclipse.ceylon.compiler.java.metadata.DeclarationValue(
+        name = "$arg$seq",
+        value = {})})
+final class sequenceArguments_Declaration_Empty_ {
+    
+    private sequenceArguments_Declaration_Empty_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceArguments_Declaration_Empty() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration((.ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.Declaration, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+}

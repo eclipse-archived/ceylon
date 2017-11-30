@@ -1,0 +1,24 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+public final class bug671_ {
+    
+    private bug671_() {
+    }
+    
+    public static void bug671() {
+        final .ceylon.language.Array<.ceylon.language.Integer> a6 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$0$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
+        );
+        a6.set(0L, null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.bug671_.bug671();
+    }
+}

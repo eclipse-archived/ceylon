@@ -1,0 +1,555 @@
+package org.eclipse.ceylon.compiler.java.test.expression.operator;
+
+abstract class BWMyByte extends .java.lang.Object implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte>, .ceylon.language.Invertible<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte>, .ceylon.language.Enumerable<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte>, .java.io.Serializable {
+    
+    BWMyByte() {
+        super();
+        this.$ceylon$language$Binary$this$ = new .ceylon.language.Binary$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte>(.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$, this);
+        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte>(.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$, this);
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte>(.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$, this);
+    }
+    protected final .ceylon.language.Binary$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Binary$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Binary$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Binary$impl() {
+        return $ceylon$language$Binary$this$;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte clear(final long index) {
+        return (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Binary$this$.clear(index);
+    }
+    
+    @.java.lang.Override
+    public final boolean set$bit(final long index) {
+        return $ceylon$language$Binary$this$.set$bit(index);
+    }
+    protected final .ceylon.language.Invertible$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Invertible$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertible$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Invertible$impl() {
+        return $ceylon$language$Invertible$this$;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte minus(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte other) {
+        return (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Invertible$this$.minus(other);
+    }
+    protected final .ceylon.language.Enumerable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Enumerable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Enumerable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this$;
+    }
+    
+    @.java.lang.Override
+    public long offsetSign(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getPredecessor() {
+        return (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getSuccessor() {
+        return (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte.class);
+}
+class BitwiseOperators implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected BitwiseOperators() {
+        super();
+        this.initN = null;
+        this.initI = null;
+        this.n1 = 0;
+        this.n2 = 0;
+        this.i1 = 0;
+        this.boxedByte1 = null;
+        this.boxedByte2 = null;
+        this.boxedByte3 = null;
+    }
+    
+    BitwiseOperators(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte initN, final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte initI) {
+        this.initN = initN;
+        this.initI = initI;
+        this.n1 = (byte)0L;
+        this.n2 = (byte)0L;
+        this.i1 = (byte)0L;
+        this.boxedByte1 = getInitN$priv$();
+        this.boxedByte2 = getInitN$priv$();
+        this.boxedByte3 = getInitI$priv$();
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte initN;
+    
+    private final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getInitN$priv$() {
+        return this.initN;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte initI;
+    
+    private final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getInitI$priv$() {
+        return this.initI;
+    }
+    private byte n1;
+    
+    public final byte getN1() {
+        return this.n1;
+    }
+    
+    public final void setN1(final byte n1) {
+        this.n1 = n1;
+    }
+    private byte n2;
+    
+    public final byte getN2() {
+        return this.n2;
+    }
+    
+    public final void setN2(final byte n2) {
+        this.n2 = n2;
+    }
+    private byte i1;
+    
+    public final byte getI1() {
+        return this.i1;
+    }
+    
+    public final void setI1(final byte i1) {
+        this.i1 = i1;
+    }
+    
+    public final byte getGetterByte1() {
+        return getN1();
+    }
+    
+    public final void setGetterByte1(final byte getterByte1) {
+        setN1(getterByte1);
+    }
+    
+    public final byte getGetterByte2() {
+        return getN2();
+    }
+    
+    public final void setGetterByte2(final byte getterByte2) {
+        setN2(getterByte2);
+    }
+    
+    public final byte getGetterByte3() {
+        return getI1();
+    }
+    
+    public final void setGetterByte3(final byte getterByte3) {
+        setI1(getterByte3);
+    }
+    private .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte1;
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getBoxedByte1() {
+        return this.boxedByte1;
+    }
+    
+    public final void setBoxedByte1(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte1) {
+        this.boxedByte1 = boxedByte1;
+    }
+    private .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte2;
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getBoxedByte2() {
+        return this.boxedByte2;
+    }
+    
+    public final void setBoxedByte2(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte2) {
+        this.boxedByte2 = boxedByte2;
+    }
+    private .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte3;
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte getBoxedByte3() {
+        return this.boxedByte3;
+    }
+    
+    public final void setBoxedByte3(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte3) {
+        this.boxedByte3 = boxedByte3;
+    }
+    
+    private final void unboxedAttributes$priv$() {
+        setI1((byte)~getN1());
+        setN1((byte)(getN1() & getN2()));
+        setI1((byte)(getN1() | getN2()));
+        setN1((byte)(getN1() ^ getN2()));
+        setN1((byte)(getN1() << ((byte)1L & 7)));
+        setN1((byte)((getN1() & 255) >>> ((byte)1L & 7)));
+        setN1((byte)(getN1() >> ((byte)1L & 7)));
+    }
+    
+    private final void unboxedGetterAttributes$priv$() {
+        setGetterByte3((byte)~getGetterByte1());
+        setGetterByte1((byte)(getGetterByte1() & getGetterByte2()));
+        setGetterByte3((byte)(getGetterByte1() | getGetterByte2()));
+        setGetterByte1((byte)(getGetterByte1() ^ getGetterByte2()));
+        setGetterByte1((byte)(getGetterByte1() << ((byte)1L & 7)));
+        setGetterByte1((byte)((getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        setGetterByte1((byte)(getGetterByte1() >> ((byte)1L & 7)));
+    }
+    
+    public .java.lang.Object unboxedQualifiedAttributes() {
+        this.setI1((byte)~this.getN1());
+        this.setN1((byte)(this.getN1() & this.getN2()));
+        this.setI1((byte)(this.getN1() | this.getN2()));
+        this.setN1((byte)(this.getN1() ^ this.getN2()));
+        this.setN1((byte)(this.getN1() << ((byte)1L & 7)));
+        this.setN1((byte)((this.getN1() & 255) >>> ((byte)1L & 7)));
+        this.setN1((byte)(this.getN1() >> ((byte)1L & 7)));
+        return null;
+    }
+    
+    public .java.lang.Object unboxedQualifiedGetterAttributes() {
+        this.setGetterByte3((byte)~this.getGetterByte1());
+        this.setGetterByte1((byte)(this.getGetterByte1() & this.getGetterByte2()));
+        this.setGetterByte3((byte)(this.getGetterByte1() | this.getGetterByte2()));
+        this.setGetterByte1((byte)(this.getGetterByte1() ^ this.getGetterByte2()));
+        this.setGetterByte1((byte)(this.getGetterByte1() << ((byte)1L & 7)));
+        this.setGetterByte1((byte)((this.getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        this.setGetterByte1((byte)(this.getGetterByte1() >> ((byte)1L & 7)));
+        return null;
+    }
+    
+    public .java.lang.Object boxedQualifiedAttributes() {
+        this.setBoxedByte3((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().getNot());
+        this.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().and(this.getBoxedByte2()));
+        this.setBoxedByte3((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().or(this.getBoxedByte2()));
+        this.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().xor(this.getBoxedByte2()));
+        this.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().leftLogicalShift(1L));
+        this.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().rightLogicalShift(1L));
+        this.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().rightArithmeticShift(1L));
+        return null;
+    }
+    
+    private final void unboxedLocals$priv$() {
+        byte n1 = (byte)0L;
+        byte n2 = (byte)0L;
+        byte i1 = (byte)0L;
+        i1 = (byte)~n1;
+        n1 = (byte)(n1 & n2);
+        i1 = (byte)(n1 | n2);
+        n1 = (byte)(n1 ^ n2);
+        n1 = (byte)(n1 << ((byte)1L & 7));
+        n1 = (byte)((n1 & 255) >>> ((byte)1L & 7));
+        n1 = (byte)(n1 >> ((byte)1L & 7));
+    }
+    
+    private final void unboxedLocalGetters$priv$() {
+        final .org.eclipse.ceylon.compiler.java.language.VariableBoxByte n1 = new .org.eclipse.ceylon.compiler.java.language.VariableBoxByte((byte)0L);
+        final .org.eclipse.ceylon.compiler.java.language.VariableBoxByte n2 = new .org.eclipse.ceylon.compiler.java.language.VariableBoxByte((byte)0L);
+        final .org.eclipse.ceylon.compiler.java.language.VariableBoxByte i1 = new .org.eclipse.ceylon.compiler.java.language.VariableBoxByte((byte)0L);
+        
+        final class getterByte1$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterByte {
+            
+            private getterByte1$getter$_() {
+            }
+            
+            public byte get_() {
+                return n1.ref;
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.GetterByte getterByte1$getter$_ = new getterByte1$getter$_();
+        
+        final class getterByte1$setter$_ {
+            
+            private getterByte1$setter$_() {
+            }
+            private byte $object$;
+            
+            public void set_(final byte getterByte1) {
+                n1.ref = getterByte1;
+            }
+        }
+        final getterByte1$setter$_ getterByte1$setter$_ = new getterByte1$setter$_();
+        
+        final class getterByte2$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterByte {
+            
+            private getterByte2$getter$_() {
+            }
+            
+            public byte get_() {
+                return n2.ref;
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.GetterByte getterByte2$getter$_ = new getterByte2$getter$_();
+        
+        final class getterByte2$setter$_ {
+            
+            private getterByte2$setter$_() {
+            }
+            private byte $object$;
+            
+            public void set_(final byte getterByte2) {
+                n2.ref = getterByte2;
+            }
+        }
+        final getterByte2$setter$_ getterByte2$setter$_ = new getterByte2$setter$_();
+        
+        final class getterByte3$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterByte {
+            
+            private getterByte3$getter$_() {
+            }
+            
+            public byte get_() {
+                return i1.ref;
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.GetterByte getterByte3$getter$_ = new getterByte3$getter$_();
+        
+        final class getterByte3$setter$_ {
+            
+            private getterByte3$setter$_() {
+            }
+            private byte $object$;
+            
+            public void set_(final byte getterByte3) {
+                i1.ref = getterByte3;
+            }
+        }
+        final getterByte3$setter$_ getterByte3$setter$_ = new getterByte3$setter$_();
+        getterByte3$setter$_.set_((byte)~getterByte1$getter$_.get_());
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() & getterByte2$getter$_.get_()));
+        getterByte3$setter$_.set_((byte)(getterByte1$getter$_.get_() | getterByte2$getter$_.get_()));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() ^ getterByte2$getter$_.get_()));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() << ((byte)1L & 7)));
+        getterByte1$setter$_.set_((byte)((getterByte1$getter$_.get_() & 255) >>> ((byte)1L & 7)));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() >> ((byte)1L & 7)));
+    }
+    
+    private final void boxedLocals$priv$() {
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte n1 = getInitN$priv$();
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte n2 = getInitN$priv$();
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte i1 = getInitI$priv$();
+        i1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.getNot();
+        n1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.and(n2);
+        i1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.or(n2);
+        n1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.xor(n2);
+        n1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.leftLogicalShift(1L);
+        n1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.rightLogicalShift(1L);
+        n1 = (.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)n1.rightArithmeticShift(1L);
+    }
+    
+    private final void unboxedToplevel$priv$() {
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_((byte)~.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_());
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() | .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() ^ .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() << ((byte)1L & 7)));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)((.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & 255) >>> ((byte)1L & 7)));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() >> ((byte)1L & 7)));
+    }
+    
+    private final void unboxedToplevelGetter$priv$() {
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_((byte)~.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_());
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() | .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() ^ .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() << ((byte)1L & 7)));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)((.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & 255) >>> ((byte)1L & 7)));
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() >> ((byte)1L & 7)));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.BitwiseOperators.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.operator.BitwiseOperators.class);
+}
+class BitwiseOperatorsSub extends .org.eclipse.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
+    
+    protected BitwiseOperatorsSub() {
+        super();
+    }
+    
+    BitwiseOperatorsSub(final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte initN, final .org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte initI) {
+        super(initN, initI);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedAttributes() {
+        super.setI1((byte)~super.getN1());
+        super.setN1((byte)(super.getN1() & super.getN2()));
+        super.setI1((byte)(super.getN1() | super.getN2()));
+        super.setN1((byte)(super.getN1() ^ super.getN2()));
+        super.setN1((byte)(super.getN1() << ((byte)1L & 7)));
+        super.setN1((byte)((super.getN1() & 255) >>> ((byte)1L & 7)));
+        super.setN1((byte)(super.getN1() >> ((byte)1L & 7)));
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedGetterAttributes() {
+        super.setGetterByte3((byte)~super.getGetterByte1());
+        super.setGetterByte1((byte)(super.getGetterByte1() & super.getGetterByte2()));
+        super.setGetterByte3((byte)(super.getGetterByte1() | super.getGetterByte2()));
+        super.setGetterByte1((byte)(super.getGetterByte1() ^ super.getGetterByte2()));
+        super.setGetterByte1((byte)(super.getGetterByte1() << ((byte)1L & 7)));
+        super.setGetterByte1((byte)((super.getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        super.setGetterByte1((byte)(super.getGetterByte1() >> ((byte)1L & 7)));
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object boxedQualifiedAttributes() {
+        super.setBoxedByte3((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().getNot());
+        super.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().and(super.getBoxedByte2()));
+        super.setBoxedByte3((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().or(super.getBoxedByte2()));
+        super.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().xor(super.getBoxedByte2()));
+        super.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().leftLogicalShift(1L));
+        super.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().rightLogicalShift(1L));
+        super.setBoxedByte1((.org.eclipse.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)super.getBoxedByte1().rightArithmeticShift(1L));
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.class);
+}
+final class bwToplevelByte1_ {
+    
+    private bwToplevelByte1_() {
+    }
+    private static byte $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$object$ = (byte)0L;
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$object$ = "0";
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$init$$object$ = false;
+        }
+    }
+    
+    public static byte get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelByte1\' before it was set");
+        }
+    }
+    
+    public static void set_(final byte bwToplevelByte1) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$object$ = bwToplevelByte1;
+    }
+}
+final class bwToplevelByte2_ {
+    
+    private bwToplevelByte2_() {
+    }
+    private static byte $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$object$ = (byte)0L;
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$object$ = "0";
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$init$$object$ = false;
+        }
+    }
+    
+    public static byte get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelByte2\' before it was set");
+        }
+    }
+    
+    public static void set_(final byte bwToplevelByte2) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$object$ = bwToplevelByte2;
+    }
+}
+final class bwToplevelByte3_ {
+    
+    private bwToplevelByte3_() {
+    }
+    private static byte $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$object$ = (byte)0L;
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$object$ = "0";
+            .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$init$$object$ = false;
+        }
+    }
+    
+    public static byte get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelByte3\' before it was set");
+        }
+    }
+    
+    public static void set_(final byte bwToplevelByte3) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$object$ = bwToplevelByte3;
+    }
+}
+final class bwToplevelGetterByte1_ {
+    
+    private bwToplevelGetterByte1_() {
+    }
+    
+    public static byte get_() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_();
+    }
+    
+    public static void set_(final byte bwToplevelGetterByte1) {
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_(bwToplevelGetterByte1);
+    }
+}
+final class bwToplevelGetterByte2_ {
+    
+    private bwToplevelGetterByte2_() {
+    }
+    
+    public static byte get_() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_();
+    }
+    
+    public static void set_(final byte bwToplevelGetterByte2) {
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.set_(bwToplevelGetterByte2);
+    }
+}
+final class bwToplevelGetterByte3_ {
+    
+    private bwToplevelGetterByte3_() {
+    }
+    
+    public static byte get_() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.get_();
+    }
+    
+    public static void set_(final byte bwToplevelGetterByte3) {
+        .org.eclipse.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_(bwToplevelGetterByte3);
+    }
+}

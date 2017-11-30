@@ -1,0 +1,50 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class FunctionInSetter implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    FunctionInSetter() {
+        
+        final class foo$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private foo$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter$_ = new foo$getter$_();
+        
+        final class foo$setter$_ {
+            
+            private foo$setter$_() {
+            }
+            private .java.lang.String $object$;
+            
+            public void set_(final .java.lang.String foo) {
+                if (true) {
+                    final long i = 1L;
+                    
+                    final class bar_ implements .java.io.Serializable {
+                        
+                        private bar_() {
+                        }
+                        
+                        .java.lang.String bar() {
+                            return .ceylon.language.Integer.toString(i);
+                        }
+                    }
+                    final bar_ bar = new bar_();
+                    bar.bar();
+                }
+            }
+        }
+        final foo$setter$_ foo$setter$_ = new foo$setter$_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.FunctionInSetter.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.FunctionInSetter.class);
+}

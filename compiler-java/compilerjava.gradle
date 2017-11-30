@@ -1,0 +1,241 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.eclipse.ceylon.model.loader.OsgiVersion
+
+
+ext {
+    ceylonModuleName = 'compiler'
+    ceylonModuleVariant = 'java'
+    ceylonTestDisabled = true
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+requiresCBP 'module.ceylon.bootstrap.version'
+requiresCBP 'ceylon.bootstrap.dir'
+
+dependencies {
+    compile project(':common')
+    compile project(':cli')
+    compile project(':langtools-classfile')
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':typechecker')
+    compile antDep
+    compile txtmarkDep
+    compile antlrDep
+
+//    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+    testCompile markdownPapersDep
+    testCompile jbossDep
+
+    testRuntime project(':cmr-webdav')
+    testRuntime project(':cmr-aether')
+    testRuntime sardineDep
+    testRuntime apacheCommonsCodecDep
+    testRuntime apacheCommonsLoggingDep
+    testRuntime jsonSmartDep
+//    <pathelement path="${ceylon.compiler.lib}" />
+//    <pathelement path="${ceylon.language.lib}" />
+//    <pathelement path="${ceylon-tests.car}" />
+//    <pathelement path="${maven-support.lib}" />
+//    <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
+//    <pathelement path="${jboss-logmanager.lib}" />
+}
+
+sourceSets {
+    jdk6Stubs {
+        java {
+            srcDirs = ['src','langtools/src/share/classes']
+            source project(':common').sourceSets.main.java
+            include "**/Java7Checker.java"
+            include "org/eclipse/ceylon/tools/Tool.java"
+            include "org/eclipse/ceylon/tools/Plugin.java"
+            include "org/eclipse/ceylon/ant/**"
+            include "org/eclipse/ceylon/launcher/**"
+            include "org/eclipse/ceylon/common/*"
+            include "org/eclipse/ceylon/common/config/*"
+            include "org/eclipse/ceylon/common/tools/ModuleWildcardsHelper.java"
+        }
+        resources {
+            srcDirs = []
+        }
+        compileClasspath = configurations.compile
+        runtimeClasspath = output + compileClasspath
+        output.classesDir = sourceSets.main.output.classesDir
+    }
+
+    main {
+        java {
+            srcDir 'langtools/src/share/classes'
+            include "org/eclipse/**"
+            exclude "**/Java7Checker.java"
+            exclude "org/eclipse/ceylon/ant/**"
+            exclude "org/eclipse/ceylon/launcher/**"
+        }
+        resources {
+            srcDirs = [ 'src',"${project(':common').projectDir}/src",'langtools/src/share/classes' ]
+            include 'org/eclipse/**/*.utf8properties'
+            include 'org/eclipse/**/resources/**'
+            include 'org/eclipse/**/*.properties'
+            include 'org/eclipse/ceylon/common/config/**/*.properties'
+            include 'org/eclipse/ceylon/langtools/tools/javac/resources/*.properties'
+            include 'META-INF/**'
+        }
+        compileClasspath = configurations.compile + sourceSets.jdk6Stubs.output
+    }
+
+//    antTask {
+//        java {
+//            srcDirs = []
+//        }
+//        resources {
+//            srcDirs = [ 'src',"${project(':common').projectDir}/src"]
+//            include "org/eclipse/ceylon/ant/antlib.xml"
+//            include "org/eclipse/ceylon/common/config/messages.properties"
+//        }
+//    }
+
+    test {
+        java {
+            srcDir 'test/ceylondoc'
+            include "org/eclipse/ceylon/compiler/java/test/**"
+            include "org/eclipse/ceylon/compiler/java/codegen/**"  // TODO: Not in build.xml atm
+            include "org/eclipse/ceylon/tools/**"
+            include "org/eclipse/ceylon/itest/**"
+            include "org/eclipse/ceylon/launcher/test/**"
+            include "org/eclipse/ceylon/ant/**"
+            include "org/eclipse/ceylon/ceylondoc/test/**"
+            exclude "org/eclipse/ceylon/tools/test/bug1183/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/mixed/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/nullable/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/Bug*"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/Interdep*"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/JavaRepeatable.java"
+            exclude "org/eclipse/ceylon/compiler/java/test/cmr/modules/bug1062/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/recovery/modules/bug1411/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/issues/*/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/recovery/bug6290/**"
+        }
+        resources {
+            include "META-INF/**"
+            include "**/*.txt"
+            include "**/*.md"
+            include "**/*.properties"
+        }
+    }
+}
+
+compileJdk6StubsJava {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+}
+
+
+compileJava.dependsOn += compileJdk6StubsJava
+
+
+jar {
+    exclude "org/eclipse/ceylon/ant/**"
+    exclude "org/eclipse/ceylon/common/**"
+    exclude "org/eclipse/ceylon/launcher/**"
+
+    ceylon {
+        importJavaxModel true
+    }
+}
+
+osgiManifestWorkaround {
+    includes = jar.includes
+    excludes = jar.excludes
+}
+
+task bootstrapModuleXml( type : CeylonBuildModuleXml ) {
+    description "Create module.xml for the bootstrap JAR"
+    sourceModule {
+        new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
+            cbp."ceylon.bootstrap.dir").parentFile, '/_version_/module.xml')
+    }
+    destinationDir = {"${moduleXml.destinationDir}/bootstrap"}
+}
+
+
+task osgiManifestWorkaroundForBootstrap( type : Copy ) {
+    destinationDir file("${buildDir}/osgi-workaround-bootstrap")
+
+    from processResources
+    from sourceSets.main.output.classesDir
+}
+
+task bootstrapModule( type : Jar ) {
+    group 'Build'
+    description 'Create bootstrap module'
+    setAsOsgiArchive()
+    dependsOn classes, processResources, bootstrapModuleXml
+    destinationDir = jar.destinationDir
+
+    ext {
+        bmSymbolicName = 'ceylon.bootstrap'
+        bmModuleVersion = cbp."module.ceylon.bootstrap.version"
+        bmBundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(bmModuleVersion)
+        bmBundleVersionWithTimestamp =  OsgiVersion.withTimestamp(bmBundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
+    }
+
+    ceylon {
+        importJavaxModel  false
+        bundleSymbolicName bmSymbolicName
+        bundleVersion bmBundleVersionWithTimestamp
+        moduleLocation {bootstrapModuleXml.destinationFile}
+        forceOptionalResolutionFor 'ceylon.runtime'
+    }
+
+    archiveName = "ceylon.bootstrap-${bmModuleVersion}.jar"
+
+    from sourceSets.main.output.classesDir, {
+    }
+
+    from bootstrapModuleXml, {
+        into "META-INF/jbossmodules/" + cbp."ceylon.bootstrap.dir"
+    }
+
+    include "org/eclipse/ceylon/launcher/**"
+    exclude "org/eclipse/ceylon/launcher/Start.class"
+
+    bootstrapModule.dependsOn osgiManifestWorkaroundForBootstrap
+    bootstrapModule.manifest.classesDir = osgiManifestWorkaroundForBootstrap.destinationDir
+}
+
+osgiManifestWorkaroundForBootstrap {
+    includes = bootstrapModule.includes
+    excludes = bootstrapModule.excludes
+}
+
+task publishBootstrapOsgiModule( type : Copy ) {
+    group 'OSGI Distribution'
+    description 'Copies binary artifacts to OSGI distribution area'
+    from bootstrapModule
+    into "${osgiDistDir}/plugins"
+    rename ~/.+/, "ceylon.bootstrap_${bootstrapModule.ext.bmBundleVersionWithTimestamp}.jar"
+}
+
+sha1 {
+    archive bootstrapModule
+    dependsOn bootstrapModule
+}
+
+task publishBootstrapModule( type : Copy ) {
+    group 'Distribution'
+    description 'Copies binary artifacts to distribution area'
+
+    from sha1, {
+        include "**/ceylon.bootstrap-${bootstrapModule.ext.bmModuleVersion}.jar.*"
+    }
+
+    from bootstrapModule
+    from bootstrapModuleXml
+    into "${repoDir}/${cbp.'ceylon.bootstrap.dir'}"
+}
+
+publishInternal {
+    dependsOn publishBootstrapModule, publishBootstrapOsgiModule
+}
+
+// TODO: Do something different for Jigsaw

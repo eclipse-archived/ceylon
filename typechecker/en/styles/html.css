@@ -1,0 +1,117 @@
+BODY {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+A {
+    color: #003399;
+}
+
+A:active {
+    color: #003399;
+}
+
+A:visited {
+    color: #888888;
+}
+
+P, OL, UL, LI, DL, DT, DD, BLOCKQUOTE {
+    color: #000000;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    line-height: 1.40em;
+}
+
+TD, TH, SPAN {
+    color: #000000;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    line-height: 1.40em;
+}
+
+BLOCKQUOTE {
+    margin-right: 0px;
+}
+
+
+H1, H2 {
+    text-align: center;
+}
+
+H1, H2, H3, H4, H5, H6    {
+    color: #000000;
+    font-weight:500;
+    margin-top:10px;
+    padding-top:15px;
+}
+
+div.table TABLE {
+    border-collapse: collapse;
+    border-spacing:0;
+    border: 5px solid #f0f0f0;
+    empty-cells: hide;
+}
+
+div.table TD TH  {
+    padding: 4px;
+    border: 2px solid #f0f0f0;
+}
+
+H1 { font-size: 200%; font-weight: bold; }
+H2 { font-size: 140%; font-weight: bold; }
+H3 { font-size: 110%; font-weight: bold; }
+H4 { font-size: 110%; font-weight: bold;}
+H5 { font-size: 100%; font-style: italic; }
+H6 { font-size: 100%; font-style: italic; }
+
+H1, H2 {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+}
+
+H3, H4, H5, H6 {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+}
+
+TT {
+    font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
+    color: #000000;
+}
+
+PRE {
+    padding: 5px !important;
+}
+
+PRE, PRE SPAN,
+.synopsis span.emphasis, 
+.literal span.emphasis  {
+    font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
+    line-height: normal; /* overriding 1.40em from another rule, see #1186 */
+}
+
+.screen, .synopsis {
+    line-height: 1.4em;
+    font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
+}
+
+HR  {
+    width: 100%;
+    height: 1px;
+    background-color: #CCCCCC;
+    border-width: 0px;
+    padding: 0px;
+    color: #CCCCCC;
+}
+
+.variablelist { 
+    padding-top: 10; 
+    padding-bottom:10; 
+    margin:0;
+}
+
+.itemizedlist, UL { 
+    padding-top: 0; 
+    padding-bottom:0; 
+    margin:0; 
+}
+
+.term { 
+    font-weight:bold;
+}

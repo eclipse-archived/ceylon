@@ -1,0 +1,454 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.FIELD,
+        .java.lang.annotation.ElementType.TYPE})
+@interface AnnotationTarget$annotation$ {
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class AnnotationTarget implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
+    
+    AnnotationTarget(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$ anno) {
+        this();
+    }
+    
+    AnnotationTarget() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget.class)
+final class annotationTarget_ {
+    
+    private annotationTarget_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget annotationTarget() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget();
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.FIELD,
+        .java.lang.annotation.ElementType.TYPE})
+@interface AnnotationTarget2$annotation$ {
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class AnnotationTarget2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
+    
+    AnnotationTarget2(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$ anno) {
+        this();
+    }
+    
+    AnnotationTarget2() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2.class)
+final class annotationTarget2_ {
+    
+    private annotationTarget2_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2 annotationTarget2() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+interface AnnotationTargetClass$method$LocalInterface {
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+interface AnnotationTargetClass$InnerInterface {
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+class AnnotationTargetClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected AnnotationTargetClass() {
+        super();
+        this.parameter = null;
+        this.attribute = false;
+        this.varAttribute = false;
+        this.obj = null;
+    }
+    
+    AnnotationTargetClass(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+        this.parameter = parameter;
+        this.attribute = true;
+        this.varAttribute = true;
+        this.obj = null;
+    }
+    private final .java.lang.String parameter;
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    private final .java.lang.String getParameter$priv$() {
+        return this.parameter;
+    }
+    private final boolean attribute;
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final boolean getAttribute() {
+        return this.attribute;
+    }
+    private boolean varAttribute;
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    public final boolean getVarAttribute() {
+        return this.varAttribute;
+    }
+    
+    public final void setVarAttribute(final boolean varAttribute) {
+        this.varAttribute = varAttribute;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final boolean getGetter() {
+        return true;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$
+    public final void setGetter(final boolean getter) {
+    }
+    private transient .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ obj;
+    
+    public final class obj_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private obj_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getObj";
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.this, .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.class, $name$);
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_.class));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ getObj() {
+        if (obj == null) obj = new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_();
+        return obj;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    private final void method$priv$(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+        if (true) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "true"));
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        class LocalClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            LocalClass(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+            final .java.lang.String parameter) {
+                this.parameter = parameter;
+            }
+            private final .java.lang.String parameter;
+            
+            @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+            private final .java.lang.String getParameter$priv$() {
+                return this.parameter;
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    class InnerClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        InnerClass(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        final .java.lang.String parameter) {
+            this.parameter = parameter;
+        }
+        private final .java.lang.String parameter;
+        
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        private final .java.lang.String getParameter$priv$() {
+            return this.parameter;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.InnerClass.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass.class);
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+final class AnnotationTargetAlias {
+    
+    private AnnotationTargetAlias() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+final class AnnotationTargetClassAlias {
+    
+    private AnnotationTargetClassAlias() {
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$$priv$(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+        throw new .ceylon.language.Exception();
+    }
+}
+class AnnotationTargetOuter implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AnnotationTargetOuter() {
+    }
+    
+    .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetClass InnerAlias$aliased$$priv$(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final class InnerAlias {
+        
+        private InnerAlias() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetOuter.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetOuter.class);
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+interface AnnotationTargetInterface$InnerInterface {
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+interface AnnotationTargetInterface {
+    
+    public .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$impl $org$eclipse$ceylon$compiler$java$test$annotations$AnnotationTargetInterface$impl();
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract .java.lang.Object formalMethod(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter);
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public .java.lang.Object defaultMethod(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter);
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    public void sharedMethod(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter);
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    public .java.lang.String getSharedAttribute();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetInterface.class);
+}
+final class AnnotationTargetInterface$impl implements .java.io.Serializable {
+    
+    AnnotationTargetInterface$impl(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetInterface $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetInterface $this;
+    
+    public .java.lang.Object defaultMethod(final .java.lang.String parameter) {
+        return null;
+    }
+    
+    public void sharedMethod(final .java.lang.String parameter) {
+        method$priv$(getAttribute$priv$());
+        method$priv$(getGetter$priv$());
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    private void method$priv$(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    private final .java.lang.String getAttribute$priv$() {
+        return "";
+    }
+    
+    public final .java.lang.String getSharedAttribute() {
+        return "";
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    private final .java.lang.String getGetter$priv$() {
+        return "";
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$
+    private final void setGetter$priv$(final .java.lang.String getter) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    class InnerClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        InnerClass(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        final .java.lang.String parameter) {
+            this.parameter = parameter;
+        }
+        private final .java.lang.String parameter;
+        
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        private final .java.lang.String getParameter$priv$() {
+            return this.parameter;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetInterface.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$impl.InnerClass.class));
+        }
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+interface AnnotationTargetInterfaceAlias {
+}
+final class annotationTargetMethod_ {
+    
+    private annotationTargetMethod_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    static void annotationTargetMethod(@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+    }
+}
+final class annotationTargetObject_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private annotationTargetObject_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_();
+            .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetObject\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetObject_.$TypeDescriptor$;
+    }
+}
+final class annotationTargetValue_ {
+    
+    private annotationTargetValue_() {
+    }
+    private static final boolean $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = true;
+            .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = false;
+            .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    public static boolean get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.annotationTargetValue_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetValue\' before it was set");
+        }
+    }
+}
+final class annotationTargetGetterSetter_ {
+    
+    private annotationTargetGetterSetter_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    public static boolean get_() {
+        return true;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$
+    public static void set_(final boolean annotationTargetGetterSetter) {
+    }
+}

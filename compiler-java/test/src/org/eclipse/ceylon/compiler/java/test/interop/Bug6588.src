@@ -1,0 +1,32 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Bug65872 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug65872() {
+    }
+    
+    @.javax.enterprise.inject.Produces
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    private final .javax.persistence.EntityManager getAssignableEntityManager$priv$() {
+        return (.javax.persistence.EntityManager)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private final void setAssignableEntityManager$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("assignableEntityManager")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    final .javax.persistence.EntityManager assignableEntityManager) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Bug65872.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Bug65872.class);
+}

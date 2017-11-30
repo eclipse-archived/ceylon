@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class useNullaryConstructors_ {
+    
+    private useNullaryConstructors_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void useNullaryConstructors() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o1 = new .org.eclipse.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
+        final .org.eclipse.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new .org.eclipse.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(.org.eclipse.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.bar_);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.useNullaryConstructors_.useNullaryConstructors();
+    }
+}

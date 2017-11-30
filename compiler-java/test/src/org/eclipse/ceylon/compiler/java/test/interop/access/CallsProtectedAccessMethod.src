@@ -1,0 +1,17 @@
+package org.eclipse.ceylon.compiler.java.test.interop.access;
+
+class CallsProtectedAccessMethod implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CallsProtectedAccessMethod() {
+    }
+    
+    private final void m$priv$(final .org.eclipse.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
+        j.protectedAccessMethod();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.class);
+}

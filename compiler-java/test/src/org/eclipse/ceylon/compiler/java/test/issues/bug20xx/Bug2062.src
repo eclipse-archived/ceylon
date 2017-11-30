@@ -1,0 +1,134 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+interface IBug2062<Element> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$impl();
+    
+    public abstract .ceylon.language.Sequential<? extends Element> getElements();
+    
+    public abstract <Other>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062 child(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Sequence<? extends Other> others);
+    
+    public <Other>.java.lang.Object append(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other> other);
+}
+final class IBug2062$impl<Element> implements .java.io.Serializable {
+    
+    IBug2062$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public <Other>.java.lang.Object append(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other> other) {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062 v = (.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$0;
+                .ceylon.language.Sequential<? extends Other> others$2;
+                if ((others$2 = (.ceylon.language.Sequential<? extends Other>)(.ceylon.language.Sequential)other.getElements()) instanceof .ceylon.language.Sequence) {
+                    final .ceylon.language.Sequence<? extends Other> others$3 = (.ceylon.language.Sequence<? extends Other>)(.ceylon.language.Sequence)others$2;
+                    $ceylontmp$ifResult$0 = $this.<Other>child($reified$Other, others$3);
+                } else {
+                    $ceylontmp$ifResult$0 = $this;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062 v2 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $ceylontmp$ifResult$4;
+                {
+                    .ceylon.language.Sequence sel$5 = other.getElements();
+                    if (.org.eclipse.ceylon.compiler.java.Util.isReified(sel$5, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
+                        final .ceylon.language.Sequence otherElems$7 = (.ceylon.language.Sequence)sel$5;
+                        $ceylontmp$ifResult$4 = (.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)$this.<.java.lang.Object>child(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, $reified$Element), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
+                    } else {
+                        final .ceylon.language.Sequence<? extends Other> otherElems$6 = (.ceylon.language.Sequence)sel$5;
+                        $ceylontmp$ifResult$4 = $this;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        );
+        final .ceylon.language.meta.model.ClassOrInterface x = (.ceylon.language.meta.model.ClassOrInterface)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$8;
+                .ceylon.language.Sequential<? extends Other> others$10;
+                if ((others$10 = (.ceylon.language.Sequential<? extends Other>)(.ceylon.language.Sequential)other.getElements()) instanceof .ceylon.language.Sequence) {
+                    final .ceylon.language.Sequence<? extends Other> others$11 = (.ceylon.language.Sequence<? extends Other>)(.ceylon.language.Sequence)others$10;
+                    $ceylontmp$ifResult$8 = (.ceylon.language.meta.model.Interface<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, $reified$Element));
+                } else {
+                    $ceylontmp$ifResult$8 = (.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends Other>>>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062.class, $reified$Other));
+                }
+            }
+            returning $ceylontmp$ifResult$8;
+        );
+        final .ceylon.language.meta.model.ClassOrInterface x2 = (.ceylon.language.meta.model.ClassOrInterface)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$12;
+                {
+                    .ceylon.language.Sequence sel$13 = other.getElements();
+                    if (.org.eclipse.ceylon.compiler.java.Util.isReified(sel$13, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
+                        final .ceylon.language.Sequence otherElems$15 = (.ceylon.language.Sequence)sel$13;
+                        $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Interface<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, $reified$Element));
+                    } else {
+                        final .ceylon.language.Sequence<? extends Other> otherElems$14 = (.ceylon.language.Sequence)sel$13;
+                        $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends Other>>>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062.class, $reified$Other));
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$12;
+        );
+        return null;
+    }
+}
+class SBug2062<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062<Element>, .java.io.Serializable {
+    
+    protected SBug2062(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<Element>($reified$Element, this);
+        this.elements = null;
+    }
+    
+    SBug2062(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequence<? extends Element> elements) {
+        this.$reified$Element = $reified$Element;
+        this.elements = elements;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<Element>($reified$Element, this);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .ceylon.language.Sequence<? extends Element> elements;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequence<? extends Element> getElements() {
+        return this.elements;
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<Element> $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$;
+    }
+    
+    @.java.lang.Override
+    public <Other>.java.lang.Object append(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other> other) {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$.append($reified$Other, other);
+    }
+    
+    @.java.lang.Override
+    public final <Other>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062 child(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Sequence<? extends Other> others) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062<Other>($reified$Other, others);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.SBug2062.class, $reified$Element);
+    }
+}

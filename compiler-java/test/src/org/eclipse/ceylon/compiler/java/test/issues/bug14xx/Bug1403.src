@@ -1,0 +1,65 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class coalesce_ {
+    
+    private coalesce_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{Element&ceylon.language::Object*}")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static <Element>.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> coalesce(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.org.eclipse.ceylon.compiler.java.metadata.Name("values")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("{Element*}")
+    @.ceylon.language.DocAnnotation$annotation$(description = "The values, some of which may be null.")
+    final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> values) {
+        return (.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+class Bug1403 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1403() {
+        super();
+    }
+    
+    Bug1403(final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403.class);
+}
+final class bug1403_ {
+    
+    private bug1403_() {
+    }
+    
+    static void bug1403() {
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$0$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance(""));
+            }
+            returning .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.coalesce_.<.ceylon.language.String>coalesce(arg$0$reified$0, arg$0$0);
+        ).sequence())));
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("")).sequence())));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance(""));
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, it.sequence())));
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}))));
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)seq)));
+    }
+}

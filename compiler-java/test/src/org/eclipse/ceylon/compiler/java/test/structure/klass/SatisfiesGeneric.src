@@ -1,0 +1,21 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+interface SatisfiesGeneric_Foo<T> {
+}
+interface SatisfiesGeneric_Bar<T> {
+}
+interface SatisfiesGeneric_Baz<T> {
+}
+interface SatisfiesGeneric<X, Y, Z> {
+}
+class SatisfiesGenericImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric<.org.eclipse.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .org.eclipse.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .org.eclipse.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>>, .java.io.Serializable {
+    
+    SatisfiesGenericImpl() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.SatisfiesGenericImpl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.SatisfiesGenericImpl.class);
+}

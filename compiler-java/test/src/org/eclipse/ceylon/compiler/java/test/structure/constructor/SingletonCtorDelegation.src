@@ -1,0 +1,244 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+class SingletonCtorDelegation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected SingletonCtorDelegation() {
+        super();
+        this.x = 0.0;
+        this.y = 0.0;
+    }
+    private final double x;
+    
+    public final double getX() {
+        return this.x;
+    }
+    private final double y;
+    
+    public final double getY() {
+        return this.y;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_ cartesian$delegation$_ = null;
+    
+    private static final class cartesian$delegation$_ {
+        
+        cartesian$delegation$_() {
+        }
+    }
+    
+    private SingletonCtorDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_ $name$, final double x$param$, final double y$param$) {
+        this.x = x$param$;
+        this.y = y$param$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian_ cartesian_ = null;
+    
+    public static final class cartesian_ {
+        
+        cartesian_() {
+        }
+    }
+    
+    public SingletonCtorDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian_ $name$, final double x$param$, final double y$param$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_, x$param$, y$param$);
+    }
+    
+    private static final class origin_ {
+        
+        origin_() {
+        }
+    }
+    
+    private SingletonCtorDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_, 0.0, 0.0);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation origin;
+    static {
+        origin = new SingletonCtorDelegation((.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getSingletonCtorDelegation$origin() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin;
+    }
+    
+    private static final class oneone_ {
+        
+        oneone_() {
+        }
+    }
+    
+    private SingletonCtorDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_, 1.0, 1.0);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation oneone;
+    static {
+        oneone = new SingletonCtorDelegation((.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getSingletonCtorDelegation$oneone() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == oneone) {
+            $name$ = "getSingletonCtorDelegation$oneone";
+        } else if (this == origin) {
+            $name$ = "getSingletonCtorDelegation$origin";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.class, $name$);
+    }
+}
+class SingletonCtorAbstractDelegation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected SingletonCtorAbstractDelegation() {
+        super();
+        this.x = 0.0;
+        this.y = 0.0;
+    }
+    private final double x;
+    
+    public final double getX() {
+        return this.x;
+    }
+    private final double y;
+    
+    public final double getY() {
+        return this.y;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_ point_ = null;
+    
+    private static final class point_ {
+        
+        point_() {
+        }
+    }
+    
+    private SingletonCtorAbstractDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_ $name$, final double x$param$, final double y$param$) {
+        this.x = x$param$;
+        this.y = y$param$;
+    }
+    
+    private static final class origin_ {
+        
+        origin_() {
+        }
+    }
+    
+    private SingletonCtorAbstractDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_, 0.0, 0.0);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation origin;
+    static {
+        origin = new SingletonCtorAbstractDelegation((.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getSingletonCtorAbstractDelegation$origin() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin;
+    }
+    
+    private static final class oneone_ {
+        
+        oneone_() {
+        }
+    }
+    
+    private SingletonCtorAbstractDelegation(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_, 1.0, 1.0);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation oneone;
+    static {
+        oneone = new SingletonCtorAbstractDelegation((.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getSingletonCtorAbstractDelegation$oneone() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == oneone) {
+            $name$ = "getSingletonCtorAbstractDelegation$oneone";
+        } else if (this == origin) {
+            $name$ = "getSingletonCtorAbstractDelegation$origin";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class singletonCtorDelegation_ {
+    
+    private singletonCtorDelegation_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void singletonCtorDelegation() {
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation lhs$0 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation rhs$1 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin();
+        if (lhs$0.equals(rhs$1)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.origin == SingletonCtorDelegation.origin") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
+        }
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation lhs$2 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation rhs$3 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone();
+        if (lhs$2.equals(rhs$3)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.oneone == SingletonCtorDelegation.oneone") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
+        }
+        double lhs$4 = 1.0;
+        double rhs$5 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getX();
+        if (lhs$4 == rhs$5) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.x") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$4), .ceylon.language.Float.instance(rhs$5)));
+        }
+        double lhs$6 = 1.0;
+        double rhs$7 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getY();
+        if (lhs$6 == rhs$7) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.y") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$6), .ceylon.language.Float.instance(rhs$7)));
+        }
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation lhs$8 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation rhs$9 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin();
+        if (lhs$8.equals(rhs$9)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.origin == SingletonCtorAbstractDelegation.origin") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
+        }
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation lhs$10 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation rhs$11 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone();
+        if (lhs$10.equals(rhs$11)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.oneone == SingletonCtorAbstractDelegation.oneone") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$10, rhs$11));
+        }
+        double lhs$12 = 1.0;
+        double rhs$13 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getX();
+        if (lhs$12 == rhs$13) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.x") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$12), .ceylon.language.Float.instance(rhs$13)));
+        }
+        double lhs$14 = 1.0;
+        double rhs$15 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getY();
+        if (lhs$14 == rhs$15) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.y") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$14), .ceylon.language.Float.instance(rhs$15)));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.singletonCtorDelegation_.singletonCtorDelegation();
+    }
+}

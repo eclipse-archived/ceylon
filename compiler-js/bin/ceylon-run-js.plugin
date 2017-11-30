@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon run-js" tool
+summary=Executes a Ceylon program on Node.js
+module=org.eclipse.ceylon.compiler.js/@ceylon-version@
+class=org.eclipse.ceylon.compiler.js.CeylonRunJsTool
+

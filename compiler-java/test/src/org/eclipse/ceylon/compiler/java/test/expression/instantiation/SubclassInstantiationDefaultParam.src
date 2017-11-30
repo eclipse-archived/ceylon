@@ -1,0 +1,40 @@
+package org.eclipse.ceylon.compiler.java.test.expression.instantiation;
+
+class SubclassInstantiationDefaultParam implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SubclassInstantiationDefaultParam() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$name$0 = .org.eclipse.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$default$name();
+                this($ceylontmp$name$0);
+            }
+            returning null;
+        );
+    }
+    
+    SubclassInstantiationDefaultParam(final .java.lang.String name) {
+    }
+    
+    public static .java.lang.String $default$name() {
+        return "tom";
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.class);
+}
+class SubclassInstantiationDefaultParamSub extends .org.eclipse.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam {
+    
+    SubclassInstantiationDefaultParamSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.class);
+}

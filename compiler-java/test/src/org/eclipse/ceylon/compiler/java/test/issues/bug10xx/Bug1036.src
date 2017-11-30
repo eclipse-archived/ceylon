@@ -1,0 +1,159 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug10xx;
+
+interface Scalable<T, S extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S>> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<T, S> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl();
+    
+    public abstract S scaleUp(final T t);
+    
+    public abstract S scaleDown(final T t);
+}
+final class Scalable$impl<T, S extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S>> {
+    
+    Scalable$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> $this) {
+        this.$reifiedT = $reifiedT;
+        this.$reifiedS = $reifiedS;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> $this;
+    
+    public void $refine(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS) {
+        this.$reifiedS = $reifiedS;
+        this.$reifiedT = $reifiedT;
+    }
+}
+interface Numeric<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric<T>> extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<T, T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$impl();
+    
+    public abstract T times(final T t);
+    
+    public abstract T divided(final T t);
+    
+    @.java.lang.Override
+    public T scaleUp(final T t);
+    
+    @.java.lang.Override
+    public T scaleDown(final T t);
+}
+final class Numeric$impl<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric<T>> {
+    
+    Numeric$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric<T> $this) {
+        this.$reifiedT = $reifiedT;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric<T> $this;
+    
+    public void $refine(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+    
+    public T scaleUp(final T t) {
+        return t.times((T)$this);
+    }
+    
+    public T scaleDown(final T t) {
+        return $this.divided(t);
+    }
+}
+final class scale_ {
+    
+    private scale_() {
+    }
+    
+    static <T, S extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S>>S scale(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final T x, final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> y) {
+        return y.scaleUp(x);
+    }
+}
+abstract class Vector implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector> {
+    
+    Vector() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector>(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector.$TypeDescriptor, this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector.$TypeDescriptor;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector.class);
+}
+abstract class Real implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real>, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<.java.lang.Object, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real> {
+    
+    Real() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this = new .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real>(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, this);
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real>(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, (.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, ? extends .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real>)(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable)this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this;
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.class);
+}
+abstract class Int implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int> {
+    
+    Int() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this = new .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int>(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, this);
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int>(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this;
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int scaleUp(final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int t) {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this.scaleUp(t);
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int scaleDown(final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int t) {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Numeric$this.scaleDown(t);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int> $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.class);
+}
+final class bug1036_ {
+    
+    private bug1036_() {
+    }
+    
+    static void bug1036(final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real real, final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector vector, final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int int) {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector vectorScaledUp = .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.scale_.<.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector>scale(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Vector.$TypeDescriptor, real, vector);
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real realProduct = (.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real).org.eclipse.ceylon.compiler.java.test.issues.bug10xx.scale_.scale(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor), .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, real, (.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable)real);
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real realScaledUp = (.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real).org.eclipse.ceylon.compiler.java.test.issues.bug10xx.scale_.scale(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor), .org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, int, (.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.Scalable)real);
+    }
+}

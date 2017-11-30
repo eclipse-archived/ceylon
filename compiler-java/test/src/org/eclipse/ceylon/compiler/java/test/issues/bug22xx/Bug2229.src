@@ -1,0 +1,42 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2229_ {
+    
+    private bug2229_() {
+    }
+    
+    public static void bug2229() {
+        
+        final class bar_ implements .java.io.Serializable {
+            
+            private bar_() {
+            }
+            
+            void bar() {
+                
+                class Baz implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Baz() {
+                        i = 42L;
+                    }
+                    private final long i;
+                    
+                    public final long getI() {
+                        return this.i;
+                    }
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2229_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1bar")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Baz.class));
+                    }
+                }
+            }
+        }
+        final bar_ bar = new bar_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2229_.bug2229();
+    }
+}

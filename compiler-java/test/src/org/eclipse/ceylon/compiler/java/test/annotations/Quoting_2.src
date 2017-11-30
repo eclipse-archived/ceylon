@@ -1,0 +1,24 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.test.annotations.Quoting$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.Quoting$annotation$(
+                string = "",
+                $toString = "",
+                hash = -1L,
+                $hashCode = 0L),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.Quoting$annotation$(
+                string = "",
+                $toString = "",
+                hash = -2L,
+                $hashCode = 0L)})
+class Quoting_callsite implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Quoting_callsite() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Quoting_callsite.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Quoting_callsite.class);
+}

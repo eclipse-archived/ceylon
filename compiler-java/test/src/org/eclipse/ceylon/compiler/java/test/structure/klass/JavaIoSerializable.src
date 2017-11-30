@@ -1,0 +1,717 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(
+        identifiable = false,
+        basic = false,
+        extendsType = "ceylon.language::Object")
+class JavaIoSerializableObject extends .java.lang.Object implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaIoSerializableObject() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final boolean equals(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return false;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = 0L;
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableObject.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableObject.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class
+class JavaIoSerializableBasic extends .java.lang.Object implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaIoSerializableBasic() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableBasic.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableBasic.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("javaIoSerializableObject")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+@.org.eclipse.ceylon.compiler.java.metadata.Class
+final class javaIoSerializableObject_ extends .java.lang.Object implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private javaIoSerializableObject_() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_();
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::javaIoSerializableObject")
+    static .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableObject\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("javaIoSerializableBasic")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+@.org.eclipse.ceylon.compiler.java.metadata.Class
+final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private javaIoSerializableBasic_() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_();
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::javaIoSerializableBasic")
+    static .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableBasic\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class JavaIoSerializableGeneric<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaIoSerializableGeneric(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableGeneric.class, $reified$T);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface JavaIoSerializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$JavaIoSerializable$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public .java.lang.Object m();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class JavaIoSerializable$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    JavaIoSerializable$impl(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object m() {
+        return null;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::JavaIoSerializable"})
+class JavaIoSerializableMixin implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable, .java.io.Serializable {
+    
+    JavaIoSerializableMixin() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$JavaIoSerializable$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable$impl(this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$JavaIoSerializable$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializable$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$JavaIoSerializable$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$JavaIoSerializable$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object m() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$JavaIoSerializable$this$.m();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableMixin.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableMixin.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class JavaIoSerializableCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public JavaIoSerializableCtors() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("foo")
+    private static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableCtors(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.foo_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors foo;
+    static {
+        foo = new JavaIoSerializableCtors((.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.foo_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$foo() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.foo;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("bar")
+    private static final class bar_ {
+        
+        bar_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("bar")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableCtors(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.bar_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors bar;
+    static {
+        bar = new JavaIoSerializableCtors((.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.bar_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.bar")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("bar")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$bar() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.bar;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getJavaIoSerializableCtors$bar";
+        } else if (this == foo) {
+            $name$ = "getJavaIoSerializableCtors$foo";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class JavaIoSerializableValueCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("foo")
+    private static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableValueCtors(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.foo_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors foo;
+    static {
+        foo = new JavaIoSerializableValueCtors((.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.foo_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::JavaIoSerializableValueCtors.foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$foo() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.foo;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("bar")
+    private static final class bar_ {
+        
+        bar_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("bar")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableValueCtors(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.bar_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors bar;
+    static {
+        bar = new JavaIoSerializableValueCtors((.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.bar_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::JavaIoSerializableValueCtors.bar")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("bar")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$bar() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.bar;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getJavaIoSerializableValueCtors$bar";
+        } else if (this == foo) {
+            $name$ = "getJavaIoSerializableValueCtors$foo";
+        } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_.class)})
+class Outer implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Outer() {
+        this.javaIoSerializableObject = null;
+    }
+    private transient .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ javaIoSerializableObject;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("javaIoSerializableObject")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Object
+    @.org.eclipse.ceylon.compiler.java.metadata.Class
+    public final class javaIoSerializableObject_ extends .java.lang.Object implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private javaIoSerializableObject_() {
+            super();
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getJavaIoSerializableObject";
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.this, .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.class, $name$);
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_.class));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::Outer.javaIoSerializableObject")
+    public final .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ getJavaIoSerializableObject() {
+        if (javaIoSerializableObject == null) javaIoSerializableObject = new .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_();
+        return javaIoSerializableObject;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("foo")
+    static final class JavaIoSerializableValueCtors$foo {
+        
+        JavaIoSerializableValueCtors$foo() {
+        }
+    }
+    private transient JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$foo = null;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::Outer.JavaIoSerializableValueCtors.foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$foo() {
+        if ($instance$JavaIoSerializableValueCtors$foo == null) $instance$JavaIoSerializableValueCtors$foo = new JavaIoSerializableValueCtors((.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors$foo)null);
+        return $instance$JavaIoSerializableValueCtors$foo;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("bar")
+    static final class JavaIoSerializableValueCtors$bar {
+        
+        JavaIoSerializableValueCtors$bar() {
+        }
+    }
+    private transient JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$bar = null;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::Outer.JavaIoSerializableValueCtors.bar")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("bar")
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$bar() {
+        if ($instance$JavaIoSerializableValueCtors$bar == null) $instance$JavaIoSerializableValueCtors$bar = new JavaIoSerializableValueCtors((.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors$bar)null);
+        return $instance$JavaIoSerializableValueCtors$bar;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+    public class JavaIoSerializableValueCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+        @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+        private JavaIoSerializableValueCtors(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors$foo $name$) {
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("bar")
+        @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+        private JavaIoSerializableValueCtors(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors$bar $name$) {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors.class));
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$JavaIoSerializableValueCtors$bar) {
+                $name$ = "getJavaIoSerializableValueCtors$bar";
+            } else if (this == $instance$JavaIoSerializableValueCtors$foo) {
+                $name$ = "getJavaIoSerializableValueCtors$foo";
+            } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.this, .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.class, $name$);
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Outer.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("javaIoSerializableQuoting")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+final class javaIoSerializableQuoting_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private javaIoSerializableQuoting_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.class);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void $readResolve() {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_();
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::javaIoSerializableQuoting")
+    static .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableQuoting\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class JavaIoSerializableQuoting implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void $writeReplace() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
+    private static final class val_ {
+        
+        val_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableQuoting(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.val_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting val;
+    static {
+        val = new JavaIoSerializableQuoting((.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.val_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::JavaIoSerializableQuoting.val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting getJavaIoSerializableQuoting$val() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.val;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getJavaIoSerializableQuoting$val";
+        } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class JavaIoSerializableNoQuoting implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaIoSerializableNoQuoting() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void readResolve() {
+        .org.eclipse.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.get_().$readResolve();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void writeReplace() {
+        .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.getJavaIoSerializableQuoting$val().$writeReplace();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableNoQuoting.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.JavaIoSerializableNoQuoting.class);
+}

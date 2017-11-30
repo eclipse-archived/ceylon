@@ -1,0 +1,46 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+class WithCallableParameter1 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected WithCallableParameter1() {
+        super();
+        this.param = null;
+    }
+    
+    WithCallableParameter1(final .ceylon.language.Callable<? extends .java.lang.Object> param) {
+        this.param = param;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> param;
+    
+    public final void param(final .java.lang.String param) {
+        this.param.$call$(.ceylon.language.String.instance(param));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.WithCallableParameter1.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.WithCallableParameter1.class);
+}
+class WithCallableParameter2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected WithCallableParameter2() {
+        super();
+        this.fun = null;
+    }
+    
+    WithCallableParameter2(final .ceylon.language.Callable<? extends .java.lang.Object> fun) {
+        this.fun = fun;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> fun;
+    
+    public final void fun(final .java.lang.String param) {
+        fun.$call$(.ceylon.language.String.instance(param));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.WithCallableParameter2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.WithCallableParameter2.class);
+}

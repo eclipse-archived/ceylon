@@ -1,0 +1,49 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+class Bug843_1<Element, Rest> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug843_1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$Rest = $reified$Rest;
+    }
+    
+    Bug843_1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .java.lang.Object rest) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Rest = $reified$Rest;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug843_1.class, $reified$Element, $reified$Rest);
+    }
+}
+class Bug843_2<Rest> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug843_2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
+        super();
+        this.$reified$Rest = $reified$Rest;
+    }
+    
+    Bug843_2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .java.lang.Object rest) {
+        this.$reified$Rest = $reified$Rest;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug843_2.class, $reified$Rest);
+    }
+}
+final class bug843_test_ {
+    
+    private bug843_test_() {
+    }
+    
+    static void bug843_test() {
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
+    }
+}

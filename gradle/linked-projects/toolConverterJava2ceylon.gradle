@@ -1,0 +1,12 @@
+if(!project.properties.RUNNING_ANT_BUILD) {
+    ext {
+        githubRepoName = 'ceylon.tool.converter.java2ceylon'
+        forceRepoIndexAnt = '2.1.2'
+    }
+
+    apply from : 'linked-project.gradle'
+    invokeAntBuild.tasks = [ 'antPublish','antIde-quick']
+
+} else {
+    apply from : 'ant-wrapper.gradle'
+}

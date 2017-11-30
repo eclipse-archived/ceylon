@@ -1,0 +1,83 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug57xx;
+
+public interface Bug5785A {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl $org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested Nested$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor $name$);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A.class);
+}
+public final class Bug5785A$impl implements .java.io.Serializable {
+    
+    public Bug5785A$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A $this;
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested Nested$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor $name$) {
+        return new Nested($name$);
+    }
+    
+    public static final class Nested$ctor {
+        
+        Nested$ctor() {
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor Nested$ctor = null;
+    
+    public class Nested implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Nested(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor $name$) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested.class));
+        }
+    }
+    
+    private void f$priv$() {
+        $this.Nested$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor);
+    }
+}
+public class Bug5785B implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A, .java.io.Serializable {
+    
+    public Bug5785B() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl $org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl $org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$this$;
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested Nested$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor $name$) {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$this$.Nested$new$($name$);
+    }
+    
+    public final void m() {
+        $org$eclipse$ceylon$compiler$java$test$issues$bug57xx$Bug5785A$this$.Nested$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785B();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785B.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785B.class);
+}
+final class bug5785f_ {
+    
+    private bug5785f_() {
+    }
+    
+    static void bug5785f(final .org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A i) {
+        i.Nested$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug57xx.Bug5785A$impl.Nested$ctor);
+    }
+}

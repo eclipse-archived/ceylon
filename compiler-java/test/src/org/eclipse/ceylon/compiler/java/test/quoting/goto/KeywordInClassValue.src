@@ -1,0 +1,45 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInClassValue implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KeywordInClassValue() {
+        this.$goto = "";
+        this.$abstract = "";
+        final .java.lang.String $volatile = "";
+        this.$implements = "";
+    }
+    private final .java.lang.String $goto;
+    
+    public final .java.lang.String getGoto() {
+        return this.$goto;
+    }
+    private .java.lang.String $abstract;
+    
+    public final .java.lang.String getAbstract() {
+        return this.$abstract;
+    }
+    
+    public final void setAbstract(final .java.lang.String $abstract) {
+        this.$abstract = $abstract;
+    }
+    private .java.lang.String $implements;
+    
+    private final .java.lang.String getImplements$priv$() {
+        return this.$implements;
+    }
+    
+    private final void setImplements$priv$(final .java.lang.String $implements) {
+        this.$implements = $implements;
+    }
+    
+    public final void m() {
+        setAbstract("");
+        setImplements$priv$("");
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassValue.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassValue.class);
+}

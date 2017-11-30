@@ -1,0 +1,70 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug09xx;
+
+public interface Bug965_Interface {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$impl();
+    
+    public boolean $isFoo();
+    
+    public boolean $getFoo();
+    
+    public boolean foo();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface.class);
+}
+public final class Bug965_Interface$impl implements .java.io.Serializable {
+    
+    public Bug965_Interface$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface $this;
+    
+    public boolean $isFoo() {
+        return false;
+    }
+    
+    public boolean $getFoo() {
+        return false;
+    }
+    
+    public boolean foo() {
+        return false;
+    }
+}
+public class Bug965_Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface, .java.io.Serializable {
+    
+    public Bug965_Class() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean $isFoo() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean $getFoo() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean foo() {
+        return true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.class);
+}

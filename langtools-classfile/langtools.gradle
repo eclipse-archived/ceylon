@@ -1,0 +1,14 @@
+apply plugin : CeylonCommonBuildProperties
+requiresCBP 'ceylon.classfile.dir'
+
+ext {
+    ceylonModuleName = 'langtools.classfile'
+    ceylonPublishModuleName = 'classfile'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+
+dependencies {
+    compile project(':common')
+}

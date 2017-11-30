@@ -1,0 +1,135 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug64xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface Bug6404I<T> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object foo();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface Bug6404Gettable<T> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>")
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> get();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_0_"})
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug64xx::Bug6404Gettable<T>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug6404C<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404Gettable<T>, .java.io.Serializable {
+    
+    Bug6404C(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>")
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> get() {
+        return (
+            let
+            {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.org.eclipse.ceylon.compiler.java.metadata.Object
+                @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>"})
+                class anonymous_0_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> {
+                    
+                    private anonymous_0_() {
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.common.Nullable
+                    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+                            value = "ceylon.language::Anything",
+                            declaredVoid = true)
+                    public final .java.lang.Object foo() {
+                        anonymous_0_ is$0 = this;
+                        if (is$0 instanceof .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I && .org.eclipse.ceylon.compiler.java.Util.isReified(is$0, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, $reified$T))) {
+                        } else {
+                            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "this is Bug6404I<T>") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, $reified$T), is$0));
+                        }
+                        return null;
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404C.class, .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404C.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("get")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404C.class, $reified$T);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug6404_ {
+    
+    private bug6404_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug6404() {
+        .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<.ceylon.language.String> is$1 = new .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get();
+        if (.org.eclipse.ceylon.compiler.java.Util.isReified(is$1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, .ceylon.language.String.$TypeDescriptor$))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "Bug6404C<String>().get() is Bug6404I<String>") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, .ceylon.language.String.$TypeDescriptor$), is$1));
+        }
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get().foo();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6404_.bug6404();
+    }
+}

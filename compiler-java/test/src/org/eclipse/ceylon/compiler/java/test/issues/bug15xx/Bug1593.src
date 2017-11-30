@@ -1,0 +1,72 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1593_noArguments_ {
+    
+    private bug1593_noArguments_() {
+    }
+    
+    static void bug1593_noArguments() {
+    }
+}
+final class bug1593_anything_ {
+    
+    private bug1593_anything_() {
+    }
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = (
+                let
+                {
+                    .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_noArguments_.bug1593_noArguments();
+                }
+                returning null;
+            );
+            .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$$object$ = false;
+        }
+    }
+    
+    public static .java.lang.Object get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1593_anything\' before it was set");
+        }
+    }
+}
+final class bug1593_empty_ {
+    
+    private bug1593_empty_() {
+    }
+    private static final .ceylon.language.Empty $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = .ceylon.language.empty_.get_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$$object$ = false;
+        }
+    }
+    
+    public static .ceylon.language.Empty get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1593_empty\' before it was set");
+        }
+    }
+}

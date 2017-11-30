@@ -1,0 +1,33 @@
+import org.eclipse.ceylon.model.loader.OsgiVersion
+
+apply plugin : CeylonCommonBuildProperties
+
+ext {
+    ceylonModuleName = 'model'
+    dynamicImportsValue = [
+        "ceylon.language" : "ceylon.language",
+        "org.eclipse.ceylon.compiler.java" : "org.eclipse.ceylon.compiler"]
+            .collectEntries { pkg , mod ->
+            [ ("${pkg}.*") : OsgiVersion.fromCeylonVersion(cbp."module.${mod}.version")]
+        }
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':langtools-classfile')
+}
+
+jar {
+    ceylon {
+        excludedModuleNames 'ceylon.language'
+        importJavaxModel true
+        dynamicImports dynamicImportsValue
+    }
+}
+
+['common','langtools-classfile'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+

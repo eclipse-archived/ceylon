@@ -1,0 +1,96 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface Repeatable$annotation$ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface Repeatable$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::Repeatable,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class Repeatable implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Repeatable(.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable$annotation$ anno) {
+        this();
+    }
+    
+    Repeatable() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.class)
+final class repeatable_ {
+    
+    private repeatable_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::Repeatable")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable repeatable() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable$annotation$,
+        @.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable$annotation$})
+class RepeatableUse implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RepeatableUse() {
+        .ceylon.language.print_.print(.ceylon.language.meta.sequencedAnnotations_.<.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable, .ceylon.language.meta.declaration.ClassDeclaration>sequencedAnnotations(.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, (.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.$TypeDescriptor$), (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.annotations.RepeatableUse.class)));
+        long lhs$0 = ((.ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable>)(.ceylon.language.Sequential).ceylon.language.meta.sequencedAnnotations_.<.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable, .ceylon.language.meta.declaration.ClassDeclaration>sequencedAnnotations(.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, (.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.annotations.Repeatable, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.annotations.Repeatable.$TypeDescriptor$), (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.annotations.RepeatableUse.class))).getSize();
+        long rhs$1 = 2L;
+        if (lhs$0 == rhs$1) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "sequencedAnnotations(`Repeatable`, `class RepeatableUse`).size == 2") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.RepeatableUse.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.RepeatableUse.class);
+}

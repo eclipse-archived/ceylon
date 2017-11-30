@@ -1,0 +1,24 @@
+All tests are in the "test-src" folder, organised by categories:
+
+- Misc
+- Structure (classes, methods)
+- Statements (statements, expressions)
+
+Every test class should extend CompilerTest, which defines two useful
+methods:
+
+- compareWithJavaSource(String testName) which compiles Ceylon into its intermediate
+  Java representation and compares it to expected Java source.
+- compileAndRun(String ceylonSource, String mainMethod) which compiles Ceylon and runs
+  the given ceylon main method.
+
+Some tests currently fail, which means you can start by fixing the compiler to support 
+those tests. Lots of tests are missing, and you can add them, just make sure you write
+a minimal test case that does not depend on more than the one feature you are testing.
+This can be tricky, but it helps because if you have to implement X features to make
+a test run you will likely get lost in the process.
+
+When you have written a short Ceylon source, add the test call to the proper JUnit test
+class (ex: StructureTest), run the test and see in the console what the current output
+from the compiler (the Java intermediate output) is, and see if this looks correct. If
+it needs correcting, correct it and save it as reference source.

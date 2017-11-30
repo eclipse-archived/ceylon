@@ -1,0 +1,27 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+public abstract class UninitializedMethod implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public UninitializedMethod() {
+        
+        final class t_ implements .java.io.Serializable {
+            
+            private t_() {
+                this.t$priv$ = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> t$priv$;
+            
+            private final long t$priv$() {
+                if (t$priv$ == null) throw new .org.eclipse.ceylon.compiler.java.language.UninitializedMethodError(); else return t$priv$.$call$().longValue();
+            }
+        }
+        final t_ t = new t_();
+        .ceylon.language.print_.print(.ceylon.language.String.instance("hello"));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.UninitializedMethod.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.UninitializedMethod.class);
+}

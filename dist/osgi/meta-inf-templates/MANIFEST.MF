@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ceylon Distribution Bundle
+Bundle-SymbolicName: org.eclipse.ceylon.dist
+Bundle-Version: @ceylon-version@-qualifier
+Eclipse-BundleShape: dir
+Bundle-Vendor: RedHat
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.7
+ ))"
+Bundle-ClassPath: .
+Export-Package: org.eclipse.ceylon.dist.osgi
+Bundle-ActivationPolicy: lazy;exclude:="*"
+Import-Package: org.osgi.framework;version="1.6",
+ org.osgi.framework.wiring;version="1.0"
+Require-Bundle: ceylon.bootstrap;bundle-version="@ceylon-version@",
+ ceylon.language;bundle-version="@ceylon-version@",
+ org.eclipse.ceylon.common;bundle-version="@ceylon-version@",
+ org.eclipse.ceylon.model;bundle-version="@ceylon-version@",
+ org.eclipse.ceylon.langtools.classfile;bundle-version="@ceylon-version@",
+ org.eclipse.ceylon.module-resolver;bundle-version="@ceylon-version@"
+

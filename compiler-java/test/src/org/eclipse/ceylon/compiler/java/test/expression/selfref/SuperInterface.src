@@ -1,0 +1,153 @@
+package org.eclipse.ceylon.compiler.java.test.expression.selfref;
+
+interface SuperInterface {
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl();
+    
+    public long getI();
+    
+    public void setI(final long i);
+    
+    public long m();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface.class);
+}
+final class SuperInterface$impl implements .java.io.Serializable {
+    
+    SuperInterface$impl(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface $this;
+    
+    public final long getI() {
+        return 2L;
+    }
+    
+    public final void setI(final long i) {
+    }
+    
+    public long m() {
+        return 2L;
+    }
+}
+class SuperInterface_Sub implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface, .java.io.Serializable {
+    
+    SuperInterface_Sub() {
+        this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$ = new .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public final long getI() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI();
+    }
+    
+    @.java.lang.Override
+    public final void setI(final long i) {
+        $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI(i);
+    }
+    
+    @.java.lang.Override
+    public final long m() {
+        (
+            let
+            {
+                long $ceylontmp$opV$1 = $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI();
+                $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI($ceylontmp$opV$1 + 1);
+            }
+            returning $ceylontmp$opV$1;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$3 = $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + 1;
+                $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI($ceylontmp$opV$3);
+            }
+            returning $ceylontmp$opV$3;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$5 = $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + 1L;
+                $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI($ceylontmp$opV$5);
+            }
+            returning $ceylontmp$opV$5;
+        );
+        return $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.m();
+    }
+    
+    public final long m2() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.m();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return super.toString();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.class);
+}
+interface SuperInterface_SubInterface extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface {
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface_SubInterface$impl();
+    
+    @.java.lang.Override
+    public long m();
+    
+    public long m2();
+    
+    @.java.lang.Override
+    public .java.lang.String toString();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface.class);
+}
+final class SuperInterface_SubInterface$impl implements .java.io.Serializable {
+    
+    SuperInterface_SubInterface$impl(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface $this;
+    
+    public long m() {
+        (
+            let
+            {
+                long $ceylontmp$opV$7 = $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI();
+                $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmp$opV$7 + 1);
+            }
+            returning $ceylontmp$opV$7;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$9 = $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + 1;
+                $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmp$opV$9);
+            }
+            returning $ceylontmp$opV$9;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$11 = $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + 1L;
+                $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmp$opV$11);
+            }
+            returning $ceylontmp$opV$11;
+        );
+        return $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().m();
+    }
+    
+    public long m2() {
+        return $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + $this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().m();
+    }
+    
+    public final .java.lang.String toString() {
+        return super.toString();
+    }
+}

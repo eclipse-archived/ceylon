@@ -1,0 +1,305 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug18xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1$1Gee",
+        "2$1Gee"})
+class Bug1845 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1845() {
+        final .java.lang.Object bug1845_1 = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#4") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#4")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Gee")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Gee implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Gee() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1845.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class));
+                    }
+                }
+                return null;
+            }
+        };
+        final .java.lang.Object bug1845_2 = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#5") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#5")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Gee")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+                class Gee implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Gee() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1845.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class));
+                    }
+                }
+                return null;
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1845.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1845.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug1845_1")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Gee"})
+final class bug1845_1_ {
+    
+    private bug1845_1_() {
+    }
+    private static final .java.lang.Object $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+            @.org.eclipse.ceylon.compiler.java.metadata.Method
+            {
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                            major = 8,
+                            minor = 1)
+                    @.org.eclipse.ceylon.compiler.java.metadata.Name("Gee")
+                    @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(
+                            isPackageLocal = true,
+                            qualifier = "1bug1845_1$1")
+                    class Gee implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                        
+                        Gee() {
+                        }
+                        
+                        @.java.lang.Override
+                        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class);
+                        }
+                    }
+                    return null;
+                }
+            };
+            .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static .java.lang.Object get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1845_1\' before it was set");
+        }
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug1845_2")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Gee"})
+final class bug1845_2_ {
+    
+    private bug1845_2_() {
+    }
+    private static final .java.lang.Object $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1")
+            @.org.eclipse.ceylon.compiler.java.metadata.Method
+            {
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                            major = 8,
+                            minor = 1)
+                    @.org.eclipse.ceylon.compiler.java.metadata.Name("Gee")
+                    @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(
+                            isPackageLocal = true,
+                            qualifier = "1bug1845_2$1")
+                    class Gee implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                        
+                        Gee() {
+                        }
+                        
+                        @.java.lang.Override
+                        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class);
+                        }
+                    }
+                    return null;
+                }
+            };
+            .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static .java.lang.Object get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1845_2\' before it was set");
+        }
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug1845_3")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Gee"})
+final class bug1845_3_ {
+    
+    private bug1845_3_() {
+    }
+    
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.Object get_() {
+        return new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#2") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#2")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Gee")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1bug1845_3$1")
+                class Gee implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Gee() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(bug1845_3_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class));
+                    }
+                }
+                return null;
+            }
+        };
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug1845_4")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Gee"})
+final class bug1845_4_ {
+    
+    private bug1845_4_() {
+    }
+    
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.Object get_() {
+        return new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#3") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#3")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Gee")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Gee implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Gee() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(bug1845_4_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class));
+                    }
+                }
+                return null;
+            }
+        };
+    }
+}

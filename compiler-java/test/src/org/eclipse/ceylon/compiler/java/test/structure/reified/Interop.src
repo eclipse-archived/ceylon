@@ -1,0 +1,121 @@
+package org.eclipse.ceylon.compiler.java.test.structure.reified;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.reified::JavaInterface<Element>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.reified::JavaClass<Element>")
+class CeylonClass<Element> extends .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaInterface<Element> {
+    
+    CeylonClass(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {"ceylon.language::Object"},
+            caseTypes = {})})
+    public final <T>void foo() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.CeylonClass.class, $reified$Element);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.reified::JavaInterface<Element>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface CeylonInterface<Element> extends .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaInterface<Element> {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <T>void foo(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class reifiedInstantiateInterop_ {
+    
+    private reifiedInstantiateInterop_() {
+    }
+    
+    @.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+    static void reifiedInstantiateInterop() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .org.eclipse.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+        c.<.java.lang.Object>foo();
+        c.<.java.lang.Object>foo();
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> $instance$ = c;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.<.ceylon.language.Integer>foo();
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+        f.$call$();
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c2 = new .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>> constr = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.class, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "JavaClass<Integer>()", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> $call$() {
+                return new .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
+            }
+        };
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c3 = constr.$call$();
+        .org.eclipse.ceylon.compiler.java.test.structure.reified.foo_.<.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.StaticMember<.ceylon.language.Integer>>foo(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.StaticMember.class, .ceylon.language.Integer.$TypeDescriptor$)));
+        .org.eclipse.ceylon.compiler.java.test.structure.reified.foo_.<.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.StaticMember<.ceylon.language.Integer>>foo(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.StaticMember.class, .ceylon.language.Integer.$TypeDescriptor$)));
+        .org.eclipse.ceylon.compiler.java.test.structure.reified.foo_.<.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.StaticMember<.ceylon.language.Integer>>foo(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.StaticMember.class, .ceylon.language.Integer.$TypeDescriptor$)));
+        .org.eclipse.ceylon.compiler.java.test.structure.reified.foo_.<.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.String>.Member<.ceylon.language.Integer>>foo(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.class, .ceylon.language.String.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.JavaClass.Member.class, .ceylon.language.Integer.$TypeDescriptor$)));
+    }
+}

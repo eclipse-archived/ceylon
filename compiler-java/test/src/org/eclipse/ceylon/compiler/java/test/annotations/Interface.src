@@ -1,0 +1,172 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public interface TopInterface {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.annotations.TopInterface$impl $org$eclipse$ceylon$compiler$java$test$annotations$TopInterface$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract long getTopFormalAttr();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public long getConcreteDefaultAttr();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract long topFormalMethod(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public long concreteDefaultMethod(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract long getTopFormalAttr2();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract long topFormalMethod2(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.TopInterface.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class TopInterface$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public TopInterface$impl(.org.eclipse.ceylon.compiler.java.test.annotations.TopInterface $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.annotations.TopInterface $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long getConcreteDefaultAttr() {
+        return 1L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public long concreteDefaultMethod(final long p1) {
+        return p1;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.annotations::TopInterface"})
+public interface Interface extends .org.eclipse.ceylon.compiler.java.test.annotations.TopInterface {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.annotations.Interface$impl $org$eclipse$ceylon$compiler$java$test$annotations$Interface$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public long getTopFormalAttr();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public long getConcreteAttr();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.java.lang.Override
+    public abstract long getConcreteDefaultAttr();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public long topFormalMethod(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract long formalMethod(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public long concreteMethod(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.java.lang.Override
+    public abstract long concreteDefaultMethod(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public long getTopFormalAttr2();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public long topFormalMethod2(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1);
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Interface.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class Interface$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Interface$impl(.org.eclipse.ceylon.compiler.java.test.annotations.Interface $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.annotations.Interface $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long getTopFormalAttr() {
+        return 1L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long getConcreteAttr() {
+        return 1L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public long topFormalMethod(final long p1) {
+        return p1;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public long concreteMethod(final long p1) {
+        return p1;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long getTopFormalAttr2() {
+        return 1L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public long topFormalMethod2(final long p1) {
+        return 1L;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Dynamic
+public interface DynamicInterface {
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.DynamicInterface.class);
+}

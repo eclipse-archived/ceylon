@@ -1,0 +1,59 @@
+package org.eclipse.ceylon.compiler.java.test.structure.nesting.iic;
+
+interface I$II<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$impl<? extends T, ? super X>.II$impl $org$eclipse$ceylon$compiler$java$test$structure$nesting$iic$I$impl$II$impl();
+}
+interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$impl<? extends T, ? super X> $org$eclipse$ceylon$compiler$java$test$structure$nesting$iic$I$impl();
+    
+    public abstract <U>T m1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b);
+    
+    public abstract <U>U m1$u(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b);
+    
+    public abstract <U>T m1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u);
+}
+final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .java.io.Serializable {
+    
+    I$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I<? extends T, ? super X> $this) {
+        this.$reified$T = $reified$T;
+        this.$reified$X = $reified$X;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I<? extends T, ? super X> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+        this.$reified$T = $reified$T;
+    }
+    
+    public final <U>U m1$u(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b) {
+        return null;
+    }
+    
+    final class II$impl implements .java.io.Serializable {
+        
+        II$impl(.org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$II<? extends T, ? super X> $this) {
+            this.$this = $this;
+        }
+        private final .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$II<? extends T, ? super X> $this;
+        
+        class IIC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            IIC() {
+            }
+            
+            private final T m2$priv$() {
+                return (T)(.java.lang.Object).org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$impl.this.$this.<.java.lang.Object>m1(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I.class, .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$impl.this.$reified$T, .org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$impl.this.$reified$X), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$II.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.iic.I$impl.II$impl.IIC.class));
+            }
+        }
+    }
+}

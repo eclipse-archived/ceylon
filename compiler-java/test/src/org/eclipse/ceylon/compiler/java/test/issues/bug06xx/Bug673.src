@@ -1,0 +1,114 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+public abstract class Bug673_Event implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug673_Event() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event.class);
+}
+public abstract class Bug673_GridEvent extends .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event {
+    
+    public Bug673_GridEvent() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridEvent.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridEvent.class);
+}
+public abstract class Bug673_StoreEvent extends .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event {
+    
+    public Bug673_StoreEvent() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_StoreEvent.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_StoreEvent.class);
+}
+public interface Bug673_EventObserver<Evento extends .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<Evento> $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$impl();
+    
+    public .java.lang.Object on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
+}
+public final class Bug673_EventObserver$impl<Evento extends .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> implements .java.io.Serializable {
+    
+    public Bug673_EventObserver$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Evento, .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<Evento> $this) {
+        this.$reified$Evento = $reified$Evento;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Evento;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<Evento> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Evento) {
+        this.$reified$Evento = $reified$Evento;
+    }
+    
+    public .java.lang.Object on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
+        return null;
+    }
+}
+public interface Bug673_GridBehavior extends .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$impl();
+    
+    @.java.lang.Override
+    public .java.lang.Object on(final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior.class);
+}
+public final class Bug673_GridBehavior$impl implements .java.io.Serializable {
+    
+    public Bug673_GridBehavior$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior $this;
+    
+    public .java.lang.Object on(final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+public class Bug673_PaisController implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior, .java.io.Serializable {
+    
+    public Bug673_PaisController() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl(this);
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_StoreEvent.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridEvent.$TypeDescriptor$), (.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver)this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object on(final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this$.on(event, action);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this$;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController.class);
+}

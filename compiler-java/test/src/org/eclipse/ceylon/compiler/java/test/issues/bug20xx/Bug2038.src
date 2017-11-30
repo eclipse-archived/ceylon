@@ -1,0 +1,27 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+public interface Bug2038<Element> {
+    
+    public abstract .java.lang.Object run(final .ceylon.language.List<? extends Element> x, final .ceylon.language.List<? extends .ceylon.language.String> y);
+}
+public class Bug2038Impl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2038<.java.lang.Object>, .java.io.Serializable {
+    
+    public Bug2038Impl() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object run(final .ceylon.language.List<? extends .java.lang.Object> x, final .ceylon.language.List<? extends .ceylon.language.String> y) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2038Impl();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2038Impl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2038Impl.class);
+}

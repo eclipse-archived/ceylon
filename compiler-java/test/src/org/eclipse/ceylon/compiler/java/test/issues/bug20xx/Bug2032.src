@@ -1,0 +1,80 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("Foo")
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(javaClassName = "Bar")})
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug2032"},
+        companionClassName = "1Foo$impl")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface bug2032$Foo_ {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object Foo$impl();
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    abstract .java.lang.Object Bar$new$();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"::bug2032$Foo_"})
+public final class bug2032_ {
+    
+    private bug2032_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2032() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        final class Foo$impl implements .java.io.Serializable {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            Foo$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_ $this) {
+                this.$this = $this;
+            }
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_ $this;
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.ceylon.language.FormalAnnotation$annotation$
+            @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                    klass = .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class,
+                    isStatic = false)
+            abstract class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                protected Bar() {
+                }
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo$impl.Bar.class));
+                }
+            }
+        }
+        if ((
+            let
+            {
+                .ceylon.language.meta.declaration.ClassWithInitializerDeclaration $ceylontmp$0 = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(Foo$impl.Bar.class);
+            }
+            returning ((.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)((.ceylon.language.meta.declaration.InterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)).<.ceylon.language.meta.declaration.NestableDeclaration>memberDeclarations(.ceylon.language.meta.declaration.NestableDeclaration.$TypeDescriptor$)).contains($ceylontmp$0);
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class Foo.Bar` in `interface Foo`.memberDeclarations<NestableDeclaration>()"));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.bug2032_.bug2032();
+    }
+}

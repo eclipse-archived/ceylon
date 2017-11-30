@@ -1,0 +1,1 @@
+shared variable Integer xInt = 2;

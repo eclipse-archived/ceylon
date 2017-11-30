@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon browse" tool
+summary=Open module documentation in the browser
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.browse.CeylonBrowseTool

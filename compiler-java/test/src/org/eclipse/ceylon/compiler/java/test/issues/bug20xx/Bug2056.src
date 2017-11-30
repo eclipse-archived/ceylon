@@ -1,0 +1,54 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Bug2056 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2056() {
+        .org.eclipse.ceylon.compiler.java.language.Getter<.ceylon.language.Callable<? extends .ceylon.language.String>> s$getter$_;
+        s$getter$_ = (
+            let
+            {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Attribute
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+                @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.language::Getter<ceylon.language::String()>"})
+                final class s$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.ceylon.language.Callable<? extends .ceylon.language.String>> {
+                    
+                    private s$getter$_() {
+                    }
+                    
+                    @.org.eclipse.ceylon.common.NonNull
+                    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
+                        return new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("s") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1)
+                        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+                        @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+                        @.org.eclipse.ceylon.compiler.java.metadata.Method
+                        {
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.String $call$() {
+                                return .ceylon.language.String.instance("");
+                            }
+                        };
+                    }
+                }
+            }
+            returning new s$getter$_();
+        );
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2056.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.Bug2056.class);
+}

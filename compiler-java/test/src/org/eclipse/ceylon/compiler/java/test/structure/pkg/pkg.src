@@ -1,0 +1,15 @@
+package org.eclipse.ceylon.compiler.java.test.structure.pkg;
+
+public final class pkg_ {
+    
+    private pkg_() {
+    }
+    
+    public static void pkg() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.pkg.pkg_.pkg();
+    }
+}

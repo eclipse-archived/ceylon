@@ -1,0 +1,38 @@
+package org.eclipse.ceylon.compiler.java.test.interop.access;
+
+class ExtendsDefaultAccessClass extends .org.eclipse.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ExtendsDefaultAccessClass() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.class);
+}
+class ExtendsDefaultAccessClass2 extends .org.eclipse.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ExtendsDefaultAccessClass2() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass2.class);
+}
+class ExtendsDefaultAccessClass3 extends .org.eclipse.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass3 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ExtendsDefaultAccessClass3() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass3.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass3.class);
+}

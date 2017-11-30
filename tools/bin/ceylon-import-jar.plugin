@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon import-jar" tool
+summary=Imports a jar file into a Ceylon module repository
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.importjar.CeylonImportJarTool

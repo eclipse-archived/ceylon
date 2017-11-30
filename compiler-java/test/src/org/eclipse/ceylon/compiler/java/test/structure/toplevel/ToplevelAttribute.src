@@ -1,0 +1,30 @@
+package org.eclipse.ceylon.compiler.java.test.structure.toplevel;
+
+final class topLevelAttribute_ {
+    
+    private topLevelAttribute_() {
+    }
+    private static final long $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAttribute\' before it was set");
+        }
+    }
+}

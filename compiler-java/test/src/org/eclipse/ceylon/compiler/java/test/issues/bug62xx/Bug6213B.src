@@ -1,0 +1,177 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug62xx;
+
+interface LLVMValue6213B {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B.class);
+}
+interface I646213B extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B.class);
+}
+interface Ptr6213B<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B> extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T> offset(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B amount);
+    
+    public abstract .java.lang.Object store(final T val);
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B store$off(final T val);
+    
+    public abstract .java.lang.Object store(final T val, final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off);
+}
+final class Ptr6213B$impl<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B> implements .java.io.Serializable {
+    
+    Ptr6213B$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T> offset(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B amount) {
+        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B store$off(final T val) {
+        return null;
+    }
+}
+interface LLVMFunction6213B$PointerImpl6213B<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B> extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.PointerImpl6213B$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$impl();
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B offset(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B amount);
+    
+    public .java.lang.Object store(final T val);
+    
+    @.java.lang.Override
+    public .java.lang.Object store(final T val, final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off);
+}
+class LLVMFunction6213B implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LLVMFunction6213B() {
+    }
+    
+    final class PointerImpl6213B$impl<T extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMValue6213B> implements .java.io.Serializable {
+        
+        PointerImpl6213B$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B$PointerImpl6213B<T> $this) {
+            this.$reified$T = $reified$T;
+            this.$this = $this;
+        }
+        private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B$PointerImpl6213B<T> $this;
+        
+        public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+            this.$reified$T = $reified$T;
+        }
+        
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B offset(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B amount) {
+            return (.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        }
+        
+        private .java.lang.Object store$canonical$(final T val, final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off) {
+            .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off$1;
+            if ((off$1 = off) != null) {
+                final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off$2 = off$1;
+                ((.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T>)(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B)$this.offset(off$2)).store((T)val);
+            }
+            return null;
+        }
+        
+        public .java.lang.Object store(final T val, final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off) {
+            return store$canonical$(val, off);
+        }
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> register() {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$regNameIn$4 = register$regNameIn();
+            }
+            returning register$canonical$($ceylontmp$regNameIn$4);
+        );
+    }
+    
+    public final .ceylon.language.String register$regNameIn() {
+        return null;
+    }
+    
+    private .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> register$canonical$(final .ceylon.language.String regNameIn) {
+        return (
+            let
+            {
+                
+                class anonymous_0_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B$PointerImpl6213B<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> {
+                    
+                    private anonymous_0_() {
+                        this.$org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.PointerImpl6213B$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B>(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B.$TypeDescriptor$, this);
+                        this.$org$eclipse$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B>(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B.$TypeDescriptor$, this);
+                    }
+                    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.PointerImpl6213B$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$this$;
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.PointerImpl6213B$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$impl() {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$this$;
+                    }
+                    
+                    @.java.lang.Override
+                    public final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B offset(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B amount) {
+                        return (.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B>)(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B)$org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$this$.offset(amount);
+                    }
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object store(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B val) {
+                        return (
+                            let
+                            {
+                                .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B $ceylontmp$off$3 = store$off(val);
+                            }
+                            returning store$canonical$(val, $ceylontmp$off$3);
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    public final .java.lang.Object store(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B val, final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off) {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$this$.store(val, off);
+                    }
+                    
+                    private .java.lang.Object store$canonical$(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B val, final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B off) {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$LLVMFunction6213B$PointerImpl6213B$this$.store(val, off);
+                    }
+                    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$this$;
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$impl() {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$this$;
+                    }
+                    
+                    @.java.lang.Override
+                    public final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B store$off(final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B val) {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$this$.store$off(val);
+                    }
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("register")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.I646213B> register(final .ceylon.language.String regNameIn) {
+        return register$canonical$(regNameIn);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213B.class);
+}

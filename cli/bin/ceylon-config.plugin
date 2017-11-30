@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon config" tool
+summary=Manages Ceylon configuration files
+module=org.eclipse.ceylon.cli/@ceylon-version@
+class=org.eclipse.ceylon.common.tools.config.CeylonConfigTool
+

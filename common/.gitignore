@@ -1,0 +1,7 @@
+/build/
+/target/
+/modules/
+.settings/
+/build
+*.iml
+user-build.properties

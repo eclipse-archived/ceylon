@@ -1,0 +1,3 @@
+org.eclipse.ceylon.common.tool.example.TestExampleTool
+org.eclipse.ceylon.common.tool.example.TestMinimumsTool
+org.eclipse.ceylon.common.tool.example.TestSubtoolTool

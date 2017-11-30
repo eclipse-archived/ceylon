@@ -1,0 +1,152 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class SerializableGenericClass<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    protected SerializableGenericClass(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this((.org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$)null, $reified$T);
+    }
+    
+    public SerializableGenericClass(final .org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.t = null;
+    }
+    
+    SerializableGenericClass(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
+        this.t = t;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final T t;
+    
+    public final T getT() {
+        return this.t;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class, $reified$T);
+    }
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "t")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableGenericClass.t": 
+            return this.t;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableGenericClass.t": 
+            .org.eclipse.ceylon.compiler.java.Util.setter(lookup, "t").invokeExact(this, (T)(T)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}
+class SerializableGenericSubclass extends .org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericClass<.ceylon.language.String> implements .org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    protected SerializableGenericSubclass() {
+        this((.org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$)null);
+    }
+    
+    public SerializableGenericSubclass(final .org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        super(ignored, .ceylon.language.String.$TypeDescriptor$);
+    }
+    
+    SerializableGenericSubclass(final .java.lang.String s) {
+        super(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass.class);
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            return super.$get$(reference);
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            super.$set$(reference, instance);
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}
+class SerializableGenericSubclass2<U> extends .org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericClass<U> implements .org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    protected SerializableGenericSubclass2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this((.org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$)null, $reified$U);
+    }
+    
+    public SerializableGenericSubclass2(final .org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        super(ignored, $reified$U);
+        this.$reified$U = $reified$U;
+    }
+    
+    SerializableGenericSubclass2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final U u) {
+        super($reified$U, u);
+        this.$reified$U = $reified$U;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableGenericSubclass2.class, $reified$U);
+    }
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            return super.$get$(reference);
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            super.$set$(reference, instance);
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

@@ -1,0 +1,93 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class Bug2299 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Bug2299() {
+        super();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$ $delegation$ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName(
+            delegation = true,
+            value = "")
+    private static final class $delegation$ {
+        
+        $delegation$() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private Bug2299(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$ $name$, @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s$param$) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public Bug2299(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s$param$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$, s$param$);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("_ROOT")
+    private static final class _ROOT_ {
+        
+        _ROOT_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("_ROOT")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private Bug2299(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299._ROOT_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$, "/");
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299 _ROOT;
+    static {
+        _ROOT = new Bug2299((.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299._ROOT_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.constructor::Bug2299._ROOT")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("_ROOT")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299 getBug2299$_ROOT() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299._ROOT;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == _ROOT) {
+            $name$ = "getBug2299$_ROOT";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2299.class, $name$);
+    }
+}

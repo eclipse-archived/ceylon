@@ -1,0 +1,62 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.TYPE})
+public @interface A$annotation$ {
+}
+public final class A implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation, .java.io.Serializable {
+    
+    public A(.org.eclipse.ceylon.compiler.java.test.annotations.A$annotation$ anno) {
+        this();
+    }
+    
+    public A() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.annotations.A();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.A.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.A$annotation$.class;
+    }
+}
+final class annos_ {
+    
+    private annos_() {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.annotations.A $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = (.org.eclipse.ceylon.compiler.java.test.annotations.A)(.java.lang.Object).ceylon.language.meta.annotations_.<.java.lang.annotation.Annotation, .org.eclipse.ceylon.compiler.java.test.annotations.A, .ceylon.language.Annotated>annotations(.org.eclipse.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$), (.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.annotations.A, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), (.ceylon.language.Annotated)(.java.lang.Object).ceylon.language.nothing_.get_());
+            .org.eclipse.ceylon.compiler.java.test.annotations.annos_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.annotations.annos_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.annotations.A get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.annos_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.annos_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annos\' before it was set");
+        }
+    }
+}

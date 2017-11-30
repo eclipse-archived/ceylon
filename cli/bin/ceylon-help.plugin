@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon help" tool
+summary=Displays help information about other Ceylon tools
+module=org.eclipse.ceylon.cli/@ceylon-version@
+class=org.eclipse.ceylon.tools.help.CeylonHelpTool

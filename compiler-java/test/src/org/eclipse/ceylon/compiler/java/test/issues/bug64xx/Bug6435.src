@@ -1,0 +1,77 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug64xx;
+
+final class bug6435toplevel_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.KeyedCorrespondenceMutator<.ceylon.language.Integer, .ceylon.language.Integer> {
+    
+    private bug6435toplevel_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.class);
+    
+    @.java.lang.Override
+    public final .java.lang.Object put(final .ceylon.language.Integer key, final .ceylon.language.Integer item) {
+        return null;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.$init$$object$ = false;
+        }
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6435toplevel\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.$TypeDescriptor$;
+    }
+}
+public final class bug6435_ {
+    
+    private bug6435_() {
+    }
+    
+    public static void bug6435() {
+        final .ceylon.language.KeyedCorrespondenceMutator<? super .ceylon.language.Integer, ? super .ceylon.language.Integer> local = .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.get_();
+        ((.ceylon.language.KeyedCorrespondenceMutator<? super .ceylon.language.Integer, ? super .ceylon.language.Integer>)(.ceylon.language.KeyedCorrespondenceMutator)local).put(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L));
+        final long ten = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$op$0 = .ceylon.language.Integer.instance(10L);
+                ((.ceylon.language.KeyedCorrespondenceMutator<? super .ceylon.language.Integer, ? super .ceylon.language.Integer>)(.ceylon.language.KeyedCorrespondenceMutator)local).put(.ceylon.language.Integer.instance(0L), $ceylontmp$op$0);
+            }
+            returning $ceylontmp$op$0;
+        ).longValue();
+        .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.get_().put(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(11L));
+        final long eleven = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$op$1 = .ceylon.language.Integer.instance(11L);
+                .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_.get_().put(.ceylon.language.Integer.instance(0L), $ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        ).longValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6435_.bug6435();
+    }
+}

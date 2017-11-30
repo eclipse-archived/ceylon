@@ -1,0 +1,44 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug12xx;
+
+public abstract class Bug1251X implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1251X() {
+    }
+    
+    public abstract <Type>Type refined(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type);
+    
+    public abstract <Type extends .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type);
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251X.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251X.class);
+}
+public class Bug1251A extends .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251X {
+    
+    public Bug1251A() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final <TypeRenamed>TypeRenamed refined(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TypeRenamed) {
+        return (TypeRenamed)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final <Type extends .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type) {
+        return (Type)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251A();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251A.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1251A.class);
+}

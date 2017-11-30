@@ -1,0 +1,48 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
+
+public abstract class Bug1682 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1682() {
+    }
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682.Formal Formal$new$();
+    
+    public abstract class Formal implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Formal() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682.Formal.class));
+        }
+    }
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682 Self$new$();
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682 Self$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public final class Self {
+        
+        private Self() {
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682 Alias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public final class Alias {
+        
+        private Alias() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1682.class);
+}

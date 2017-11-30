@@ -1,0 +1,19 @@
+<settings>
+<profiles>
+  <profile>
+     <id>foo</id>
+     <activation><activeByDefault>true</activeByDefault></activation>
+     <repositories>
+       <repository>
+         <id>spring</id>
+         <url>https://repo.spring.io/libs-milestone</url>
+         <releases><enabled>true</enabled></releases>
+         <snapshots><enabled>false</enabled></snapshots>
+       </repository>
+     </repositories>
+   </profile>
+</profiles>
+  <activeProfiles>
+    <activeProfile>foo</activeProfile>
+  </activeProfiles>
+</settings>

@@ -1,0 +1,22 @@
+# Build system
+build
+bin
+gensrc
+output
+out
+
+# ANTLR generated
+antlr/org/eclipse/ceylon/compiler/typechecker/treegen/*.java
+antlr/org/eclipse/ceylon/compiler/typechecker/treegen/*.tokens
+
+# IDEs
+.settings
+.idea
+*.iml
+
+# Documentation
+Ceylon Language Specification*.pdf
+
+# Misc
+test/temp
+test/play

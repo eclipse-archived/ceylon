@@ -1,0 +1,5 @@
+<overrides>
+ <artifact groupId="org.postgresql" artifactId="postgresql">
+    <add groupId="aopalliance" artifactId="aopalliance" version="1.0"/>
+ </artifact>
+</overrides>

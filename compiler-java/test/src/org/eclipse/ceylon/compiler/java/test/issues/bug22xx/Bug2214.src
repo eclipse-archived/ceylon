@@ -1,0 +1,129 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+interface OK$Top<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Top$impl<? extends T> $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public T getS();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public T m();
+}
+interface OK$A {
+}
+interface OK$B {
+}
+interface OK$Left extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Top<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B> {
+}
+interface OK$Middle<T> extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Top<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Middle$impl<? extends T> $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Middle$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    public T getS();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    public T m();
+}
+interface OK$Right extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$A> {
+}
+interface OK {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK.class);
+}
+final class OK$impl implements .java.io.Serializable {
+    
+    OK$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK $this;
+    
+    final class Top$impl<T> implements .java.io.Serializable {
+        
+        Top$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Top<? extends T> $this) {
+            this.$reified$T = $reified$T;
+            this.$this = $this;
+        }
+        private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Top<? extends T> $this;
+        
+        public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+            this.$reified$T = $reified$T;
+        }
+        
+        public final T getS() {
+            return null;
+        }
+        
+        public T m() {
+            return null;
+        }
+    }
+    
+    final class Middle$impl<T> implements .java.io.Serializable {
+        
+        Middle$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<? extends T> $this) {
+            this.$reified$T = $reified$T;
+            this.$this = $this;
+        }
+        private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<? extends T> $this;
+        
+        public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+            this.$reified$T = $reified$T;
+        }
+        
+        public final T getS() {
+            return $this.$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl().getS();
+        }
+        
+        public T m() {
+            return $this.$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl().m();
+        }
+    }
+    
+    class Bottom implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Left, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B>, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Right, .java.io.Serializable {
+        
+        Bottom() {
+            this.$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Top$this$ = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.this.new Top$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$A.class))), (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Top<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B>)(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Top)this);
+            this.$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$ = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.this.new Middle$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$A.class))), (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B>)(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$Middle)this);
+        }
+        protected final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Top$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B> $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Top$this$;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Top$impl<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B> $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl() {
+            return $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Top$this$;
+        }
+        protected final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Middle$impl<.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B> $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Middle$impl<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B> $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Middle$impl() {
+            return $org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B m() {
+            return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$.m();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B getS() {
+            return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$B)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$.getS();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.OK$impl.Bottom.class));
+        }
+    }
+}

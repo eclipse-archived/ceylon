@@ -1,0 +1,111 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+public interface Bug6157Int$I<Foo> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.I$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$impl$I$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.I$impl.IC IC$new$();
+}
+interface Bug6157Int<Foo> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo> $org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.C C$new$();
+}
+final class Bug6157Int$impl<Foo> implements .java.io.Serializable {
+    
+    Bug6157Int$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Foo, .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int<Foo> $this) {
+        this.$reified$Foo = $reified$Foo;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Foo;
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int<Foo> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Foo) {
+        this.$reified$Foo = $reified$Foo;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.C C$new$() {
+        return new C();
+    }
+    
+    public class C implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected C() {
+        }
+        
+        public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.C.CC CC$new$() {
+            return new CC();
+        }
+        
+        public class CC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected CC() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int.class, .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.this.$reified$Foo), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.C.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.C.CC.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int.class, .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.this.$reified$Foo), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.C.class));
+        }
+    }
+    
+    public final class I$impl implements .java.io.Serializable {
+        
+        public I$impl(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$I<Foo> $this) {
+            this.$this = $this;
+        }
+        private final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$I<Foo> $this;
+        
+        public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.I$impl.IC IC$new$() {
+            return new IC();
+        }
+        
+        public class IC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected IC() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int.class, .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.this.$reified$Foo), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$I.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl.I$impl.IC.class));
+            }
+        }
+    }
+}
+class Bug6157Cls implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int<.ceylon.language.String>, .java.io.Serializable {
+    
+    Bug6157Cls() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String> $org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String> $org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$this$;
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String>.C C$new$() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$Bug6157Int$this$.C$new$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Cls.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Cls.class);
+}
+final class bug6157Run_ {
+    
+    private bug6157Run_() {
+    }
+    
+    static void bug6157Run(final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String>.C c, final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String>.C.CC cc, final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$I<.ceylon.language.String> i, final .org.eclipse.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<.ceylon.language.String>.I$impl.IC ic) {
+    }
+}

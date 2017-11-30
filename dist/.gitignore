@@ -1,0 +1,10 @@
+# build
+
+/dist
+projects
+ceylon-*.zip
+.ant-targets-build.xml
+
+# OS
+
+.DS_Store

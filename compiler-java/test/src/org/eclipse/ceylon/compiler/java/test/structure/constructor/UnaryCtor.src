@@ -1,0 +1,104 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class UnaryCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected UnaryCtor() {
+        super();
+        this.s = null;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getS() {
+        return this.s;
+    }
+    
+    private final void use$priv$() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor o1 = (
+            let
+            {
+                .java.lang.String arg$0$0 = "";
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$0$0);
+        );
+        final .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
+            let
+            {
+                long arg$1$0 = 0L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.fromInteger_, arg$1$0);
+        );
+        final .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
+            let
+            {
+                long arg$2$0 = 0L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.fromInteger_, arg$2$0);
+        );
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public UnaryCtor(@.org.eclipse.ceylon.compiler.java.metadata.Name("s1")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s1$param$) {
+        s = s1$param$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.fromInteger_ fromInteger_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("fromInteger")
+    private static final class fromInteger_ {
+        
+        fromInteger_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("fromInteger")
+    private UnaryCtor(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.fromInteger_ $name$, @.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i$param$) {
+        s = .ceylon.language.Integer.toString(i$param$);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.sharedFromInteger_ sharedFromInteger_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("sharedFromInteger")
+    public static final class sharedFromInteger_ {
+        
+        sharedFromInteger_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("sharedFromInteger")
+    public UnaryCtor(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.sharedFromInteger_ $name$, @.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i$param$) {
+        s = .ceylon.language.Integer.toString(i$param$);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.UnaryCtor.class);
+}

@@ -1,0 +1,24 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertExistsSequence implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertExistsSequence() {
+    }
+    
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
+        final long y$1;
+        .ceylon.language.Integer y$0 = null;
+        if ((y$0 = x.getFromFirst(0L)) != null) {
+            y$1 = y$0.longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y=x[0]"));
+        }
+        return y$1;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertExistsSequence.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertExistsSequence.class);
+}

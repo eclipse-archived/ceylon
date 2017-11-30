@@ -1,0 +1,3 @@
+@erroneous:"bang!"
+class Erroneous() {
+}

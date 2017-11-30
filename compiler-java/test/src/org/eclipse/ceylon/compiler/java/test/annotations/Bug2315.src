@@ -1,0 +1,231 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315$annotation$ {
+    
+    public abstract .java.lang.String[] strings();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected Bug2315() {
+        super();
+    }
+    
+    Bug2315(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315$annotation$ anno) {
+        this((.ceylon.language.Sequence<? extends .ceylon.language.String>).org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.strings()));
+    }
+    
+    Bug2315(final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315.class)
+final class bug2315_ {
+    
+    private bug2315_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315 bug2315(final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315(strings);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315Integer$annotation$ {
+    
+    public abstract long[] ints();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315Integer implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected Bug2315Integer() {
+        super();
+    }
+    
+    Bug2315Integer(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$ anno) {
+        this((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.ints()));
+    }
+    
+    Bug2315Integer(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer.class)
+final class bug2315Integer_ {
+    
+    private bug2315Integer_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer bug2315Integer(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer(ints);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315Class$annotation$ {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.DeclarationReference
+    public abstract .java.lang.String[] classes();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected Bug2315Class() {
+        super();
+    }
+    
+    Bug2315Class(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$ anno) {
+        this((.ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration>).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ClassDeclaration>parseMetamodelReferences(.ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, anno.classes()));
+    }
+    
+    Bug2315Class(final .ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration> classes) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class.class)
+final class bug2315Class_ {
+    
+    private bug2315Class_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class bug2315Class(final .ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration> classes) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class(classes);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface Bug2315Iterable$annotation$ {
+    
+    public abstract .java.lang.String[] strings();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315Iterable$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotations$({@.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = {
+        "foo",
+        "bar"})})
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315Iterable implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected Bug2315Iterable() {
+        super();
+    }
+    
+    Bug2315Iterable(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$ anno) {
+        this((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.strings()));
+    }
+    
+    Bug2315Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable.class)
+final class bug2315Iterable_ {
+    
+    private bug2315Iterable_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable bug2315Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable.class)
+final class bug2315Iterable2_ {
+    
+    private bug2315Iterable2_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::Bug2315Iterable")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable bug2315Iterable2(@.org.eclipse.ceylon.compiler.java.metadata.Name("strings")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("[ceylon.language::String+]")
+    final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315$annotation$(strings = "foo")
+@.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$(ints = 1L)
+@.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$(classes = "::1.2.3:org.eclipse.ceylon.compiler.java.test.annotations::CBug2315Use")
+@.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = "foo"),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = "foo")})
+class Bug2315Use implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2315Use() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Use.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2315Use.class);
+}

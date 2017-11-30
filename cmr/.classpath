@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="api/src/main/java"/>
+	<classpathentry kind="src" path="maven/src/main/resources"/>
+	<classpathentry kind="src" path="maven/src/test/resources"/>
+	<classpathentry kind="src" path="maven/src/test/java"/>
+	<classpathentry kind="src" path="testsuite/src/test/resources"/>
+	<classpathentry kind="src" path="impl/src/main/java"/>
+	<classpathentry kind="src" path="spi/src/main/java"/>
+	<classpathentry kind="src" path="webdav/src/main/java"/>
+	<classpathentry kind="src" path="maven/src/main/java"/>
+	<classpathentry kind="src" path="ceylon/src/main/java"/>
+	<classpathentry kind="src" path="testsuite/src/test/java"/>
+	<classpathentry kind="src" path="api/src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver-aether"/>
+	<classpathentry kind="src" path="/ceylon-module-resolver-javascript"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver-webdav"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

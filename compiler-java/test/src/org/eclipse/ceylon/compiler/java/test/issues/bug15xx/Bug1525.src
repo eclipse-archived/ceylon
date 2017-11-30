@@ -1,0 +1,53 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug15xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public interface TestListener {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.TestListener$impl $org$eclipse$ceylon$compiler$java$test$issues$bug15xx$TestListener$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public .java.lang.Object mDefault();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public void mShared();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.TestListener.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class TestListener$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public TestListener$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.TestListener $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.TestListener $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                l$priv$();
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void mShared() {
+        l$priv$();
+    }
+    
+    private void l$priv$() {
+    }
+}

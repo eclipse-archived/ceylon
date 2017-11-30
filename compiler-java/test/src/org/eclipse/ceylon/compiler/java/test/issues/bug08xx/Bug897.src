@@ -1,0 +1,33 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+class Bug897 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug897() {
+    }
+    
+    private final long m$priv$(final long i) {
+        return i;
+    }
+    
+    public final void bar() {
+        long index = 0L;
+        final .org.eclipse.ceylon.compiler.java.language.VariableBoxLong captured = new .org.eclipse.ceylon.compiler.java.language.VariableBoxLong(m$priv$(index));
+        
+        final class foo_ implements .java.io.Serializable {
+            
+            private foo_() {
+            }
+            
+            long foo() {
+                return captured.ref;
+            }
+        }
+        final foo_ foo = new foo_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug897.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug897.class);
+}

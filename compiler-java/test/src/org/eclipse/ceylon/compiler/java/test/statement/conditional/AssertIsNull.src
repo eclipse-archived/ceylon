@@ -1,0 +1,62 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNull implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsNull() {
+    }
+    
+    private final long owt$priv$(final .ceylon.language.Integer n) {
+        return 0L;
+    }
+    
+    private final long nowt$priv$(final .java.lang.Object n) {
+        return 0L;
+    }
+    
+    private final long m1$priv$(final .ceylon.language.Integer x) {
+        final long x$1;
+        .java.lang.Object x$0 = null;
+        if ((x$0 = x) != null) {
+            x$1 = ((.ceylon.language.Integer)x$0).longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, x$0));
+        }
+        return x$1;
+    }
+    
+    private final long m2$priv$(final .ceylon.language.Integer x) {
+        final long y$3;
+        .java.lang.Object y$2 = null;
+        if ((y$2 = x) != null) {
+            y$3 = ((.ceylon.language.Integer)y$2).longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$2));
+        }
+        return y$3;
+    }
+    
+    private final long m3$priv$(final .ceylon.language.Integer x) {
+        if (x == null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Null.$TypeDescriptor$, x));
+        }
+        return nowt$priv$(x);
+    }
+    
+    private final long m4$priv$(final .ceylon.language.Integer x) {
+        final .java.lang.Object y$6;
+        .java.lang.Object y$5 = null;
+        if ((y$5 = x) == null) {
+            y$6 = y$5;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Null.$TypeDescriptor$, y$5));
+        }
+        return nowt$priv$(y$6);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsNull.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsNull.class);
+}

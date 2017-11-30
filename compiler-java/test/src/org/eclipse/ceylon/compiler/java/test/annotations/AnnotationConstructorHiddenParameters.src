@@ -1,0 +1,73 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface AnnotationConstructorHiddenParameters$annotation$ {
+    
+    public abstract .java.lang.String path();
+}
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+public final class AnnotationConstructorHiddenParameters implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationConstructorHiddenParameters() {
+        super();
+    }
+    
+    public AnnotationConstructorHiddenParameters(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters$annotation$ anno) {
+        this(anno.path());
+    }
+    
+    public AnnotationConstructorHiddenParameters(final .java.lang.String path) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters.class)
+public final class endpoint_ {
+    
+    private endpoint_() {
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters endpoint() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$path$0 = .org.eclipse.ceylon.compiler.java.test.annotations.endpoint_.endpoint$path();
+            }
+            returning endpoint($ceylontmp$path$0);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.StringValue("")
+    public static final .java.lang.String endpoint$path() {
+        return "";
+    }
+    
+    @.ceylon.language.DocAnnotation$annotation$(description = "Annotates a method to define an HTTP endpoint.")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    public static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters endpoint(@.ceylon.language.DocAnnotation$annotation$(description = "The path under which the endpoint is served.\nSee [[de.dlkw.conjurup.core::Server.addEndpoint]] and\n[[de.dlkw.conjurup.core::EndpointScanner]].")
+    final .java.lang.String path) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationConstructorHiddenParameters(path);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.annotations.endpoint_.endpoint();
+    }
+}

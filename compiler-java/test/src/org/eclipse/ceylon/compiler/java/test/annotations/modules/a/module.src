@@ -1,0 +1,27 @@
+package org.eclipse.ceylon.compiler.java.test.annotations.modules.a;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Module(
+        name = "org.eclipse.ceylon.compiler.java.test.annotations.modules.a",
+        doc = "Module A doc",
+        license = "http://www.apache.org/licenses/LICENSE-2.0.html",
+        by = {"Tom"},
+        version = "0.1",
+        dependencies = {@.org.eclipse.ceylon.compiler.java.metadata.Import(
+                name = "ceylon.language",
+                version = "1.3.4-SNAPSHOT")})
+@.ceylon.language.DocAnnotation$annotation$(description = "Module A doc")
+@.ceylon.language.AuthorsAnnotation$annotation$(authors = "Tom")
+@.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.apache.org/licenses/LICENSE-2.0.html")
+@.ceylon.language.TagsAnnotation$annotation$(tags = {
+        "test",
+        "annotations"})
+@.ceylon.language.DeprecationAnnotation$annotation$(description = "doesn\'t _do_ anything")
+@.java.lang.Deprecated
+final class $module_ {
+    
+    private $module_() {
+    }
+}

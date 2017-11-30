@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon copy" tool
+summary=Copies modules from one module repository to another
+module=org.eclipse.ceylon.tools/@ceylon-version@
+class=org.eclipse.ceylon.tools.copy.CeylonCopyTool

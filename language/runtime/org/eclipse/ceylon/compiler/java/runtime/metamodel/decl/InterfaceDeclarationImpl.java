@@ -1,0 +1,115 @@
+/********************************************************************************
+ * Copyright (c) 2011-2017 Red Hat Inc. and/or its affiliates and others
+ *
+ * This program and the accompanying materials are made available under the 
+ * terms of the Apache License, Version 2.0 which is available at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0 
+ ********************************************************************************/
+package org.eclipse.ceylon.compiler.java.runtime.metamodel.decl;
+
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.Name;
+import org.eclipse.ceylon.compiler.java.metadata.Sequenced;
+import org.eclipse.ceylon.compiler.java.metadata.TypeInfo;
+import org.eclipse.ceylon.compiler.java.metadata.TypeParameter;
+import org.eclipse.ceylon.compiler.java.metadata.TypeParameters;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ClassOrInterfaceDeclarationImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.InterfaceDeclarationImpl;
+
+@Ceylon(major = 8)
+@org.eclipse.ceylon.compiler.java.metadata.Class
+public class InterfaceDeclarationImpl 
+    extends ClassOrInterfaceDeclarationImpl
+    implements ceylon.language.meta.declaration.InterfaceDeclaration {
+
+    @Ignore
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(InterfaceDeclarationImpl.class);
+    
+    public InterfaceDeclarationImpl(org.eclipse.ceylon.model.typechecker.model.Interface declaration) {
+        super(declaration);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public <Type> ceylon.language.meta.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType){
+        return interfaceApply($reifiedType, (Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeInfo("ceylon.language.meta.model::Interface<Type>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+    })
+    public <Type> ceylon.language.meta.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return (ceylon.language.meta.model.Interface<Type>) super.apply($reifiedType, typeArguments);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore
+    @Override
+    public <Container, Type>
+        ceylon.language.meta.model.MemberInterface<Container, Type> memberInterfaceApply(TypeDescriptor $reifiedContainer,
+                                                                                    TypeDescriptor $reifiedType,
+                                                                                    ceylon.language.meta.model.Type<? extends Object> containerType){
+        
+        return this.<Container, Type>memberInterfaceApply($reifiedContainer,
+                                                          $reifiedType,
+                                                          containerType,
+                                                          (Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language.meta.model::MemberInterface<Container,Type>")
+    @TypeParameters({
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
+    })
+    @Override
+    public <Container, Type>
+    ceylon.language.meta.model.MemberInterface<Container, Type> memberInterfaceApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedType,
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return (ceylon.language.meta.model.MemberInterface<Container, Type>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Metamodel.hashCode(this, "interface");
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof InterfaceDeclarationImpl == false)
+            return false;
+        return Metamodel.equalsForSameType(this, (InterfaceDeclarationImpl)obj);
+    }
+
+    @Override
+    public String toString() {
+        return "interface "+super.toString();
+    }
+    
+    @Override
+    @Ignore
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
+    }
+}

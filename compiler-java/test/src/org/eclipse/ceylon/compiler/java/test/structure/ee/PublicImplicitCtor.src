@@ -1,0 +1,32 @@
+package org.eclipse.ceylon.compiler.java.test.structure.ee;
+
+class PublicImplicitCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected PublicImplicitCtor() {
+        super();
+    }
+    
+    PublicImplicitCtor(final .java.lang.String s) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.PublicImplicitCtor.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.PublicImplicitCtor.class);
+}
+public class PublicImplicitCtorShared implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public PublicImplicitCtorShared() {
+        super();
+    }
+    
+    public PublicImplicitCtorShared(final .java.lang.String s) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.PublicImplicitCtorShared.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.PublicImplicitCtorShared.class);
+}

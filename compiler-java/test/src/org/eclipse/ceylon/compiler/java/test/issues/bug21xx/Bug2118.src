@@ -1,0 +1,183 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug21xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface Observer2118<T> {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Bar.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Baz.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_0_"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface Observable2118<T> {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug21xx::Observable2118<U>")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "U",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <U>.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Baz Baz$new$();
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public <V>.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Bar<V> Bar$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class Observable2118$impl<T> implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Observable2118$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118<T> $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public <U>.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        return (
+            let
+            {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.org.eclipse.ceylon.compiler.java.metadata.Object
+                @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug21xx::Observable2118<U>"})
+                class anonymous_0_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> {
+                    
+                    private anonymous_0_() {
+                        this.$org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>($reified$U, this);
+                    }
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U> $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$;
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U> $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$impl() {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$;
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public final <V>.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>.Bar<V> Bar$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.Bar$new$($reified$V);
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public final .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>.Baz Baz$new$() {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.Baz$new$();
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public <U>.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.lift($reified$U);
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("lift", $reified$U)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Baz Baz$new$() {
+        return new Baz();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug21xx::Observer2118<T>"})
+    public class Baz implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observer2118<T>, .java.io.Serializable {
+        
+        protected Baz() {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Baz.class));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public <V>.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Bar<V> Bar$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+        return new Bar<V>($reified$V);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug21xx::Observer2118<V>"})
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "V",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public class Bar<V> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observer2118<V>, .java.io.Serializable {
+        
+        protected Bar(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+            this.$reified$V = $reified$V;
+        }
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class, .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Bar.class, $reified$V));
+        }
+    }
+}

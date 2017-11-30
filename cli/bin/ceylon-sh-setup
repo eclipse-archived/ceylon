@@ -1,0 +1,18 @@
+for arg
+do
+  if test "$arg" = "--_print-summary"
+  then
+    echo "$DESCRIPTION"
+    exit 0
+  fi
+  if test "$arg" = "--_print-description"
+  then
+    echo "$LONG_USAGE"
+    exit 0
+  fi
+  if test "$arg" = "--_print-usage"
+  then
+    echo "$USAGE"
+    exit 0
+  fi
+done

@@ -1,0 +1,58 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+public class Bug2248C<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_ c_ = null;
+    
+    public static final class c_ {
+        
+        c_() {
+        }
+    }
+    
+    public Bug2248C(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_ $name$) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public Bug2248C(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C.class, $reified$T);
+    }
+}
+public final class Bug2248D {
+    
+    private Bug2248D() {
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C<.ceylon.language.Integer> Bug2248D$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_);
+    }
+}
+public final class Bug2248E {
+    
+    private Bug2248E() {
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C<.ceylon.language.Integer> Bug2248E$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2248C(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}

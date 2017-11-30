@@ -1,0 +1,81 @@
+package org.eclipse.ceylon.compiler.java.test.structure.importIt;
+
+final class importObjectMembers_ {
+    
+    private importObjectMembers_() {
+    }
+    
+    static void importObjectMembers() {
+        .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn();
+        final .ceylon.language.Callable<? extends .java.lang.Object> fnRef = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$), "Anything(String=)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn();
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn($ceylontmp$s);
+                    }
+                    returning null;
+                );
+            }
+        };
+        .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal(.org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal());
+        (
+            let
+            {
+                long $ceylontmp$op$0 = .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal();
+                .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal($ceylontmp$op$0 + 1);
+            }
+            returning $ceylontmp$op$0;
+        );
+        (
+            let
+            {
+                long $ceylontmp$op$1 = .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal() + 1;
+                .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal($ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        );
+        (
+            let
+            {
+                long $ceylontmp$op$2 = .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal() + 1L;
+                .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal($ceylontmp$op$2);
+            }
+            returning $ceylontmp$op$2;
+        );
+        final .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class c = .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().Class$new$();
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class> classRef = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class.class)), .ceylon.language.Empty.$TypeDescriptor$, "toplevel.Class()", (short)-1){
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class $call$() {
+                return .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().Class$new$();
+            }
+        };
+        final .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel$Interface_ i = c;
+        
+        final class f_ implements .java.io.Serializable {
+            
+            private f_() {
+            }
+            
+            .java.lang.Object f(final .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class c, final .org.eclipse.ceylon.compiler.java.test.structure.importIt.obj.toplevel$Interface_ i) {
+                return .ceylon.language.nothing_.get_();
+            }
+        }
+        final f_ f = new f_();
+    }
+}

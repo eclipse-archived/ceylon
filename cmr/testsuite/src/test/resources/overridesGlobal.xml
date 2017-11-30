@@ -1,0 +1,3 @@
+<maven-overrides>
+    <remove module="hello"/>
+</maven-overrides>

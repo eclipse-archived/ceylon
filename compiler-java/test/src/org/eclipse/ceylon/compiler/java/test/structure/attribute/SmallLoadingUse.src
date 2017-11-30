@@ -1,0 +1,15 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+final class smalllLoadingUse_ {
+    
+    private smalllLoadingUse_() {
+    }
+    
+    static void smalllLoadingUse() {
+        float f = .org.eclipse.ceylon.compiler.java.test.structure.attribute.smallLoadingFloatFunction_.smallLoadingFloatFunction(.org.eclipse.ceylon.compiler.java.test.structure.attribute.smallLoadingFloatValue_.get_());
+        int i = .org.eclipse.ceylon.compiler.java.test.structure.attribute.smallLoadingIntFunction_.smallLoadingIntFunction(.org.eclipse.ceylon.compiler.java.test.structure.attribute.smallLoadingIntValue_.get_());
+        final .org.eclipse.ceylon.compiler.java.test.structure.attribute.SmallLoading o = new .org.eclipse.ceylon.compiler.java.test.structure.attribute.SmallLoading();
+        f = o.smallLoadingFloatMethod(o.getSmallLoadingFloatAttribute());
+        i = o.smallLoadingIntMethod(o.getSmallLoadingIntAttribute());
+    }
+}

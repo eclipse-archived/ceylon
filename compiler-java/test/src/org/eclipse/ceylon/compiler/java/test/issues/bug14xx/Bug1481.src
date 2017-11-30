@@ -1,0 +1,161 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+public class Bug1481Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1481Foo() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.H3.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.H2.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.HEntry2.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.HEntry.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Item",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {})})
+public interface Bug1481Heap<Key, Item> {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl<Key, Item> $org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1481Heap$impl();
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Bug1481Heap$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        this.$reified$Item = $reified$Item;
+        this.$reified$Key = $reified$Key;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
+    public final class HEntry {
+        
+        private HEntry() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
+    final class HEntry2 {
+        
+        private HEntry2() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$() {
+        return new Bug1481Foo();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Key",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Item",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {})})
+    public <Key, Item>.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
+    public final class H2 {
+        
+        private H2() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Key",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Item",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {})})
+    <Key, Item>.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H3$aliased$$priv$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
+    final class H3 {
+        
+        private H3() {
+        }
+    }
+}

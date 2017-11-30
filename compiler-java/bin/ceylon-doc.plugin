@@ -1,0 +1,4 @@
+; Plugin definition for the "ceylon doc" tool
+summary=Generates Ceylon API documentation from Ceylon source files
+module=org.eclipse.ceylon.compiler.java/@ceylon-version@
+class=org.eclipse.ceylon.ceylondoc.CeylonDocTool
