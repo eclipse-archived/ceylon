@@ -79,7 +79,6 @@ import org.eclipse.ceylon.model.typechecker.model.Value;
  */
 public class AnalyzerUtil {
     
-//    static final JaroWinkler distance = new JaroWinkler();
     static final NormalizedLevenshtein distance = 
             new NormalizedLevenshtein();
     
