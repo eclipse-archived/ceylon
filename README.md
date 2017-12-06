@@ -96,7 +96,7 @@ The content of this code repository, [available here on GitHub][ceylon],
 is released under the ASL v2.0 as provided in the `LICENSE-ASL` file 
 that accompanied this code.
 
-[ceylon]: https://github.com/ceylon/ceylon
+[ceylon]: https://github.com/eclipse/ceylon
 
 By submitting a "pull request" or otherwise contributing to this 
 repository, you agree to license your contribution under the license 
