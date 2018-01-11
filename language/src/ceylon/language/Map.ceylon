@@ -485,7 +485,7 @@ shared object emptyMap
     
     contains(Object element) => false;
     containsAny({Object*} elements) => false;
-    containsEvery({Object*} elements) => false;
+    containsEvery({Object*} elements) => elements.empty;
     
     shared actual 
     Map<Nothing, Nothing> mapItems<Result>
