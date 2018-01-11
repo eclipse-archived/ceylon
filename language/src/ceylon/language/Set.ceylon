@@ -268,7 +268,7 @@ shared object emptySet
     
     contains(Object element) => false;
     containsAny({Object*} elements) => false;
-    containsEvery({Object*} elements) => false;
+    containsEvery({Object*} elements) => elements.empty;
     
     count(Boolean selecting(Nothing element)) => 0;
     any(Boolean selecting(Nothing element)) => false;    
