@@ -79,6 +79,7 @@ shared void testMaps() {
     check(!emptyMap.contains(1->1), "emptyMap.contains");
     check(!emptyMap.containsAny({1->1, 2->2}), "emptyMap.containsAny");
     check(!emptyMap.containsEvery({1->1, 2->2}), "emptyMap.containsEvery");
+    check(emptyMap.containsEvery({}), "emptyMap.containsEvery{}");
     check(0 == emptyMap.count{function selecting(Nothing->Nothing nowt) => true;}, "emptyMap.selecting");
     check(emptyMap.filter{function selecting(Nothing->Nothing nowt) => true;}.empty, "emptyMap.filter");
     

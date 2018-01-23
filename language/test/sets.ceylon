@@ -180,6 +180,7 @@ shared void testSets() {
     check(!emptySet.contains(1), "emptySet.contains");
     check(!emptySet.containsAny({1, 2}), "emptySet.containsAny");
     check(!emptySet.containsEvery({1, 2}), "emptySet.containsEvery");
+    check(emptySet.containsEvery({}), "emptySet.containsEvery{}");
     check(!emptySet.superset(s2), "emptySet.superset");
     check(emptySet.superset(emptySet), "emptySet.superset 2");
     check(emptySet.subset(s2), "emptySet.subset");
