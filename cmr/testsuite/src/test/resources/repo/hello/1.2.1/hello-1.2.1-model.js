@@ -1,5 +1,5 @@
 (function(define) { define(function(require, ex$, module) {
-ex$.$CCMM$={"$mod-version":"1.2.1","$mod-deps":["ceylon.language\/1.2.1"],"$mod-bin":"9.0",hello:{run2:{$t:{md:"$",pk:"$",nm:"Anything"},pa:1,$ff:1,mt:"m",nm:"run2"},"$pkg-pa":1,run:{$t:{md:"$",pk:"$",nm:"Anything"},pa:1,$ff:1,mt:"m",nm:"run"},hello:{$t:{md:"$",pk:"$",nm:"Anything"},pa:1,$ff:1,mt:"m",nm:"hello"}},"$mod-anns":{license:["Apache Software License"],by:["The Ceylon Team"],doc:["A test"]},"$mod-name":"hello"};
+ex$.$CCMM$={hello:{run2:{$ff:1,$t:{md:"$",pk:"$",nm:"Anything"},pa:1,mt:"m",nm:"run2"},hello:{$ff:1,$t:{md:"$",pk:"$",nm:"Anything"},pa:1,mt:"m",nm:"hello"},run:{$ff:1,$t:{md:"$",pk:"$",nm:"Anything"},pa:1,mt:"m",nm:"run"},"$pkg-pa":1},"$mod-deps":["ceylon.language\/1.3.4-SNAPSHOT"],"$mod-name":"hello","$mod-version":"1.2.1","$mod-anns":[{doc:["A test"]},{by:["The Ceylon Team"]},{license:["Apache Software License"]}],"$mod-bin":"10.0"};
 });
 }(typeof define==='function' && define.amd ? define : function (factory) {
 if (typeof exports!=='undefined') { factory(require, exports, module);

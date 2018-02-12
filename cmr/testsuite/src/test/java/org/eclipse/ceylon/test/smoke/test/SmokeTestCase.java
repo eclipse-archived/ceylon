@@ -308,9 +308,8 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        File[] files = manager.resolve(null, "moduletest", "0.1");
-        Assert.assertNotNull(files);
-        Assert.assertEquals(2, files.length);
+        File file = manager.getArtifact(null, "moduletest", "0.1");
+        Assert.assertNotNull(file);
     }
 
     @Test
@@ -318,7 +317,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(1, result.dependencies().size());
+        Assert.assertEquals(2, result.dependencies().size());
     }
 
     @Test
@@ -326,7 +325,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overrides.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals(1, result.dependencies().size());
     }
 
     @Test
@@ -358,7 +357,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesInterpolation.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals(2, result.dependencies().size());
     }
 
     @Test
@@ -368,7 +367,7 @@ public class SmokeTestCase extends AbstractTest {
         Assert.assertNotNull(result);
         Assert.assertEquals("com.acme.helloworld", result.name());
         Assert.assertEquals("1.0.0", result.version());
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals(1, result.dependencies().size());
     }
 
     @Test
@@ -378,7 +377,7 @@ public class SmokeTestCase extends AbstractTest {
         Assert.assertNotNull(result);
         Assert.assertEquals("com.acme.helloworld", result.name());
         Assert.assertEquals("1.0.0", result.version());
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals(1, result.dependencies().size());
     }
 
     @Test
@@ -387,8 +386,8 @@ public class SmokeTestCase extends AbstractTest {
         ArtifactResult result = manager.getArtifactResult(null, "com.acme.helloworld", "1.0.0");
         Assert.assertNotNull(result);
         Assert.assertEquals("hello", result.name());
-        Assert.assertEquals("1.0.0", result.version());
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals("1.2.1", result.version());
+        Assert.assertEquals(1, result.dependencies().size());
     }
 
     @Test
@@ -396,11 +395,11 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceImport.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(1, result.dependencies().size());
-        ArtifactResult dep = result.dependencies().get(0);
+        Assert.assertEquals(2, result.dependencies().size());
+        ArtifactResult dep = result.dependencies().get(1);
         Assert.assertEquals("com.acme.helloworld", dep.name());
         Assert.assertEquals("1.0.0", dep.version());
-        Assert.assertEquals(0, dep.dependencies().size());
+        Assert.assertEquals(1, dep.dependencies().size());
     }
 
     @Test
@@ -408,10 +407,10 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesShareImport.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(1, result.dependencies().size());
-        ArtifactResult dep = result.dependencies().get(0);
+        Assert.assertEquals(2, result.dependencies().size());
+        ArtifactResult dep = result.dependencies().get(1);
         Assert.assertEquals("hello", dep.name());
-        Assert.assertEquals("1.0.0", dep.version());
+        Assert.assertEquals("1.2.1", dep.version());
         Assert.assertTrue(dep.exported());
     }
 
@@ -420,10 +419,10 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesOptionalImport.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(1, result.dependencies().size());
-        ArtifactResult dep = result.dependencies().get(0);
+        Assert.assertEquals(2, result.dependencies().size());
+        ArtifactResult dep = result.dependencies().get(1);
         Assert.assertEquals("hello", dep.name());
-        Assert.assertEquals("1.0.0", dep.version());
+        Assert.assertEquals("1.2.1", dep.version());
         Assert.assertTrue(dep.optional());
     }
 
@@ -443,7 +442,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesNoVersion.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals(1, result.dependencies().size());
     }
 
     @Test
@@ -451,16 +450,15 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesGlobal.xml");
         ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
-        Assert.assertEquals(0, result.dependencies().size());
+        Assert.assertEquals(1, result.dependencies().size());
     }
 
     @Test
     public void testPropertiesResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext context = new ArtifactContext(null, "old-jar", "1.2.CR1", ArtifactContext.JAR);
-        File[] files = manager.resolve(context);
-        Assert.assertNotNull(files);
-        Assert.assertEquals(3, files.length);
+        File file = manager.getArtifact(context);
+        Assert.assertNotNull(file);
     }
 
     @Test
@@ -470,9 +468,8 @@ public class SmokeTestCase extends AbstractTest {
         try {
             manager.putArtifact(context, mockJar("someentry", "qwerty".getBytes()));
             manager.putArtifact(context.getModuleProperties(), new ByteArrayInputStream("moduletest=0.1\n".getBytes()));
-            File[] files = manager.resolve(context);
-            Assert.assertNotNull(files);
-            Assert.assertEquals(3, files.length);
+            File file = manager.getArtifact(context);
+            Assert.assertNotNull(file);
         } finally {
             manager.removeArtifact(context);
         }
@@ -484,9 +481,8 @@ public class SmokeTestCase extends AbstractTest {
         ArtifactContext context = new ArtifactContext(null, "org.mood.lw", "1.0", ArtifactContext.JAR);
         try {
             manager.putArtifact(context, mockJar("META-INF/jbossmodules/org/mood/lw/1.0/module.properties", "moduletest=0.1\n".getBytes()));
-            File[] files = manager.resolve(context);
-            Assert.assertNotNull(files);
-            Assert.assertEquals(3, files.length);
+            File file = manager.getArtifact(context);
+            Assert.assertNotNull(file);
         } finally {
             manager.removeArtifact(context);
         }
@@ -517,9 +513,8 @@ public class SmokeTestCase extends AbstractTest {
     public void testXmlResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext context = new ArtifactContext(null, "older-jar", "12-b3", ArtifactContext.JAR);
-        File[] files = manager.resolve(context);
-        Assert.assertNotNull(files);
-        Assert.assertEquals(3, files.length);
+        File file = manager.getArtifact(context);
+        Assert.assertNotNull(file);
     }
 
     @Test
@@ -542,9 +537,8 @@ public class SmokeTestCase extends AbstractTest {
             manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;bundle-version=0.1");
             manager.putArtifact(context, mockJar("foo", "bar".getBytes(), manifest));
 
-            File[] files = manager.resolve(context);
-            Assert.assertNotNull(files);
-            Assert.assertEquals(3, files.length);
+            File file = manager.getArtifact(context);
+            Assert.assertNotNull(file);
         } finally {
             manager.removeArtifact(context);
         }
@@ -593,22 +587,24 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     private final static ModuleDependencyInfo language = new ModuleDependencyInfo(null, "ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, false);
-    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails hello = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
-    public final static ModuleDetails hello_js = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
-    public final static ModuleDetails hello_js_jvm = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
-    public final static ModuleDetails hello_120_js = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails hello2 = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
-    public final static ModuleDetails hello2_jvm = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
-    public final static ModuleDetails hello2_js = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails moduletest = new ModuleDetails("ceylon", "moduletest", null, "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("ceylon", "moduletest", null, "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
-    public final static ModuleDetails moduletest_js = new ModuleDetails("ceylon", "moduletest", null, null, null, set(), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".js")), false, null);
+    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(language), types(art(".car", 8, 1)), false, null);
+    public final static ModuleDetails com_acme_helloworld_js_jvm = new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(language), types(art(".car", 8, 1), art(".js", 10, 0)), false, null);
+    public final static ModuleDetails com_acme_helloworld_js = new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(language), types(art(".js", 10, 0)), false, null);
+    public final static ModuleDetails hello = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 1)), false, null);
+    public final static ModuleDetails hello_js = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 10, 0)), false, null);
+    public final static ModuleDetails hello_js_jvm = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 1), art(".js", 10, 0)), false, null);
+    public final static ModuleDetails hello_120_js = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 1)), false, null);
+    public final static ModuleDetails hello2 = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 1), art(".js", 10, 0)), false, null);
+    public final static ModuleDetails hello2_jvm = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 1)), false, null);
+    public final static ModuleDetails hello2_js = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 10, 0)), false, null);
+    public final static ModuleDetails moduletest = new ModuleDetails("ceylon", "moduletest", null, "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(language, new ModuleDependencyInfo(null, "hello", "1.2.1", true, true)), types(art(".car", 8, 1)), false, null);
+    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("ceylon", "moduletest", null, "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(language, new ModuleDependencyInfo(null, "hello", "1.2.1", true, true)), types(art(".car", 8, 1), art(".js", 10, 0)), false, null);
+    public final static ModuleDetails moduletest_js = new ModuleDetails("ceylon", "moduletest", null, null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(language, new ModuleDependencyInfo(null, "hello", "1.2.1", true, true)), types(art(".js", 10, 0)), false, null);
     public final static ModuleDetails old_jar = new ModuleDetails("ceylon", "old-jar", null, null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
     public final static ModuleDetails older_jar = new ModuleDetails("ceylon", "older-jar", null, null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
     public final static ModuleDetails org_jboss_acme = new ModuleDetails("ceylon", "org.jboss.acme", null, null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
     public final static ModuleDetails test_jar = new ModuleDetails("ceylon", "test-jar", null, null, null, set(), set("0.1"), deps(), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails jsonly = new ModuleDetails("ceylon", "jsonly", null, null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo(null, "ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
+    public final static ModuleDetails jsonly = new ModuleDetails("ceylon", "jsonly", null, null, "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(language), types(art(".js", 10, 0)), false, null);
 
     @Test
     public void testCompleteEmpty() throws Exception {
@@ -631,6 +627,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld_js,
                 hello_js,
                 hello2_js,
                 jsonly,
@@ -716,7 +713,7 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleVersionDetails("ceylon", "", "1.0.0",
                         null, null, null,
                         "The classic Hello World module", "Public domain", set("Stef Epardaud"),
-                        deps(), types(new ModuleVersionArtifact(".car", 3, 0)), false, getRepositoryRoot().getAbsolutePath()),
+                        deps(language), types(new ModuleVersionArtifact(".car", 8, 1)), false, getRepositoryRoot().getAbsolutePath()),
         };
         testListVersions("com.acme.helloworld", null, expected);
     }
@@ -753,6 +750,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesAllCeylonCodeAll() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld_js_jvm,
                 hello_js_jvm,
                 hello2,
                 moduletest_js_jvm,
@@ -764,7 +762,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesAllCeylonCodeAny() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                com_acme_helloworld,
+                com_acme_helloworld_js_jvm,
                 hello_js_jvm,
                 hello2,
                 jsonly,
@@ -789,8 +787,10 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesJvmBinary() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld,
                 hello,
-                hello2_jvm
+                hello2_jvm,
+                moduletest
         };
 
         testSearchResults("hello", Type.CAR, Retrieval.ALL, expected, null, null, 
@@ -802,20 +802,21 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesJsBinary() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld_js,
                 hello_js,
+                hello2_js,
+                moduletest_js
         };
 
         testSearchResults("hello", Type.JS, Retrieval.ALL, expected, null, null, 
                 getRepositoryManager(), null,
                 Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
-                Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
+                Versions.V1_3_3_JS_BINARY_MAJOR_VERSION, Versions.V1_3_3_JS_BINARY_MINOR_VERSION);
     }
 
     @Test
     public void testSearchModulesJsOlderBinary() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                hello_120_js,
-                hello2_js
         };
 
         testSearchResults("hello", Type.JS, Retrieval.ALL, expected, null, null, 
@@ -973,6 +974,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthorJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld_js
         };
 
         testSearchResults("classic", Type.JS, expected);
@@ -1332,32 +1334,19 @@ public class SmokeTestCase extends AbstractTest {
     public void testListVersionBinaryCompat() throws Exception {
         String path = getRepositoryRoot().getAbsolutePath();
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("ceylon", "hello", "1.0.0", null, null, null, "A test", "Apache Software License", 
-                        set("The Ceylon Team"), 
-                        deps(), 
-                        types(new ModuleVersionArtifact(".car", 3, 0)), false, path),
-                new ModuleVersionDetails("ceylon", "hello", "1.2.0", null, null, null, "A test", "Apache Software License", 
-                        set("The Ceylon Team"), 
-                        deps(language), 
-                        types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
                 new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
-                        types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
+                        types(new ModuleVersionArtifact(".car", 8, 1)), false, path),
         };
         testListVersions("hello", null, expected, getRepositoryManager());
 
         ModuleVersionDetails[] expectedBoth = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("ceylon", "hello", "1.2.0", null, null, null, "A test", "Apache Software License", 
-                        set("The Ceylon Team"), 
-                        deps(language), 
-                        types(new ModuleVersionArtifact(".car", 8, 0),
-                                new ModuleVersionArtifact(".js", 8, 0)), false, path),
                 new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
-                        types(new ModuleVersionArtifact(".car", 8, 0),
-                                new ModuleVersionArtifact(".js", 9, 0)), false, path),
+                        types(new ModuleVersionArtifact(".car", 8, 1),
+                                new ModuleVersionArtifact(".js", 10, 0)), false, path),
         };
         testListVersions("hello", null, expectedBoth, getRepositoryManager(), 
                 8, 0, null, null, null,
@@ -1367,11 +1356,11 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
-                        types(new ModuleVersionArtifact(".car", 8, 0),
-                                new ModuleVersionArtifact(".js", 9, 0)), false, path),
+                        types(new ModuleVersionArtifact(".car", 8, 1),
+                                new ModuleVersionArtifact(".js", 10, 0)), false, path),
         };
         testListVersions("hello", null, expectedSingle, getRepositoryManager(), 
-                8, 0, 9, 0, null,
+                8, 1, 10, 0, null,
                 ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
     }
     

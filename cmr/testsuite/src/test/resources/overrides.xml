@@ -1,5 +1,5 @@
 <maven-overrides>
     <artifact module="moduletest" version="0.1">
-        <remove module="hello" version="1.0.0"/>
+        <remove module="hello" version="1.2.1"/>
     </artifact>
 </maven-overrides>

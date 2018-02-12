@@ -1,0 +1,1 @@
+{"files":["jsonly-1.0.0.js","jsonly-1.0.0.js.sha1","jsonly-1.0.0-model.js","jsonly-1.0.0-model.js.sha1","jsonly-1.0.0.src","jsonly-1.0.0.src.sha1"],"author":"The Ceylon Team","contributors":["The Ceylon Team"],"dependencies":{"ceylon.language":"1.3.4-SNAPSHOT"},"description":"A test","name":"jsonly","license":"Apache Software License","main":"jsonly-1.0.0.js","version":"1.0.0"}

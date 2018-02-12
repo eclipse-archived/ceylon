@@ -1,0 +1,1 @@
+{"files":["hello2-1.0.0.js","hello2-1.0.0.js.sha1","hello2-1.0.0-model.js","hello2-1.0.0-model.js.sha1","hello2-1.0.0.src","hello2-1.0.0.src.sha1"],"author":"The Ceylon Team","contributors":["The Ceylon Team"],"dependencies":{"ceylon.language":"1.3.4-SNAPSHOT"},"description":"A test","name":"hello2","license":"Apache Software License","main":"hello2-1.0.0.js","version":"1.0.0"}

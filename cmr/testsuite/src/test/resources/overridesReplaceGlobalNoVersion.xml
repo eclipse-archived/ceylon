@@ -1,5 +1,5 @@
 <maven-overrides>
     <replace module="com.acme.helloworld">
-        <with module="hello"/>
+        <with module="hello" version="1.2.1"/>
     </replace>
 </maven-overrides>
