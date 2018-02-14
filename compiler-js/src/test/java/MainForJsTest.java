@@ -22,13 +22,8 @@ import org.eclipse.ceylon.compiler.js.util.Options;
 public class MainForJsTest {
     
     public static void main(String[] args) throws Exception {
-        final Options opts = new Options().addRepo("build/runtime").outRepo("build/test/proto");
-        final RepositoryManager repoman = CeylonUtils.repoManager()
-                .cwd(opts.getCwd())
-                .systemRepo(opts.getSystemRepo())
-                .userRepos(opts.getRepos())
-                .outRepo(opts.getOutRepo())
-                .buildManager();
+        String distRepo = "../dist/dist/repo";
+        final Options opts = new Options().addRepo(distRepo).outRepo("build/test/proto");
         System.out.println("Typechecking Ceylon test code...");
         JsModuleManagerFactory.setVerbose(true);
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
@@ -45,11 +40,19 @@ public class MainForJsTest {
                 resdirs.add(d);
             } else if (dir.startsWith("r:")) {
                 resfiles.add(d);
+            } else if (dir.startsWith("c:")) {
+                opts.cwd(d);
             } else {
                 tcb.addSrcDirectory(d);
                 opts.addSrcDir(d);
             }
         }
+        final RepositoryManager repoman = CeylonUtils.repoManager()
+                .cwd(opts.getCwd())
+                .systemRepo(opts.getSystemRepo())
+                .userRepos(opts.getRepos())
+                .outRepo(opts.getOutRepo())
+                .buildManager();
         tcb.setRepositoryManager(repoman);
         final TypeChecker typeChecker = tcb.getTypeChecker();
         for (File x : excludes) {

@@ -166,6 +166,7 @@
             <arg value="R:${language.dir}/test-resource" />
             <arg value="r:${language.dir}/test-resource/resource.txt" />
             <arg value="r:${language.dir}/test-resource/resmod/modres.txt" />
+            <arg value="c:${basedir}"/>
         </java>
     </target>
 
