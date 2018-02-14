@@ -1414,6 +1414,9 @@ shared void checkApplications(){
     assert(is Value<String> topLevelValue);
 
     Object memberValue = `value TypeParams.t1`.memberApply<TypeParams<String>,String>(`TypeParams<String>`);
+    if(runtime.type == "js"){
+        return;
+    }
     assert(is Attribute<TypeParams<String>,String> memberValue);
 
     // application by ClassOrInterface.getAttribute
@@ -2225,7 +2228,9 @@ void runTests() {
     sandbox(bug259);
     sandbox(bug260);
     sandbox(bug263);
-    sandbox(bug284);
+    if(runtime.type != "js"){
+        sandbox(bug284);
+    }
     sandbox(bug285);
     sandbox(bug286);
     sandbox(bug300);
@@ -2268,7 +2273,9 @@ void runTests() {
     sandbox(bug694);
     sandbox(bug691);
     sandbox(bug706);
-    sandbox(bug708);
+    if(runtime.type != "js"){
+        sandbox(bug708);
+    }
     sandbox(bug711);
     sandbox(bug713);
     sandbox(bug719);
@@ -2308,7 +2315,9 @@ void runTests() {
     sandbox(bugM12test);
     
     sandbox(servicesTest);
-    sandbox(staticTest);
+    if(runtime.type != "js"){
+        sandbox(staticTest);
+    }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
