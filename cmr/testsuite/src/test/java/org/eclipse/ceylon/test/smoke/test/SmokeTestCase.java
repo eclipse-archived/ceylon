@@ -49,8 +49,10 @@ import org.eclipse.ceylon.common.CeylonVersionComparator;
 import org.eclipse.ceylon.common.Constants;
 import org.eclipse.ceylon.common.Versions;
 import org.eclipse.ceylon.model.cmr.ArtifactResult;
+import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.eclipse.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -1095,6 +1097,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testCompleteJDK() throws Exception {
+        Assume.assumeTrue(JDKUtils.jdk == JDKUtils.JDK.JDK8);
         RepositoryManager manager = getJDKRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
@@ -1169,6 +1172,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testCompleteJDKWithPrefix() throws Exception {
+        Assume.assumeTrue(JDKUtils.jdk == JDKUtils.JDK.JDK8);
         RepositoryManager manager = getJDKRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
@@ -1234,6 +1238,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testSearchJDKModulesFilteredByName() throws Exception {
+        Assume.assumeTrue(JDKUtils.jdk == JDKUtils.JDK.JDK8);
         ModuleDetails[] expected = new ModuleDetails[]{
                 jdkModule("java.base", "JDK module java.base"),
                 jdkModule("javafx.base", "JDK module javafx.base"),
@@ -1246,6 +1251,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testSearchJDKModulesPaged() throws Exception {
+        Assume.assumeTrue(JDKUtils.jdk == JDKUtils.JDK.JDK8);
         RepositoryManager repoManager = getJDKRepositoryManager();
 
         // first page

@@ -474,6 +474,7 @@ public class IssuesTests_0500_0999 extends CompilerTests {
         compile("bug07xx/Bug785.ceylon");
     }
 
+    @Ignore("https://github.com/eclipse/ceylon/issues/7332")
     @Test
     public void testBug796() {
         compile("bug07xx/Bug796_1.ceylon");
