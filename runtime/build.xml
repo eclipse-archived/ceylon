@@ -68,6 +68,11 @@
         <pathelement path="${build.test}"/>
         <pathelement path="${build.dist}"/>
         <pathelement path="${ceylon.classfile.lib}"/>
+        <pathelement path="${ceylon.compiler.lib}" />
+        <pathelement path="${ceylon.typechecker.lib}" />
+        <pathelement path="${ceylon.tools.lib}" />
+        <pathelement path="${antlr.runtime.lib}"/>
+        <pathelement path="${txtmark.lib}"/>
         <pathelement path="${shrinkwrap-impl-base.lib}"/>
         <pathelement path="${shrinkwrap-spi.lib}"/>
         <pathelement path="${hamcrest.lib}"/>
