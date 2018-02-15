@@ -1354,10 +1354,13 @@ public abstract class CompilerTests {
             if (err1 == null) {
                 try (BufferedReader r = new BufferedReader(new FileReader(err))) {
                     String error = r.readLine();
-                    String msg = "`ceylon classpath " + module + "` produced standard error output: " + error + " (see " + err + " for full stderr output and " + out + " for stdout output)";
-                    System.err.println(msg);
-                    Assert.fail(msg);
-                    return error;
+                    // CI sets this var, which produces stderr logs
+                    if(!error.contains("Picked up JAVA_TOOL_OPTIONS")){
+                        String msg = "`ceylon classpath " + module + "` produced standard error output: " + error + " (see " + err + " for full stderr output and " + out + " for stdout output)";
+                        System.err.println(msg);
+                        Assert.fail(msg);
+                        return error;
+                    }
                 }
             }
         }
