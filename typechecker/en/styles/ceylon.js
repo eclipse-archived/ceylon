@@ -54,4 +54,4 @@ Rainbow.extend( "ceylon", [
     name: "variable.global",
     pattern: /\\i\w*\b|\b(?!(gt|lt|amp);)[a-z_]\w*\b/g
   }
-], true );
+] );
