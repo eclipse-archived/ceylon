@@ -16,7 +16,7 @@ void functionRefInference() {
     $error value product3 = [1, 2, 3, 1.2].reduce(times);
     $error value product4 = ["1", "2"].reduce(times);
     $type:"String" value sum1 = ["1", "2"].reduce(plus);
-    $type:"Integer" value sum2 = [1, 2, 3].fold(0)(plus);
+    $type:"Integer" value sum2 = [1, 2, 3].fold(0, plus);
     $error value sum2 = [1, 2, 3.0].fold(1)(times);
     $type:"Iterable<Singleton<Integer|Float>,Nothing>" value singletons1
             = [1, 2, 1.0, 2.0].map(Singleton);
@@ -27,9 +27,9 @@ void functionRefInference() {
 
 void inf() {
     void foo1<Bar>(void func(Bar b)){} 
-    $error foo1(void(b){});
+    foo1(void(b){});
     void foo2<Bar>(Anything(Bar) b){}
-    $error foo2(void(b){});
+    foo2(void(b){});
     
     void fun<X>(X x) {}
     Y accept1<Y>(void f(Y y)) { throw; }
@@ -40,7 +40,7 @@ void inf() {
 
 void g() {
     value pl = plus;
-    [1,2,3].fold(0)(pl);
+    [1,2,3].fold(0, pl);
     f("");
     { "" }.each((a) => f(a));
     { "" }.each(f);

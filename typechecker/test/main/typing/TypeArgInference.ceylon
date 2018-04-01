@@ -147,12 +147,12 @@ class TypeArgInference() {
     
     $type:"Iterable<Integer,Nothing>" { "hello", "world" }.map((String s) => s.size);
     $type:"Iterable<String,Null>" { "hello", "world" }.filter((String s) => !s.empty);
-    $type:"String" { "hello", "world" }.fold("")((String result, String s) => result+" "+s);
+    $type:"String" { "hello", "world" }.fold("", (String result, String s) => result+" "+s);
     $type:"Null|String" { null, "hello", "world" }.find((String? s) => s exists);
 
     $type:"Iterable<Integer,Nothing>" { "hello", "world" }.map { function collecting(String s) => s.size; };
     $type:"Iterable<String,Null>" { "hello", "world" }.filter { function selecting(String s) => !s.empty; };
-    $type:"String" { "hello", "world" }.fold { initial=""; }((String result, String s) => result+" "+s);
+    $type:"String" { "hello", "world" }.fold { initial=""; ((String result, String s) => result+" "+s); };
     $type:"Null|String" { null, "hello", "world" }.find { function selecting(String? s) => s exists; };
     
     $type:"Tuple<Integer|String,Integer|String,Empty>" Tuple(true then "" else 1, []);
@@ -206,19 +206,19 @@ class ArraySequence<X>({X*} xs) satisfies Iterable<X> {
 void folding() {
     
     {String+} s2 = { "Hello", "World" };
-    s2.fold(1)((Integer a, String b) => a+b.size);
+    s2.fold(1, (Integer a, String b) => a+b.size);
     
     ArraySequence<String->Integer> m = ArraySequence { "a"->1, "b"->2, "c"->3 };
-    m.fold(0)((Integer x, String->Integer e) => x+e.item);
+    m.fold(0, (Integer x, String->Integer e) => x+e.item);
     
     Map<String,Integer> m0 = nothing;
-    m0.fold(0)((Integer x, String->Integer e) => x+e.item);
+    m0.fold(0, (Integer x, String->Integer e) => x+e.item);
     
     Integer hashes0(String* objects) =>
-            objects.fold(0)((Integer result, String obj) => result+obj.size);
+            objects.fold(0, (Integer result, String obj) => result+obj.size);
     
     Integer hashes1(Object* objects) =>
-            objects.fold(0)((Integer result, Object obj) => result+obj.hash);
+            objects.fold(0, (Integer result, Object obj) => result+obj.hash);
     
 }
 
@@ -302,7 +302,7 @@ void higherOrderFun<Bar>(void func(Bar b)) {}
 void testHigherOrderFun() {
     higherOrderFun<String>(void(b){ $type:"String" value bb=b; });
     higherOrderFun(void(String b){});
-    $error higherOrderFun(void(b){});
+    higherOrderFun(void(b){});
 }
 
 Bar anotherHigherOrderFun<Bar>(Bar b, void func(Bar b)){return b;}
@@ -311,7 +311,7 @@ void testAnotherHigherOrderFun() {
             = anotherHigherOrderFun(42, void(Integer b){});
     Integer result2 
             = anotherHigherOrderFun<Integer>(42, void(b){});
-    $error Integer result3
+    Integer result3
             = anotherHigherOrderFun(42, void(b){});
 }
 

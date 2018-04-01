@@ -38,7 +38,7 @@ void funrefs<T>(T t) given T satisfies Category {
     Comparison(Nothing)(IntegerOrFloat) compare = IntegerOrFloat.compare;
     Boolean(Object)(T) contains = T.contains;
     $error value fold1 = Iterable.fold;
-    String(String(String, String))(String)({String*}) fold2 = Iterable<String>.fold<String>;
+    String(String, String(String, String))({String*}) fold2 = Iterable<String>.fold<String>;
 }
 
 interface AB<T> { 

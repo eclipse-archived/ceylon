@@ -45,6 +45,11 @@ class LanguageModule() {
     $type:"Float(Integer)(Float)" value h2 = shuffle(g2);
     $type:"Float(Float,Integer)" Float(Float,Integer) i1 = uncurry(h2);
     
+    [String+] strings = ["Hello", "World"];
+    [Integer+] integers = [1];
+    $type:"[<String|Integer>*]"
+    value objects = concatenate([strings.first], *zipPairs(integers, strings.rest));
+    
 }
 
 $error class Dumbthing() extends Anything() {}

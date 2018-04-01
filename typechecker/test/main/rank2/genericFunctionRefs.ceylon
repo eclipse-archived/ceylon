@@ -153,8 +153,8 @@ void refPassing() {
     $type:"Boolean" value bool2 = "hello world".any(all);
     $type:"<Value> given Value satisfies Summable<Value> => Callable<Value,Tuple<Value,Value,Tuple<Value,Value,Empty>>>" 
     value pl = plus;
-    Integer sum1 = [1,2,3].fold(0)(plus);
-    Integer sum2 = [1,2,3].fold(0)(pl);
+    Integer sum1 = [1,2,3].fold(0, plus);
+    Integer sum2 = [1,2,3].fold(0, pl);
     $type:"<Value> => Callable<Value,Tuple<Value,Value,Empty>>" 
     value id = identity;
     $type:"Iterable<Character,Null>" 
@@ -172,10 +172,10 @@ void moreRefPassing() {
         shared <E> => Singleton<E>(E) 
         sing = Singleton;
     }
-    Integer sum1 = [1,2,3].fold(0)(pl);
+    Integer sum1 = [1,2,3].fold(0, pl);
     {Singleton<Integer|String>*} it1 = [1,2,""].map(sing);
     
-    Integer sum2 = [1,2,3].fold(0)(Holder().pl);
+    Integer sum2 = [1,2,3].fold(0, Holder().pl);
     {Singleton<Integer|String>*} it2 = [1,2,""].map(Holder().sing);
 }
 
