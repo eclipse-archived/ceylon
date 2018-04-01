@@ -1309,6 +1309,32 @@ public class TypeArgumentInference {
                 && !involvesTypeParams(parameterizedDec, it)) {
             addToUnionOrIntersection(findUpperBounds, list, it);
         }
+        else {
+            //there's a type parameter in there somewhere, so
+        	    //try splitting the tuples up into individual
+        	    //elements TODO: this is a hack, it would be better
+        	    //to somehow ignore type parameters in inferTypeArg()
+            List<Type> paramTypes = 
+                    unit.getTupleElementTypes(parameterListType);
+            List<Type> argTypes = 
+                    unit.getTupleElementTypes(argumentListType);
+            for (int i=0; 
+                    i<paramTypes.size() && i<argTypes.size(); 
+                    i++) {
+                //the parameter type
+                Type ipt = inferTypeArg(tp, 
+                                paramTypes.get(i), 
+                                argTypes.get(i), 
+                                true, false, 
+                                findUpperBounds, 
+                                new ArrayList<TypeParameter>(), 
+                                smte);
+                if (!isTypeUnknown(ipt)
+                        && !involvesTypeParams(parameterizedDec, ipt)) {
+                    addToUnionOrIntersection(findUpperBounds, list, ipt);
+                }
+            }
+        }
         
         //the return type
         Type rt = inferTypeArg(tp, 
