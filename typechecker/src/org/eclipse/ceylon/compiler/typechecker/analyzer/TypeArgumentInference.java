@@ -889,13 +889,13 @@ public class TypeArgumentInference {
                 if (pa instanceof Tree.SpreadArgument) {
                     sat = spreadType(sat, unit, true);
                     if (parameter.isSequenced() 
-                    	    && parameter.isAtLeastOne()) {
-                    	    //minor hack to allow inference
-                    	    //of type arg from possibly-empty
-                    	    //arg passed to nonempty variadic
-                    	    //parameter
-	                    Type et = unit.getElementType(pt);
-	                    pt = unit.getSequentialType(et);
+                        && parameter.isAtLeastOne()) {
+                        //minor hack to allow inference
+                        //of type arg from possibly-empty
+                        //arg passed to nonempty variadic
+                        //parameter
+                        Type et = unit.getElementType(pt);
+                        pt = unit.getSequentialType(et);
                     }
                     addToUnionOrIntersection(
                             findingUpperBounds, 
@@ -1311,9 +1311,9 @@ public class TypeArgumentInference {
         }
         else {
             //there's a type parameter in there somewhere, so
-        	    //try splitting the tuples up into individual
-        	    //elements TODO: this is a hack, it would be better
-        	    //to somehow ignore type parameters in inferTypeArg()
+                //try splitting the tuples up into individual
+                //elements TODO: this is a hack, it would be better
+                //to somehow ignore type parameters in inferTypeArg()
             List<Type> paramTypes = 
                     unit.getTupleElementTypes(parameterListType);
             List<Type> argTypes = 
