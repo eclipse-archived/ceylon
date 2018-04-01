@@ -1311,9 +1311,9 @@ public class TypeArgumentInference {
         }
         else {
             //there's a type parameter in there somewhere, so
-                //try splitting the tuples up into individual
-                //elements TODO: this is a hack, it would be better
-                //to somehow ignore type parameters in inferTypeArg()
+            //try splitting the tuples up into individual
+            //elements TODO: this is a hack, it would be better
+            //to somehow ignore type parameters in inferTypeArg()
             List<Type> paramTypes = 
                     unit.getTupleElementTypes(parameterListType);
             List<Type> argTypes = 
