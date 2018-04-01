@@ -888,6 +888,15 @@ public class TypeArgumentInference {
                 Type pt = parameter.getType();
                 if (pa instanceof Tree.SpreadArgument) {
                     sat = spreadType(sat, unit, true);
+                    if (parameter.isSequenced() 
+                    	    && parameter.isAtLeastOne()) {
+                    	    //minor hack to allow inference
+                    	    //of type arg from possibly-empty
+                    	    //arg passed to nonempty variadic
+                    	    //parameter
+	                    Type et = unit.getElementType(pt);
+	                    pt = unit.getSequentialType(et);
+                    }
                     addToUnionOrIntersection(
                             findingUpperBounds, 
                             inferredTypes,

@@ -47,8 +47,10 @@ class LanguageModule() {
     
     [String+] strings = ["Hello", "World"];
     [Integer+] integers = [1];
-    $type:"[<String|Integer>*]"
-    value objects = concatenate([strings.first], *zipPairs(integers, strings.rest));
+    $type:"{[Integer, String]*}"
+    value stuff = zipPairs(integers, strings.rest);
+    $type:"[String|Integer+]"
+    value objects = concatenate([strings.first], *stuff);
     
 }
 
