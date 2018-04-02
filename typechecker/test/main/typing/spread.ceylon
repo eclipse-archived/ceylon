@@ -25,3 +25,11 @@ void spreadConstructor() {
     {C()}*.D();
     $error {C()}*.D.create();
 }
+
+void spreadEmptyToNonempty() {
+	void fun<Element>(Element+ elements) {}
+	$error fun(*[]);
+	fun("", *[]);
+	fun(*[""]);
+	fun("", *[""]);
+}
