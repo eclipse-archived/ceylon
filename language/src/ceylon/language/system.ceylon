@@ -37,13 +37,25 @@ shared native object system {
     since("1.1.0")
     shared native String characterEncoding;
     
+    "Encode the given string as a byte array using the given
+     [[encoding|characterEncoding]]. The `UTF-8` and `UTF-16`
+     character encodings are supported on all platforms. 
+     Additional platform-specific character encodings may also
+     be supported."
+    shared native Array<Byte> encode(String string,
+        "The character encoding to use, defaulting to the
+         [[default character encoding|characterEncoding]] 
+         for this system."
+        String encoding = characterEncoding);
+    
     string => "system";
 }
 
 shared native("jvm") object system {
     
     import java.lang {
-        System
+        System,
+        Str=String
     }
     import java.util {
         TimeZone,
@@ -69,6 +81,10 @@ shared native("jvm") object system {
     
     shared native("jvm") String characterEncoding 
             => defaultCharset().name();
+    
+    shared native("jvm") Array<Byte> encode(String string, 
+        String encoding)
+            => Array<Byte> { *Str(string).getBytes(encoding) };
     
 }
 
@@ -109,6 +125,30 @@ shared native("js") object system {
     }
     
     shared native("js") String characterEncoding 
-            => "UTF-16"; //JavaScript always uses UTF-16
+            //TODO: would it be better to change this to UTF-8?
+            => "UTF-16";
+    
+    shared native("js") Array<Byte> encode(String string,
+        String encoding) {
+        dynamic {
+            dynamic bytes;
+    	        switch (encoding)
+    	        case ("UTF-8") {
+    	            bytes = stringToUtf8(string);
+    	        }
+            case ("UTF-16") {
+    	            bytes = stringToUtf16(string);
+    	        }
+            else {
+                throw Exception("unknown character encoding: "
+                    + encoding);
+            }
+            value array = Array.ofSize(bytes.length, 0.byte);
+            for (i in 0:bytes.length) {
+                array[i] = Byte(bytes[i]);
+            }
+            return array;
+        }
+    }
     
 }
