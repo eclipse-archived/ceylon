@@ -132,13 +132,13 @@ shared native("js") object system {
         String encoding) {
         dynamic {
             dynamic bytes;
-    	        switch (encoding)
-    	        case ("UTF-8") {
-    	            bytes = stringToUtf8(string);
-    	        }
+            switch (encoding)
+            case ("UTF-8") {
+                bytes = stringToUtf8(string);
+            }
             case ("UTF-16") {
-    	            bytes = stringToUtf16(string);
-    	        }
+                bytes = stringToUtf16(string);
+            }
             else {
                 throw Exception("unknown character encoding: "
                     + encoding);
