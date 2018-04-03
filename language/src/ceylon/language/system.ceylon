@@ -95,7 +95,7 @@ shared native("jvm") object system {
     
     shared native("jvm") Array<Byte> encode(String string, 
         String encoding = characterEncoding)
-            => Array<Byte> { *Str(string).getBytes(encoding) };
+            => Str(string).getBytes(encoding).byteArray;
     
     shared native("jvm") String decode(Array<Byte> bytes, 
         String encoding = characterEncoding)
