@@ -730,4 +730,10 @@ shared void strings() {
     check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".rest=="\{THUMBS DOWN SIGN}");
     check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".exceptLast=="\{THUMBS UP SIGN}");
     
+    value test_string = "Hello \{THUMBS UP SIGN} \{DESERET SMALL LETTER YEE}";
+    
+    check(system.decode(system.encode(test_string))==test_string);
+    check(system.decode(system.encode(test_string, "UTF-8"), "UTF-8")==test_string);
+    check(system.decode(system.encode(test_string, "UTF-16"), "UTF-16")==test_string);
+    
 }
