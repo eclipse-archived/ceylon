@@ -41,8 +41,19 @@ shared native object system {
      [[encoding|characterEncoding]]. The `UTF-8` and `UTF-16`
      character encodings are supported on all platforms. 
      Additional platform-specific character encodings may also
-     be supported."
+     be supported by this system."
     shared native Array<Byte> encode(String string,
+        "The character encoding to use, defaulting to the
+         [[default character encoding|characterEncoding]] 
+         for this system."
+        String encoding = characterEncoding);
+    
+    "Decode a string from the given byte array using the given
+     [[encoding|characterEncoding]]. The `UTF-8` and `UTF-16`
+     character encodings are supported on all platforms. 
+     Additional platform-specific character encodings may also
+     be supported by this system."
+    shared native String decode(Array<Byte> bytes,
         "The character encoding to use, defaulting to the
          [[default character encoding|characterEncoding]] 
          for this system."
@@ -83,8 +94,12 @@ shared native("jvm") object system {
             => defaultCharset().name();
     
     shared native("jvm") Array<Byte> encode(String string, 
-        String encoding)
+        String encoding = characterEncoding)
             => Array<Byte> { *Str(string).getBytes(encoding) };
+    
+    shared native("jvm") String decode(Array<Byte> bytes, 
+        String encoding = characterEncoding)
+            => Str(bytes, encoding).string;
     
 }
 
@@ -129,7 +144,7 @@ shared native("js") object system {
             => "UTF-16";
     
     shared native("js") Array<Byte> encode(String string,
-        String encoding) {
+        String encoding = characterEncoding) {
         dynamic {
             dynamic bytes;
             switch (encoding)
@@ -148,6 +163,28 @@ shared native("js") object system {
                 array[i] = Byte(bytes[i]);
             }
             return array;
+        }
+    }
+    
+    shared native("js") String decode(Array<Byte> bytes,
+        String encoding = characterEncoding) {
+        dynamic {
+            dynamic arr = dynamic [*[]];
+            variable value i = 0;
+            for (byte in bytes) {
+                arr[i++] = byte.unsigned;
+            }
+            switch (encoding)
+            case ("UTF-8") {
+                return utf8ToString(arr);
+            }
+            case ("UTF-16") {
+                return utf16ToString(arr);
+            }
+            else {
+                throw Exception("unknown character encoding: "
+                    + encoding);
+            }
         }
     }
     
