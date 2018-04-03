@@ -169,11 +169,8 @@ shared native("js") object system {
     shared native("js") String decode(Array<Byte> bytes,
         String encoding = characterEncoding) {
         dynamic {
-            dynamic arr = dynamic [*[]];
-            variable value i = 0;
-            for (byte in bytes) {
-                arr[i++] = byte.unsigned;
-            }
+            dynamic arr 
+                    = dynamic [ for (byte in bytes) byte.unsigned ];
             switch (encoding)
             case ("UTF-8") {
                 return utf8ToString(arr);
