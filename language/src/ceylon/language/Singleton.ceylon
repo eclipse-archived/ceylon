@@ -71,7 +71,8 @@ shared final serializable class Singleton<out Element>
      that `List` has only one element which is equal to 
      this `Singleton`\'s element."
     shared actual Boolean equals(Object that) {
-        if (is List<Anything> that, that.size == 1) {
+        if (is List<Anything> that, !is String that,
+            that.size == 1) {
             value elem = that.first;
             return if (exists element, exists elem) 
             then elem == element

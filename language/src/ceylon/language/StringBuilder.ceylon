@@ -224,8 +224,10 @@ shared native final class StringBuilder()
     shared actual native String spanTo(Integer to);
     shared actual native String spanFrom(Integer from);
     
-    shared actual native Boolean equals(Object that);
-    shared actual native Integer hash;
+    shared actual Boolean equals(Object that) 
+            => (super of List<Character>).equals(that);
+    shared actual Integer hash
+            => (super of List<Character>).hash;
 }
 
 shared native("jvm") final class StringBuilder() 
@@ -581,12 +583,6 @@ shared native("jvm") final class StringBuilder()
         return builder.substring(0, startIndex(to+1));
     }
     
-    shared actual native("jvm") Boolean equals(Object that) 
-            => builder.equals(that);
-    
-    shared actual native("jvm") Integer hash 
-            => builder.hash;
-    
     Integer startIndex(Integer index) 
             => builder.offsetByCodePoints(0, index);
     
@@ -768,8 +764,4 @@ shared native("js") final class StringBuilder()
         Integer from, Integer length)
             => string.occurrences(character, from, length);
     
-    shared actual native("js") Boolean equals(Object that) 
-            => string.equals(that);
-    
-    shared actual native("js") Integer hash => string.hash;
 }
