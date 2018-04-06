@@ -634,6 +634,9 @@ shared void checkModuleAndImports() {
     check(annotations(optAnnotation, dep) exists, "module 5");
     check(annotations(deprecatedAnnotation, dep) exists, "module 6");
     
+    restrictedFunction1();
+    restrictedFunction2();
+    
 }
 
 @test

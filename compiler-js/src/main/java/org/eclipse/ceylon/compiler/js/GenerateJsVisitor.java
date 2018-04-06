@@ -3893,7 +3893,9 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(Tree.ModuleLiteral that) {
         Module m = (Module)that.getImportPath().getModel();
-        MetamodelHelper.findModule(m, this);
+        if (m!=null) {
+        	MetamodelHelper.findModule(m, this);
+        }
     }
 
     /** Call internal function "throwexc" with the specified message and source location. */
