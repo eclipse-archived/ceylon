@@ -102,7 +102,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 
     public void generate() throws IOException {
         if (!sharingPageWithModule) {
-            writeHeader("Package " + pkg.getName());
+            writeHeader("Package " + pkg.getNameAsString());
             writeNavBar();
         }
         
