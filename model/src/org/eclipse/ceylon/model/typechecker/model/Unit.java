@@ -827,6 +827,15 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
      
     @Override
+    public Interface getMultiplicableDeclaration() {
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getMultiplicableDeclaration();
+        }
+        return null;
+    }
+     
+    @Override
     public Interface getNumericDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {

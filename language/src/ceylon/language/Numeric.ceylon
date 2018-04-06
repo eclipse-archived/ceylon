@@ -59,11 +59,9 @@ see (interface Number)
 by ("Gavin")
 tagged("Numbers")
 shared interface Numeric<Other> of Other
-        satisfies Invertible<Other>
+        satisfies Invertible<Other> 
+                & Multiplicable<Other>
         given Other satisfies Numeric<Other> {
-    
-    "The product of this number and the given number."
-    shared formal Other times(Other other);
     
     "The quotient obtained by dividing this number by the 
      given number. For [[integral|Integral]] numeric types, 

@@ -935,6 +935,10 @@ public class CeylonVisitor extends Visitor {
         append(gen.expressionGen().transform(op));
     }
 
+    public void visit(Tree.ProductOp op) {
+        append(gen.expressionGen().transform(op));
+    }
+
     public void visit(Tree.DifferenceOp op) {
         append(gen.expressionGen().transform(op));
     }

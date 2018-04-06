@@ -30,6 +30,12 @@ class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
     }
 }
 
+class Multi(Float x) satisfies Multiplicable<Multi> {
+    times(Multi m) => Multi(x*m.x);
+    shared Float float => x;
+    string => x.string;
+}
+
 class Test4148Keyed() satisfies Correspondence<Integer,String> & KeyedCorrespondenceMutator<Integer,String> {
   variable String x = "";
   shared actual void put(Integer k, String v) {
@@ -205,6 +211,9 @@ shared void operators() {
     
     check((maybe else "goodbye")=="hello", "else");
     check((maybeNot else "goodbye")=="goodbye", "else");
+    
+    value prod = Multi(1.0)*Multi(2.0);
+    check(prod.float==2.0, "multiplicable");
     
     class X() {}
     X? xx = X();
