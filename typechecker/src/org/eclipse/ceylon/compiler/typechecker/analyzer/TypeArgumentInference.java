@@ -1488,12 +1488,10 @@ public class TypeArgumentInference {
      */
     List<Type> getInferredTypeArgsForStaticReference(
             Tree.InvocationExpression that, 
-            TypeDeclaration type, Type receiverType) {
+            TypeDeclaration type, Type receiverType,
+            Tree.MemberOrTypeExpression primary) {
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
-        Tree.MemberOrTypeExpression primary = 
-                (Tree.MemberOrTypeExpression) 
-                    that.getPrimary();
         Declaration invoked = primary.getDeclaration();
         if (pal == null) {
             return null;

@@ -4813,7 +4813,7 @@ public class ExpressionVisitor extends Visitor {
                             (TypeDeclaration) generic;
                     return new TypeArgumentInference(unit)
                             .getInferredTypeArgsForStaticReference(
-                                    that, type, receiverType);
+                                    that, type, receiverType, pmte);
                 }
             }
             else {

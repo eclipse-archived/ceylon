@@ -222,3 +222,19 @@ shared void testLoopRef() {
     value lp = loop;
     $type:"{Integer+}" value l2 = lp(3)((a) => a*3);
 }
+
+void testRefToMethodOfGenericInitRef() {
+    class Foo<X>() {
+        shared void foo() {}
+    }
+    
+    @error:"missing type arguments" 
+    Foo<String> foo = (Foo.foo)();
+
+    class Bar<X>(X x) {
+        shared void bar() {}
+    }
+    
+    @error:"could not infer type argument" 
+    Bar<String> bar = (Bar.bar)("");
+}
