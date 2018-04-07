@@ -475,4 +475,6 @@ class Multi(Float x) satisfies Multiplicable<Multi> {
 
 void testMulti() {
     @type:"Multi" value prod = Multi(1.0)*Multi(2.0);
+    variable Multi multi = Multi(2.0);
+    multi*=Multi(3.0);
 }
