@@ -162,6 +162,10 @@ shared void switches() {
     check(switchMixedCases(1)=="string");
     check(switchMixedCases(0)=="integer");
     check(switchMixedCases(null)=="integer");
+    
+    check(switchWithIdentity(id)=="ok");
+    check(switchWithIdentity("")=="notok");
+    check(switchWithIdentity(object {})=="notok");
 }
 
 String switchMixedCases(Integer|String|Float|Null arg) {
@@ -177,3 +181,13 @@ String switchMixedCases(Integer|String|Float|Null arg) {
     }
 }
 
+object id extends Object() {
+    hash => nothing;
+    equals(Object other) => nothing;
+}
+
+String switchWithIdentity(Anything any) {
+    switch (any)
+    case (id) { return "ok"; }
+    else { return "notok"; }
+}
