@@ -466,3 +466,15 @@ class SpreadsSuper() satisfies {Integer*} {
     this*.plus(0);
     iterator() => {0}.iterator();
 }
+
+class Multi(Float x) satisfies Multiplicable<Multi> {
+    times(Multi m) => Multi(x*m.x);
+    shared Float float => x;
+    string => x.string;
+}
+
+void testMulti() {
+    @type:"Multi" value prod = Multi(1.0)*Multi(2.0);
+    variable Multi multi = Multi(2.0);
+    multi*=Multi(3.0);
+}

@@ -30,7 +30,15 @@ class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
     }
 }
 
-class Test4148Keyed() satisfies Correspondence<Integer,String> & KeyedCorrespondenceMutator<Integer,String> {
+class Multi(Float x) satisfies Multiplicable<Multi> {
+    times(Multi m) => Multi(x*m.x);
+    shared Float float => x;
+    string => x.string;
+}
+
+class Test4148Keyed() 
+        satisfies Correspondence<Integer,String> 
+                & KeyedCorrespondenceMutator<Integer,String> {
   variable String x = "";
   shared actual void put(Integer k, String v) {
     if (k == 0) {
@@ -41,7 +49,9 @@ class Test4148Keyed() satisfies Correspondence<Integer,String> & KeyedCorrespond
   shared actual Boolean defines(Integer k) => k==0;
 }
 
-class Test4148Indexed() satisfies Correspondence<Integer,String> & IndexedCorrespondenceMutator<String> {
+class Test4148Indexed() 
+        satisfies Correspondence<Integer,String> 
+                & IndexedCorrespondenceMutator<String> {
     variable String x = "";
     shared actual void set(Integer k, String v) {
         if (k == 0) {
@@ -124,7 +134,7 @@ shared void operators() {
     check(full*.uppercased nonempty, "spread 2");
     value spread1 = full*.uppercased;
     value spread2 = full*.get(1);
-	if (exists s1s=spread1[0]) {
+    if (exists s1s=spread1[0]) {
         check(s1s == "HELLO", "spread 3");
     } else { fail("spread 3"); }
     if (exists s1s=spread1[1]) {
@@ -205,6 +215,13 @@ shared void operators() {
     
     check((maybe else "goodbye")=="hello", "else");
     check((maybeNot else "goodbye")=="goodbye", "else");
+    
+    value prod = Multi(1.0)*Multi(2.0);
+    check(prod.float==2.0, "multiplicable");
+    
+    variable Multi multi = Multi(2.0);
+    multi*=Multi(3.0);
+    check(multi.float==6.0, "multiplicable");
     
     class X() {}
     X? xx = X();

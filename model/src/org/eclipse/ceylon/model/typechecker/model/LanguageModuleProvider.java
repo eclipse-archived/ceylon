@@ -29,6 +29,7 @@ public interface LanguageModuleProvider {
     public static final String callableName = "Callable";
     public static final String scalableName = "Scalable";
     public static final String summableName = "Summable";
+    public static final String multiplicableName = "Multiplicable";
     public static final String numericName = "Numeric";
     public static final String integralName = "Integral";
     public static final String invertibleName = "Invertible";
@@ -80,6 +81,7 @@ public interface LanguageModuleProvider {
     Interface getCallableDeclaration();
     Interface getScalableDeclaration();
     Interface getSummableDeclaration();
+    Interface getMultiplicableDeclaration();
     Interface getNumericDeclaration();
     Interface getIntegralDeclaration();
     Interface getInvertableDeclaration();

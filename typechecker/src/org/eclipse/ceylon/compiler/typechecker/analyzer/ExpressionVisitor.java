@@ -6977,6 +6977,9 @@ public class ExpressionVisitor extends Visitor {
         else if (that instanceof Tree.SumOp) {
             return unit.getSummableDeclaration();
         }
+        else if (that instanceof Tree.ProductOp) {
+            return unit.getMultiplicableDeclaration();
+        }
         else if (that instanceof Tree.DifferenceOp) {
             return unit.getInvertableDeclaration();
         }
@@ -6992,6 +6995,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.ArithmeticAssignmentOp that) {
         if (that instanceof Tree.AddAssignOp) {
             return unit.getSummableDeclaration();
+        }
+        if (that instanceof Tree.MultiplyAssignOp) {
+            return unit.getMultiplicableDeclaration();
         }
         else if (that instanceof Tree.SubtractAssignOp) {
             return unit.getInvertableDeclaration();

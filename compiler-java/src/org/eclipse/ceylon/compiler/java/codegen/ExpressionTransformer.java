@@ -2785,6 +2785,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(op, op.getUnit().getSummableDeclaration()).build();
     }
 
+    public JCExpression transform(Tree.ProductOp op) {
+        return transformOverridableBinaryOperator(op, op.getUnit().getMultiplicableDeclaration()).build();
+    }
+
     public JCExpression transform(Tree.DifferenceOp op) {
         return transformOverridableBinaryOperator(op, op.getUnit().getInvertableDeclaration()).build();
     }
@@ -3102,6 +3106,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         Interface compoundType = op.getUnit().getNumericDeclaration();
         if(op instanceof Tree.AddAssignOp){
             compoundType = op.getUnit().getSummableDeclaration();
+        }else if(op instanceof Tree.MultiplyAssignOp){
+            compoundType = op.getUnit().getMultiplicableDeclaration();
         }else if(op instanceof Tree.SubtractAssignOp){
             compoundType = op.getUnit().getInvertableDeclaration();
         }else if(op instanceof Tree.RemainderAssignOp){

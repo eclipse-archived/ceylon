@@ -49,6 +49,7 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
     private Interface callableDeclaration = null;
     private Interface scalableDeclaration = null;
     private Interface summableDeclaration = null;
+    private Interface multiplicableDeclaration = null;
     private Interface numericDeclaration = null;
     private Interface integralDeclaration = null;
     private Interface invertibleDeclaration = null;
@@ -379,6 +380,14 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
             summableDeclaration = (Interface) getLanguageModuleDeclaration(summableName);
         }
         return summableDeclaration;
+    }
+
+    @Override
+    public Interface getMultiplicableDeclaration() {
+        if (multiplicableDeclaration == null) {
+        	multiplicableDeclaration = (Interface) getLanguageModuleDeclaration(multiplicableName);
+        }
+        return multiplicableDeclaration;
     }
 
     @Override
