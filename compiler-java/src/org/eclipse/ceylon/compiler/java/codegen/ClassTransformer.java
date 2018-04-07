@@ -827,90 +827,93 @@ public class ClassTransformer extends AbstractTransformer {
         // annotation
         
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
-        for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
-            at(parameter);
-            Parameter parameterModel = parameter.getParameterModel();
-            JCExpression annoAttr = make().Apply(null, naming.makeQuotedQualIdent(naming.makeUnquotedIdent("anno"),
-                    parameter.getParameterModel().getName()),
-                    List.<JCExpression>nil());
-            Type parameterType = parameterModel.getType();
-            JCExpression argExpr;
-            if (typeFact().isIterableType(parameterType)
-                    && !isCeylonString(parameterType)) {
-                // Convert from array to Sequential
-                Type iteratedType = typeFact().getIteratedType(parameterType);
-                boolean nonEmpty = typeFact().isNonemptyIterableType(parameterType);
-                if (isCeylonBasicType(iteratedType)) {
-                    argExpr = utilInvocation().sequentialWrapperBoxed(annoAttr);
-                } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
-                    // Can't use Util.sequentialAnnotation becase we need to 'box'
-                    // the Java annotations in their Ceylon annotation class
-                    argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
-                    ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-                    SyntheticName array = naming.synthetic(Unfix.$array$);
-                    SyntheticName sb = naming.synthetic(Unfix.$sb$);
-                    SyntheticName index = naming.synthetic(Unfix.$index$);
-                    SyntheticName element = naming.synthetic(Unfix.$element$);
-                    stmts.append(makeVar(FINAL, sb, 
-                            make().TypeArray(make().Type(syms().objectType)),
-                            make().NewArray(make().Type(syms().objectType), List.of(naming.makeQualIdent(array.makeIdent(), "length")), null)));
-                    stmts.append(makeVar(index, 
-                            make().Type(syms().intType),
-                            make().Literal(0)));
-                    stmts.append(make().ForeachLoop(
-                            makeVar(element, makeJavaType(iteratedType, JT_ANNOTATION), null), 
-                            array.makeIdent(), 
-                            make().Exec(make().Assign(
-                                    make().Indexed(sb.makeIdent(), 
-                                            make().Unary(JCTree.Tag.POSTINC, index.makeIdent())), 
-                                    instantiateAnnotationClass(iteratedType, element.makeIdent())))));
-                    stmts.append(make().Return(
-                            make().NewClass(null,
-                                    null,
-                                    make().QualIdent(syms().ceylonTupleType.tsym),
-                                    List.of(makeReifiedTypeArgument(iteratedType),
-                                            sb.makeIdent(),
-                                            makeEmpty(),
-                                            make().Literal(false)), 
-                                    null)));
-                    classBuilder.method(
-                            MethodDefinitionBuilder.systemMethod(this, naming.getAnnotationSequenceMethodName())
-                                .ignoreModelAnnotations()
-                                .modifiers(PRIVATE | STATIC)
-                                .resultType(new TransformedType(makeJavaType(typeFact().getSequentialType(iteratedType)), null, makeAtNonNull()))
-                                .parameter(ParameterDefinitionBuilder.systemParameter(this, array.getName())
-                                        .type(new TransformedType(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)))))
-                                .body(stmts.toList()));
-                } else if (isCeylonMetamodelDeclaration(iteratedType)) {
-                    argExpr = makeMetamodelInvocation("parseMetamodelReferences", 
-                            List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
-                            List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
-                } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
-                    argExpr = makeMetamodelInvocation("parseEnumerationReferences", 
-                            List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
-                            List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
-                } else {
-                    argExpr = makeErroneous(parameter, "compiler bug");
-                }
-                if (nonEmpty) {
-                    argExpr = make().TypeCast(makeJavaType(parameterType), argExpr);
-                }
-            } else if (Decl.isAnnotationClass(parameterType.getDeclaration())) {
-                argExpr = instantiateAnnotationClass(parameterType, annoAttr);
-            } else if (isCeylonMetamodelDeclaration(parameterType)) {
-                argExpr = makeMetamodelInvocation("parseMetamodelReference", 
+        if (!klass.getUnit().getPackage().isLanguagePackage()
+        	|| !classBuilder.getClassName().equals("RestrictedAnnotation")) { //ignore argument to restricted()
+            for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
+                at(parameter);
+                Parameter parameterModel = parameter.getParameterModel();
+                JCExpression annoAttr = make().Apply(null, naming.makeQuotedQualIdent(naming.makeUnquotedIdent("anno"),
+                        parameter.getParameterModel().getName()),
+                        List.<JCExpression>nil());
+                Type parameterType = parameterModel.getType();
+                JCExpression argExpr;
+                if (typeFact().isIterableType(parameterType)
+                        && !isCeylonString(parameterType)) {
+                    // Convert from array to Sequential
+                    Type iteratedType = typeFact().getIteratedType(parameterType);
+                    boolean nonEmpty = typeFact().isNonemptyIterableType(parameterType);
+                    if (isCeylonBasicType(iteratedType)) {
+                        argExpr = utilInvocation().sequentialWrapperBoxed(annoAttr);
+                    } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
+                        // Can't use Util.sequentialAnnotation becase we need to 'box'
+                        // the Java annotations in their Ceylon annotation class
+                        argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
+                        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+                        SyntheticName array = naming.synthetic(Unfix.$array$);
+                        SyntheticName sb = naming.synthetic(Unfix.$sb$);
+                        SyntheticName index = naming.synthetic(Unfix.$index$);
+                        SyntheticName element = naming.synthetic(Unfix.$element$);
+                        stmts.append(makeVar(FINAL, sb, 
+                                make().TypeArray(make().Type(syms().objectType)),
+                                make().NewArray(make().Type(syms().objectType), List.of(naming.makeQualIdent(array.makeIdent(), "length")), null)));
+                        stmts.append(makeVar(index, 
+                                make().Type(syms().intType),
+                                make().Literal(0)));
+                        stmts.append(make().ForeachLoop(
+                                makeVar(element, makeJavaType(iteratedType, JT_ANNOTATION), null), 
+                                array.makeIdent(), 
+                                make().Exec(make().Assign(
+                                        make().Indexed(sb.makeIdent(), 
+                                                make().Unary(JCTree.Tag.POSTINC, index.makeIdent())), 
+                                        instantiateAnnotationClass(iteratedType, element.makeIdent())))));
+                        stmts.append(make().Return(
+                                make().NewClass(null,
+                                        null,
+                                        make().QualIdent(syms().ceylonTupleType.tsym),
+                                        List.of(makeReifiedTypeArgument(iteratedType),
+                                                sb.makeIdent(),
+                                                makeEmpty(),
+                                                make().Literal(false)), 
+                                        null)));
+                        classBuilder.method(
+                                MethodDefinitionBuilder.systemMethod(this, naming.getAnnotationSequenceMethodName())
+                                    .ignoreModelAnnotations()
+                                    .modifiers(PRIVATE | STATIC)
+                                    .resultType(new TransformedType(makeJavaType(typeFact().getSequentialType(iteratedType)), null, makeAtNonNull()))
+                                    .parameter(ParameterDefinitionBuilder.systemParameter(this, array.getName())
+                                            .type(new TransformedType(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)))))
+                                    .body(stmts.toList()));
+                    } else if (isCeylonMetamodelDeclaration(iteratedType)) {
+                        argExpr = makeMetamodelInvocation("parseMetamodelReferences", 
+                                List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
+                                List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
+                    } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+                        argExpr = makeMetamodelInvocation("parseEnumerationReferences", 
+                                List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
+                                List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
+                    } else {
+                        argExpr = makeErroneous(parameter, "compiler bug");
+                    }
+                    if (nonEmpty) {
+                        argExpr = make().TypeCast(makeJavaType(parameterType), argExpr);
+                    }
+                } else if (Decl.isAnnotationClass(parameterType.getDeclaration())) {
+                    argExpr = instantiateAnnotationClass(parameterType, annoAttr);
+                } else if (isCeylonMetamodelDeclaration(parameterType)) {
+                    argExpr = makeMetamodelInvocation("parseMetamodelReference", 
+                                List.<JCExpression>of(annoAttr), 
+                                List.<JCExpression>of(makeJavaType(parameterType, JT_TYPE_ARGUMENT)));
+                } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
+                    argExpr = makeMetamodelInvocation("parseEnumerationReference", 
                             List.<JCExpression>of(annoAttr), 
-                            List.<JCExpression>of(makeJavaType(parameterType, JT_TYPE_ARGUMENT)));
-            } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
-                argExpr = makeMetamodelInvocation("parseEnumerationReference", 
-                        List.<JCExpression>of(annoAttr), 
-                        null);
-            } else {
-                argExpr = annoAttr;
-                argExpr = expressionGen().applyErasureAndBoxing(annoAttr, parameterType.withoutUnderlyingType(), false, BoxingStrategy.UNBOXED, parameterType);
+                            null);
+                } else {
+                    argExpr = annoAttr;
+                    argExpr = expressionGen().applyErasureAndBoxing(annoAttr, parameterType.withoutUnderlyingType(), false, BoxingStrategy.UNBOXED, parameterType);
+                }
+                
+                args.add(argExpr);
             }
-            
-            args.add(argExpr);
         }
         annoCtor.body(at(def).Exec(
                 make().Apply(null, naming.makeThis(), args.toList())));
@@ -3620,11 +3623,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-	public AttributeDefinitionBuilder transform(AttributeSetterDefinition decl, boolean forCompanion) {
-	    Setter model = decl.getDeclarationModel();
+    public AttributeDefinitionBuilder transform(AttributeSetterDefinition decl, boolean forCompanion) {
+        Setter model = decl.getDeclarationModel();
         if (Strategy.onlyOnCompanion(model) && !forCompanion) {
-	        return null;
-	    }
+            return null;
+        }
         String name = decl.getIdentifier().getText();
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 /* 
