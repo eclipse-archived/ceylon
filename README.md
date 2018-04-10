@@ -1,5 +1,3 @@
-[![Build Status](https://ci-ceylon.rhcloud.com/buildStatus/icon?job=ceylon-distribution)](https://ci-ceylon.rhcloud.com/job/ceylon-distribution/)
-
 # Ceylon
 
 This is the 1.3.4-SNAPSHOT _"You'll Thank Me Later"_ release of the Ceylon 
