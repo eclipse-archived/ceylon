@@ -106,18 +106,4 @@ mentioned above.
 
 We're deeply indebted to the community volunteers who contributed a 
 substantial part of the current Ceylon codebase, working often in 
-their own spare time. The following people have contributed to this 
-release:
-
-Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, 
-Tom Bentley, Aleš Justin, David Festal, Max Rydahl Andersen, 
-Enrique Zamudio, Lucas Werkmeister, Ross Tate,
-Alexander Altman, Alexander Zolotko, Alex Szczuczko, 
-Andrés G. Aragoneses, Anh Nhan Nguyen, Bastien Jansen, 
-Brice Dutheil, Carlos Augusto Mar, Casey Dahlin,
-Charles Gould, Chris Gregory, Diego Coronel, Griffin DeJohn, 
-Henning Burdack, John Vasileff, Julien Viet, klinger, 
-Loic Rouchon, Luke deGruchy, Martin Voelkle, Matej Lazar, 
-Michael Musgrove, Mr. Arkansas, Paco Soberón, Paŭlo Ebermann, 
-Rohit Mohan, Roland Tepp, Stephane Gallès, Tomáš Hradec,
-Toby Crawley, Vorlent
+their own spare time.
