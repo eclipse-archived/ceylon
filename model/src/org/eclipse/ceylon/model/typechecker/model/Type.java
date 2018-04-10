@@ -2720,7 +2720,7 @@ public class Type extends Reference {
             boolean contravariant, 
             Declaration declaration,
             Declaration member) {
-        if (member==null || !member.isStatic()) {
+        if (!member.isStatic()) {
             List<TypeParameter> errors = 
                     new ArrayList<TypeParameter>(3);
             checkVariance(covariant, contravariant, 
@@ -2793,33 +2793,36 @@ public class Type extends Reference {
             if (!parameterizedDec.equals(declaration)
                     //constructors are "static" with respect to 
                     //their containing class
-                    && !(ModelUtil.isConstructor(member)
-                            && member.getContainer()
-                                .equals(parameterizedDec))) {
-                boolean checkBoth = 
-                        member==null 
-                        //we only need to check members that are 
-                        //shared, or accessed by other instance
-                        || member.isShared()
-                        || tp.getDeclaration().equals(member)
-                        //variables require special handling for
-                        //other instance access (we distinguish
-                        //read from write access)
-                        || !isVariableValue(member) 
-                            && member.getOtherInstanceAccess();
-                if ((checkBoth || member.getOtherInstanceReadAccess())
-                    && !contravariant
-                    && isTrulyContravariant(tp)) {
-                    //if a covariant type parameter appears in a 
-                    //contravariant location
-                    //add an error to the list
-                    errors.add(tp);
+                    && !isConstructorOf(member, parameterizedDec)
+                && (//we only need to check members that are 
+                    //shared, or accessed by other instance
+                       member.isShared()
+                    || member.getOtherInstanceAccess()
+                    //we also need to check extends/satisfies 
+                    //of generic type decs, return types of 
+                    //generic functions, and upper bounds in 
+                    //type constraints, including constraints 
+                    //on shared nested classes and interfaces
+                    || member.equals(parameterizedDec))) {
+                if (!member.isShared()
+                        && member.getOtherInstanceAccess() 
+                        && isVariableValue(member)) {
+                    //variables require special handling for
+                    //other instance access (we distinguish
+                    //read from write access)
+                	if (!member.getOtherInstanceWriteAccess()) {
+                        covariant = true;
+                	}
+                	if (!member.getOtherInstanceReadAccess()) {
+                        contravariant = true;
+                	}
                 }
-                if ((checkBoth || member.getOtherInstanceWriteAccess())
-                    && !covariant
-                    && isTrulyCovariant(tp)) {
-                    //if a contravariant type parameter appears 
+                if (//a covariant type parameter appears in a 
+                    //contravariant location
+                    !contravariant && isTrulyContravariant(tp)
+                    //a contravariant type parameter appears 
                     //in a covariant location
+                 || !covariant && isTrulyCovariant(tp)) {                    
                     //add an error to the list
                     errors.add(tp);
                 }
@@ -2883,6 +2886,12 @@ public class Type extends Reference {
                 }
             }
         }
+    }
+
+    private static boolean isConstructorOf(Declaration member, 
+            Declaration parameterizedDec) {
+        return ModelUtil.isConstructor(member)
+            && member.getContainer().equals(parameterizedDec);
     }
 
     /**

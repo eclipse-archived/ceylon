@@ -47,16 +47,16 @@ public class TypeArgumentVisitor extends Visitor {
                     that.getSatisfiedTypes();
             if (sts!=null) {
                 for (Tree.Type type: sts.getTypes()) {
-                    //TODO: is "null" really correct here?!
-                    check(type, false, null);
+                    check(type, false, 
+                    		parameterizedDeclaration);
                 }
             }
             Tree.CaseTypes cts = 
                     that.getCaseTypes();
             if (cts!=null) {
                 for (Tree.Type type: cts.getTypes()) {
-                    //TODO: is "null" really correct here?!
-                    check(type, false, null);
+                    check(type, false, 
+                    		parameterizedDeclaration);
                 }
             }
             flip();
