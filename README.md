@@ -105,3 +105,5 @@ mentioned above.
 We're deeply indebted to the community volunteers who contributed a 
 substantial part of the current Ceylon codebase, working often in 
 their own spare time.
+
+Ceylon is a project of the [Eclipse Foundation](http://eclipse.org).
