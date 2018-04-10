@@ -44,7 +44,8 @@ public abstract class Declaration
     private Declaration refinedDeclaration = this;
     private String qualifiedNameAsStringCache;
 	private Backends nativeBackends = Backends.ANY;
-	private boolean otherInstanceAccess;
+	private boolean otherInstanceReadAccess;
+	private boolean otherInstanceWriteAccess;
     protected DeclarationCompleter actualCompleter;
     private List<String> aliases;
     private List<String> restrictions;
@@ -770,12 +771,25 @@ public abstract class Declaration
     }
     
     public boolean getOtherInstanceAccess() {
-    	return otherInstanceAccess;
+        return otherInstanceReadAccess
+            || otherInstanceWriteAccess;
     }
 
-	public void setOtherInstanceAccess(boolean access) {
-		otherInstanceAccess=access;
-	}
+    public boolean getOtherInstanceReadAccess() {
+        return otherInstanceReadAccess;
+    }
+    
+    public void setOtherInstanceReadAccess(boolean otherInstanceReadAccess) {
+        this.otherInstanceReadAccess = otherInstanceReadAccess;
+    }
+    
+    public boolean getOtherInstanceWriteAccess() {
+        return otherInstanceWriteAccess;
+    }
+    
+    public void setOtherInstanceWriteAccess(boolean otherInstanceWriteAccess) {
+        this.otherInstanceWriteAccess = otherInstanceWriteAccess;
+    }
 	
 	public boolean isParameter() {
 	    return false;

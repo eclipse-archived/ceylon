@@ -20,6 +20,11 @@ void parameterVariance() {
     }
     
     class YYY1<out T>(YYY1<T> other, T t) {
+        void f($error variable T t) => print(t);
+        other.f(t);
+    }
+    
+    class YYY2<out T>(YYY2<T> other, T t) {
         void f(T t) => print(t);
     }
     

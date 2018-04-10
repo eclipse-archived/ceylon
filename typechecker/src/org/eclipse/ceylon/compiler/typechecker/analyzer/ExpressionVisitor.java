@@ -7860,7 +7860,12 @@ public class ExpressionVisitor extends Visitor {
                         isSelfReference(primary);
                 if (!selfReference && 
                         !member.isShared()) {
-                    member.setOtherInstanceAccess(true);
+                	if (that.getAssigned()) {
+                		member.setOtherInstanceWriteAccess(true);
+                	}
+                	else {
+                		member.setOtherInstanceReadAccess(true);
+                	}
                 }
                 if (error) {
                     if (checkConcreteConstructor(member, that)) {
@@ -8676,7 +8681,12 @@ public class ExpressionVisitor extends Visitor {
                 resetSuperReference(that);
                 if (!isSelfReference(primary) && 
                         !type.isShared()) {
-                    type.setOtherInstanceAccess(true);
+                	if (that.getAssigned()) {
+                		type.setOtherInstanceWriteAccess(true);
+                	}
+                	else {
+                		type.setOtherInstanceReadAccess(true);
+                	}
                 }
                 if (error) {
                     if (checkConcreteClass(type, that)) {

@@ -64,9 +64,16 @@ void backdoorVariance() {
          foo.get();
     }
     class Baz<out T>(T t, Baz<T> baz) {
-         class Inner($error T t) {}
+         class Inner($error shared T t) {}
          print(Inner(t));
-         baz.Inner(t);
+         value inner = baz.Inner(t);
+         T it = inner.t;
+    }
+    class Qux<out T>(T t, Qux<T> baz) {
+        class Inner($error shared Anything(T) t) {}
+        print(Inner((T t){}));
+        value inner = baz.Inner((T t){});
+        inner.t(t);
     }
 }
 
@@ -75,4 +82,22 @@ class WithMethodWithForwardParam<out T, in S>() {
     shared void method2()(f) { void f($error S t); }
     shared void method3()($error T t) {}
     shared void method4()(void f($error S t)) {}
+}
+
+class Ok<out T, in S>(
+    variable T t,
+    variable Anything(S) s) {
+    value other = Ok("hello", (String s){});
+    String x = other.t;
+    other.s = (String s){};
+}
+
+class Bad<out T, in S>(
+    $error:"occurs at a contravariant or invariant location"
+    variable T t,
+    $error:"occurs at a covariant or invariant location"
+    variable Anything(S) s) {
+    value other = Bad("hello", (String s){});
+    other.t = "";
+    Anything(String) x = other.s;
 }
