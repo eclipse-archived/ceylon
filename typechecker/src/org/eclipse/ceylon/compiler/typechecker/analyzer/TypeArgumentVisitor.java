@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
-import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
 import org.eclipse.ceylon.model.typechecker.model.Type;
@@ -190,35 +189,6 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
-    private TypeDeclaration constructorClass;
-    
-    private void endConstructor(TypeDeclaration occ) {
-        constructorClass = occ;
-    }
-
-    private TypeDeclaration beginConstructor(Constructor c) {
-        TypeDeclaration occ = constructorClass;
-        Type et = c.getExtendedType();
-        constructorClass = 
-                et==null ? null :
-                    et.getDeclaration();
-        return occ;
-    }
-    
-    @Override public void visit(Tree.Constructor that) {
-        TypeDeclaration occ = 
-                beginConstructor(that.getConstructor());
-        super.visit(that);
-        endConstructor(occ);
-    }
-
-    @Override public void visit(Tree.Enumerated that) {
-        TypeDeclaration occ = 
-                beginConstructor(that.getEnumerated());
-        super.visit(that);
-        endConstructor(occ);
-    }
-    
     private void check(Tree.Type that, boolean variable, 
             Declaration d) {
         if (that!=null) {
@@ -227,56 +197,44 @@ public class TypeArgumentVisitor extends Visitor {
     }
 
     private void check(Type type, boolean variable, 
-            Declaration d, Node that) {
+            Declaration member, Node that) {
         if (type!=null) {
             List<TypeParameter> errors = 
                     type.checkVariance(
                             !contravariant && !variable, 
                             contravariant && !variable, 
-                            parameterizedDeclaration);
-            displayErrors(that, type, errors, d);
+                            parameterizedDeclaration,
+                            member);
+            displayErrors(that, type, errors, member);
         }
     }
 
     private void displayErrors(Node that, Type type,
-            List<TypeParameter> errors, Declaration d) {
+            List<TypeParameter> errors, Declaration member) {
         for (TypeParameter tp: errors) {
-            Declaration declaration = tp.getDeclaration();
-            if ((d==null 
-                    || d.isShared() 
-                    || d.getOtherInstanceAccess() 
-                    || declaration.equals(d))
-                && (d==null || !d.isStatic())
-                && !isConstructorClass(declaration)) {
-                String var; String loc;
-                if (tp.isContravariant()) {
-                    var = "contravariant ('in')";
-                    loc = "covariant or invariant";
-                }
-                else if (tp.isCovariant()) {
-                    var = "covariant ('out')";
-                    loc = "contravariant or invariant";
-                }
-                else {
-                    throw new RuntimeException();
-                }
-                String typename = 
-                        type.asString(that.getUnit());
-                that.addError(var 
-                        + " type parameter '" + tp.getName() 
-                        + "' of '" + declaration.getName() 
-                        + "' occurs at a " + loc 
-                        + " location in type: '" + typename 
-                        + "'");
+            String var; String loc;
+            if (tp.isContravariant()) {
+                var = "contravariant ('in')";
+                loc = "covariant or invariant";
             }
+            else if (tp.isCovariant()) {
+                var = "covariant ('out')";
+                loc = "contravariant or invariant";
+            }
+            else {
+                throw new RuntimeException();
+            }
+            String typename = 
+                    type.asString(that.getUnit());
+            that.addError(var 
+                    + " type parameter '" + tp.getName() 
+                    + "' of '" + tp.getDeclaration().getName() 
+                    + "' occurs at a " + loc 
+                    + " location in type: '" + typename 
+                    + "'");
         }
     }
 
-    private boolean isConstructorClass(Declaration declaration) {
-        return constructorClass!=null 
-            && declaration.equals(constructorClass);
-    }
-    
     @Override
     public void visit(Tree.SimpleType that) {
         super.visit(that);

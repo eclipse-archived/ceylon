@@ -32,6 +32,7 @@ import static org.eclipse.ceylon.model.typechecker.model.SiteVariance.OUT;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -72,6 +73,10 @@ public class Type extends Reference {
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
             EMPTY_VARIANCE_MAP;
+    
+    private static final List<TypeParameter> NO_TYPE_PARAMS = 
+            Collections.<TypeParameter>emptyList();    
+
     
     public void setCached() {
         isCached = true;
@@ -2701,20 +2706,30 @@ public class Type extends Reference {
      * @param covariant true for a covariant position
      * @param contravariant true for a contravariant 
      *                      position
-     * @param declaration TODO!
+     * @param declaration the parameterized declaration
+     *                    in which this type occurs
+     * @param member the member of the parameterized 
+     *               declaration in which this type 
+     *               occurs
      * 
      * @return a list of type parameters which appear
-     *         in illegal positions
+     *         in illegal positions in this type
      */
     public List<TypeParameter> checkVariance(
             boolean covariant, 
             boolean contravariant, 
-            Declaration declaration) {
-        List<TypeParameter> errors = 
-                new ArrayList<TypeParameter>(3);
-        checkVariance(covariant, contravariant, 
-                declaration, errors);
-        return errors;
+            Declaration declaration,
+            Declaration member) {
+        if (member==null || !member.isStatic()) {
+            List<TypeParameter> errors = 
+                    new ArrayList<TypeParameter>(3);
+            checkVariance(covariant, contravariant, 
+                    declaration, member, errors);
+            return errors;
+        }
+        else {
+            return NO_TYPE_PARAMS;
+        }
     }
     
     private static boolean isTrulyCovariant(TypeParameter tp) {
@@ -2755,25 +2770,56 @@ public class Type extends Reference {
         }
     }
     
+    private static boolean isVariableValue(Declaration member) {
+        return member instanceof Value 
+            && ((Value) member).isVariable();
+    }
+
     private void checkVariance(
             boolean covariant, 
             boolean contravariant,
             Declaration declaration, 
+            Declaration member,
             List<TypeParameter> errors) {
         TypeDeclaration dec = getDeclaration();
         if (isTypeParameter()) {
             TypeParameter tp = (TypeParameter) dec;
             Declaration parameterizedDec = 
                     tp.getDeclaration();
-            if (!parameterizedDec.equals(declaration)) {
-                if (//if a contravariant type parameter appears 
-                    //in a covariant location
-                    !covariant && 
-                        isTrulyCovariant(tp) ||
-                    //or a covariant type parameter appears in a 
+            //check if the type parameter represented by this type
+            //is a parameter of the parameterized declaration we're 
+            //interested in, and that it occurs in a location for
+            //which variance-checking is necessary
+            if (!parameterizedDec.equals(declaration)
+                    //constructors are "static" with respect to 
+                    //their containing class
+                    && !(ModelUtil.isConstructor(member)
+                            && member.getContainer()
+                                .equals(parameterizedDec))) {
+                boolean checkBoth = 
+                        member==null 
+                        //we only need to check members that are 
+                        //shared, or accessed by other instance
+                        || member.isShared()
+                        || tp.getDeclaration().equals(member)
+                        //variables require special handling for
+                        //other instance access (we distinguish
+                        //read from write access)
+                        || !isVariableValue(member) 
+                            && member.getOtherInstanceAccess();
+                if ((checkBoth || member.getOtherInstanceReadAccess())
+                    && !contravariant
+                    && isTrulyContravariant(tp)) {
+                    //if a covariant type parameter appears in a 
                     //contravariant location
-                    !contravariant && 
-                        isTrulyContravariant(tp)) {
+                    //add an error to the list
+                    errors.add(tp);
+                }
+                if ((checkBoth || member.getOtherInstanceWriteAccess())
+                    && !covariant
+                    && isTrulyCovariant(tp)) {
+                    //if a contravariant type parameter appears 
+                    //in a covariant location
                     //add an error to the list
                     errors.add(tp);
                 }
@@ -2783,14 +2829,16 @@ public class Type extends Reference {
             for (Type ct: getCaseTypes()) {
                 ct.checkVariance(
                         covariant, contravariant, 
-                        declaration, errors);
+                        declaration, member, 
+                        errors);
             }
         }
         else if (isIntersection()) {
             for (Type ct: getSatisfiedTypes()) {
                 ct.checkVariance(
                         covariant, contravariant, 
-                        declaration, errors);
+                        declaration, member, 
+                        errors);
             }
         }
         else {
@@ -2798,7 +2846,8 @@ public class Type extends Reference {
             if (qualifying!=null) {
                 qualifying.checkVariance(
                         covariant, contravariant, 
-                        declaration, errors);
+                        declaration, member, 
+                        errors);
             }
             for (TypeParameter param: dec.getTypeParameters()) {
                 Type pt = getTypeArguments().get(param);
@@ -2806,26 +2855,30 @@ public class Type extends Reference {
                     if (isCovariant(param)) {
                         pt.checkVariance(
                                 covariant, contravariant, 
-                                declaration, errors);
+                                declaration, member, 
+                                errors);
                     }
                     else if (isContravariant(param)) {
                         if (covariant|contravariant) {
                             //flip the variance
                             pt.checkVariance(
                                     !covariant, !contravariant, 
-                                    declaration, errors); 
+                                    declaration, member, 
+                                    errors); 
                         }
                         else {
                             //unless we are in an invariant 
                             //position, then it stays invariant
                             pt.checkVariance(
                                     covariant, contravariant, 
-                                    declaration, errors);
+                                    declaration, member, 
+                                    errors);
                         }
                     }
                     else {
                         pt.checkVariance(false, false, 
-                                declaration, errors);
+                                declaration, member, 
+                                errors);
                     }
                 }
             }
