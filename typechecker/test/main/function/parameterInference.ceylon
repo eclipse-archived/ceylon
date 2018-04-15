@@ -121,4 +121,6 @@ void usageInference() {
     $type:"String(Object)" value f6 = (o) => Object.string(o);
     $error value f7 = (o) => o.string;
     $type:"Float(Float)" value f8 = (x) => 2.0^x;
+    $type:"Boolean(Object)" value f9 = (o) => o!=1;
+    $type:"Boolean(Identifiable)" value f10 = (o) => o===o;
 }
