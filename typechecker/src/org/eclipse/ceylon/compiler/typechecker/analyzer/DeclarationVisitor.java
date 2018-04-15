@@ -1713,6 +1713,10 @@ public abstract class DeclarationVisitor extends Visitor {
         p.setName(v.getName());
         p.setModel(v);
         v.setInitializerParameter(p);
+        if (declaration.isAnonymous()
+        		&& type instanceof Tree.LocalModifier) {
+        	v.setInferred(true);
+        }
         parameterList.getParameters().add(p);
         if (p.isSequenced() && p.isDefaulted()) {
             getSpecifier(that).addError("variadic parameter may not specify default argument");

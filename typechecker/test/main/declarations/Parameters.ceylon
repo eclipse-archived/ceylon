@@ -79,7 +79,7 @@ class Parameters() {
         Integer k = 0;
     }
     
-    value anon1 = ($error value arg) => 0;
+    value anon1 = (value arg) => 0;
     value anon2 = ($error function arg()) => 0;
     
 }

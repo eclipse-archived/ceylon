@@ -55,8 +55,8 @@ void parameterInference() {
     accept((value f)=>f.string);
     variadic((value string)=>print(string), (value string)=>print(string));
     
-    $error value funWithNoParamType = (p) => 0;
-    value funWithNoParamType_ = ($error value p) => 0;
+    value funWithNoParamType = (p) => 0;
+    value funWithNoParamType_ = (value p) => 0;
     
     $error value funWithNoParams = => "";
     
@@ -94,4 +94,15 @@ void funrun() {
     fun(=> 1);
     fun2((str) => 1); 
     fun2(=> 1);
+}
+
+void usageInference() {
+    $type:"String(Integer)" 
+    value fun1 = (n) => Integer.format(n, 16);
+    $type:"String(Integer)" 
+    value fun2 = (value n) => Integer.format(n, 16);
+    $type:"String(Integer)" 
+    value fun3 = (n) => Integer.format { integer = n; radix = 16; };
+    $type:"String(Integer)" 
+    value fun4 = (n) { value ref = Integer.format; return ref(n, 16); };
 }

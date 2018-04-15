@@ -95,8 +95,8 @@ import org.eclipse.ceylon.common.Backends;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.ClassOrInterface;
@@ -1307,7 +1307,12 @@ public class ExpressionVisitor extends Visitor {
                             "' must declare an explicit type");
                 }
                 else if (isTypeUnknown(t)) {
-                    if (sie==null) {
+                	if (val.isParameter() && val.isInferred()) {
+                		Type at = unit.getAnythingType();
+						val.setType(at);
+                		type.setTypeModel(at);
+                	}
+                	else if (sie==null) {
                         type.addError("value must specify an explicit type or definition", 200);
                     }
                     else if (!hasError(sie)) {
@@ -1986,12 +1991,21 @@ public class ExpressionVisitor extends Visitor {
                                 null, false);
             if (a==null) {
                 Declaration fun = p.getDeclaration();
-                that.addError(
+                if (fun instanceof Function
+                        && fun.isAnonymous()) {
+                    createInferredParameter((Function) fun, 
+                    		null, that, 
+                    		unit.getAnythingType(), 
+                    		null, false);
+                }
+                else {
+                    that.addError(
                         (fun!=null && fun.isAnonymous() ?
                             "parameter is not declared explicitly, and its type cannot be inferred" :
                             "parameter is not declared")
                         +": '" + p.getName() + 
                         "' is not declared anywhere (specify the parameter type explicitly)");
+                }
             }
         }
     }
@@ -4052,13 +4066,13 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Parameter ap = aps.get(j);
                 if (isInferrableParameter(ap)) {
                     result = result & 
-                        createInferredParameter(anon,
-                            declaration, ap,
-                            ap.getParameterModel(),
-                            types.get(j),
-                            param==null ? null : 
-                                param.getModel(),
-                            error);
+                        createInferredParameter(
+                                anon.getDeclarationModel(),
+                                declaration, ap,
+                                types.get(j),
+                                param==null ? null : 
+                                    param.getModel(),
+                                error);
                 }
             }
         }
@@ -4088,9 +4102,9 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Parameter ap = aps.get(j);
                 if (isInferrableParameter(ap)) {
                     result = result &
-                        createInferredParameter(anon,
+                        createInferredParameter(
+                                anon.getDeclarationModel(),
                                 declaration, ap,
-                                ap.getParameterModel(),
                                 pr.getTypedParameter(fp)
                                     .getType(),
                                 fp.getModel(),
@@ -4121,17 +4135,35 @@ public class ExpressionVisitor extends Visitor {
     /**
      * Create a model for an inferred parameter of an
      * anonymous function.
+     * 
+     * @param anon the anonymous function to which the
+     *             parameter belongs
+     * @param declaration the function to which the
+     *                    parameter assigned to the
+     *                    inferred parameter belongs
+     * @param node the parameter's AST node
+     * @param type the type to be assigned to the
+     *             parameter
+     * @param original the model of the parameter
+     *                 assigned to the inferred
+     *                 parameter (may be null)
+     * @param error false to suppress error reporting,
+     *              since the tree is visited twice
      */
-    private boolean createInferredParameter(Tree.FunctionArgument anon,
-            Declaration declaration, Tree.Parameter ap,
-            Parameter parameter, Type type,
-            FunctionOrValue original, boolean error) {
+    private boolean createInferredParameter(
+            Function anon,
+            Declaration declaration, 
+            Tree.Parameter node,
+            Type type,
+            FunctionOrValue original, 
+            boolean error) {
+        Parameter param = node.getParameterModel();
         if (isTypeUnknown(type)) {
             type = unit.getUnknownType();
             if (!dynamic) {
                 if (error) {
-                    ap.addError("could not infer parameter type: '" 
-                            + parameter.getName() 
+                    node.addError("could not infer parameter type: '" 
+                            + param.getName() 
                             + "' would have unknown type");
                 }
                 else {
@@ -4142,8 +4174,8 @@ public class ExpressionVisitor extends Visitor {
         else if (involvesTypeParams(declaration, type)) {
             if (error) {
                 type = unit.getUnknownType();
-                ap.addError("could not infer parameter type: '" 
-                        + parameter.getName() 
+                node.addError("could not infer parameter type: '" 
+                        + param.getName() 
                         + "' would have type '" 
                         + type.asString(unit) 
                         + "' involving type parameters");
@@ -4152,17 +4184,16 @@ public class ExpressionVisitor extends Visitor {
                 return false;
             }
         }
-        Value model = (Value) parameter.getModel(); 
+        Value model = (Value) param.getModel(); 
         if (model==null) {
             model = new Value();
             model.setUnit(unit);
-            model.setName(parameter.getName());
+            model.setName(param.getName());
             model.setOriginalParameterDeclaration(original);
-            parameter.setModel(model);
-            Function m = anon.getDeclarationModel();
-            model.setContainer(m);
-            model.setScope(m);
-            m.addMember(model);
+            param.setModel(model);
+            model.setContainer(anon);
+            model.setScope(anon);
+            anon.addMember(model);
         }
         model.setType(type);
         model.setInferred(true);
@@ -4173,10 +4204,10 @@ public class ExpressionVisitor extends Visitor {
                 && canHaveUncheckedNulls(type)) {
             model.setUncheckedNullType(true);
         }
-        model.setInitializerParameter(parameter);
-        if (ap instanceof Tree.ValueParameterDeclaration) {
+        model.setInitializerParameter(param);
+        if (node instanceof Tree.ValueParameterDeclaration) {
             Tree.ValueParameterDeclaration vpd =
-                (Tree.ValueParameterDeclaration) ap;
+                (Tree.ValueParameterDeclaration) node;
             vpd.getTypedDeclaration()
                 .getType()
                 .setTypeModel(type);
@@ -5257,12 +5288,17 @@ public class ExpressionVisitor extends Visitor {
                     paramType(arg.getScope(), 
                             paramRef, paramModel);
             if (!isTypeUnknown(argType) && 
-                    !isTypeUnknown(paramType)) {
+                !isTypeUnknown(paramType)) {
                 Node node;
                 if (arg instanceof Tree.SpecifiedArgument) {
                     Tree.SpecifiedArgument specifiedArg = 
                             (Tree.SpecifiedArgument) arg;
-                    node = specifiedArg.getSpecifierExpression();
+                    Tree.SpecifierExpression se = 
+                    		specifiedArg.getSpecifierExpression();
+                    argType = adjustInferredParameterType(
+                    		paramType, argType, 
+                    		se.getExpression());
+					node = se;
                 }
                 else {
                     node = arg;
@@ -5333,7 +5369,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkSequencedArgument(Tree.SequencedArgument sa, 
+    private void checkSequencedArgument(
+    		Tree.SequencedArgument sa, 
             Reference pr, Parameter p) {
         sa.setParameter(p);
         List<Tree.PositionalArgument> args = 
@@ -5346,7 +5383,7 @@ public class ExpressionVisitor extends Visitor {
                 getTupleType(args, unit, false)
                     .getSupertype(id);
         if (!isTypeUnknown(att) && 
-                !isTypeUnknown(paramType)) {
+            !isTypeUnknown(paramType)) {
             checkAssignable(att, paramType, sa, 
                     "iterable arguments must be assignable to iterable parameter " + 
                             argdesc(p, pr));
@@ -5540,7 +5577,7 @@ public class ExpressionVisitor extends Visitor {
                     unit.getParameterTypesAsTupleType(
                             params, pr);
             if (!isTypeUnknown(at) && 
-                    !isTypeUnknown(ptt)) {
+                !isTypeUnknown(ptt)) {
                 checkAssignable(at, ptt, arg, 
                         "spread argument not assignable to parameter types");
             }
@@ -5622,14 +5659,14 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 Tree.PositionalArgument arg = args.get(i);
-                Type at = arg.getTypeModel();
+                Type argType = arg.getTypeModel();
                 if (arg instanceof Tree.SpreadArgument) {
                     Tree.SpreadArgument sa = 
                             (Tree.SpreadArgument) arg;
                     Type tt = 
                             unit.getTailType(
                                     paramTypesAsTuple, i);
-                    checkSpreadIndirectArgument(sa, tt, at);
+                    checkSpreadIndirectArgument(sa, tt, argType);
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
@@ -5653,10 +5690,16 @@ public class ExpressionVisitor extends Visitor {
                                 sublist, paramType);
                         return; //Note: early return!
                     }
-                    else if (at!=null && paramType!=null && 
-                            !isTypeUnknown(at) && 
-                            !isTypeUnknown(paramType)) {
-                        checkAssignable(at, paramType, arg, 
+                    else if (!isTypeUnknown(argType) && 
+                    		 !isTypeUnknown(paramType)) {
+                    	if (arg instanceof Tree.ListedArgument) {
+                    		Tree.ListedArgument la = 
+                    				(Tree.ListedArgument) arg;
+	                    	argType = adjustInferredParameterType(
+	                    			paramType, argType, 
+	                    			la.getExpression());
+                    	}
+                        checkAssignable(argType, paramType, arg, 
                                 "argument must be assignable to parameter type");
                     }
                 }
@@ -5697,7 +5740,7 @@ public class ExpressionVisitor extends Visitor {
                 && unit.isContainerType(at)) {
             Type sat = spreadType(at, unit, true);
             if (!isTypeUnknown(sat) && 
-                    !isTypeUnknown(tailType)) {
+                !isTypeUnknown(tailType)) {
                 checkAssignable(sat, tailType, sa, 
                         "spread argument not assignable to parameter types");
             }
@@ -5710,18 +5753,25 @@ public class ExpressionVisitor extends Visitor {
         Type set = paramType==null ? 
                 null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
-            Tree.PositionalArgument a = args.get(j);
-            Type at = a.getTypeModel();
-            if (!isTypeUnknown(at) && 
-                    !isTypeUnknown(paramType)) {
-                if (a instanceof Tree.SpreadArgument) {
-                    at = spreadType(at, unit, true);
-                    checkAssignable(at, paramType, a, 
+            Tree.PositionalArgument arg = args.get(j);
+            Type argType = arg.getTypeModel();
+            if (!isTypeUnknown(argType) && 
+                !isTypeUnknown(paramType)) {
+                if (arg instanceof Tree.SpreadArgument) {
+                    argType = spreadType(argType, unit, true);
+                    checkAssignable(argType, paramType, arg, 
                             "spread argument must be assignable to variadic parameter",
                             2101);
                 }
                 else {
-                    checkAssignable(at, set, a, 
+                	if (arg instanceof Tree.ListedArgument) {
+                		Tree.ListedArgument la =
+                				(Tree.ListedArgument) arg;
+	                	argType = adjustInferredParameterType(
+	                			paramType, argType, 
+	                			la.getExpression());
+                	}
+                    checkAssignable(argType, set, arg, 
                             "argument must be assignable to variadic parameter", 
                             2101);
                     //if we already have an arg to a nonempty variadic parameter,
@@ -5746,7 +5796,7 @@ public class ExpressionVisitor extends Visitor {
         Type set = paramType==null ? null : 
                 unit.getIteratedType(paramType);
         if (!isTypeUnknown(at) && 
-                !isTypeUnknown(set)) {
+            !isTypeUnknown(set)) {
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter");
         }
@@ -5762,20 +5812,27 @@ public class ExpressionVisitor extends Visitor {
         Type set = paramType==null ? null : 
                 unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
-            Tree.PositionalArgument a = args.get(j);
-            a.setParameter(p);
-            Type at = a.getTypeModel();
-            if (!isTypeUnknown(at) && 
-                    !isTypeUnknown(paramType)) {
-                if (a instanceof Tree.SpreadArgument) {
-                    at = spreadType(at, unit, true);
-                    checkAssignable(at, paramType, a, 
+            Tree.PositionalArgument arg = args.get(j);
+            arg.setParameter(p);
+            Type argType = arg.getTypeModel();
+            if (!isTypeUnknown(argType) && 
+                !isTypeUnknown(paramType)) {
+                if (arg instanceof Tree.SpreadArgument) {
+                    argType = spreadType(argType, unit, true);
+                    checkAssignable(argType, paramType, arg, 
                             "spread argument must be assignable to variadic parameter " + 
                                     argdesc(p, pr), 
                             2101);
                 }
                 else {
-                    checkAssignable(at, set, a, 
+                	if (arg instanceof Tree.ListedArgument) {
+                		Tree.ListedArgument la =
+                				(Tree.ListedArgument) arg;
+	                	argType = adjustInferredParameterType(
+	                			paramType, argType, 
+	                			la.getExpression());
+                	}
+                    checkAssignable(argType, set, arg, 
                             "argument must be assignable to variadic parameter " + 
                                     argdesc(p, pr), 
                             2101);
@@ -5817,7 +5874,7 @@ public class ExpressionVisitor extends Visitor {
         c.setParameter(p);
         Type at = c.getTypeModel();
         if (!isTypeUnknown(at) && 
-                !isTypeUnknown(paramType)) {
+            !isTypeUnknown(paramType)) {
             Type set = paramType==null ? 
                     null : unit.getIteratedType(paramType);
             checkAssignable(at, set, c, 
@@ -5828,24 +5885,51 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkPositionalArgument(Parameter p, 
-            Reference pr, Tree.ListedArgument a) {
+            Reference pr, Tree.ListedArgument arg) {
         FunctionOrValue paramModel = p.getModel();
         if (paramModel!=null) {
-            a.setParameter(p);
+            arg.setParameter(p);
             TypedReference paramRef = 
                     pr.getTypedParameterWithWildcardCaputure(p);
             Type paramType = 
-                    paramType(a.getScope(), 
+                    paramType(arg.getScope(), 
                             paramRef, paramModel);
-            Type at = a.getTypeModel();
-            if (!isTypeUnknown(at) && 
+            Type argType = arg.getTypeModel();
+            if (!isTypeUnknown(argType) && 
                 !isTypeUnknown(paramType)) {
-                checkAssignable(at, paramType, a, 
+            	argType = adjustInferredParameterType(
+            			paramType, argType, 
+            			arg.getExpression());
+                checkAssignable(argType, paramType, arg, 
                         "argument must be assignable to parameter " + 
                                 argdesc(p, pr), 2100);
             }
         }
     }
+
+	private Type adjustInferredParameterType(
+			Type paramType, Type argType, 
+			Tree.Expression ex) {
+		Tree.Term term = ex.getTerm();
+		if (term instanceof Tree.BaseMemberExpression) {
+			Tree.BaseMemberExpression bme =
+					(Tree.BaseMemberExpression)
+						term;
+			Declaration refDec = bme.getDeclaration();
+			if (refDec instanceof Value) {
+		    	Value val = (Value) refDec;
+		        if (val.isInferred()
+		        		&& !argType.isSubtypeOf(paramType)) {
+		        	argType = intersectionType(
+		        			argType, paramType, unit);
+		        	val.setType(argType);
+		        	term.setTypeModel(argType);
+		        	ex.setTypeModel(argType);
+		        }
+		    }
+		}
+		return argType;
+	}
     
     @Override public void visit(Tree.Comprehension that) {
         super.visit(that);
