@@ -3238,13 +3238,13 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
     ;
 
 entryRangeExpression returns [Term term]
-    : ae1=additiveExpression
+    : ae1=pipelineExpression
       { $term = $ae1.term; }
       (
         rangeIntervalEntryOperator 
         { $rangeIntervalEntryOperator.operator.setLeftTerm($term);
           $term = $rangeIntervalEntryOperator.operator; }
-        ae2=additiveExpression
+        ae2=pipelineExpression
         { $rangeIntervalEntryOperator.operator.setRightTerm($ae2.term); }
       )?
     ;
@@ -3256,6 +3256,23 @@ rangeIntervalEntryOperator returns [BinaryOperatorExpression operator]
       { $operator = new SegmentOp($SEGMENT_OP); }
     | ENTRY_OP
       { $operator = new EntryOp($ENTRY_OP); }
+    ;
+
+pipelineExpression returns [Term term]
+    : ae1=additiveExpression
+      { $term = $ae1.term; }
+      (
+        pipelineOperator 
+        { $pipelineOperator.operator.setLeftTerm($term);
+          $term = $pipelineOperator.operator; }
+        ae2=additiveExpression
+        { $pipelineOperator.operator.setRightTerm($ae2.term); }
+      )*
+    ;
+
+pipelineOperator returns [PipelineOp operator]
+    : PIPELINE
+    { $operator = new PipelineOp($PIPELINE); }
     ;
 
 additiveExpression returns [Term term]
@@ -5357,6 +5374,10 @@ AND_SPECIFY
 
 OR_SPECIFY
     :   '||='
+    ;
+
+PIPELINE
+    :   '|>'
     ;
 
 DOLLAR
