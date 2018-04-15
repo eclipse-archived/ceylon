@@ -114,5 +114,7 @@ void usageInference() {
     value fun7 = (n) => Integer.format(n+100, 16);
     $type:"Float(Float)" value f1 = (x) => x/2.0;
     $type:"Boolean(Float)" value f2 = (x) => x>2.0;
+    $type:"Boolean(Boolean,Boolean)" value f3 = (p,q) => !p || q;
+    $type:"Integer(Boolean)" value f4 = (b) => if (b) then 1 else -1;
 
 }

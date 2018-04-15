@@ -1154,14 +1154,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.BooleanCondition that) {
         super.visit(that);
-        if (that.getExpression()!=null) {
-            Type type = 
-                    that.getExpression()
-                        .getTypeModel();
+        Tree.Expression ex = that.getExpression();
+		if (ex!=null) {
+            Type type = ex.getTypeModel();
             if (!isTypeUnknown(type)) {
-                checkAssignable(type, 
-                        unit.getBooleanType(), 
-                        that, 
+                Type bt = unit.getBooleanType();
+            	type = adjustInferredParameterType(bt, type, ex);
+				checkAssignable(type, bt, that, 
                         "expression must be of boolean type");
             }
         }
