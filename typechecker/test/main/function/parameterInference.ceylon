@@ -123,4 +123,7 @@ void usageInference() {
     $type:"Float(Float)" value f8 = (x) => 2.0^x;
     $type:"Boolean(Object)" value f9 = (o) => o!=1;
     $type:"Boolean(Identifiable)" value f10 = (o) => o===o;
+    $type:"Float(Float)" value f11 = (x) { Float y = x; return x; };
+    $type:"Float(Float)" value f12 = (x) { Float y; y = x; return x; };
+    $type:"Float(Float)" value f13 = (x) { variable value y=0.0; y += x; y*=x; return x; };
 }

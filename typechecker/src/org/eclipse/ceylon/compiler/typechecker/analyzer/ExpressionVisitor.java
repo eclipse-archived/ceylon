@@ -2032,6 +2032,8 @@ public class ExpressionVisitor extends Visitor {
             if (ex!=null) {
                 Type type = ex.getTypeModel();
                 if (!isTypeUnknown(type)) {
+                	type = adjustInferredParameterType(
+                			declaredType, type, ex);
                     checkAssignableIgnoringNull(type, 
                            declaredType, sie, dec,
                            "specified expression must be assignable to declared type of " 
