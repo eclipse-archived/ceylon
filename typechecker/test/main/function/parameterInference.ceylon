@@ -120,4 +120,5 @@ void usageInference() {
     $type:"Integer(Boolean)" value f5 = (b) => b then 1 else -1;
     $type:"String(Object)" value f6 = (o) => Object.string(o);
     $error value f7 = (o) => o.string;
+    $type:"Float(Float)" value f8 = (x) => 2.0^x;
 }

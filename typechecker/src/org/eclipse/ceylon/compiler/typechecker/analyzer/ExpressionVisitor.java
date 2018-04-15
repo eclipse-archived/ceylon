@@ -6736,7 +6736,10 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             
-            if (!(that instanceof Tree.PowerOp)) {
+            boolean exponentiation = 
+            		that instanceof Tree.PowerOp;
+            
+			if (!exponentiation) {
             	boolean lhsok = 
             			lhst.getSupertype(type)!=null;
             	boolean rhsok = 
@@ -6765,13 +6768,19 @@ public class ExpressionVisitor extends Visitor {
                 Type tt = tal.get(0);
                 that.setTypeModel(tt);
                 Type ot;
-                if (that instanceof Tree.PowerOp) {
+                if (exponentiation) {
                     if (tal.size()<2) return;
                     ot = tal.get(1);
                 }
                 else {
                     ot = tt;
                 }
+                
+                if (exponentiation) {
+                	rhst = adjustInferredParameterType(ot, rhst, 
+                    		that.getRightTerm());
+                }
+
                 checkAssignable(rhst, ot, that, 
                         that instanceof Tree.SumOp ?
                             "right operand must be of compatible summable type" :
