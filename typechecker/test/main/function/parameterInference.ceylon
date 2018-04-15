@@ -80,7 +80,8 @@ void moreParamInference() {
 	$type:"Float" value folded1 = fold(1..10, 0.0)((r, x) => r+x);
 	$type:"Float" value folded2 = fold(1..10, 0.0)((r, x) { Float r; Integer x; return r+x; });
 	$type:"Float" value folded3 = fold(1..10, 0.0)((r, x) { return r+x; });
-
+	
+	$type:"Float" value prod = [1.0, 2.0, 3.0].fold(0.0, (x,y)=>x*y);
 }
 
 void fun(String|Anything(String) foo) {}
@@ -116,5 +117,6 @@ void usageInference() {
     $type:"Boolean(Float)" value f2 = (x) => x>2.0;
     $type:"Boolean(Boolean,Boolean)" value f3 = (p,q) => !p || q;
     $type:"Integer(Boolean)" value f4 = (b) => if (b) then 1 else -1;
-
+    $type:"String(Object)" value f5 = (o) => Object.string(o);
+    $error value f6 = (o) => o.string;
 }
