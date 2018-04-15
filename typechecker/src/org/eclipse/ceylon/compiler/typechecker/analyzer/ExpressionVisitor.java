@@ -6940,11 +6940,15 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(lhst)) {
-            checkAssignable(lhst, unit.getBooleanType(), 
-                    that.getLeftTerm(), 
+            Type bt = unit.getBooleanType();
+            Tree.Term lt = that.getLeftTerm();
+            
+			lhst = adjustInferredParameterType(bt, lhst, lt);
+			
+			checkAssignable(lhst, bt, lt, 
                     "operand expression must be a boolean value");
         }
-        if ( rhst!=null && !isTypeUnknown(rhst)) {
+        if (rhst!=null && !isTypeUnknown(rhst)) {
             checkAssignable(rhst, unit.getObjectType(), 
                     that.getRightTerm(),
                     "operand expression may not be an optional type");

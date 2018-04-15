@@ -117,6 +117,7 @@ void usageInference() {
     $type:"Boolean(Float)" value f2 = (x) => x>2.0;
     $type:"Boolean(Boolean,Boolean)" value f3 = (p,q) => !p || q;
     $type:"Integer(Boolean)" value f4 = (b) => if (b) then 1 else -1;
-    $type:"String(Object)" value f5 = (o) => Object.string(o);
-    $error value f6 = (o) => o.string;
+    $type:"Integer(Boolean)" value f5 = (b) => b then 1 else -1;
+    $type:"String(Object)" value f6 = (o) => Object.string(o);
+    $error value f7 = (o) => o.string;
 }
