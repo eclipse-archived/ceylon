@@ -110,4 +110,9 @@ void usageInference() {
     $type:"String(Integer=)" 
     $error:"argument must be assignable to parameter 'float'"
     value fun6 = (value n=0) => Integer.format(n) + Float.format(n);
+    $type:"String(Integer)" 
+    value fun7 = (n) => Integer.format(n+100, 16);
+    $type:"Float(Float)" value f1 = (x) => x/2.0;
+    $type:"Boolean(Float)" value f2 = (x) => x>2.0;
+
 }

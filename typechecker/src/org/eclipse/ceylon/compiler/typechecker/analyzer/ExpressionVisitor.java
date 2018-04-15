@@ -5910,7 +5910,22 @@ public class ExpressionVisitor extends Visitor {
 	private Type adjustInferredParameterType(
 			Type paramType, Type argType, 
 			Tree.Expression ex) {
-		Tree.Term term = ex.getTerm();
+		return adjustInferredParameterType(
+				paramType, argType, ex, 
+				ex.getTerm());
+	}
+	
+	private Type adjustInferredParameterType(
+			Type paramType, Type argType, 
+			Tree.Term term) {
+		return adjustInferredParameterType(
+				paramType, argType, null, 
+				term);
+	}
+	
+	private Type adjustInferredParameterType(
+			Type paramType, Type argType, 
+			Tree.Expression ex, Tree.Term term) {
 		if (term instanceof Tree.BaseMemberExpression) {
 			Tree.BaseMemberExpression bme =
 					(Tree.BaseMemberExpression)
@@ -5927,7 +5942,9 @@ public class ExpressionVisitor extends Visitor {
 		        			argType, paramType, unit);
 		        	val.setType(argType);
 		        	term.setTypeModel(argType);
-		        	ex.setTypeModel(argType);
+		        	if (ex!=null) {
+		        		ex.setTypeModel(argType);
+		        	}
 		        }
 		    }
 		}
@@ -6406,6 +6423,10 @@ public class ExpressionVisitor extends Visitor {
                         ta.getDeclaration().inherits(fd)) {
                     lhst = fd.getType();
                 }
+                
+                lhst = adjustInferredParameterType(ta, lhst, 
+                		that.getLeftTerm());
+                
                 checkAssignable(lhst, ta, that, 
                         "scale factor must be assignable to scale type");
                 that.setTypeModel(rt);
@@ -6417,9 +6438,9 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkOperandTypes(lhst, rhst, 
-                    unit.getComparableDeclaration(), that, 
-                    "operand expressions must be comparable");
+        	checkOperandTypes(lhst, rhst, 
+        			unit.getComparableDeclaration(), that, 
+        			"operand expressions must be comparable");
         }
     }
     
@@ -6498,6 +6519,12 @@ public class ExpressionVisitor extends Visitor {
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             Type idt = unit.getIdentifiableType();
+            
+            lhst = adjustInferredParameterType(idt, lhst, 
+            		that.getLeftTerm());
+            rhst = adjustInferredParameterType(idt, rhst, 
+            		that.getRightTerm());
+            
             checkAssignable(lhst, idt, 
                     that.getLeftTerm(), 
                     "operand expression must be of type 'Identifiable'");
@@ -6520,6 +6547,12 @@ public class ExpressionVisitor extends Visitor {
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             Type obt = unit.getObjectType();
+            
+            lhst = adjustInferredParameterType(obt, lhst, 
+            		that.getLeftTerm());
+            rhst = adjustInferredParameterType(obt, rhst, 
+            		that.getRightTerm());
+            
             checkAssignable(lhst, obt, 
                     that.getLeftTerm(), 
                     "operand expression must be of type 'Object'");
@@ -6581,6 +6614,10 @@ public class ExpressionVisitor extends Visitor {
             else {
                 Type lhst = leftType(that);
                 if (!isTypeUnknown(lhst)) {
+                	rhst = adjustInferredParameterType(
+                			lhst, rhst, 
+                			that.getRightTerm());
+                	
                     Type leftHandType = 
                             // allow assigning null to java properties 
                             // that could after all be null
@@ -6631,7 +6668,24 @@ public class ExpressionVisitor extends Visitor {
 
     private Type checkOperandTypes(
             Type lhst, Type rhst, 
-            TypeDeclaration td, Node node, String message) {
+            TypeDeclaration td, 
+            Tree.BinaryOperatorExpression node, 
+            String message) {
+    	boolean lhsok = 
+    			lhst.getSupertype(td)!=null;
+    	boolean rhsok = 
+    			rhst.getSupertype(td)!=null;
+    	if (rhsok && !lhsok) {
+            lhst = adjustInferredParameterType(
+            		rhst, lhst, 
+            		node.getLeftTerm());
+    	}
+    	if (lhsok && !rhsok) {
+            rhst = adjustInferredParameterType(
+            		lhst, rhst, 
+            		node.getRightTerm());
+    	}
+    	
         Type lhsst = 
                 checkSupertype(lhst, td, node, message);
         if (lhsst!=null) {
@@ -6660,7 +6714,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitArithmeticOperator(
-            Tree.BinaryOperatorExpression that, 
+            Tree.ArithmeticOp that, 
             TypeDeclaration type) {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
@@ -6682,6 +6736,24 @@ public class ExpressionVisitor extends Visitor {
                     rhst = fd.getType();
                 }
             }
+            
+            if (!(that instanceof Tree.PowerOp)) {
+            	boolean lhsok = 
+            			lhst.getSupertype(type)!=null;
+            	boolean rhsok = 
+            			rhst.getSupertype(type)!=null;
+            	if (rhsok && !lhsok) {
+		            lhst = adjustInferredParameterType(
+		            		rhst, lhst, 
+		            		that.getLeftTerm());
+            	}
+            	if (lhsok && !rhsok) {
+		            rhst = adjustInferredParameterType(
+		            		lhst, rhst, 
+		            		that.getRightTerm());
+            	}
+            }
+            
             Type nt = 
                     checkSupertype(lhst, type, 
                         that.getLeftTerm(), 
@@ -6731,6 +6803,13 @@ public class ExpressionVisitor extends Visitor {
                         .inherits(fd)) {
                 rhst = fd.getType();
             }
+            
+            if (lhst.getSupertype(type)!=null) {
+	            rhst = adjustInferredParameterType(
+	            		lhst, rhst, 
+	            		that.getRightTerm());
+            }
+            
             Type nt = 
                     checkSupertype(lhst, type, 
                         that.getLeftTerm(),
@@ -6821,6 +6900,11 @@ public class ExpressionVisitor extends Visitor {
         Type lt = leftType(that);
         Type rt = rightType(that);
         if (!isTypeUnknown(rt) && !isTypeUnknown(lt)) {
+            lt = adjustInferredParameterType(bt, lt, 
+            		that.getLeftTerm());
+            rt = adjustInferredParameterType(bt, rt, 
+            		that.getRightTerm());
+            
             checkAssignable(lt, bt, that, 
                     "logical operand expression must be a boolean value");
             checkAssignable(rt, bt, that, 
@@ -6910,6 +6994,12 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         Type t = type(that);
         if (!isTypeUnknown(t)) {
+        	if (that instanceof Tree.NotOp) {
+        		Type bt = unit.getBooleanType();
+                t = adjustInferredParameterType(bt, t, 
+                		that.getTerm());
+        	}
+        	
             Type nt = 
                     checkSupertype(t, true, type, 
                             that.getTerm(), 
