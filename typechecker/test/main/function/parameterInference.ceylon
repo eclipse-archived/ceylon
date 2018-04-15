@@ -105,4 +105,9 @@ void usageInference() {
     value fun3 = (n) => Integer.format { integer = n; radix = 16; };
     $type:"String(Integer)" 
     value fun4 = (n) { value ref = Integer.format; return ref(n, 16); };
+    $type:"String(Nothing)"
+    value fun5 = (n) => Integer.format(n) + Float.format(n);
+    $type:"String(Integer=)" 
+    $error:"argument must be assignable to parameter 'float'"
+    value fun6 = (value n=0) => Integer.format(n) + Float.format(n);
 }

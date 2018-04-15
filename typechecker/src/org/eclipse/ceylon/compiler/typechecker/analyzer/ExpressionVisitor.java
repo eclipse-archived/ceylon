@@ -5918,7 +5918,10 @@ public class ExpressionVisitor extends Visitor {
 			Declaration refDec = bme.getDeclaration();
 			if (refDec instanceof Value) {
 		    	Value val = (Value) refDec;
-		        if (val.isInferred()
+		        if (val.isParameter()
+		        		&& val.isInferred()
+		        		&& !val.getInitializerParameter()
+		        				.isDefaulted()
 		        		&& !argType.isSubtypeOf(paramType)) {
 		        	argType = intersectionType(
 		        			argType, paramType, unit);
