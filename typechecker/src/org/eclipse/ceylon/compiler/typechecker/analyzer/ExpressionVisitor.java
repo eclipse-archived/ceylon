@@ -6493,9 +6493,10 @@ public class ExpressionVisitor extends Visitor {
                 that.getLeftTerm(), 
                 "left operand must be of enumerable type");
         if (!isTypeUnknown(rhst)) {
-            checkAssignable(rhst, 
-                    unit.getIntegerType(), 
-                    that.getRightTerm(), 
+            Type it = unit.getIntegerType();
+			Tree.Term rt = that.getRightTerm();
+			rhst = adjustInferredParameterType(it, rhst, rt);
+			checkAssignable(rhst, it, rt, 
                     "right operand must be an integer");
         }
         if (ot!=null) {
@@ -6507,8 +6508,10 @@ public class ExpressionVisitor extends Visitor {
     private void visitEntryOperator(Tree.EntryOp that) {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
-        checkAssignable(lhst, unit.getObjectType(), 
-                that.getLeftTerm(), 
+        Type ot = unit.getObjectType();
+		Tree.Term lt = that.getLeftTerm();
+		lhst = adjustInferredParameterType(ot, lhst, lt);
+		checkAssignable(lhst, ot, lt, 
                 "operand expression must not be an optional type");
 //        checkAssignable(rhst, ot, that.getRightTerm(), 
 //                "operand expression must not be an optional type");
