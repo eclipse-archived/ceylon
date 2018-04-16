@@ -95,8 +95,8 @@ import org.eclipse.ceylon.common.Backends;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.ClassOrInterface;
@@ -4445,7 +4445,7 @@ public class ExpressionVisitor extends Visitor {
                     List<Type> typeArgs = 
                             getOrInferTypeArgumentsForTypeConstructor(
                                     that, null, type, null);
-                    checkArgumentsAgainstTypeConstructor(
+                    checkTypeArgumentsOfTypeConstructor(
                             typeArgs, null, type, term);
                     Type fullType =
                             accountForGenericFunctionRef(true, 
@@ -7921,46 +7921,45 @@ public class ExpressionVisitor extends Visitor {
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        if (acceptsTypeArguments(member, receiverType, 
-                typeArgs, tal, that) || true) {
-            TypedReference ptr = 
-                    receiverType.getTypedMember(member, 
-                            typeArgs, that.getAssigned());
-            /*if (ptr==null) {
-                that.addError("method or attribute is not defined: " + 
-                        member.getName(unit) + " of type " + 
-                        receiverType.getDeclaration().getName(unit));
-            }
-            else {*/
-            that.setTarget(ptr);
-            checkSpread(member, that);
-            boolean direct = that.getDirectlyInvoked();
-            Type fullType = 
-                    accountForGenericFunctionRef(direct, 
-                            tal, receivingType, typeArgs, 
-                            ptr.getFullType(wrap(ptr.getType(), 
-                                    receivingType, that)));
-            Scope scope = that.getScope();
-            if (!dynamic 
-                    && !isNativeForWrongBackend(scope, unit) 
-                    && !isAbstraction(member) 
-                    && isTypeUnknown(fullType) 
-                    && !hasError(that)) {
-                //this occurs with an ambiguous reference
-                //to a member of an intersection type
-                String rtname = 
-                        receiverType.getDeclaration()
-                            .getName(unit);
-                that.addError(
-                        "could not determine type of method or attribute reference: '" +
-                        member.getName(unit) + 
-                        "' of '" + rtname + "' is ambiguous" + 
-                        getTypeUnknownError(fullType));
-            }
-            that.setTypeModel(accountForStaticReferenceType(
-                    that, member, fullType));
-            //}
+        checkTypeArguments(member, receiverType, 
+                typeArgs, tal, that);
+        TypedReference ptr = 
+                receiverType.getTypedMember(member, 
+                        typeArgs, that.getAssigned());
+        /*if (ptr==null) {
+            that.addError("method or attribute is not defined: " + 
+                    member.getName(unit) + " of type " + 
+                    receiverType.getDeclaration().getName(unit));
         }
+        else {*/
+        that.setTarget(ptr);
+        checkSpread(member, that);
+        boolean direct = that.getDirectlyInvoked();
+        Type fullType = 
+                accountForGenericFunctionRef(direct, 
+                        tal, receivingType, typeArgs, 
+                        ptr.getFullType(wrap(ptr.getType(), 
+                                receivingType, that)));
+        Scope scope = that.getScope();
+        if (!dynamic 
+                && !isNativeForWrongBackend(scope, unit) 
+                && !isAbstraction(member) 
+                && isTypeUnknown(fullType) 
+                && !hasError(that)) {
+            //this occurs with an ambiguous reference
+            //to a member of an intersection type
+            String rtname = 
+                    receiverType.getDeclaration()
+                        .getName(unit);
+            that.addError(
+                    "could not determine type of method or attribute reference: '" +
+                    member.getName(unit) + 
+                    "' of '" + rtname + "' is ambiguous" + 
+                    getTypeUnknownError(fullType));
+        }
+        that.setTypeModel(accountForStaticReferenceType(
+                that, member, fullType));
+        //}
         if (that.getStaticMethodReference()) {
             handleStaticReferenceImplicitTypeArguments(
                     that);
@@ -8132,40 +8131,39 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
             Type receivingType) {
-        if (acceptsTypeArguments(member, null, typeArgs, 
-                tal, that) || true) {
-            Scope scope = that.getScope();
-            Type outerType = scope.getDeclaringType(member);
-            if (outerType==null) {
-                outerType = receivingType;
-            }
-            TypedReference pr = 
-                    member.appliedTypedReference(outerType, 
-                            typeArgs, that.getAssigned());
-            that.setTarget(pr);
-            boolean direct = that.getDirectlyInvoked();
-            Type fullType =
-                    accountForGenericFunctionRef(direct, 
-                            tal, outerType, typeArgs, 
-                            pr.getFullType());
-            if (!dynamic 
-                    && !isNativeForWrongBackend(scope, unit) 
-                    && !isAbstraction(member) 
-                    && isTypeUnknown(fullType) 
-                    && !hasError(that)) {
-                that.addError(
-                        "could not determine type of function or value reference: the type of '" +
-                        member.getName(unit) + "' is not known" + 
-                        getTypeUnknownError(fullType));
-            }
-            if (dynamic && 
-                    isTypeUnknown(fullType)) {
-                //deliberately throw away the partial
-                //type information we have
-                return;
-            }
-            that.setTypeModel(fullType);
+    	checkTypeArguments(member, null, 
+    			typeArgs, tal, that);
+        Scope scope = that.getScope();
+        Type outerType = scope.getDeclaringType(member);
+        if (outerType==null) {
+            outerType = receivingType;
         }
+        TypedReference pr = 
+                member.appliedTypedReference(outerType, 
+                        typeArgs, that.getAssigned());
+        that.setTarget(pr);
+        boolean direct = that.getDirectlyInvoked();
+        Type fullType =
+                accountForGenericFunctionRef(direct, 
+                        tal, outerType, typeArgs, 
+                        pr.getFullType());
+        if (!dynamic 
+                && !isNativeForWrongBackend(scope, unit) 
+                && !isAbstraction(member) 
+                && isTypeUnknown(fullType) 
+                && !hasError(that)) {
+            that.addError(
+                    "could not determine type of function or value reference: the type of '" +
+                    member.getName(unit) + "' is not known" + 
+                    getTypeUnknownError(fullType));
+        }
+        if (dynamic && 
+                isTypeUnknown(fullType)) {
+            //deliberately throw away the partial
+            //type information we have
+            return;
+        }
+        that.setTypeModel(fullType);
     }
     
     private static boolean inferrableAnyway(Declaration dec) {
@@ -8852,7 +8850,7 @@ public class ExpressionVisitor extends Visitor {
                         getTypeArguments(tal, 
                                 pt.getQualifyingType(), 
                                 params);
-                acceptsTypeArguments(type, null, 
+                checkTypeArguments(type, null, 
                         typeArgs, tal, that);
             }
             if (pt.isTypeConstructor() 
@@ -8887,33 +8885,32 @@ public class ExpressionVisitor extends Visitor {
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        if (acceptsTypeArguments(memberType, receiverType, 
-                typeArgs, tal, that) || true) {
-            Type type = 
-                    receiverType.getTypeMember(memberType, 
-                            typeArgs);
-            that.setTarget(type);
-            Type fullType =
-                    type.getFullType(wrap(type, 
-                            receivingType, that));
-            if (!dynamic 
-                    && !that.getStaticMethodReference() 
-                    && memberType instanceof Class 
-                    && !isAbstraction(memberType) 
-                    && isTypeUnknown(fullType) 
-                    && !hasError(that)) {
-                //this occurs with an ambiguous reference
-                //to a member of an intersection type
-                String rtname = 
-                        receiverType.getDeclaration()
-                            .getName(unit);
-                that.addError("could not determine type of member class reference: '" +
-                        memberType.getName(unit) + "' of '" + 
-                        rtname + "' is ambiguous");
-            }
-            that.setTypeModel(accountForStaticReferenceType(
-                    that, memberType, fullType));
+        checkTypeArguments(memberType, receiverType, 
+                typeArgs, tal, that);
+        Type type = 
+                receiverType.getTypeMember(memberType, 
+                        typeArgs);
+        that.setTarget(type);
+        Type fullType =
+                type.getFullType(wrap(type, 
+                        receivingType, that));
+        if (!dynamic 
+                && !that.getStaticMethodReference() 
+                && memberType instanceof Class 
+                && !isAbstraction(memberType) 
+                && isTypeUnknown(fullType) 
+                && !hasError(that)) {
+            //this occurs with an ambiguous reference
+            //to a member of an intersection type
+            String rtname = 
+                    receiverType.getDeclaration()
+                        .getName(unit);
+            that.addError("could not determine type of member class reference: '" +
+                    memberType.getName(unit) + "' of '" + 
+                    rtname + "' is ambiguous");
         }
+        that.setTypeModel(accountForStaticReferenceType(
+                that, memberType, fullType));
         if (that.getStaticMethodReference()) {
             handleStaticReferenceImplicitTypeArguments(
                     that);
@@ -8926,21 +8923,20 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
             Type receivingType) {
-        if (acceptsTypeArguments(baseType, null, typeArgs, 
-                tal, that) || true) {
-            Type outerType = 
-                    that.getScope()
-                        .getDeclaringType(baseType);
-            if (outerType==null) {
-                outerType = receivingType;
-            }
-            Type type = 
-                    baseType.appliedType(outerType, 
-                            typeArgs);
-            Type fullType = type.getFullType();
-            that.setTypeModel(fullType);
-            that.setTarget(type);
+    	checkTypeArguments(baseType, null, 
+    			typeArgs, tal, that);
+        Type outerType = 
+                that.getScope()
+                    .getDeclaringType(baseType);
+        if (outerType==null) {
+            outerType = receivingType;
         }
+        Type type = 
+                baseType.appliedType(outerType, 
+                        typeArgs);
+        Type fullType = type.getFullType();
+        that.setTypeModel(fullType);
+        that.setTarget(type);
     }
 
     @Override public void visit(Tree.Expression that) {
@@ -10207,71 +10203,52 @@ public class ExpressionVisitor extends Visitor {
      * @param tas the type argument list
      * @param parent a node to add errors to in the case
      *        that the type args are inferred
-     *        
-     * @return false if there were errors, or if there
-     *         were no arguments for a generic declaration
      */
-    private boolean acceptsTypeArguments(Declaration dec, 
+    private void checkTypeArguments(Declaration dec, 
             Type receiverType, 
             List<Type> typeArguments, 
             Tree.TypeArguments tas, 
             Node parent) {
-        checkVarianceAnnotations(tas, parent);
-        
-        if (dec==null) {
-            return false;
-        }
-        else if (dec.isParameterized()) {
-            if (typeArguments==null) {
-                return false;
-            }
-            else {
-                return checkTypeArgumentAgainstDeclaration(
+    	
+        if (typeArguments!=null && dec!=null) {
+            checkVarianceAnnotations(tas, parent);
+            
+	        if (dec.isParameterized()) {
+                checkTypeArgumentsOfDeclaration(
                         receiverType, dec, typeArguments, 
                         tas, parent);
-            }
-        }
-        else {
-            boolean empty = 
-                    typeArguments==null ||
-                    typeArguments.isEmpty();
-            if (dec instanceof TypeAlias && !empty) {
-                TypeAlias alias = (TypeAlias) dec;
-                dec = unwrapAliasedTypeConstructor(alias);
-                return checkTypeArgumentAgainstDeclaration(
-                        receiverType, dec, typeArguments, 
-                        tas, parent);
-            }
-            if (dec instanceof Value && !empty) {
-                Value td = (Value) dec;
-                Type type = td.getType();
+                return;
+	        }
+	        else if (dec instanceof Value
+	        		&& !typeArguments.isEmpty()) {
+	        	//special case for generic function ref
+                Value val = (Value) dec;
+                Type type = val.getType();
                 if (type!=null) {
                     type = type.resolveAliases();
                     if (type.isTypeConstructor()) {
-                        checkArgumentsAgainstTypeConstructor(
+                        checkTypeArgumentsOfTypeConstructor(
                                 typeArguments, tas, type, 
                                 parent);
-                        return true;
+                        return;
                     }
                 }
-            }
-            boolean explicit = 
-                    tas instanceof Tree.TypeArgumentList;
-            if (!empty || explicit) {
-                tas.addError("does not accept type arguments: '" + 
-                        dec.getName(unit) + 
-                        "' is not a generic declaration");
-            }
-            return empty;
+	        }
+	        
+	        if (tas instanceof Tree.TypeArgumentList) {
+	        	//explicit type argument list to something
+	        	//that cannot possibly accept type arguments
+	            tas.addError("does not accept type arguments: '" + 
+	                    dec.getName(unit) + 
+	                    "' is not a generic declaration");
+	        }
         }
     }
 
     private void checkVarianceAnnotations(Tree.TypeArguments tas, Node parent) {
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
-        boolean typeExpression = 
-                parent instanceof Tree.SimpleType;
-        if (explicit && !typeExpression) {
+        if (explicit && enforceTypeConstraints(parent)) {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
             for (Tree.Type t: tal.getTypes()) {
@@ -10281,20 +10258,22 @@ public class ExpressionVisitor extends Visitor {
                     Tree.TypeVariance var = 
                             st.getTypeVariance();
                     if (var!=null) {
-                        var.addError("use-site variance annotation may not occur in value expression");
+                        var.addError("use-site variance annotation may not occur in value or supertype expression");
                     }
                 }
             }
         }
     }
 
-    private boolean checkTypeArgumentAgainstDeclaration(
+    private void checkTypeArgumentsOfDeclaration(
             Type receiver, Declaration dec, 
             List<Type> typeArguments,
             Tree.TypeArguments tas, Node parent) {
-        List<TypeParameter> params = dec.getTypeParameters();
+    	
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
+        
+        List<TypeParameter> params = dec.getTypeParameters();
         int min = 0;
         for (TypeParameter tp: params) { 
             if (!tp.isDefaulted()) min++;
@@ -10307,9 +10286,7 @@ public class ExpressionVisitor extends Visitor {
         }
         
         boolean enforceConstraints = 
-                modelLiteral 
-                || !(parent instanceof Tree.SimpleType) 
-                || ((Tree.SimpleType) parent).getInherited();
+                enforceTypeConstraints(parent);
 
         int max = params.size();
         int args = typeArguments.size();
@@ -10321,16 +10298,6 @@ public class ExpressionVisitor extends Visitor {
                         argType!=null && 
                         !argType.isUnknown();
                 if (argTypeMeaningful) {
-                    /*if (argType.isTypeConstructor() && 
-                            !param.isTypeConstructor()) {
-                        typeArgNode(tas, i, parent)
-                            .addError("type argument must be a regular type: parameter '" + 
-                                    param.getName() + 
-                                    "' is a regular type parameter but '" +
-                                    argType.asString(unit) + 
-                                    "' is a type constructor");
-                    }
-                    else*/
                     if (enforceConstraints 
                             && argType.isTypeParameter()) {
                         TypeParameter tp = 
@@ -10339,8 +10306,10 @@ public class ExpressionVisitor extends Visitor {
                         if (!tp.isReified() && param.isReified()) {
                             if (explicit) {
                                 typeArgNode(tas, i, parent)
-                                    .addError("type parameter '" + param.getName() 
-                                            + "' of declaration '" + dec.getName(unit)
+                                    .addError("type parameter '" 
+                                    		+ param.getName() 
+                                            + "' of declaration '" 
+                                    		+ dec.getName(unit)
                                             + "' has argument '" 
                                             + tp.getName()
                                             + "' which is not a reified type");
@@ -10348,8 +10317,10 @@ public class ExpressionVisitor extends Visitor {
                             else {
                                 parent.addError("inferred type argument '" 
                                         + tp.getName()
-                                        + "' to type parameter '" + param.getName()
-                                        + "' of declaration '" + dec.getName(unit)
+                                        + "' to type parameter '" 
+                                        + param.getName()
+                                        + "' of declaration '" 
+                                        + dec.getName(unit)
                                         + "' is not a reified type");
                             }
                         }
@@ -10357,11 +10328,13 @@ public class ExpressionVisitor extends Visitor {
                     if (!argType.isTypeConstructor() && 
                             param.isTypeConstructor()) {
                         typeArgNode(tas, i, parent)
-                            .addError("type argument must be a type constructor: parameter '" + 
-                                    param.getName() + 
-                                    "' is a type constructor parameter but '" +
-                                    argType.asString(unit) + 
-                                    "' is a regular type");
+                            .addError("type argument must be a type constructor: parameter '" 
+                            		+  param.getName() 
+                                    + "' of declaration '" 
+                                    + dec.getName(unit)
+                            		+ "' is a type constructor parameter but '" 
+                            		+ argType.asString(unit) 
+                            		+ "' is a regular type");
                     }
                     else if (param.isTypeConstructor()) {
                         Node argNode;
@@ -10396,25 +10369,34 @@ public class ExpressionVisitor extends Visitor {
                             if (argTypeMeaningful) {
                                 if (explicit) {
                                     typeArgNode(tas, i, parent)
-                                        .addError("type parameter '" + param.getName() 
-                                                + "' of declaration '" + dec.getName(unit)
+                                        .addError("type parameter '" 
+                                        		+ param.getName() 
+                                                + "' of declaration '" 
+                                        		+ dec.getName(unit)
                                                 + "' has argument '" 
                                                 + assignedType.asString(unit) 
                                                 + "' which is not assignable to upper bound '" 
                                                 + bound.asString(unit)
-                                                + "' of '" + param.getName() + "'", 2102);
+                                                + "' of '" 
+                                                + param.getName() 
+                                                + "'", 
+                                                2102);
                                 }
                                 else {
                                     parent.addError("inferred type argument '" 
                                             + assignedType.asString(unit)
-                                            + "' to type parameter '" + param.getName()
-                                            + "' of declaration '" + dec.getName(unit)
+                                            + "' to type parameter '" 
+                                            + param.getName()
+                                            + "' of declaration '" 
+                                            + dec.getName(unit)
                                             + "' is not assignable to upper bound '" 
                                             + bound.asString(unit)
-                                            + "' of '" + param.getName() + "'");
+                                            + "' of '" 
+                                            + param.getName() 
+                                            + "'");
                                 }
                             }
-                            return false;
+                            return;
                         }
                     }
                     if (!argumentSatisfiesEnumeratedConstraint(receiver, 
@@ -10422,27 +10404,31 @@ public class ExpressionVisitor extends Visitor {
                         if (argTypeMeaningful) {
                             if (explicit) {
                                 typeArgNode(tas, i, parent)
-                                    .addError("type parameter '" + param.getName() 
-                                            + "' of declaration '" + dec.getName(unit)
+                                    .addError("type parameter '" 
+                                    		+ param.getName() 
+                                            + "' of declaration '" 
+                                    		+ dec.getName(unit)
                                             + "' has argument '" 
                                             + assignedType.asString(unit) 
                                             + "' which is not one of the enumerated cases of '" 
-                                            + param.getName() + "'");
+                                            + param.getName() 
+                                            + "'");
                             }
                             else {
                                 parent.addError("inferred type argument '" 
                                         + assignedType.asString(unit)
-                                        + "' to type parameter '" + param.getName()
-                                        + "' of declaration '" + dec.getName(unit)
+                                        + "' to type parameter '" 
+                                        + param.getName()
+                                        + "' of declaration '" 
+                                        + dec.getName(unit)
                                         + "' is not one of the enumerated cases of '" 
-                                        + param.getName() + "'");
+                                        + param.getName() 
+                                        + "'");
                             }
                         }
-                        return false;
                     }
                 }
             }
-            return true;
         }
         else {
             if (explicit) {
@@ -10461,8 +10447,10 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     help = "";
                 }
-                tas.addError("wrong number of type arguments: '" + 
-                        dec.getName(unit) + "'" + help);
+                tas.addError("wrong number of type arguments: '" 
+                		+ dec.getName(unit) 
+                		+ "'" 
+                		+ help);
             }
             else {
                 //Now handled in TypeArgumentVisitor
@@ -10472,9 +10460,20 @@ public class ExpressionVisitor extends Visitor {
 //                                "' declares type parameters");
 //                    }
             }
-            return false;
         }
     }
+
+	private boolean enforceTypeConstraints(Node parent) {
+		//Note: class metamodel expressions return 
+		//      instantiable references, so enforce type
+		//      constraints and disallow use-site variance
+		//TODO: we could stop enforcing type constraints
+		//      in metamodel expressions, and have them
+		//      produce types, not classes
+		return modelLiteral 
+			|| !(parent instanceof Tree.SimpleType) 
+			|| ((Tree.SimpleType) parent).getInherited();
+	}
 
     private static Type argumentTypeForBoundsCheck(
             TypeParameter param, Type argType) {
@@ -10516,19 +10515,35 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkArgumentsAgainstTypeConstructor(
+    private void checkTypeArgumentsOfTypeConstructor(
             List<Type> typeArguments,
             Tree.TypeArguments tas, Type type,
             Node parent) {
+    	
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
+        
         TypeDeclaration tcd = type.getDeclaration();
         List<TypeParameter> typeParameters = 
                 tcd.getTypeParameters();
-        int size = typeArguments.size();
-        if (size != typeParameters.size()) {
-            tas.addError("wrong number of type arguments: type constructor requires " + 
-                    size + " type arguments");
+        int size = typeParameters.size();
+        if (size != typeArguments.size()) {
+        	String msg = 
+        			size==1 ? 
+    					"1 type argument" : 
+        				size + " type arguments";
+        	if (explicit) {
+        		tas.addError("wrong number of type arguments: type constructor '" 
+	            		+ type.asString(unit) 
+	            		+ "' requires " 
+	            		+ msg);
+        	}
+        	else {
+        		parent.addError("missing type arguments: type constructor '"
+        				+ type.asString(unit) 
+		        		+ "' requires " 
+		        		+ msg);
+        	}
         }
         else {
             Map<TypeParameter, Type> args = 
@@ -10549,15 +10564,16 @@ public class ExpressionVisitor extends Visitor {
                         if (!isTypeUnknown(bound) &&
                                 !arg.isSubtypeOf(bound)) {
                             String message = 
-                                    "type argument '" + 
-                                    arg.asString(unit) +
-                                    "' is not assignable to upper bound '" +
-                                    bound.asString(unit) +
-                                    "' of type parameter '" +
-                                    param.getName() + "' of '" +
-                                    param.getDeclaration()
-                                        .getName(unit) + 
-                                    "'";
+                                    "type argument '" 
+                            		+ arg.asString(unit) 
+                            		+ "' is not assignable to upper bound '" 
+                            		+ bound.asString(unit) 
+                            		+ "' of type parameter '" 
+                            		+ param.getName() 
+                            		+ "' of '" 
+                            		+ param.getDeclaration()
+                            			.getName(unit) 
+                        			+ "'";
                             if (explicit) {
                                 typeArgNode(tas, i, parent)
                                     .addError(message);
@@ -10572,13 +10588,14 @@ public class ExpressionVisitor extends Visitor {
                 if (!satisfiesEnumeratedConstraint(param, 
                         arg, args, variances)) {
                     String message = 
-                            "type argument '" + 
-                            arg.asString(unit) +
-                            "' is not one of the enumerated cases of the type parameter '" +
-                            param.getName() + "' of '" +
-                            param.getDeclaration()
-                                .getName(unit) + 
-                            "'";
+                            "type argument '" 
+                    		+ arg.asString(unit) 
+                    		+ "' is not one of the enumerated cases of the type parameter '" 
+                    		+ param.getName() 
+                    		+ "' of '" 
+                    		+ param.getDeclaration()
+                                .getName(unit) 
+                            + "'";
                     if (explicit) {
                         typeArgNode(tas, i, parent)
                             .addError(message);
@@ -10586,7 +10603,6 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         parent.addError("inferred " + 
                                 message);
-
                     }
                 }
             }
@@ -11261,17 +11277,16 @@ public class ExpressionVisitor extends Visitor {
                     if (tal!=null) {
                         tal.setTypeModels(typeArgs);
                     }
-                    if (acceptsTypeArguments(method,
-                            outerType, typeArgs, tal, that) || true) {
-                        TypedReference pr = outerType==null ? 
-                                method.appliedTypedReference(null, typeArgs) : 
-                                outerType.getTypedMember(method, typeArgs);
-                        that.setTarget(pr);
-                        Type metatype = constructor ?
-                                unit.getConstructorMetatype(pr) :
-                                unit.getFunctionMetatype(pr);
-                        that.setTypeModel(metatype);
-                    }
+                    checkTypeArguments(method, outerType, 
+                    		typeArgs, tal, that);
+                    TypedReference pr = outerType==null ? 
+                            method.appliedTypedReference(null, typeArgs) : 
+                            outerType.getTypedMember(method, typeArgs);
+                    that.setTarget(pr);
+                    Type metatype = constructor ?
+                            unit.getConstructorMetatype(pr) :
+                            unit.getFunctionMetatype(pr);
+                    that.setTypeModel(metatype);
                 }
                 else {
                     that.addError("missing type arguments to generic declaration: '" + 

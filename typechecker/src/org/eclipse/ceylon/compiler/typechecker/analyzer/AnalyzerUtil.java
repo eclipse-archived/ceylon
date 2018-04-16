@@ -1609,7 +1609,8 @@ public class AnalyzerUtil {
             if (et==null) break;
             et = et.resolveAliases();
             d = et.getDeclaration();
-            if (et.isTypeConstructor() && d.isParameterized()) {
+            if (et.isTypeConstructor() 
+            		&& d.isParameterized()) {
                 return d;
             }
         }

@@ -426,7 +426,8 @@ void meta() {
     $type:"ValueConstructor<Baz>" value cd19 = `Baz.instance`;
     $error value cd14 = `new Foo`;
     
-    $error value broke = `Map<Anything,Anything>`;
+    $error value notbroke = `Map<Anything,Anything>`;
+    $error value unbroke = `Foo<out Object>`;
     
     $type:"Class<ArraySequence<Integer>,Nothing>" 
     value sealed = `ArraySequence<Integer>`;

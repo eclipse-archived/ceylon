@@ -417,7 +417,6 @@ public class InheritanceVisitor extends Visitor {
                         }
                     }
                 }
-                checkSupertypeVarianceAnnotations(et);
             }
         }
     }
@@ -486,10 +485,6 @@ public class InheritanceVisitor extends Visitor {
                 /*if (!(td instanceof TypeParameter)) {
                     checkCaseOfSupertype(t, td, type);
                 }*/
-            }
-            if (t instanceof Tree.SimpleType) {
-                Tree.SimpleType st = (Tree.SimpleType) t;
-                checkSupertypeVarianceAnnotations(st);
             }
         }
     }
@@ -942,23 +937,6 @@ public class InheritanceVisitor extends Visitor {
                                     "' is not a supertype or self type of " + 
                                     message(atd) + help);
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    private void checkSupertypeVarianceAnnotations(Tree.SimpleType et) {
-        Tree.TypeArgumentList tal = 
-                et.getTypeArgumentList();
-        if (tal!=null) {
-            for (Tree.Type t: tal.getTypes()) {
-                if (t instanceof Tree.StaticType) {
-                    Tree.StaticType st = (Tree.StaticType) t;
-                    Tree.TypeVariance variance = 
-                            st.getTypeVariance();
-                    if (variance!=null) {
-                        variance.addError("supertype expression may not specify variance");
                     }
                 }
             }
