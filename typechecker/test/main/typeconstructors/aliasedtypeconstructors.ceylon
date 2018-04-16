@@ -4,7 +4,7 @@ alias AdditionLikeOperation
 
 AdditionLikeOperation add = plus;
 AdditionLikeOperation<Integer> addInts = plus<Integer>;
-AdditionLikeOperation<Float> addFloats = plus<Float>;  
+AdditionLikeOperation<Float> addFloats = plus<Float>;
 
 <Number> given Number satisfies Summable<Number>
         => Number(Number,Number) addRef = add;
@@ -17,6 +17,24 @@ void testDoSomething() {
     Integer k = add(1,2);
     addFloats(2.0, 3.0);
     addInts(2, 3);
+}
+
+void badTypeArgs(
+    $error AdditionLikeOperation<> bad0,
+    AdditionLikeOperation<Object> ok1,
+    $error AdditionLikeOperation<Integer, Float> bad2) {
+    //strangely, this is OK:
+    Singleton<AdditionLikeOperation<Object>>((x,y)=>x);
+}
+
+alias ALO => AdditionLikeOperation;
+
+void badAliasedTypeArgs(
+    $error ALO<> bad0,
+    ALO<Object> ok1,
+    $error ALO<Integer, Float> bad2) {
+    //strangely, this is OK:
+    Singleton<ALO<Object>>((x,y)=>y);
 }
 
 Map<String,String> theMap = nothing;
@@ -43,7 +61,24 @@ alias Union => <T> => List<T>|Boxy<T>;
 Union<String> union = nothing;
 List<String>|Boxy<String> verbose = union;
 
+alias Sing => Singleton;
 
+void moreBadTypeArgs(
+    $error Sing<> bad0,
+    Sing<String> ok,
+    $error Sing<String,Integer> bad2,
+    YourMapFunction<> ok0,
+    YourMapFunction<String> ok1,
+    YourMapFunction<Anything,Anything> ok2,
+    $error YourMapFunction<Integer, Float, String> bad3) {}
+
+alias YMF => YourMapFunction;
+
+void moreBadAliasedTypeArgs(
+    YMF<> ok0,
+    YMF<String> ok2,
+    YMF<Anything,Anything> ok1,
+    $error YourMapFunction<Integer, Float, String> bad3) {}
 
 
 alias Wrapper<Box> given Box<E>
