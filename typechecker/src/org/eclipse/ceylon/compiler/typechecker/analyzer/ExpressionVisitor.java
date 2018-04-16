@@ -9326,8 +9326,9 @@ public class ExpressionVisitor extends Visitor {
         for (Tree.Expression e: that.getExpressions()) {
             Type et = e.getTypeModel();
             if (!isTypeUnknown(et)) {
-                checkAssignable(et, 
-                        unit.getObjectType(), e, 
+                Type ot = unit.getObjectType();
+                et = adjustInferredParameterType(ot, et, e);
+				checkAssignable(et, ot, e, 
                         "interpolated expression must not be an optional type");
                 if (et.isCallable()) {
                     e.addUsageWarning(Warning.expressionTypeCallable, 
