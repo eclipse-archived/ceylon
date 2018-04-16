@@ -12,6 +12,7 @@ package org.eclipse.ceylon.compiler.typechecker.analyzer;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
+import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isStatementExpression;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.name;
 
 import java.util.List;
@@ -668,10 +669,7 @@ public class ControlFlowVisitor extends Visitor {
                 expr.addError("malformed expression statement");
             }
             else {
-                if (!(t instanceof Tree.InvocationExpression
-                        || t instanceof Tree.PostfixOperatorExpression
-                        || t instanceof Tree.PrefixOperatorExpression
-                        || t instanceof Tree.AssignmentOp)) {
+                if (!isStatementExpression(expr)) {
                     expr.addError("not a legal statement (not an invocation, assignment, or increment/decrement)", 
                             3000);
                 }

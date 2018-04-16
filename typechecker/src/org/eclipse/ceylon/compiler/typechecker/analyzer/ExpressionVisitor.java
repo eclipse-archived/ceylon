@@ -35,6 +35,7 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.impo
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isStatementExpression;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
@@ -95,8 +96,8 @@ import org.eclipse.ceylon.common.Backends;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.ClassOrInterface;
@@ -280,7 +281,7 @@ public class ExpressionVisitor extends Visitor {
                         "expression type must be assignable to specified return type");
             }*/
             if (type instanceof Tree.VoidModifier 
-                    && !isSatementExpression(e)) {
+                    && !isStatementExpression(e)) {
                 e.addError("anonymous function is declared void so specified expression must be a statement");
             }
         }
@@ -1545,7 +1546,7 @@ public class ExpressionVisitor extends Visitor {
                 Function f = (Function) d;
                 Tree.Expression se = rhs.getExpression();
                 if (f.isDeclaredVoid() 
-                        && !isSatementExpression(se)) {
+                        && !isStatementExpression(se)) {
                     rhs.addError(
                             "function is declared void so specified expression must be a statement: '" + 
                             d.getName(unit) + 
@@ -1588,20 +1589,6 @@ public class ExpressionVisitor extends Visitor {
             if (rhs instanceof Tree.LazySpecifierExpression && d instanceof Function) {
                 rhs.addError("functions without parameters must be specified using =");
             }
-        }
-    }
-    
-    boolean isSatementExpression(Tree.Expression e) {
-        if (e==null) {
-            return false;
-        }
-        else {
-            Tree.Term t = e.getTerm();
-            return t instanceof Tree.InvocationExpression 
-                || t instanceof Tree.PostfixOperatorExpression 
-                || t instanceof Tree.AssignmentOp 
-                || t instanceof Tree.PrefixOperatorExpression
-                || t instanceof Tree.PipelineOp;
         }
     }
     
@@ -2225,7 +2212,7 @@ public class ExpressionVisitor extends Visitor {
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                if (!isSatementExpression(e)) {
+                if (!isStatementExpression(e)) {
                     se.addError("specified expression must be a statement: '" +
                             set.getName() + "'");
                 }
@@ -2256,7 +2243,7 @@ public class ExpressionVisitor extends Visitor {
                     checkFunctionType(e, type, se);
                 }
                 if (type instanceof Tree.VoidModifier && 
-                        !isSatementExpression(e)) {
+                        !isStatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: '" +
                             fun.getName() + 
                             "' is declared 'void'",
@@ -2317,7 +2304,7 @@ public class ExpressionVisitor extends Visitor {
                     checkFunctionType(e, type, se);
                 }
                 if (fun.isDeclaredVoid() && 
-                        !isSatementExpression(e)) {
+                        !isStatementExpression(e)) {
                     se.addError("functional argument is declared void so specified expression must be a statement: '" + 
                             fun.getName() + "' is declared 'void'");
                 }
@@ -5325,7 +5312,7 @@ public class ExpressionVisitor extends Visitor {
                     if (t instanceof Tree.FunctionModifier && 
                             t.getToken()==null &&
                             p.isDeclaredVoid() &&
-                            !isSatementExpression(e)) {
+                            !isStatementExpression(e)) {
                         ta.addError("functional parameter is declared void so argument may not evaluate to a value: '" +
                                 p.getName() + "' is declared 'void'");
                     }

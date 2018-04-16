@@ -1718,41 +1718,64 @@ statement returns [Statement statement]
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
-    @init { SpecifierStatement ss=new SpecifierStatement(null); 
-            ExpressionStatement es=new ExpressionStatement(null); }
-    : expression
-      { $statement = es;
-        if ($expression.expression!=null)
-            es.setExpression($expression.expression);
-        if ($expression.expression.getTerm() instanceof AssignOp) {
-            AssignOp a = (AssignOp) $expression.expression.getTerm();
-            Term lt = a.getLeftTerm();
-            if (lt instanceof BaseMemberExpression ||
-                lt instanceof ParameterizedExpression ||
-                lt instanceof QualifiedMemberExpression &&
-                    ((QualifiedMemberExpression) lt).getPrimary() instanceof This &&
-                    ((QualifiedMemberExpression) lt).getMemberOperator() instanceof MemberOp) {
-                Expression e = new Expression(null);
-                e.setTerm(a.getRightTerm());
-                SpecifierExpression se = new SpecifierExpression(a.getMainToken());
-                se.setExpression(e);
-                ss.setSpecifierExpression(se);
-                ss.setBaseMemberExpression(a.getLeftTerm());
-                $statement = ss;
-            }
-        }
-      }
+    : (specificationStatementStart) => 
+      specificationStatement
+      { $statement = $specificationStatement.statement; }
+    | expressionStatement
+      { $statement = $expressionStatement.statement; }
+    ;
+
+specificationStatementStart
+    : ((THIS|SUPER|OUTER|PACKAGE) MEMBER_OP)?
+      LIDENTIFIER 
       (
-        /*specifier
+        SPECIFY 
+      | COMPUTE 
+      | typeParameters? specifierParametersStart
+      )
+    ;
+
+specificationStatement returns [Statement statement]
+    @init { SpecifierStatement ss=new SpecifierStatement(null); }
+    : e1=valueExpression
+      (
+        specifier
         { ss.setSpecifierExpression($specifier.specifierExpression);
-          ss.setBaseMemberExpression($expression.expression.getTerm());
+          ss.setBaseMemberExpression($e1.term);
           $statement = ss; }
-      | */
+      |
         lazySpecifier
         { ss.setSpecifierExpression($lazySpecifier.specifierExpression);
-          ss.setBaseMemberExpression($expression.expression.getTerm()); 
+          ss.setBaseMemberExpression($e1.term); 
           $statement = ss; }
-      )?
+      )
+      { expecting=SEMICOLON; }
+      (
+        SEMICOLON
+        { $statement.setEndToken($SEMICOLON); }
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(SEMICOLON, input)); }
+        COMMA
+        { $statement.setEndToken($COMMA); }
+      )
+      { expecting=-1; }
+    ;
+    
+expressionStatement returns [Statement statement]
+    @init { ExpressionStatement es=new ExpressionStatement(null); }
+    : e2=expression
+      { $statement = es;
+        if ($e2.expression!=null)
+            es.setExpression($e2.expression); }
+      (
+        pipelineOperator 
+        { $pipelineOperator.operator.setLeftTerm($e2.expression);
+          Expression ex = new Expression(null);
+          ex.setTerm($pipelineOperator.operator); 
+          es.setExpression(ex); }
+        e3=functionOrExpression
+        { $pipelineOperator.operator.setRightTerm($e3.expression); }
+      )*
       { expecting=SEMICOLON; }
       (
         SEMICOLON
@@ -1789,8 +1812,8 @@ returnDirective returns [Return directive]
     : RETURN 
       { $directive = new Return($RETURN); }
       (
-        functionOrExpression
-        { $directive.setExpression($functionOrExpression.expression); }
+        e=pipelinedExpression
+        { $directive.setExpression($e.expression); }
       )?
     ;
 
@@ -1798,8 +1821,8 @@ throwDirective returns [Throw directive]
     : THROW
       { $directive = new Throw($THROW); }
       ( 
-        expression
-        { $directive.setExpression($expression.expression); }
+        e=pipelinedExpression
+        { $directive.setExpression($e.expression); }
       )?
     ;
 
@@ -1837,15 +1860,15 @@ typeDefault returns [TypeSpecifier typeSpecifier]
 specifier returns [SpecifierExpression specifierExpression]
     : SPECIFY
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
-      functionOrExpression
-      { $specifierExpression.setExpression($functionOrExpression.expression); }
+      e=pipelinedExpression
+      { $specifierExpression.setExpression($e.expression); }
     ;
 
 lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
-      functionOrExpression
-      { $specifierExpression.setExpression($functionOrExpression.expression); }
+      e=pipelinedExpression
+      { $specifierExpression.setExpression($e.expression); }
     ;
 
 functionSpecifier returns [SpecifierExpression specifierExpression]
@@ -1856,8 +1879,8 @@ functionSpecifier returns [SpecifierExpression specifierExpression]
         SPECIFY
         { $specifierExpression = new LazySpecifierExpression($SPECIFY); }
       )
-      functionOrExpression
-      { $specifierExpression.setExpression($functionOrExpression.expression); }
+      e=pipelinedExpression
+      { $specifierExpression.setExpression($e.expression); }
     ;
 
 expression returns [Expression expression]
@@ -2240,7 +2263,7 @@ indexOrIndexRange returns [IndexExpression indexExpression]
             $indexExpression.setElementOrRange(er3);
             $indexExpression.setEndToken(null); }
         )?
-      | fe=functionOrExpression
+      | fe=pipelinedExpression
         { Element e = new Element(null);
           e.setExpression($fe.expression); 
           $indexExpression.setElementOrRange(e); }
@@ -2350,9 +2373,9 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
 
 anonymousArgument returns [SpecifiedArgument namedArgument]
     @init { $namedArgument = new SpecifiedArgument(null); }
-    : functionOrExpression
+    : e=pipelinedExpression
      { SpecifierExpression se = new SpecifierExpression(null);
-       se.setExpression($functionOrExpression.expression);
+       se.setExpression($e.expression);
        $namedArgument.setSpecifierExpression(se); }   
       { expecting=SEMICOLON; }
       SEMICOLON
@@ -2579,9 +2602,9 @@ specificationStart
 parExpression returns [ParExpression expression] 
     : LPAREN 
       { $expression = new ParExpression($LPAREN); }
-      functionOrExpression
-      { if ($functionOrExpression.expression!=null)
-            $expression.setTerm($functionOrExpression.expression.getTerm()); }
+      e=pipelinedExpression
+      { if ($e.expression!=null)
+            $expression.setTerm($e.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
     ;
@@ -2604,8 +2627,8 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
 
 positionalArgument returns [ListedArgument positionalArgument]
     : { $positionalArgument = new ListedArgument(null); }
-      functionOrExpression
-      { $positionalArgument.setExpression($functionOrExpression.expression); }
+      e=pipelinedExpression
+      { $positionalArgument.setExpression($e.expression); }
     ;
 
 spreadArgument returns [SpreadArgument positionalArgument]
@@ -2666,7 +2689,25 @@ anonymousFunctionStart
     | COMPUTE
     | anonParametersStart
     ;
-    
+
+pipelinedExpression returns [Expression expression]
+    : fe1=functionOrExpression
+      { $expression = $fe1.expression; }
+      (
+        pipelineOperator 
+        { $pipelineOperator.operator.setLeftTerm($expression);
+          $expression = new Expression(null);
+          $expression.setTerm($pipelineOperator.operator); }
+        fe2=functionOrExpression
+        { $pipelineOperator.operator.setRightTerm($fe2.expression); }
+      )*
+    ;
+
+pipelineOperator returns [PipelineOp operator]
+    : PIPELINE
+    { $operator = new PipelineOp($PIPELINE); }
+    ;
+
 functionOrExpression returns [Expression expression]
     : (anonymousFunctionStart) =>
       anonymousFunction
@@ -2991,9 +3032,9 @@ comprehensionClause returns [ComprehensionClause comprehensionClause]
     ;
 
 expressionComprehensionClause returns [ExpressionComprehensionClause comprehensionClause]
-    : functionOrExpression
+    : fe=functionOrExpression
       { $comprehensionClause = new ExpressionComprehensionClause(null);
-        $comprehensionClause.setExpression($functionOrExpression.expression); }
+        $comprehensionClause.setExpression($fe.expression); }
     | { displayRecognitionError(getTokenNames(), 
           new MismatchedTokenException(LIDENTIFIER, input)); }
     ;
@@ -3018,15 +3059,15 @@ ifComprehensionClause returns [IfComprehensionClause comprehensionClause]
     
 assignmentExpression returns [Term term]
     @init { QualifiedMemberOrTypeExpression qe=null; }
-    : ee1=thenElseExpression
-      { $term = $ee1.term; }
+    : lhs=thenElseExpression
+      { $term = $lhs.term; }
       (
         assignmentOperator 
         { $assignmentOperator.operator.setLeftTerm($term);
           $term = $assignmentOperator.operator; }
-        ee2=functionOrExpression
-        { if ($ee2.expression!=null)
-              $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
+        rhs=functionOrExpression
+        { if ($rhs.expression!=null)
+              $assignmentOperator.operator.setRightTerm($rhs.expression.getTerm()); }
       )?
     ;
 
@@ -3238,13 +3279,13 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
     ;
 
 entryRangeExpression returns [Term term]
-    : ae1=pipelineExpression
+    : ae1=additiveExpression
       { $term = $ae1.term; }
       (
         rangeIntervalEntryOperator 
         { $rangeIntervalEntryOperator.operator.setLeftTerm($term);
           $term = $rangeIntervalEntryOperator.operator; }
-        ae2=pipelineExpression
+        ae2=additiveExpression
         { $rangeIntervalEntryOperator.operator.setRightTerm($ae2.term); }
       )?
     ;
@@ -3256,23 +3297,6 @@ rangeIntervalEntryOperator returns [BinaryOperatorExpression operator]
       { $operator = new SegmentOp($SEGMENT_OP); }
     | ENTRY_OP
       { $operator = new EntryOp($ENTRY_OP); }
-    ;
-
-pipelineExpression returns [Term term]
-    : ae1=additiveExpression
-      { $term = $ae1.term; }
-      (
-        pipelineOperator 
-        { $pipelineOperator.operator.setLeftTerm($term);
-          $term = $pipelineOperator.operator; }
-        ae2=additiveExpression
-        { $pipelineOperator.operator.setRightTerm($ae2.term); }
-      )*
-    ;
-
-pipelineOperator returns [PipelineOp operator]
-    : PIPELINE
-    { $operator = new PipelineOp($PIPELINE); }
     ;
 
 additiveExpression returns [Term term]
@@ -3485,13 +3509,13 @@ stringExpression returns [Atom atom]
       { st = new StringTemplate(null);
         st.addStringLiteral(new StringLiteral($STRING_START));
         $atom=st; }
-      e1=functionOrExpression
+      e1=pipelinedExpression
       { if ($e1.expression!=null) 
             st.addExpression($e1.expression); }
       (
         STRING_MID
         { st.addStringLiteral(new StringLiteral($STRING_MID)); }
-        e2=functionOrExpression
+        e2=pipelinedExpression
         { if ($e2.expression!=null) 
               st.addExpression($e2.expression); }
       )*
@@ -3980,8 +4004,8 @@ condition returns [Condition condition]
     
 booleanCondition returns [BooleanCondition condition]
     : { $condition = new BooleanCondition(null); }
-      functionOrExpression
-      { $condition.setExpression($functionOrExpression.expression); }
+      e=pipelinedExpression
+      { $condition.setExpression($e.expression); }
     ;
 
 
