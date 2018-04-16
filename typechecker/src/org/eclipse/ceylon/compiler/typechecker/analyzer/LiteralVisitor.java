@@ -29,13 +29,6 @@ import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Literal;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PatternParameter;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 
 /**
  * Validate and interpret the syntax of string and numeric
@@ -57,7 +50,7 @@ public class LiteralVisitor extends Visitor {
     
     
     @Override
-    public void visit(CompilationUnit that) {
+    public void visit(Tree.CompilationUnit that) {
         if (!that.getLiteralsProcessed()) {
             super.visit(that);
             that.setLiteralsProcessed(true);
@@ -65,7 +58,7 @@ public class LiteralVisitor extends Visitor {
     }
     
     @Override
-    public void visit(StringLiteral that) {
+    public void visit(Tree.StringLiteral that) {
         if (that.getToken()==null) return;
         int type = that.getToken().getType();
         String text = that.getText();
@@ -145,7 +138,7 @@ public class LiteralVisitor extends Visitor {
     }
 
     @Override
-    public void visit(StringTemplate that) {
+    public void visit(Tree.StringTemplate that) {
         int oi = indent;
         indent = 0;
         super.visit(that);
@@ -153,7 +146,7 @@ public class LiteralVisitor extends Visitor {
     }
     
     @Override
-    public void visit(QuotedLiteral that) {
+    public void visit(Tree.QuotedLiteral that) {
         StringBuilder result = new StringBuilder();
         stripIndent(that.getText(), 
                 getIndentPosition(that), 
@@ -162,7 +155,7 @@ public class LiteralVisitor extends Visitor {
         that.setText(result.toString());
     }
     
-    private int getIndentPosition(Literal that) {
+    private int getIndentPosition(Tree.Literal that) {
         Token token = that.getToken();
         return token==null ? 
                 0 : token.getCharPositionInLine() +
@@ -177,7 +170,7 @@ public class LiteralVisitor extends Visitor {
     }
     
     @Override
-    public void visit(CharLiteral that) {
+    public void visit(Tree.CharLiteral that) {
         StringBuilder result = 
                 new StringBuilder(that.getText());
         interpolateEscapes(result, that);
@@ -788,7 +781,7 @@ public class LiteralVisitor extends Visitor {
     }
     
     @Override
-    public void visit(PatternParameter that) {
+    public void visit(Tree.PatternParameter that) {
         super.visit(that);
         that.addError("parameter may not be a pattern (parameter destructuring is allowed for anonymous functions)");
     }
@@ -906,5 +899,5 @@ public class LiteralVisitor extends Visitor {
             return ls;
         }
     }
-
+    
 }
