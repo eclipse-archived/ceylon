@@ -1763,18 +1763,31 @@ specificationStatement returns [Statement statement]
     
 expressionStatement returns [Statement statement]
     @init { ExpressionStatement es=new ExpressionStatement(null); }
-    : e2=expression
+    : e1=expression
       { $statement = es;
-        if ($e2.expression!=null)
-            es.setExpression($e2.expression); }
+        if ($e1.expression!=null)
+            es.setExpression($e1.expression); }
       (
         pipelineOperator 
-        { $pipelineOperator.operator.setLeftTerm($e2.expression);
+        /*{ $pipelineOperator.operator.setLeftTerm($e1.expression);
           Expression ex = new Expression(null);
           ex.setTerm($pipelineOperator.operator); 
-          es.setExpression(ex); }
-        e3=functionOrExpression
-        { $pipelineOperator.operator.setRightTerm($e3.expression); }
+          es.setExpression(ex); }*/
+        e2=functionOrExpression
+        /*{ $pipelineOperator.operator.setRightTerm($e2.expression); }*/
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary($e2.expression);
+          if ($e2.expression.getTerm() instanceof Primary) {
+              ie.setPrimary((Primary) $e2.expression.getTerm());
+          }
+          ListedArgument la = new ListedArgument(null);
+          la.setExpression(es.getExpression());
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la);
+          ie.setPositionalArgumentList(pal);
+          Expression e = new Expression(null);
+          e.setTerm(ie);
+          es.setExpression(e); }
       )*
       { expecting=SEMICOLON; }
       (
@@ -2691,15 +2704,28 @@ anonymousFunctionStart
     ;
 
 pipelinedExpression returns [Expression expression]
-    : fe1=functionOrExpression
-      { $expression = $fe1.expression; }
+    : e1=functionOrExpression
+      { $expression = $e1.expression; }
       (
         pipelineOperator 
-        { $pipelineOperator.operator.setLeftTerm($expression);
+        /*{ $pipelineOperator.operator.setLeftTerm($expression);
           $expression = new Expression(null);
-          $expression.setTerm($pipelineOperator.operator); }
-        fe2=functionOrExpression
-        { $pipelineOperator.operator.setRightTerm($fe2.expression); }
+          $expression.setTerm($pipelineOperator.operator); }*/
+        e2=functionOrExpression
+        /*{ $pipelineOperator.operator.setRightTerm($e2.expression); }*/
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary($e2.expression);
+          if ($e2.expression.getTerm() instanceof Primary) {
+              ie.setPrimary((Primary) $e2.expression.getTerm());
+          }
+          ListedArgument la = new ListedArgument(null);
+          la.setExpression($expression);
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la);
+          ie.setPositionalArgumentList(pal);
+          Expression e = new Expression(null);
+          e.setTerm(ie); 
+          $expression = e; }
       )*
     ;
 
