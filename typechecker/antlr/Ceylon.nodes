@@ -748,6 +748,9 @@
 "A reference to a member in an expression."
 ^(BASE_MEMBER_EXPRESSION:BASE_MEMBER_OR_TYPE_EXPRESSION)
 
+"A reference to the compose() function."
+^(COMPOSE:BASE_MEMBER_EXPRESSION)
+
 "A reference to a type in an expression."
 ^(BASE_TYPE_EXPRESSION:BASE_MEMBER_OR_TYPE_EXPRESSION)
 

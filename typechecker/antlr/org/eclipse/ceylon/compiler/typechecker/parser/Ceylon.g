@@ -3278,7 +3278,7 @@ pipelinedExpression returns [Term term]
         { InvocationExpression ie = new InvocationExpression($FISH);
           CommonToken tok = new CommonToken(LIDENTIFIER, "compose");
           Identifier id = new Identifier(tok);
-          BaseMemberExpression bme = new BaseMemberExpression(null);
+          Compose bme = new Compose(null);
           bme.setIdentifier(id);
           bme.setTypeArguments(new InferredTypeArguments(null));
           ie.setPrimary(bme);

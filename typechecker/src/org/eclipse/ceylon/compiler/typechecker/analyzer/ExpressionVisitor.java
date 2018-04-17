@@ -5430,7 +5430,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         checkPositionalArgument(param, pr, 
-                                (Tree.ListedArgument) arg);
+                                (Tree.ListedArgument) arg,
+                                that);
                     }
                 }
             }
@@ -5816,7 +5817,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkPositionalArgument(Parameter p, 
-            Reference pr, Tree.ListedArgument a) {
+            Reference pr, Tree.ListedArgument a,
+            Tree.InvocationExpression ie) {
         FunctionOrValue paramModel = p.getModel();
         if (paramModel!=null) {
             a.setParameter(p);
@@ -5828,9 +5830,26 @@ public class ExpressionVisitor extends Visitor {
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
                 !isTypeUnknown(paramType)) {
-                checkAssignable(at, paramType, a, 
-                        "argument must be assignable to parameter " + 
-                                argdesc(p, pr), 2100);
+            	if (ie.getPrimary() 
+            			instanceof Tree.Compose) {
+                    Type ot = 
+                    		ie.getPositionalArgumentList()
+                    		  .getPositionalArguments()
+                    		  .get(1)
+                    		  .getTypeModel();
+					checkAssignable(at, paramType, a, 
+							"functions of type '" 
+            				+ ot.asString(unit)
+            				+ "' and '"
+            				+ at.asString(unit)
+            				+ "' do not compose");
+
+            	}
+            	else {
+	                checkAssignable(at, paramType, a, 
+	                        "argument must be assignable to parameter " 
+	                        		+ argdesc(p, pr), 2100);
+            	}
             }
         }
     }
@@ -7536,6 +7555,14 @@ public class ExpressionVisitor extends Visitor {
     private TypedDeclaration resolveBaseMemberExpression(
             Tree.BaseMemberExpression that,
             boolean error) {
+    	
+    	if (that instanceof Tree.Compose) {
+    		Function compose = (Function) 
+    				unit.getLanguageModuleDeclaration("compose");
+    		that.setDeclaration(compose);
+			return compose;
+    	}
+    	
         Tree.Identifier id = that.getIdentifier();
         String name = name(id);
         Scope scope = that.getScope();
