@@ -7101,23 +7101,6 @@ public class ExpressionVisitor extends Visitor {
         checkAssignability(that.getLeftTerm(), that);
     }
     
-    @Override public void visit(Tree.PipelineOp that) {
-        super.visit(that);
-        Type argType = that.getLeftTerm().getTypeModel();
-        Type funType = that.getRightTerm().getTypeModel();
-        Type paramTypes = unit.getCallableTuple(funType);
-        if (unit.getTupleMaximumLength(paramTypes)<1) {
-        	that.getRightTerm().addError("must accept one argument");
-        }
-        if (unit.getTupleMinimumLength(paramTypes)>1) {
-        	that.getRightTerm().addError("must accept one argument");
-        }
-        checkAssignable(argType, 
-        		unit.getTupleElementTypes(paramTypes).get(0), 
-        		that, "function must accept pipelined argument type");
-        that.setTypeModel(unit.getCallableReturnType(funType));
-    }
-    
     @Override public void visit(Tree.RangeOp that) {
         super.visit(that);
         visitSpanOperator(that);

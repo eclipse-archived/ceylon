@@ -42,14 +42,7 @@ import org.eclipse.ceylon.common.Backend;
 import org.eclipse.ceylon.common.Backends;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AssignmentOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ClassBody;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Expression;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PipelineOp;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import org.eclipse.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
@@ -1880,8 +1873,7 @@ public class AnalyzerUtil {
 	        return t instanceof Tree.InvocationExpression 
 	            || t instanceof Tree.PostfixOperatorExpression 
 	            || t instanceof Tree.AssignmentOp 
-	            || t instanceof Tree.PrefixOperatorExpression
-	            || t instanceof Tree.PipelineOp;
+	            || t instanceof Tree.PrefixOperatorExpression;
 	    }
 	}
 
