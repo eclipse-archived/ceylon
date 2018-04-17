@@ -3272,6 +3272,29 @@ pipelinedExpression returns [Term term]
           pal.addPositionalArgument(la);
           ie.setPositionalArgumentList(pal);
           $term = ie; }
+      | 
+        FISH
+        e3=entryRangeExpression
+        { InvocationExpression ie = new InvocationExpression($FISH);
+          CommonToken tok = new CommonToken(LIDENTIFIER, "compose");
+          Identifier id = new Identifier(tok);
+          BaseMemberExpression bme = new BaseMemberExpression(null);
+          bme.setIdentifier(id);
+          bme.setTypeArguments(new InferredTypeArguments(null));
+          ie.setPrimary(bme);
+          Expression ae1 = new Expression(null);
+          ae1.setTerm($e3.term);
+          ListedArgument la1 = new ListedArgument(null);
+          la1.setExpression(ae1);
+          Expression ae2 = new Expression(null);
+          ae2.setTerm($term);
+          ListedArgument la2 = new ListedArgument(null);
+          la2.setExpression(ae2);
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la1);
+          pal.addPositionalArgument(la2);
+          ie.setPositionalArgumentList(pal);
+          $term = ie; }
       )*
     ;
 
@@ -5399,6 +5422,10 @@ OR_SPECIFY
 
 PIPELINE
     :   '|>'
+    ;
+
+FISH
+    :   '>|>'
     ;
 
 DOLLAR
