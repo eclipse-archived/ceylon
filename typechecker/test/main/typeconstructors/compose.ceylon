@@ -33,9 +33,9 @@ shared void testCompose() {
 }
 
 <T> => F<G<T>>(T) compose2<F,G>
-        (F<X> f<X>(X t), G<Y> g<Y>(Y t))
+        (F<X> f<X>(X x), G<Y> g<Y>(Y y))
         given F<X> given G<Y>
-        => <T>(T t) => f(g(t));
+        => <U>(U u) => f(g(u));
 
 shared void testCompose2() {
     T() lazy<T>(T t) => () => t;
