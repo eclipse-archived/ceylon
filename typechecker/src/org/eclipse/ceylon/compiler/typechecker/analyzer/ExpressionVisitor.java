@@ -3239,6 +3239,32 @@ public class ExpressionVisitor extends Visitor {
      */
     @Override 
     public void visit(Tree.InvocationExpression that) {
+    	
+        Tree.Primary p = that.getPrimary();
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        Tree.NamedArgumentList nal = 
+                that.getNamedArgumentList();
+    	
+    	if (unwrapExpressionUntilTerm(p)
+    			instanceof Tree.FunctionArgument) {
+    		//if the primary is an anonymous 
+    		//function, we must infer its parameter
+    		//types, but we don't need to worry
+    		//about overload resolution or named
+    		//arguments
+            if (pal!=null) {
+            	pal.visit(this);
+            	inferPrimaryParameterTypes(p, pal);
+            }
+        	p.visit(this);
+        	visitInvocationPrimary(that);
+        	if (pal!=null) {
+        		inferParameterTypes(p, pal, true);
+        	}
+        	visitIndirectInvocation(that);
+        	return;
+    	}
         
         //assign some provisional argument types 
         //that will help with overload resolution
@@ -3247,7 +3273,6 @@ public class ExpressionVisitor extends Visitor {
         //make a first attempt at resolving the 
         //invoked reference (but we don't have 
         //all the needed types yet)
-        Tree.Primary p = that.getPrimary();
         p.visit(this);
         
         //set up the parameter lists of all 
@@ -3259,15 +3284,11 @@ public class ExpressionVisitor extends Visitor {
         //case because they don't support
         //anonymous functions with inferred 
         //parameter lists
-        Tree.NamedArgumentList nal = 
-                that.getNamedArgumentList();
         if (nal!=null) {
             inferParameterTypes(p, nal);
             nal.visit(this);
         }
         
-        Tree.PositionalArgumentList pal = 
-                that.getPositionalArgumentList();
         int argCount = 0; 
         boolean[] delayed = null;
         if (pal!=null) {
@@ -3298,7 +3319,7 @@ public class ExpressionVisitor extends Visitor {
         
         //now here's where overloading is 
         //finally resolved and then type 
-        //argments are inferred 
+        //arguments are inferred 
         visitInvocationPrimary(that);
         
         if (pal!=null) {
@@ -3333,7 +3354,51 @@ public class ExpressionVisitor extends Visitor {
         
     }
     
-    /**
+    private void inferPrimaryParameterTypes(
+    		Tree.Primary p, 
+    		Tree.PositionalArgumentList pal) {
+		Tree.Term term = unwrapExpressionUntilTerm(p);
+		if (term instanceof Tree.FunctionArgument) {
+			Tree.FunctionArgument fun = 
+					(Tree.FunctionArgument) term;
+			List<Tree.ParameterList> pls = 
+					fun.getParameterLists();
+			if (!pls.isEmpty()) {
+				Tree.ParameterList pl =
+						pls.get(0);
+				List<Tree.Parameter> params = 
+						pl.getParameters();
+				List<Tree.PositionalArgument> args = 
+						pal.getPositionalArguments();
+				for (int i=0; 
+						i<params.size() &&
+						i<args.size(); 
+						i++) {
+					Tree.PositionalArgument arg = 
+							args.get(i);
+					Tree.Parameter param = 
+							params.get(i);
+					Parameter pmodel = 
+							param.getParameterModel();
+					FunctionOrValue model = 
+							pmodel.getModel();
+					Type type = arg.getTypeModel();
+					if (model==null) {
+						createInferredParameter(fun, null, 
+								param, pmodel, type, null, 
+								true);
+					}
+//					if (!isTypeUnknown(type)
+//							&& model instanceof Value 
+//							&& ((Value) model).isInferred()) {
+//						model.setType(type);
+//					}
+				}
+			}
+		}
+	}
+
+	/**
      * Iterate over the arguments of an invocation
      * looking for anonymous functions with missing
      * parameter lists, and create the parameter
@@ -4110,7 +4175,8 @@ public class ExpressionVisitor extends Visitor {
      * Create a model for an inferred parameter of an
      * anonymous function.
      */
-    private boolean createInferredParameter(Tree.FunctionArgument anon,
+    private boolean createInferredParameter(
+    		Tree.FunctionArgument anon,
             Declaration declaration, Tree.Parameter ap,
             Parameter parameter, Type type,
             FunctionOrValue original, boolean error) {
