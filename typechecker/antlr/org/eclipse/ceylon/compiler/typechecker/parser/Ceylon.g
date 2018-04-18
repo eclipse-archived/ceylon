@@ -3248,12 +3248,12 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
     ;
 
 pipelinedExpression returns [Term term]
-    : e1=entryRangeExpression
-      { $term = $e1.term; }
+    : e0=entryRangeExpression
+      { $term = $e0.term; }
       (
-        PIPELINE 
+        PIPE 
         e2=entryRangeExpression
-        { InvocationExpression ie = new InvocationExpression($PIPELINE);
+        { InvocationExpression ie = new InvocationExpression($PIPE);
           Primary p;
           if ($e2.term instanceof Primary) {
               p = (Primary) $e2.term;
@@ -3266,6 +3266,28 @@ pipelinedExpression returns [Term term]
           ie.setPrimary(p);
           Expression ae = new Expression(null);
           ae.setTerm($term);
+          ListedArgument la = new ListedArgument(null);
+          la.setExpression(ae);
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la);
+          ie.setPositionalArgumentList(pal);
+          $term = ie; }
+      | 
+        BACKPIPE 
+        e1=entryRangeExpression
+        { InvocationExpression ie = new InvocationExpression($BACKPIPE);
+          Primary p;
+          if ($term instanceof Primary) {
+              p = (Primary) $term;
+          }
+          else {
+              Expression pe = new Expression(null);
+              pe.setTerm($term);
+              p = pe;
+          }
+          ie.setPrimary(p);
+          Expression ae = new Expression(null);
+          ae.setTerm($e1.term);
           ListedArgument la = new ListedArgument(null);
           la.setExpression(ae);
           PositionalArgumentList pal = new PositionalArgumentList(null);
@@ -3291,6 +3313,32 @@ pipelinedExpression returns [Term term]
           la1.setExpression(ae1);
           Expression ae2 = new Expression(null);
           ae2.setTerm($term);
+          ListedArgument la2 = new ListedArgument(null);
+          la2.setExpression(ae2);
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la1);
+          pal.addPositionalArgument(la2);
+          ie.setPositionalArgumentList(pal);
+          $term = ie; }
+      | 
+        BACKFISH
+        e4=entryRangeExpression
+        { InvocationExpression ie = new InvocationExpression($BACKFISH);
+          CommonToken tok = new CommonToken(LIDENTIFIER, "compose");
+          tok.setStartIndex(((CommonToken)$BACKFISH).getStartIndex());
+          tok.setLine($BACKFISH.getLine());
+          tok.setCharPositionInLine($BACKFISH.getCharPositionInLine());
+          Identifier id = new Identifier(tok);
+          Compose bme = new Compose(null);
+          bme.setIdentifier(id);
+          bme.setTypeArguments(new InferredTypeArguments(null));
+          ie.setPrimary(bme);
+          Expression ae1 = new Expression(null);
+          ae1.setTerm($term);
+          ListedArgument la1 = new ListedArgument(null);
+          la1.setExpression(ae1);
+          Expression ae2 = new Expression(null);
+          ae2.setTerm($e4.term);
           ListedArgument la2 = new ListedArgument(null);
           la2.setExpression(ae2);
           PositionalArgumentList pal = new PositionalArgumentList(null);
@@ -5423,14 +5471,22 @@ OR_SPECIFY
     :   '||='
     ;
 
-PIPELINE
+PIPE
     :   '|>'
+    ;
+
+BACKPIPE
+    :   '<|'
     ;
 
 FISH
     :   ('>|>' (' ' | '\r' | '\t' | '\f' | '\n')* ~('>' | ']' | ')' | ',' | ' ' | '\r' | '\t' | '\f' | '\n')) 
         => '>|>'
     |   '>' { $type=LARGER_OP; }
+    ;
+
+BACKFISH
+    :   '<|<'
     ;
 
 DOLLAR
