@@ -95,3 +95,41 @@ void funrun() {
     fun2((str) => 1); 
     fun2(=> 1);
 }
+
+void parameterInferenceFromAssignment() {
+    interface Request {
+        shared formal String thing;
+    }
+    interface Response {}
+    
+    alias Route => Object(Request, Response);
+    Route bar = (req, res) => req.thing;
+    Route baz = (req, res) => req.thing;
+    
+    String(Integer) form1 
+            = (i) => Integer.format(i, 16);
+    String(Integer) form2;
+    form2 = (j) => Integer.format(j, 16);
+    String(Integer) form3() {
+        return (k) => Integer.format(k, 16);
+    }
+    String(Integer) form4() 
+            => (k) => Integer.format(k, 16);
+    
+    void accept(String(Integer) f) {}
+    accept { f = (k) => Integer.format(k, 16); };
+    accept { String(Integer) f = (k) => Integer.format(k, 16); };
+    accept { value f = (k) => Integer.format(k, 16); };
+    
+    variable String(Integer) form5 = nothing;
+    $type:"String(Integer)"
+    value nnn = form5 = (l) => Integer.format(l, 16);
+    
+    [Float+](Float,Float) fun 
+            = (x, y) => Singleton(x).withTrailing(y);
+}
+
+void invokedAnonymousFunctionParameterTypeInference() {
+    $type:"String" ((i) => Integer.format(i, 16))(100);
+    $error ((i) => Integer.format(i, 16))(100.0);
+}
