@@ -3313,6 +3313,10 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
+        if (p instanceof Tree.Compose) {
+        	inferComposedParameterType(pal, delayed);
+        }
+        
         //assign some additional types that
         //we will use for overload resolution
         visitInvocationPositionalArgs(that);
@@ -3353,6 +3357,43 @@ public class ExpressionVisitor extends Visitor {
         }
         
     }
+
+	private void inferComposedParameterType(
+			Tree.PositionalArgumentList pal, 
+			boolean[] delayed) {
+		List<Tree.PositionalArgument> args = 
+				pal.getPositionalArguments();
+		Tree.ListedArgument x = 
+				(Tree.ListedArgument)
+					args.get(0);
+		Tree.ListedArgument y = 
+				(Tree.ListedArgument)
+					args.get(1);
+		Tree.Term xt = unwrapExpressionUntilTerm(
+				x.getExpression().getTerm());
+		if (xt instanceof Tree.FunctionArgument) {
+			Tree.FunctionArgument fun =
+					(Tree.FunctionArgument) xt;
+			List<Tree.ParameterList> pls = 
+					fun.getParameterLists();
+			if (!pls.isEmpty()) {
+				Tree.ParameterList pl = pls.get(0);
+				List<Tree.Parameter> params = 
+						pl.getParameters();
+				if (!params.isEmpty()) {
+					Tree.Parameter param = 
+							params.get(0);
+		    		Type t = unit.getCallableReturnType(
+		    				y.getTypeModel());
+					createInferredParameter(fun, null, 
+							param, param.getParameterModel(), 
+							t, null, false);
+					x.visit(this);
+					delayed[0] = false;
+				}
+			}
+		}
+	}
     
     private void inferPrimaryParameterTypes(
     		Tree.Primary p, 
