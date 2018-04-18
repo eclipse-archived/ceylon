@@ -1948,6 +1948,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <entry>Binary</entry>
                 <entry>None</entry>
             </row>
+            <row>
+                <entry>Function composition and pipelining:</entry> 
+                <entry>
+                <literal>|&gt;</literal>,
+                <literal>&gt;|&gt;</literal>  
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
 
             <row>
                 <entry namest="first" nameend="last"><emphasis>Layer 2</emphasis></entry>
@@ -2771,29 +2780,56 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         
-        <!--
-        
-        <row><entry namest="first" nameend="last"><emphasis>Datetime and interval constructors</emphasis></entry></row>
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+    
+    <section id="functionoperators">
+    <title>Operators for composing and pipelining functions</title>
+    
+        <para>These operators make it easy to chain unary functions.</para>
+    
+    <table>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Definition</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Function composition and pipelining</emphasis></entry></row>
 
         <row>
-            <entry><literal>lhs @ rhs</literal></entry>
-            <entry>datetime</entry>
-            <entry><literal>Datetime(lhs, rhs)</literal></entry>
-            <entry><literal>Date</literal></entry>
-            <entry><literal>Time</literal></entry>
-            <entry><literal>Datetime</literal></entry>
+            <entry><literal>lhs &gt;|&gt; rhs</literal></entry>
+            <entry>compose</entry>
+            <entry><literal>compose(rhs, lhs)</literal></entry>
+            <entry><literal>Y(*Args)</literal></entry>
+            <entry><literal>X(Y)</literal></entry>
+            <entry><literal>X(*Args)</literal></entry>
         </row>
         
         <row>
-            <entry><literal>lhs .. rhs</literal></entry>
-            <entry>interval</entry>
-            <entry><literal>Interval(lhs, rhs)</literal></entry>
-            <entry><literal>T given T satisfies Instant</literal></entry>
-            <entry><literal>Instant&lt;T&gt;</literal></entry>
-            <entry><literal>Interval&lt;T&gt;</literal></entry>
+            <entry><literal>lhs |&gt; rhs</literal></entry>
+            <entry>pipe</entry>
+            <entry><literal>rhs(lhs)</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>R(T)</literal></entry>
+            <entry><literal>R</literal></entry>
         </row>
-        
-        -->
         
     </tbody>
     </tgroup>
