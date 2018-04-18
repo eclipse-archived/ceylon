@@ -1284,10 +1284,18 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.AttributeDeclaration that) {
-        super.visit(that);
         Value val = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
+        
+        if (sie!=null) {
+	        inferParameterTypesFromAssignment(
+	        		val.getType(), 
+	        		sie.getExpression());
+        }
+        
+        super.visit(that);
+        
         if (!val.isActual() 
                 // Note: actual members have a completely 
                 //       different type inference approach, 
@@ -1329,6 +1337,47 @@ public class ExpressionVisitor extends Visitor {
                 .setType(val.getType());
         }
     }
+
+	private void inferParameterTypesFromAssignment(Type type, 
+			Tree.Term ex) {
+		Tree.Term term = unwrapExpressionUntilTerm(ex);
+		if (term instanceof Tree.FunctionArgument) {
+		    Tree.FunctionArgument fun =
+		            (Tree.FunctionArgument) term;
+		    List<Tree.ParameterList> lists = 
+		            fun.getParameterLists();
+		    for (int i=0; 
+		    		i<lists.size() && 
+		    		type!=null; 
+		    		i++) {
+		        Tree.ParameterList list =
+		                lists.get(i);
+		        List<Type> paramTypes = 
+		                unit.getCallableArgumentTypes(type);
+		        type = unit.getCallableReturnType(type);
+		        if (paramTypes!=null) {
+		            List<Tree.Parameter> params = 
+		                    list.getParameters();
+		            for (int j=0; 
+		                    j<paramTypes.size() &&
+		                    j<params.size(); 
+		                    j++) {
+		                Tree.Parameter param = 
+		                        params.get(j);
+		                Parameter p = 
+		                        param.getParameterModel();
+		                FunctionOrValue model = 
+		                        p.getModel();
+		                if (model==null) {
+		                    Type t = paramTypes.get(j);
+		                    createInferredParameter(fun, null, 
+		                            param, p, t, null, false);
+		                }
+		            }
+		        }
+		    }
+		}
+	}
     
     @Override public void visit(Tree.ParameterizedExpression that) {
         super.visit(that);
@@ -1459,13 +1508,23 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.SpecifierStatement that) {
-        super.visit(that);
-
+    	
         Tree.SpecifierExpression rhs = 
                 that.getSpecifierExpression();
         Tree.Term lhs = 
                 that.getBaseMemberExpression();
-
+    	
+        if (lhs!=null) {
+        	lhs.visit(this);
+        }
+        
+        if (rhs!=null) {
+	        inferParameterTypesFromAssignment(
+	        		lhs.getTypeModel(), 
+	        		rhs.getExpression());
+	        rhs.visit(this);
+        }
+    	
         boolean hasParams = false;
         Tree.Term me = lhs;
         while (me instanceof Tree.ParameterizedExpression) {
@@ -2169,8 +2228,29 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AttributeArgument that) {
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
-        Tree.Type type = that.getType();
         Value val = that.getDeclarationModel();
+        Tree.Type type = that.getType();
+        
+        if (se!=null) {
+        	Type t = null;
+        	if (type instanceof Tree.LocalModifier) {
+        		Parameter p = that.getParameter();
+        		if (p!=null) {
+        			FunctionOrValue model = p.getModel();
+        			if (model instanceof Value) {
+        				t = model.getType();
+        			}
+        			//TODO: else for a Function use the full type?
+        		}
+        	}
+        	else {
+        		t = val.getType();
+        	}
+        	
+	        inferParameterTypesFromAssignment(t, 
+	        		se.getExpression());
+        }
+        
         if (se==null) {
             Declaration od = beginReturnDeclaration(val);
             Tree.Type rt = beginReturnScope(type);
@@ -2221,11 +2301,20 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
-        super.visit(that);
-        Tree.Type type = that.getType();
-        Function fun = that.getDeclarationModel();
+    	
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
+        Function fun = that.getDeclarationModel();
+        
+    	if (se!=null) {
+	        inferParameterTypesFromAssignment(
+	        		fun.getType(), 
+	        		se.getExpression());
+        }
+    	
+        super.visit(that);
+        
+        Tree.Type type = that.getType();
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
@@ -3051,7 +3140,17 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Return that) {
+        Tree.Expression e = that.getExpression();
+    	
+    	if (returnDeclaration instanceof FunctionOrValue) {
+    		FunctionOrValue model = 
+    				(FunctionOrValue)
+    					returnDeclaration;
+    		inferParameterTypesFromAssignment(model.getType(), e);
+    	}
+    	
         super.visit(that);
+        
         if (returnType==null) {
             //misplaced return statements are already handled by ControlFlowVisitor
             //missing return types declarations already handled by TypeVisitor
@@ -3059,7 +3158,6 @@ public class ExpressionVisitor extends Visitor {
         } 
         else {
             that.setDeclaration(returnDeclaration);
-            Tree.Expression e = that.getExpression();
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
                     if (returnDeclaration instanceof Function) {
@@ -3239,32 +3337,32 @@ public class ExpressionVisitor extends Visitor {
      */
     @Override 
     public void visit(Tree.InvocationExpression that) {
-    	
+        
         Tree.Primary p = that.getPrimary();
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
         Tree.NamedArgumentList nal = 
                 that.getNamedArgumentList();
-    	
-    	if (unwrapExpressionUntilTerm(p)
-    			instanceof Tree.FunctionArgument) {
-    		//if the primary is an anonymous 
-    		//function, we must infer its parameter
-    		//types, but we don't need to worry
-    		//about overload resolution or named
-    		//arguments
+        
+        if (unwrapExpressionUntilTerm(p)
+                instanceof Tree.FunctionArgument) {
+            //if the primary is an anonymous 
+            //function, we must infer its parameter
+            //types, but we don't need to worry
+            //about overload resolution or named
+            //arguments
             if (pal!=null) {
-            	pal.visit(this);
-            	inferPrimaryParameterTypes(p, pal);
+                pal.visit(this);
+                inferPrimaryParameterTypes(p, pal);
             }
-        	p.visit(this);
-        	visitInvocationPrimary(that);
-        	if (pal!=null) {
-        		inferParameterTypes(p, pal, true);
-        	}
-        	visitIndirectInvocation(that);
-        	return;
-    	}
+            p.visit(this);
+            visitInvocationPrimary(that);
+            if (pal!=null) {
+                inferParameterTypes(p, pal, true);
+            }
+            visitIndirectInvocation(that);
+            return;
+        }
         
         //assign some provisional argument types 
         //that will help with overload resolution
@@ -3314,7 +3412,7 @@ public class ExpressionVisitor extends Visitor {
         }
         
         if (p instanceof Tree.Compose) {
-        	inferComposedParameterType(pal, delayed);
+            inferComposedParameterType(pal, delayed);
         }
         
         //assign some additional types that
@@ -3368,92 +3466,92 @@ public class ExpressionVisitor extends Visitor {
      * type argument to the compose() 
      * function.)
      */
-	private void inferComposedParameterType(
-			Tree.PositionalArgumentList pal, 
-			boolean[] delayed) {
-		List<Tree.PositionalArgument> args = 
-				pal.getPositionalArguments();
-		Tree.ListedArgument x = 
-				(Tree.ListedArgument)
-					args.get(0);
-		Tree.ListedArgument y = 
-				(Tree.ListedArgument)
-					args.get(1);
-		Tree.Term xt = 
-				unwrapExpressionUntilTerm(
-					x.getExpression());
-		if (xt instanceof Tree.FunctionArgument) {
-			Tree.FunctionArgument fun =
-					(Tree.FunctionArgument) xt;
-			List<Tree.ParameterList> pls = 
-					fun.getParameterLists();
-			if (!pls.isEmpty()) {
-				Tree.ParameterList pl = 
-						pls.get(0);
-				List<Tree.Parameter> params = 
-						pl.getParameters();
-				if (!params.isEmpty()) {
-					Tree.Parameter param = 
-							params.get(0);
-		    		Type t = unit.getCallableReturnType(
-		    				y.getTypeModel());
-					Parameter model = 
-							param.getParameterModel();
-					createInferredParameter(fun, null, 
-							param, model, t, null, 
-							false);
-					x.visit(this);
-					delayed[0] = false;
-				}
-			}
-		}
-	}
+    private void inferComposedParameterType(
+            Tree.PositionalArgumentList pal, 
+            boolean[] delayed) {
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
+        Tree.ListedArgument x = 
+                (Tree.ListedArgument)
+                    args.get(0);
+        Tree.ListedArgument y = 
+                (Tree.ListedArgument)
+                    args.get(1);
+        Tree.Term xt = 
+                unwrapExpressionUntilTerm(
+                    x.getExpression());
+        if (xt instanceof Tree.FunctionArgument) {
+            Tree.FunctionArgument fun =
+                    (Tree.FunctionArgument) xt;
+            List<Tree.ParameterList> pls = 
+                    fun.getParameterLists();
+            if (!pls.isEmpty()) {
+                Tree.ParameterList pl = 
+                        pls.get(0);
+                List<Tree.Parameter> params = 
+                        pl.getParameters();
+                if (!params.isEmpty()) {
+                    Tree.Parameter param = 
+                            params.get(0);
+                    Type t = unit.getCallableReturnType(
+                            y.getTypeModel());
+                    Parameter model = 
+                            param.getParameterModel();
+                    createInferredParameter(fun, null, 
+                            param, model, t, null, 
+                            false);
+                    x.visit(this);
+                    delayed[0] = false;
+                }
+            }
+        }
+    }
     
     private void inferPrimaryParameterTypes(
-    		Tree.Primary p, 
-    		Tree.PositionalArgumentList pal) {
-		Tree.Term term = unwrapExpressionUntilTerm(p);
-		if (term instanceof Tree.FunctionArgument) {
-			Tree.FunctionArgument fun = 
-					(Tree.FunctionArgument) term;
-			List<Tree.ParameterList> pls = 
-					fun.getParameterLists();
-			if (!pls.isEmpty()) {
-				Tree.ParameterList pl =
-						pls.get(0);
-				List<Tree.Parameter> params = 
-						pl.getParameters();
-				List<Tree.PositionalArgument> args = 
-						pal.getPositionalArguments();
-				for (int i=0; 
-						i<params.size() &&
-						i<args.size(); 
-						i++) {
-					Tree.PositionalArgument arg = 
-							args.get(i);
-					Tree.Parameter param = 
-							params.get(i);
-					Parameter pmodel = 
-							param.getParameterModel();
-					FunctionOrValue model = 
-							pmodel.getModel();
-					Type type = arg.getTypeModel();
-					if (model==null) {
-						createInferredParameter(fun, null, 
-								param, pmodel, type, null, 
-								true);
-					}
-//					if (!isTypeUnknown(type)
-//							&& model instanceof Value 
-//							&& ((Value) model).isInferred()) {
-//						model.setType(type);
-//					}
-				}
-			}
-		}
-	}
+            Tree.Primary p, 
+            Tree.PositionalArgumentList pal) {
+        Tree.Term term = unwrapExpressionUntilTerm(p);
+        if (term instanceof Tree.FunctionArgument) {
+            Tree.FunctionArgument fun = 
+                    (Tree.FunctionArgument) term;
+            List<Tree.ParameterList> pls = 
+                    fun.getParameterLists();
+            if (!pls.isEmpty()) {
+                Tree.ParameterList pl =
+                        pls.get(0);
+                List<Tree.Parameter> params = 
+                        pl.getParameters();
+                List<Tree.PositionalArgument> args = 
+                        pal.getPositionalArguments();
+                for (int i=0; 
+                        i<params.size() &&
+                        i<args.size(); 
+                        i++) {
+                    Tree.PositionalArgument arg = 
+                            args.get(i);
+                    Tree.Parameter param = 
+                            params.get(i);
+                    Parameter pmodel = 
+                            param.getParameterModel();
+                    FunctionOrValue model = 
+                            pmodel.getModel();
+                    Type type = arg.getTypeModel();
+                    if (model==null) {
+                        createInferredParameter(fun, null, 
+                                param, pmodel, type, null, 
+                                true);
+                    }
+//                    if (!isTypeUnknown(type)
+//                            && model instanceof Value 
+//                            && ((Value) model).isInferred()) {
+//                        model.setType(type);
+//                    }
+                }
+            }
+        }
+    }
 
-	/**
+    /**
      * Iterate over the arguments of an invocation
      * looking for anonymous functions with missing
      * parameter lists, and create the parameter
@@ -4231,7 +4329,7 @@ public class ExpressionVisitor extends Visitor {
      * anonymous function.
      */
     private boolean createInferredParameter(
-    		Tree.FunctionArgument anon,
+            Tree.FunctionArgument anon,
             Declaration declaration, Tree.Parameter ap,
             Parameter parameter, Type type,
             FunctionOrValue original, boolean error) {
@@ -5951,26 +6049,26 @@ public class ExpressionVisitor extends Visitor {
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
                 !isTypeUnknown(paramType)) {
-            	if (ie.getPrimary() 
-            			instanceof Tree.Compose) {
+                if (ie.getPrimary() 
+                        instanceof Tree.Compose) {
                     Type ot = 
-                    		ie.getPositionalArgumentList()
-                    		  .getPositionalArguments()
-                    		  .get(1)
-                    		  .getTypeModel();
-					checkAssignable(at, paramType, a, 
-							"functions of type '" 
-            				+ ot.asString(unit)
-            				+ "' and '"
-            				+ at.asString(unit)
-            				+ "' do not compose");
+                            ie.getPositionalArgumentList()
+                              .getPositionalArguments()
+                              .get(1)
+                              .getTypeModel();
+                    checkAssignable(at, paramType, a, 
+                            "functions of type '" 
+                            + ot.asString(unit)
+                            + "' and '"
+                            + at.asString(unit)
+                            + "' do not compose");
 
-            	}
-            	else {
-	                checkAssignable(at, paramType, a, 
-	                        "argument must be assignable to parameter " 
-	                        		+ argdesc(p, pr), 2100);
-            	}
+                }
+                else {
+                    checkAssignable(at, paramType, a, 
+                            "argument must be assignable to parameter " 
+                                    + argdesc(p, pr), 2100);
+                }
             }
         }
     }
@@ -7213,10 +7311,32 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.AssignOp that) {
-        assign(that.getLeftTerm());
-        super.visit(that);
+        Tree.Term leftTerm = that.getLeftTerm();
+        Tree.Term rightTerm = that.getRightTerm();
+		
+        assign(leftTerm);
+		
+        if (that.getTypeModel()==null) {
+            that.setTypeModel(defaultType());
+        }
+
+		if (leftTerm!=null) {
+			leftTerm.visit(this);
+		}
+		
+		if (rightTerm!=null && 
+			leftTerm!=null) {
+			inferParameterTypesFromAssignment(
+					leftTerm.getTypeModel(), 
+					rightTerm);
+		}
+		
+		if (rightTerm!=null) {
+			rightTerm.visit(this);
+		}
+		
         visitAssignOperator(that);
-        checkAssignability(that.getLeftTerm(), that);
+        checkAssignability(leftTerm, that);        
     }
     
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
@@ -7676,14 +7796,14 @@ public class ExpressionVisitor extends Visitor {
     private TypedDeclaration resolveBaseMemberExpression(
             Tree.BaseMemberExpression that,
             boolean error) {
-    	
-    	if (that instanceof Tree.Compose) {
-    		Function compose = (Function) 
-    				unit.getLanguageModuleDeclaration("compose");
-    		that.setDeclaration(compose);
-			return compose;
-    	}
-    	
+        
+        if (that instanceof Tree.Compose) {
+            Function compose = (Function) 
+                    unit.getLanguageModuleDeclaration("compose");
+            that.setDeclaration(compose);
+            return compose;
+        }
+        
         Tree.Identifier id = that.getIdentifier();
         String name = name(id);
         Scope scope = that.getScope();
