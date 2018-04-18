@@ -3277,6 +3277,9 @@ pipelinedExpression returns [Term term]
         e3=entryRangeExpression
         { InvocationExpression ie = new InvocationExpression($FISH);
           CommonToken tok = new CommonToken(LIDENTIFIER, "compose");
+          tok.setStartIndex(((CommonToken)$FISH).getStartIndex());
+          tok.setLine($FISH.getLine());
+          tok.setCharPositionInLine($FISH.getCharPositionInLine());
           Identifier id = new Identifier(tok);
           Compose bme = new Compose(null);
           bme.setIdentifier(id);
