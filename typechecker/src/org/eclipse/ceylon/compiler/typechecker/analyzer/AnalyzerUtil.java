@@ -1865,4 +1865,17 @@ public class AnalyzerUtil {
         }
     }
 
+	static boolean isStatementExpression(Tree.Expression e) {
+	    if (e==null) {
+	        return false;
+	    }
+	    else {
+	        Tree.Term t = e.getTerm();
+	        return t instanceof Tree.InvocationExpression 
+	            || t instanceof Tree.PostfixOperatorExpression 
+	            || t instanceof Tree.AssignmentOp 
+	            || t instanceof Tree.PrefixOperatorExpression;
+	    }
+	}
+
 }

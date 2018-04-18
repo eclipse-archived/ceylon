@@ -1,5 +1,5 @@
 void parameterInference() {
-	
+    
     $type:"Iterable<Character,Null>" value mapped = "hello world".map((c) => c.uppercased);
     $type:"Iterable<Character,Null>" value mapped1 = "hello world".map(=> element.uppercased);
     $type:"Iterable<Character,Null>" value filtered = "hello world".filter((c) { return !c.whitespace; });
@@ -74,12 +74,12 @@ void testNotVariable() {
 }
 
 void moreParamInference() {
-	function fold<E,R>({E*} es, R i)(R f(R j, E e)) => es.fold(i, f);
-	
-	$type:"Float" value folded0 = fold(1..10, 0.0)((value r, value x) => r+x);
-	$type:"Float" value folded1 = fold(1..10, 0.0)((r, x) => r+x);
-	$type:"Float" value folded2 = fold(1..10, 0.0)((r, x) { Float r; Integer x; return r+x; });
-	$type:"Float" value folded3 = fold(1..10, 0.0)((r, x) { return r+x; });
+    function fold<E,R>({E*} es, R i)(R f(R j, E e)) => es.fold(i, f);
+    
+    $type:"Float" value folded0 = fold(1..10, 0.0)((value r, value x) => r+x);
+    $type:"Float" value folded1 = fold(1..10, 0.0)((r, x) => r+x);
+    $type:"Float" value folded2 = fold(1..10, 0.0)((r, x) { Float r; Integer x; return r+x; });
+    $type:"Float" value folded3 = fold(1..10, 0.0)((r, x) { return r+x; });
 
 }
 
@@ -94,4 +94,42 @@ void funrun() {
     fun(=> 1);
     fun2((str) => 1); 
     fun2(=> 1);
+}
+
+void parameterInferenceFromAssignment() {
+    interface Request {
+        shared formal String thing;
+    }
+    interface Response {}
+    
+    alias Route => Object(Request, Response);
+    Route bar = (req, res) => req.thing;
+    Route baz = (req, res) => req.thing;
+    
+    String(Integer) form1 
+            = (i) => Integer.format(i, 16);
+    String(Integer) form2;
+    form2 = (j) => Integer.format(j, 16);
+    String(Integer) form3() {
+        return (k) => Integer.format(k, 16);
+    }
+    String(Integer) form4() 
+            => (k) => Integer.format(k, 16);
+    
+    void accept(String(Integer) f) {}
+    accept { f = (k) => Integer.format(k, 16); };
+    accept { String(Integer) f = (k) => Integer.format(k, 16); };
+    accept { value f = (k) => Integer.format(k, 16); };
+    
+    variable String(Integer) form5 = nothing;
+    $type:"String(Integer)"
+    value nnn = form5 = (l) => Integer.format(l, 16);
+    
+    [Float+](Float,Float) fun 
+            = (x, y) => Singleton(x).withTrailing(y);
+}
+
+void invokedAnonymousFunctionParameterTypeInference() {
+    $type:"String" ((i) => Integer.format(i, 16))(100);
+    $error ((i) => Integer.format(i, 16))(100.0);
 }

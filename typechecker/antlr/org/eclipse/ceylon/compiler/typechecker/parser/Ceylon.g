@@ -643,7 +643,7 @@ variadicPattern returns [Pattern pattern]
       { VariablePattern vp = new VariablePattern(null);
         vp.setVariable($variadicVariable.variable); 
         $pattern = vp; }
-	|
+    |
       p=pattern
       { $pattern = $p.pattern; }
     ;
@@ -1249,20 +1249,20 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           $expression = new ExtendedTypeExpression(null);
           $expression.setType($type); }
       )?
-	  ;
+      ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
     @init { ExtendedTypeExpression ete = null; }
     : (
-	      pq=packageQualifiedClass
-	      { $type=$pq.type; ete=$pq.expression; }
-	    | 
-	      uq=unqualifiedClass
-	      { $type=$uq.type; ete=$uq.expression; }
-	    | 
-	      sq=superQualifiedClass
-	      { $type=$sq.type; ete=$sq.expression; }
-	    )
+          pq=packageQualifiedClass
+          { $type=$pq.type; ete=$pq.expression; }
+        | 
+          uq=unqualifiedClass
+          { $type=$uq.type; ete=$uq.expression; }
+        | 
+          sq=superQualifiedClass
+          { $type=$sq.type; ete=$sq.expression; }
+        )
       (
         pa=positionalArguments
         { $invocationExpression = new InvocationExpression(null);
@@ -1718,41 +1718,51 @@ statement returns [Statement statement]
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
-    @init { SpecifierStatement ss=new SpecifierStatement(null); 
-            ExpressionStatement es=new ExpressionStatement(null); }
-    : expression
-      { $statement = es;
-        if ($expression.expression!=null)
-            es.setExpression($expression.expression);
-        if ($expression.expression.getTerm() instanceof AssignOp) {
-            AssignOp a = (AssignOp) $expression.expression.getTerm();
-            Term lt = a.getLeftTerm();
-            if (lt instanceof BaseMemberExpression ||
-                lt instanceof ParameterizedExpression ||
-                lt instanceof QualifiedMemberExpression &&
-                    ((QualifiedMemberExpression) lt).getPrimary() instanceof This &&
-                    ((QualifiedMemberExpression) lt).getMemberOperator() instanceof MemberOp) {
-                Expression e = new Expression(null);
-                e.setTerm(a.getRightTerm());
-                SpecifierExpression se = new SpecifierExpression(a.getMainToken());
-                se.setExpression(e);
-                ss.setSpecifierExpression(se);
-                ss.setBaseMemberExpression(a.getLeftTerm());
-                $statement = ss;
-            }
-        }
-      }
+    : (specificationStatementStart) => 
+      specificationStatement
+      { $statement = $specificationStatement.statement; }
+    | expressionStatement
+      { $statement = $expressionStatement.statement; }
+    ;
+
+specificationStatementStart
+    : ((THIS|SUPER|OUTER|PACKAGE) MEMBER_OP)?
+      LIDENTIFIER 
       (
-        /*specifier
-        { ss.setSpecifierExpression($specifier.specifierExpression);
-          ss.setBaseMemberExpression($expression.expression.getTerm());
-          $statement = ss; }
-      | */
-        lazySpecifier
-        { ss.setSpecifierExpression($lazySpecifier.specifierExpression);
-          ss.setBaseMemberExpression($expression.expression.getTerm()); 
-          $statement = ss; }
-      )?
+        SPECIFY 
+      | COMPUTE 
+      | typeParameters? specifierParametersStart
+      )
+    ;
+
+specificationStatement returns [SpecifierStatement statement]
+    : e1=valueExpression
+      { $statement = new SpecifierStatement(null);
+        $statement.setBaseMemberExpression($e1.term); }
+      (
+        s1=specifier
+        { $statement.setSpecifierExpression($s1.specifierExpression); }
+      |
+        s2=lazySpecifier
+        { $statement.setSpecifierExpression($s2.specifierExpression); }
+      )
+      { expecting=SEMICOLON; }
+      (
+        SEMICOLON
+        { $statement.setEndToken($SEMICOLON); }
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(SEMICOLON, input)); }
+        COMMA
+        { $statement.setEndToken($COMMA); }
+      )
+      { expecting=-1; }
+    ;
+    
+expressionStatement returns [ExpressionStatement statement]
+    : e1=expression
+      { $statement = new ExpressionStatement(null);
+        if ($e1.expression!=null)
+            $statement.setExpression($e1.expression); }
       { expecting=SEMICOLON; }
       (
         SEMICOLON
@@ -1789,8 +1799,8 @@ returnDirective returns [Return directive]
     : RETURN 
       { $directive = new Return($RETURN); }
       (
-        functionOrExpression
-        { $directive.setExpression($functionOrExpression.expression); }
+        e=functionOrExpression
+        { $directive.setExpression($e.expression); }
       )?
     ;
 
@@ -1798,8 +1808,8 @@ throwDirective returns [Throw directive]
     : THROW
       { $directive = new Throw($THROW); }
       ( 
-        expression
-        { $directive.setExpression($expression.expression); }
+        e=functionOrExpression
+        { $directive.setExpression($e.expression); }
       )?
     ;
 
@@ -1837,15 +1847,15 @@ typeDefault returns [TypeSpecifier typeSpecifier]
 specifier returns [SpecifierExpression specifierExpression]
     : SPECIFY
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
-      functionOrExpression
-      { $specifierExpression.setExpression($functionOrExpression.expression); }
+      e=functionOrExpression
+      { $specifierExpression.setExpression($e.expression); }
     ;
 
 lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
-      functionOrExpression
-      { $specifierExpression.setExpression($functionOrExpression.expression); }
+      e=functionOrExpression
+      { $specifierExpression.setExpression($e.expression); }
     ;
 
 functionSpecifier returns [SpecifierExpression specifierExpression]
@@ -1856,8 +1866,8 @@ functionSpecifier returns [SpecifierExpression specifierExpression]
         SPECIFY
         { $specifierExpression = new LazySpecifierExpression($SPECIFY); }
       )
-      functionOrExpression
-      { $specifierExpression.setExpression($functionOrExpression.expression); }
+      e=functionOrExpression
+      { $specifierExpression.setExpression($e.expression); }
     ;
 
 expression returns [Expression expression]
@@ -2350,9 +2360,9 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
 
 anonymousArgument returns [SpecifiedArgument namedArgument]
     @init { $namedArgument = new SpecifiedArgument(null); }
-    : functionOrExpression
+    : e=functionOrExpression
      { SpecifierExpression se = new SpecifierExpression(null);
-       se.setExpression($functionOrExpression.expression);
+       se.setExpression($e.expression);
        $namedArgument.setSpecifierExpression(se); }   
       { expecting=SEMICOLON; }
       SEMICOLON
@@ -2579,9 +2589,9 @@ specificationStart
 parExpression returns [ParExpression expression] 
     : LPAREN 
       { $expression = new ParExpression($LPAREN); }
-      functionOrExpression
-      { if ($functionOrExpression.expression!=null)
-            $expression.setTerm($functionOrExpression.expression.getTerm()); }
+      e=functionOrExpression
+      { if ($e.expression!=null)
+            $expression.setTerm($e.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
     ;
@@ -2604,8 +2614,8 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
 
 positionalArgument returns [ListedArgument positionalArgument]
     : { $positionalArgument = new ListedArgument(null); }
-      functionOrExpression
-      { $positionalArgument.setExpression($functionOrExpression.expression); }
+      e=functionOrExpression
+      { $positionalArgument.setExpression($e.expression); }
     ;
 
 spreadArgument returns [SpreadArgument positionalArgument]
@@ -2666,7 +2676,7 @@ anonymousFunctionStart
     | COMPUTE
     | anonParametersStart
     ;
-    
+
 functionOrExpression returns [Expression expression]
     : (anonymousFunctionStart) =>
       anonymousFunction
@@ -2692,8 +2702,8 @@ let returns [LetExpression let]
     ;
 
 patternStart
-    : (variable ENTRY_OP) => variable ENTRY_OP | 
-      tuplePatternStart
+    : (variable ENTRY_OP) => variable ENTRY_OP 
+    | tuplePatternStart
     ;
 
 letVariable returns [Statement statement]
@@ -2991,9 +3001,9 @@ comprehensionClause returns [ComprehensionClause comprehensionClause]
     ;
 
 expressionComprehensionClause returns [ExpressionComprehensionClause comprehensionClause]
-    : functionOrExpression
+    : fe=functionOrExpression
       { $comprehensionClause = new ExpressionComprehensionClause(null);
-        $comprehensionClause.setExpression($functionOrExpression.expression); }
+        $comprehensionClause.setExpression($fe.expression); }
     | { displayRecognitionError(getTokenNames(), 
           new MismatchedTokenException(LIDENTIFIER, input)); }
     ;
@@ -3018,15 +3028,15 @@ ifComprehensionClause returns [IfComprehensionClause comprehensionClause]
     
 assignmentExpression returns [Term term]
     @init { QualifiedMemberOrTypeExpression qe=null; }
-    : ee1=thenElseExpression
-      { $term = $ee1.term; }
+    : lhs=thenElseExpression
+      { $term = $lhs.term; }
       (
         assignmentOperator 
         { $assignmentOperator.operator.setLeftTerm($term);
           $term = $assignmentOperator.operator; }
-        ee2=functionOrExpression
-        { if ($ee2.expression!=null)
-              $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
+        rhs=functionOrExpression
+        { if ($rhs.expression!=null)
+              $assignmentOperator.operator.setRightTerm($rhs.expression.getTerm()); }
       )?
     ;
 
@@ -3221,7 +3231,7 @@ typeOperator returns [TypeOperatorExpression operator]
     ;
 
 existenceEmptinessExpression returns [Term term]
-    : e=entryRangeExpression
+    : e=pipelinedExpression
       { $term = $e.term; }
       (
         eno=existsNonemptyOperator
@@ -3235,6 +3245,60 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
       { $operator = new Exists($EXISTS); }
     | NONEMPTY
       { $operator = new Nonempty($NONEMPTY); }
+    ;
+
+pipelinedExpression returns [Term term]
+    : e0=entryRangeExpression
+      { $term = $e0.term; }
+      (
+        PIPE 
+        e2=entryRangeExpression
+        { InvocationExpression ie = new InvocationExpression($PIPE);
+          Primary p;
+          if ($e2.term instanceof Primary) {
+              p = (Primary) $e2.term;
+          }
+          else {
+              Expression pe = new Expression(null);
+              pe.setTerm($e2.term);
+              p = pe;
+          }
+          ie.setPrimary(p);
+          Expression ae = new Expression(null);
+          ae.setTerm($term);
+          ListedArgument la = new ListedArgument(null);
+          la.setExpression(ae);
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la);
+          ie.setPositionalArgumentList(pal);
+          $term = ie; }
+      | 
+        FISH
+        e3=entryRangeExpression
+        { InvocationExpression ie = new InvocationExpression($FISH);
+          CommonToken tok = new CommonToken(LIDENTIFIER, "compose");
+          tok.setStartIndex(((CommonToken)$FISH).getStartIndex());
+          tok.setLine($FISH.getLine());
+          tok.setCharPositionInLine($FISH.getCharPositionInLine());
+          Identifier id = new Identifier(tok);
+          Compose bme = new Compose(null);
+          bme.setIdentifier(id);
+          bme.setTypeArguments(new InferredTypeArguments(null));
+          ie.setPrimary(bme);
+          Expression ae1 = new Expression(null);
+          ae1.setTerm($e3.term);
+          ListedArgument la1 = new ListedArgument(null);
+          la1.setExpression(ae1);
+          Expression ae2 = new Expression(null);
+          ae2.setTerm($term);
+          ListedArgument la2 = new ListedArgument(null);
+          la2.setExpression(ae2);
+          PositionalArgumentList pal = new PositionalArgumentList(null);
+          pal.addPositionalArgument(la1);
+          pal.addPositionalArgument(la2);
+          ie.setPositionalArgumentList(pal);
+          $term = ie; }
+      )*
     ;
 
 entryRangeExpression returns [Term term]
@@ -3963,8 +4027,8 @@ condition returns [Condition condition]
     
 booleanCondition returns [BooleanCondition condition]
     : { $condition = new BooleanCondition(null); }
-      functionOrExpression
-      { $condition.setExpression($functionOrExpression.expression); }
+      e=functionOrExpression
+      { $condition.setExpression($e.expression); }
     ;
 
 
@@ -4396,25 +4460,25 @@ forIterator returns [ForIterator iterator]
     @init { ValueIterator vi = null;
             PatternIterator pi = null; }
     : LPAREN
-	    { vi = new ValueIterator($LPAREN); 
-	      pi = new PatternIterator($LPAREN); 
-	      $iterator = vi; }
-	    ( 
-	      (
-	        (patternStart) => pattern
-	        { pi.setPattern($pattern.pattern);
-	          $iterator = pi; }
-	      |
-	        variable
-	        { vi.setVariable($variable.variable); }
-	      )
-	      (
-	        containment
-	        { $iterator.setSpecifierExpression($containment.specifierExpression); }
-	      )?
-	    )?
-	    RPAREN
-	    { $iterator.setEndToken($RPAREN); }
+        { vi = new ValueIterator($LPAREN); 
+          pi = new PatternIterator($LPAREN); 
+          $iterator = vi; }
+        ( 
+          (
+            (patternStart) => pattern
+            { pi.setPattern($pattern.pattern);
+              $iterator = pi; }
+          |
+            variable
+            { vi.setVariable($variable.variable); }
+          )
+          (
+            containment
+            { $iterator.setSpecifierExpression($containment.specifierExpression); }
+          )?
+        )?
+        RPAREN
+        { $iterator.setEndToken($RPAREN); }
     ;
     
 containment returns [SpecifierExpression specifierExpression]
@@ -4506,20 +4570,20 @@ finallyBlock returns [FinallyClause clause]
 
 resources returns [ResourceList resources]
     : LPAREN 
-	    { $resources = new ResourceList($LPAREN); }
-	    (
-	      r1=resource
-	      { $resources.addResource($r1.resource); }
-	      (
-	        c=COMMA 
-	        { $resources.setEndToken($c); }
-	        r2=resource
-	        { $resources.addResource($r2.resource);
-	          $resources.setEndToken(null); }
-	      )*
-	    )?
-	    RPAREN
-	    { $resources.setEndToken($RPAREN); }
+        { $resources = new ResourceList($LPAREN); }
+        (
+          r1=resource
+          { $resources.addResource($r1.resource); }
+          (
+            c=COMMA 
+            { $resources.setEndToken($c); }
+            r2=resource
+            { $resources.addResource($r2.resource);
+              $resources.setEndToken(null); }
+          )*
+        )?
+        RPAREN
+        { $resources.setEndToken($RPAREN); }
     ;
 
 resource returns [Resource resource]
@@ -4613,14 +4677,14 @@ referencePath returns [SimpleType type]
           $type = bt; }
       | 
         PACKAGE
-	      { BaseType pbt = new BaseType($PACKAGE);
-	        pbt.setPackageQualified(true);
-	        $type = pbt; }
-	      o1=MEMBER_OP
-	      { $type.setEndToken($o1); }
-	      e2=referencePathElement
-	      { $type.setEndToken(null);
-	        $type.setIdentifier($e2.identifier); }
+          { BaseType pbt = new BaseType($PACKAGE);
+            pbt.setPackageQualified(true);
+            $type = pbt; }
+          o1=MEMBER_OP
+          { $type.setEndToken($o1); }
+          e2=referencePathElement
+          { $type.setEndToken(null);
+            $type.setIdentifier($e2.identifier); }
       )
       (
         o2=MEMBER_OP
@@ -4904,7 +4968,7 @@ STRING_END
     ;
 
 VERBATIM_STRING
-    :	'"""' (~'"' | '"' ~'"' | '""' ~'"')* ('"' ('"' ('"' ('"' '"'?)?)?)?)?
+    :    '"""' (~'"' | '"' ~'"' | '""' ~'"')* ('"' ('"' ('"' ('"' '"'?)?)?)?)?
     ;
 
 /*
@@ -5357,6 +5421,24 @@ AND_SPECIFY
 
 OR_SPECIFY
     :   '||='
+    ;
+
+PIPE
+    :   '|>'
+    ;
+
+BACKPIPE
+    :   '<|'
+    ;
+
+FISH
+    :   ('>|>' (' ' | '\r' | '\t' | '\f' | '\n')* ~('>' | ']' | ')' | ',' | ' ' | '\r' | '\t' | '\f' | '\n')) 
+        => '>|>'
+    |   '>' { $type=LARGER_OP; }
+    ;
+
+BACKFISH
+    :   '<|<'
     ;
 
 DOLLAR
