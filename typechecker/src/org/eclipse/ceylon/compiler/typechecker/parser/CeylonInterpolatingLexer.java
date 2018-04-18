@@ -107,14 +107,19 @@ public final class CeylonInterpolatingLexer implements TokenSource {
                 if (nx=='{') {
                 	char fc = text.charAt(i+2);
                 	if (fc!='#') {
+                    	if (fc <'A' || fc>'Z') {
+                    		return i;
+                    	}
                 		for (int j=i+2;j<text.length();j++) {
                 			char nc = text.charAt(j);
                 			if (nc=='}') {
                 				break;
                 			}
-                			else if ((nc <'A' || nc>'Z') 
+                			else if ((nc <'A' || nc>'Z')
+                					&& (nc <'0' || nc>'9') 
                 					&& nc!='-' 
-                					&& nc!=' ') {
+                					&& nc!=' '
+                					&& nc!='(' && nc!=')') {
                         		return i;
                 			}
                 		}
