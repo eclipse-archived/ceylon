@@ -59,7 +59,7 @@ class Literals() {
     $type:"Character" value ch1 = '\{ALCHEMICAL SYMBOL FOR LEAD ORE}';
     $type:"String" value str1 = "\{POLICE CAR} \{TROLLEYBUS} \{WOMAN WITH BUNNY EARS}";
     $error value ch2 = '\{FOO BAR BAZ}';
-    $error value str2 = "\{TETRAGRAM FOR UNITY} \{666}";
+    value str2 = "\{TETRAGRAM FOR UNITY} \{666}";
     
     String name = "Gavin";
     String multlineTemplate = "Hello, ``name``,

@@ -16,7 +16,6 @@ import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenSource;
-import org.eclipse.ceylon.compiler.typechecker.parser.CeylonLexer;
 
 /**
  * Responsible for re-lexing the stream of tokens produced
@@ -102,10 +101,25 @@ public final class CeylonInterpolatingLexer implements TokenSource {
 
     private int findOpeningParen(String text, int from) {
         for (int i=from, s=text.length()-1; i<s; i++) {
-            char ch = text.charAt(i);
-            if (ch=='\\') {
+        	char ch = text.charAt(i);
+            if (ch=='\\' && text.length()>i+2) {
                 char nx = text.charAt(i+1);
-                if (nx=='(') return i;
+                if (nx=='{') {
+                	char fc = text.charAt(i+2);
+                	if (fc!='#') {
+                		for (int j=i+2;j<text.length();j++) {
+                			char nc = text.charAt(j);
+                			if (nc=='}') {
+                				break;
+                			}
+                			else if ((nc <'A' || nc>'Z') 
+                					&& nc!='-' 
+                					&& nc!=' ') {
+                        		return i;
+                			}
+                		}
+                	}
+                }
                 i++; //else skip the escaped char
             }
         }
@@ -119,8 +133,8 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         for (int i=from+2, s=text.length(); i<s; i++) {
             char ch = text.charAt(i);
             if (!quoted) {
-                if (ch=='(') depth++;
-                if (ch==')') depth--;
+                if (ch=='{') depth++;
+                if (ch=='}') depth--;
             }
             if (ch=='\\' && quoted) {
                 i++; //ignore the escaped char inside quotes
