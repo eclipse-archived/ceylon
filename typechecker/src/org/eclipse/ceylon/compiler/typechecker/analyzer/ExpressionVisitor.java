@@ -3357,7 +3357,17 @@ public class ExpressionVisitor extends Visitor {
         }
         
     }
-
+    
+    /**
+     * Special-case hack to allow the parameter
+     * type of an anonymous function used as
+     * the RHS of >|> to be inferred from the
+     * known return type of the LHS. (The
+     * problem is that the parameter type is
+     * set too late to use it to infer the
+     * type argument to the compose() 
+     * function.)
+     */
 	private void inferComposedParameterType(
 			Tree.PositionalArgumentList pal, 
 			boolean[] delayed) {
@@ -3369,15 +3379,17 @@ public class ExpressionVisitor extends Visitor {
 		Tree.ListedArgument y = 
 				(Tree.ListedArgument)
 					args.get(1);
-		Tree.Term xt = unwrapExpressionUntilTerm(
-				x.getExpression().getTerm());
+		Tree.Term xt = 
+				unwrapExpressionUntilTerm(
+					x.getExpression());
 		if (xt instanceof Tree.FunctionArgument) {
 			Tree.FunctionArgument fun =
 					(Tree.FunctionArgument) xt;
 			List<Tree.ParameterList> pls = 
 					fun.getParameterLists();
 			if (!pls.isEmpty()) {
-				Tree.ParameterList pl = pls.get(0);
+				Tree.ParameterList pl = 
+						pls.get(0);
 				List<Tree.Parameter> params = 
 						pl.getParameters();
 				if (!params.isEmpty()) {
@@ -3385,9 +3397,11 @@ public class ExpressionVisitor extends Visitor {
 							params.get(0);
 		    		Type t = unit.getCallableReturnType(
 		    				y.getTypeModel());
+					Parameter model = 
+							param.getParameterModel();
 					createInferredParameter(fun, null, 
-							param, param.getParameterModel(), 
-							t, null, false);
+							param, model, t, null, 
+							false);
 					x.visit(this);
 					delayed[0] = false;
 				}
