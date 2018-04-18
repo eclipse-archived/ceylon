@@ -127,6 +127,9 @@ void parameterInferenceFromAssignment() {
     
     [Float+](Float,Float) fun 
             = (x, y) => Singleton(x).withTrailing(y);
+    
+    [Float,Integer,String](Float)(Integer)(String) multi 
+            = (s)(i)(f) => [f,i,s];
 }
 
 void invokedAnonymousFunctionParameterTypeInference() {
