@@ -1,5 +1,5 @@
 void parameterInference() {
-	
+    
     $type:"Iterable<Character,Null>" value mapped = "hello world".map((c) => c.uppercased);
     $type:"Iterable<Character,Null>" value mapped1 = "hello world".map(=> element.uppercased);
     $type:"Iterable<Character,Null>" value filtered = "hello world".filter((c) { return !c.whitespace; });
@@ -74,12 +74,12 @@ void testNotVariable() {
 }
 
 void moreParamInference() {
-	function fold<E,R>({E*} es, R i)(R f(R j, E e)) => es.fold(i, f);
-	
-	$type:"Float" value folded0 = fold(1..10, 0.0)((value r, value x) => r+x);
-	$type:"Float" value folded1 = fold(1..10, 0.0)((r, x) => r+x);
-	$type:"Float" value folded2 = fold(1..10, 0.0)((r, x) { Float r; Integer x; return r+x; });
-	$type:"Float" value folded3 = fold(1..10, 0.0)((r, x) { return r+x; });
+    function fold<E,R>({E*} es, R i)(R f(R j, E e)) => es.fold(i, f);
+    
+    $type:"Float" value folded0 = fold(1..10, 0.0)((value r, value x) => r+x);
+    $type:"Float" value folded1 = fold(1..10, 0.0)((r, x) => r+x);
+    $type:"Float" value folded2 = fold(1..10, 0.0)((r, x) { Float r; Integer x; return r+x; });
+    $type:"Float" value folded3 = fold(1..10, 0.0)((r, x) { return r+x; });
 
 }
 

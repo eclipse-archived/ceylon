@@ -643,7 +643,7 @@ variadicPattern returns [Pattern pattern]
       { VariablePattern vp = new VariablePattern(null);
         vp.setVariable($variadicVariable.variable); 
         $pattern = vp; }
-	|
+    |
       p=pattern
       { $pattern = $p.pattern; }
     ;
@@ -1249,20 +1249,20 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           $expression = new ExtendedTypeExpression(null);
           $expression.setType($type); }
       )?
-	  ;
+      ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
     @init { ExtendedTypeExpression ete = null; }
     : (
-	      pq=packageQualifiedClass
-	      { $type=$pq.type; ete=$pq.expression; }
-	    | 
-	      uq=unqualifiedClass
-	      { $type=$uq.type; ete=$uq.expression; }
-	    | 
-	      sq=superQualifiedClass
-	      { $type=$sq.type; ete=$sq.expression; }
-	    )
+          pq=packageQualifiedClass
+          { $type=$pq.type; ete=$pq.expression; }
+        | 
+          uq=unqualifiedClass
+          { $type=$uq.type; ete=$uq.expression; }
+        | 
+          sq=superQualifiedClass
+          { $type=$sq.type; ete=$sq.expression; }
+        )
       (
         pa=positionalArguments
         { $invocationExpression = new InvocationExpression(null);
@@ -4460,25 +4460,25 @@ forIterator returns [ForIterator iterator]
     @init { ValueIterator vi = null;
             PatternIterator pi = null; }
     : LPAREN
-	    { vi = new ValueIterator($LPAREN); 
-	      pi = new PatternIterator($LPAREN); 
-	      $iterator = vi; }
-	    ( 
-	      (
-	        (patternStart) => pattern
-	        { pi.setPattern($pattern.pattern);
-	          $iterator = pi; }
-	      |
-	        variable
-	        { vi.setVariable($variable.variable); }
-	      )
-	      (
-	        containment
-	        { $iterator.setSpecifierExpression($containment.specifierExpression); }
-	      )?
-	    )?
-	    RPAREN
-	    { $iterator.setEndToken($RPAREN); }
+        { vi = new ValueIterator($LPAREN); 
+          pi = new PatternIterator($LPAREN); 
+          $iterator = vi; }
+        ( 
+          (
+            (patternStart) => pattern
+            { pi.setPattern($pattern.pattern);
+              $iterator = pi; }
+          |
+            variable
+            { vi.setVariable($variable.variable); }
+          )
+          (
+            containment
+            { $iterator.setSpecifierExpression($containment.specifierExpression); }
+          )?
+        )?
+        RPAREN
+        { $iterator.setEndToken($RPAREN); }
     ;
     
 containment returns [SpecifierExpression specifierExpression]
@@ -4570,20 +4570,20 @@ finallyBlock returns [FinallyClause clause]
 
 resources returns [ResourceList resources]
     : LPAREN 
-	    { $resources = new ResourceList($LPAREN); }
-	    (
-	      r1=resource
-	      { $resources.addResource($r1.resource); }
-	      (
-	        c=COMMA 
-	        { $resources.setEndToken($c); }
-	        r2=resource
-	        { $resources.addResource($r2.resource);
-	          $resources.setEndToken(null); }
-	      )*
-	    )?
-	    RPAREN
-	    { $resources.setEndToken($RPAREN); }
+        { $resources = new ResourceList($LPAREN); }
+        (
+          r1=resource
+          { $resources.addResource($r1.resource); }
+          (
+            c=COMMA 
+            { $resources.setEndToken($c); }
+            r2=resource
+            { $resources.addResource($r2.resource);
+              $resources.setEndToken(null); }
+          )*
+        )?
+        RPAREN
+        { $resources.setEndToken($RPAREN); }
     ;
 
 resource returns [Resource resource]
@@ -4677,14 +4677,14 @@ referencePath returns [SimpleType type]
           $type = bt; }
       | 
         PACKAGE
-	      { BaseType pbt = new BaseType($PACKAGE);
-	        pbt.setPackageQualified(true);
-	        $type = pbt; }
-	      o1=MEMBER_OP
-	      { $type.setEndToken($o1); }
-	      e2=referencePathElement
-	      { $type.setEndToken(null);
-	        $type.setIdentifier($e2.identifier); }
+          { BaseType pbt = new BaseType($PACKAGE);
+            pbt.setPackageQualified(true);
+            $type = pbt; }
+          o1=MEMBER_OP
+          { $type.setEndToken($o1); }
+          e2=referencePathElement
+          { $type.setEndToken(null);
+            $type.setIdentifier($e2.identifier); }
       )
       (
         o2=MEMBER_OP
@@ -4968,7 +4968,7 @@ STRING_END
     ;
 
 VERBATIM_STRING
-    :	'"""' (~'"' | '"' ~'"' | '""' ~'"')* ('"' ('"' ('"' ('"' '"'?)?)?)?)?
+    :    '"""' (~'"' | '"' ~'"' | '""' ~'"')* ('"' ('"' ('"' ('"' '"'?)?)?)?)?
     ;
 
 /*
