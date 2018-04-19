@@ -753,10 +753,6 @@ public class RefinementVisitor extends Visitor {
         Unit unit = that.getUnit();
         String name = member.getName();
         
-        if (that instanceof Tree.ObjectDefinition) {
-        	((Tree.ObjectDefinition) that).getDeclarationModel().getType();
-        }
-        
         List<Type> signature = getSignature(member);
         boolean variadic = isVariadic(member);
         Declaration root = 
