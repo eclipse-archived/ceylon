@@ -442,10 +442,11 @@ public class CodegenUtil {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 // find every constructor which delegates to another constructor
-                if (ctor.getDelegatedConstructor() != null
-                        && ctor.getDelegatedConstructor().getInvocationExpression() != null) {
-                    if (ctor.getDelegatedConstructor().getInvocationExpression().getPrimary() instanceof Tree.ExtendedTypeExpression) {
-                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
+                Tree.DelegatedConstructor dc = ctor.getDelegatedConstructor();
+				if (dc != null && dc.getInvocationExpression() != null) {
+                    Tree.Primary primary = dc.getInvocationExpression().getPrimary();
+					if (primary instanceof Tree.ExtendedTypeExpression) {
+                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)primary;
                         // are we delegating to a constructor (not a supertype) of the same class (this class)?
                         if (Decl.isConstructor(ete.getDeclaration())
                                 && ModelUtil.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
