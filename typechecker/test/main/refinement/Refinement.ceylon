@@ -384,3 +384,7 @@ interface BarBar<out T> satisfies FooFoo<T> {
 class BatBat() satisfies FooFoo<Integer>&BarBar<Object> {
     $error shared actual [Object+] val => ["bob"];
 }
+
+class ObjectRefines() {
+    $error shared actual object string {}
+}

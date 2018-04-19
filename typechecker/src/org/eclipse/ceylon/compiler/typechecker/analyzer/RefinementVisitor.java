@@ -753,6 +753,10 @@ public class RefinementVisitor extends Visitor {
         Unit unit = that.getUnit();
         String name = member.getName();
         
+        if (that instanceof Tree.ObjectDefinition) {
+        	((Tree.ObjectDefinition) that).getDeclarationModel().getType();
+        }
+        
         List<Type> signature = getSignature(member);
         boolean variadic = isVariadic(member);
         Declaration root = 
@@ -1156,7 +1160,8 @@ public class RefinementVisitor extends Visitor {
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
             checkRefinedMemberTypeAssignable(refiningMember, 
-                    refinedMember, typeNode, refined, refining);
+                    refinedMember, typeNode, refined, refining,
+                    that instanceof Tree.ObjectDefinition);
         }
         if (refining instanceof Functional && 
              refined instanceof Functional) {
@@ -1421,12 +1426,14 @@ public class RefinementVisitor extends Visitor {
             Reference refinedMember,
             Node that, 
             Declaration refined, 
-            Declaration refining) {
+            Declaration refining,
+            boolean objectDeclaration) {
         Unit unit = that.getUnit();
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
         if (!isTypeUnknown(refinedType)) {
-            if (that instanceof Tree.LocalModifier) {
+            if (that instanceof Tree.LocalModifier
+            		&& !objectDeclaration) {
                 //infer the type of an actual member 
                 //by taking the intersection of all 
                 //members it refines
