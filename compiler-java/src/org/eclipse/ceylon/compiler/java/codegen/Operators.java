@@ -30,7 +30,7 @@ import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 
 /**
- * Aggregation of mappings from ceylon operator to java operator and optimisation strategy.
+ * Aggregation of mappings from Ceylon operator to Java operator and optimisation strategy.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
@@ -102,6 +102,7 @@ public class Operators {
         UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negated", JCTree.Tag.NEG, IntegerFloatByte),
         
         UNARY_BITWISE_NOT(1, "not", JCTree.Tag.COMPL, IntegerByte),
+        UNARY_BITWISE_NOT_OP(Tree.FlipOp.class, 1, "not", JCTree.Tag.COMPL, IntegerByte),
 
         UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, 1, "getSuccessor", JCTree.Tag.POSTINC, IntegerCharacterByte),
         UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, 1, "getPredecessor", JCTree.Tag.POSTDEC, IntegerCharacterByte),
@@ -135,6 +136,9 @@ public class Operators {
         BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.Tag.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.Tag.OR, PrimitiveType.BOOLEAN),
 
+        BINARY_BITWISE_AND_OP(Tree.IntersectionOp.class, 2, "and", JCTree.Tag.BITAND, IntegerByte),
+        BINARY_BITWISE_OR_OP(Tree.UnionOp.class, 2, "or", JCTree.Tag.BITOR, IntegerByte),
+        
         BINARY_UNION(Tree.UnionOp.class, 2, "union"),
         BINARY_INTERSECTION(Tree.IntersectionOp.class, 2, "intersection"),
         BINARY_COMPLEMENT(Tree.ComplementOp.class, 2, "complement"), 
@@ -335,8 +339,8 @@ public class Operators {
         OR(Tree.OrAssignOp.class, OperatorTranslation.BINARY_OR, JCTree.Tag.BITOR_ASG),
         
         // Set assignment
-        BINARY_UNION(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_UNION),
-        BINARY_INTERSECTION(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_INTERSECTION),
+//        BINARY_UNION(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_UNION),
+//        BINARY_INTERSECTION(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_INTERSECTION),
         BINARY_COMPLEMENT(Tree.ComplementAssignOp.class, OperatorTranslation.BINARY_COMPLEMENT),
         ;
         
@@ -378,7 +382,7 @@ public class Operators {
             } else {
                 for (PrimitiveType t : operator.optimisableTypes) {
                     String optimisedMethod = t.fqn + "." + operator.ceylonMethod;
-                    methodsAsOperators.put(optimisedMethod , operator);
+                    methodsAsOperators.put(optimisedMethod, operator);
                 }
             }
         }
@@ -387,8 +391,21 @@ public class Operators {
             assignmentOperators.put(operator.operatorClass, operator);
     }
 
-    public static OperatorTranslation getOperator(Class<? extends Tree.OperatorExpression> operatorClass) {
-        return operators.get(operatorClass);
+    public static OperatorTranslation getOperator(Tree.OperatorExpression operator) {
+    	if (operator instanceof Tree.BitwiseOp) {
+    		Tree.BitwiseOp bo = (Tree.BitwiseOp) operator;
+			if (operator instanceof Tree.UnionOp) {
+				return bo.getBinary() ? 
+						OperatorTranslation.BINARY_BITWISE_OR_OP : 
+						OperatorTranslation.BINARY_UNION;
+			}
+			if (operator instanceof Tree.IntersectionOp) {
+				return bo.getBinary() ? 
+						OperatorTranslation.BINARY_BITWISE_AND_OP : 
+						OperatorTranslation.BINARY_INTERSECTION;
+			}
+		}
+        return operators.get(operator.getClass());
     }
 
     public static OperatorTranslation getOperator(String signature) {

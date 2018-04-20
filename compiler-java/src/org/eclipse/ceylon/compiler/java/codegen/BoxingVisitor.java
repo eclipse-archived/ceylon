@@ -27,11 +27,11 @@ import java.util.Stack;
 
 import org.eclipse.ceylon.common.BooleanUtil;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BitwiseOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Bound;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CompareOp;
@@ -39,6 +39,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Exists;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Expression;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.FlipOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.InOp;
@@ -65,6 +66,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.WithinOp;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
@@ -372,9 +374,26 @@ public abstract class BoxingVisitor extends Visitor {
     }
 
     @Override
+    public void visit(FlipOp that) {
+        super.visit(that);
+        // we are unboxed if our term is
+        propagateBoxingFromTerm(that, that.getTerm());
+    }
+
+    @Override
+    public void visit(BitwiseOp that) {
+        super.visit(that);
+        if(that.getBinary() 
+        		&& (that.getLeftTerm().getUnboxed()
+                || that.getRightTerm().getUnboxed()
+                || BooleanUtil.isFalse(preferredExpressionBoxing)))
+            CodegenUtil.markUnBoxed(that);
+    }
+
+    @Override
     public void visit(ArithmeticOp that) {
         super.visit(that);
-        // can't optimise the ** operator in Java
+        // can't optimise the ^ operator in Java
         // we are unboxed if any term is 
         if(that.getLeftTerm().getUnboxed()
                 || that.getRightTerm().getUnboxed()
