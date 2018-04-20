@@ -7244,7 +7244,15 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        visitSetOperator(that);
+        Type lhst = leftType(that);
+        if (lhst.getSupertype(unit.getSetDeclaration())!=null) {
+			visitSetOperator(that);
+        }
+		else {
+			that.setBinary(true);
+        	visitArithmeticOperator(that, 
+        			unit.getBinaryDeclaration());
+		}
     }
 
     @Override public void visit(Tree.ScaleOp that) {
@@ -7308,6 +7316,12 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         visitUnaryOperator(that, 
                 unit.getBooleanDeclaration());
+    }
+    
+    @Override public void visit(Tree.FlipOp that) {
+        super.visit(that);
+        visitUnaryOperator(that, 
+                unit.getBinaryDeclaration());
     }
     
     @Override public void visit(Tree.AssignOp that) {

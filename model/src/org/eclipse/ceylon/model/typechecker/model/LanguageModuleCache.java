@@ -58,6 +58,7 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
     private Interface mapDeclaration = null;
     private Class comparisonDeclaration = null;
     private Class booleanDeclaration = null;
+    private Interface binaryDeclaration = null;
     private Class stringDeclaration = null;
     private Class floatDeclaration = null;
     private Class integerDeclaration = null;
@@ -452,6 +453,14 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
             booleanDeclaration = (Class) getLanguageModuleDeclaration(booleanName);
         }
         return booleanDeclaration;
+    }
+
+    @Override
+    public Interface getBinaryDeclaration() {
+        if (binaryDeclaration == null) {
+            binaryDeclaration = (Interface) getLanguageModuleDeclaration(binaryName);
+        }
+        return binaryDeclaration;
     }
 
     @Override
