@@ -10,6 +10,7 @@
 package org.eclipse.ceylon.compiler.js;
 
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
+import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -1071,8 +1072,8 @@ public class GenerateJsVisitor extends Visitor {
             beginBlock();
             if (enter) {
                 //First of all, add an object to store statics only if needed
-                for (Statement s : statements) {
-                }
+//                for (Statement s : statements) {
+//                }
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
                     for (Parameter p : plist) {
@@ -1464,10 +1465,10 @@ public class GenerateJsVisitor extends Visitor {
                         FunctionHelper.singleExprFunction(
                                 ((Tree.MethodDeclaration)node).getParameterLists(),
                                 expr.getExpression(), null, true, true, this);
-                    } else if (!isNaturalLiteral(expr.getExpression().getTerm())) {
+                    } else /*if (!isNaturalLiteral(expr.getExpression().getTerm()))*/ {
                         expr.visit(this);
                     }
-                } else if (!isNaturalLiteral(expr.getExpression().getTerm())) {
+                } else /*if (!isNaturalLiteral(expr.getExpression().getTerm()))*/ {
                     expr.visit(this);
                 }
                 out(";}");
@@ -1813,9 +1814,9 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 if (genatr) {
                     out("return ");
-                    if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
+                    //if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
                         visitSingleExpression(specInitExpr.getExpression());
-                    }
+                    //}
                     out("}");
                     if (asprop) {
                         Tree.AttributeSetterDefinition setterDef = null;
@@ -1892,7 +1893,7 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.CharLiteral that) {
-        out(getClAlias(), "Character(");
+        out(getClAlias(), "c$(");
         out(String.valueOf(that.getText().codePointAt(1)));
         out(",true)");
     }
@@ -1910,7 +1911,8 @@ public class GenerateJsVisitor extends Visitor {
         out("(");
         for (int i = 0; i < literals.size(); i++) {
             Tree.StringLiteral literal = literals.get(i);
-            boolean skip = (i==0 || i==literals.size()-1) && literal.getText().isEmpty();
+            boolean skip = (i==0 || i==literals.size()-1) 
+            		&& literal.getText().isEmpty();
             if (i>0 && !skip) {
                 out("+");
             }
@@ -1926,7 +1928,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 final Expression expr = exprs.get(i);
                 final Type t = expr.getTypeModel();
-                expr.visit(this);
+                box(expr);
                 if (t == null || t.isUnknown()) {
                     out(".toString()");
                 } else if (!t.isString()) {
@@ -1937,37 +1939,39 @@ public class GenerateJsVisitor extends Visitor {
         out(")");
     }
 
-    @Override
-    public void visit(final Tree.FloatLiteral that) {
-        final String f = that.getText();
-        final int dot = f.indexOf('.');
-        boolean wrap = true;
+	String parseFloatLiteral(final Tree.FloatLiteral that, boolean neg) {
+		final String f = that.getText();
+//        final int dot = f.indexOf('.');
+//        boolean wrap = true;
         double parsed=Double.parseDouble(f);
         if (parsed == 0.0 && !f.equals("0.0")) {
-            that.addUsageWarning(Warning.zeroFloatLiteral, "literal so small it is indistinguishable from zero: '" + f + "' (use 0.0)");
+            that.addUsageWarning(Warning.zeroFloatLiteral, 
+            		"literal so small it is indistinguishable from zero: '" + f + "' (use 0.0)");
         }
-        if (f.indexOf('E', dot) < 0 && f.indexOf('e', dot) < 0) {
-            for (int i = dot+1; i < f.length(); i++) {
-                if (f.charAt(i) != '0') {
-                    wrap = false;
-                    break;
-                }
-            }
-        }
-        if (wrap) {
-            out(getClAlias(), "Float");
-        }
-        out("(", f, ")");
-    }
+//        if (f.indexOf('E', dot) < 0 && f.indexOf('e', dot) < 0) {
+//            for (int i = dot+1; i < f.length(); i++) {
+//                if (f.charAt(i) != '0') {
+//                    wrap = false;
+//                    break;
+//                }
+//            }
+//        }
+//        if (wrap) {
+//            out(getClAlias(), "Float");
+//        }
+        return neg ? "-"+f : f;
+	}
 
     long parseNaturalLiteral(Tree.NaturalLiteral that, boolean neg) throws NumberFormatException {
         String nt = that.getText();
         char prefix = nt.charAt(0);
-        int radix = 10;
-        if (prefix == '$' || prefix == '#') {
-            radix = prefix == '$' ? 2 : 16;
-            nt = nt.substring(1);
+        int radix;
+        switch (prefix) {
+	        case '$': radix = 2; nt = nt.substring(1); break;
+	        case '#': radix = 16; nt = nt.substring(1); break;
+	        default: radix = 10;
         }
+
         BigInteger lit = new java.math.BigInteger(nt, radix);
         if (neg) {
             lit = lit.negate();
@@ -1990,9 +1994,14 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override
+    public void visit(final Tree.FloatLiteral that) {
+        out(parseFloatLiteral(that, false));
+    }
+
+    @Override
     public void visit(final Tree.NaturalLiteral that) {
         try {
-            out("(", Long.toString(parseNaturalLiteral(that, false)), ")");
+            out(Long.toString(parseNaturalLiteral(that, false)));
         } catch (NumberFormatException ex) {
             that.addError("Invalid numeric literal " + that.getText(), Backend.JavaScript);
         }
@@ -2131,7 +2140,7 @@ public class GenerateJsVisitor extends Visitor {
                     if (isDynamic) {
                         out("(");
                     }
-                    GenerateJsVisitor.super.visit(that);
+                    box(that.getPrimary());
                     if (isDynamic) {
                         out(")");
                     }
@@ -2292,9 +2301,13 @@ public class GenerateJsVisitor extends Visitor {
         invoker.generatePositionalArguments(null, that, that.getPositionalArguments(), false, false);
     }
 
-    /** Box a term, visit it, unbox it. */
     void box(final Tree.Term term) {
-        final int t = boxStart(term);
+    	box(term, true);
+    }
+    
+    /** Box a term, visit it, unbox it. */
+    void box(final Tree.Term term, boolean wrapFloat) {
+        final int t = boxUnboxStart(term, false, wrapFloat);
         term.visit(this);
         if (t == 4) {
             final Type ct = term.getTypeModel();
@@ -2308,24 +2321,44 @@ public class GenerateJsVisitor extends Visitor {
 
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
     int boxStart(final Tree.Term fromTerm) {
-        return boxUnboxStart(fromTerm, false);
+        return boxUnboxStart(fromTerm, false, true);
     }
-
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
     int boxUnboxStart(final Tree.Term fromTerm, final Tree.Term toTerm) {
-        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toTerm));
+        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toTerm), true);
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
     int boxUnboxStart(final Tree.Term fromTerm, TypedDeclaration toDecl) {
-        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toDecl));
+        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toDecl), true);
     }
 
-    int boxUnboxStart(final Tree.Term fromTerm, boolean toNative) {
+    private int boxUnboxStart(final Tree.Term fromTerm, boolean toNative, boolean wrapFloat) {
         // Box the value
         final Type fromType = fromTerm.getTypeModel();
         if (fromType == null) {
             return 0;
+        }
+
+    	if (wrapFloat && fromType.isFloat()) {
+        	if (isFloatLiteral(fromTerm)) {
+        		out(getClAlias(), "f$(");
+        		return 1;
+        	} else if (isFloatOperatorExpression(fromTerm)) {
+        		out(getClAlias(), "f$");
+        		return 0;
+        	}
+        }
+        if (wrapFloat && fromType.isInteger()) {
+        	if (isIntegerLiteral(fromTerm)) {
+        		//we can't write 123.method
+        		out("(");
+        		return 1;
+        	}
+        	else if (isIntegerOperatorExpression(fromTerm)) {
+        		out(getClAlias(), "i$");
+        		return 0;
+        	}
         }
         final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
         if (fromNative != toNative || fromType.isCallable()) {
@@ -2336,7 +2369,7 @@ public class GenerateJsVisitor extends Visitor {
                 } else if (fromType.isBoolean()) {
                     out("(");
                 } else if (fromType.isCharacter()) {
-                    out(getClAlias(), "Character(");
+                    out(getClAlias(), "c$(");
                 } else if (fromType.isCallable()) {
                     out(getClAlias(), "jsc$2(");
                     return 4;
@@ -2348,13 +2381,13 @@ public class GenerateJsVisitor extends Visitor {
                 // conversion from Ceylon Float to native value
                 return toNative ? 2 : 1;
             } else if (fromType.isCallable()) {
-                Term _t = fromTerm;
-                if (_t instanceof Tree.InvocationExpression) {
-                    _t = ((Tree.InvocationExpression)_t).getPrimary();
+                Term t = fromTerm;
+                if (t instanceof Tree.InvocationExpression) {
+                    t = ((Tree.InvocationExpression)t).getPrimary();
                 }
                 //Don't box callables if they're not members or anonymous
-                if (_t instanceof Tree.MemberOrTypeExpression) {
-                    final Declaration d = ((Tree.MemberOrTypeExpression)_t).getDeclaration();
+                if (t instanceof Tree.MemberOrTypeExpression) {
+                    final Declaration d = ((Tree.MemberOrTypeExpression)t).getDeclaration();
                     if (d != null && !(d.isClassOrInterfaceMember() || d.isAnonymous())) {
                         return 0;
                     }
@@ -2367,6 +2400,41 @@ public class GenerateJsVisitor extends Visitor {
         }
         return 0;
     }
+
+	private boolean isIntegerOperatorExpression(Tree.Term fromTerm) {
+        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+		return term instanceof Tree.ArithmeticOp
+				&& !(term instanceof Tree.PowerOp)
+				|| term instanceof Tree.NegativeOp
+				|| term instanceof Tree.UnionOp
+				|| term instanceof Tree.IntersectionOp
+				|| term instanceof Tree.FlipOp;
+	}
+
+	private boolean isFloatOperatorExpression(Tree.Term fromTerm) {
+        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+		return term instanceof Tree.ArithmeticOp
+				&& !(term instanceof Tree.PowerOp)
+				|| term instanceof Tree.NegativeOp;
+	}
+
+	private boolean isFloatLiteral(Tree.Term fromTerm) {
+		Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+		return term instanceof Tree.FloatLiteral
+				|| term instanceof Tree.NegativeOp 
+				&& isFloatLiteral(((Tree.NegativeOp)term).getTerm())
+				|| term instanceof Tree.PositiveOp 
+				&& isFloatLiteral(((Tree.PositiveOp)term).getTerm());
+	}
+
+	private boolean isIntegerLiteral(Tree.Term fromTerm) {
+		Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+		return term instanceof Tree.NaturalLiteral
+				|| term instanceof Tree.NegativeOp 
+				&& isFloatLiteral(((Tree.NegativeOp)term).getTerm())
+				|| term instanceof Tree.PositiveOp 
+				&& isFloatLiteral(((Tree.PositiveOp)term).getTerm());
+	}
 
     void boxUnboxEnd(int boxType) {
         switch (boxType) {
@@ -2500,9 +2568,9 @@ public class GenerateJsVisitor extends Visitor {
                 beginBlock();
                 if (outer != null) { initSelf(specStmt); }
                 out ("return ");
-                if (!isNaturalLiteral(specStmt.getSpecifierExpression().getExpression().getTerm())) {
+                //if (!isNaturalLiteral(specStmt.getSpecifierExpression().getExpression().getTerm())) {
                     specStmt.getSpecifierExpression().visit(this);
-                }
+                //}
                 out(";");
                 endBlock();
                 if (property) {
@@ -2589,9 +2657,9 @@ public class GenerateJsVisitor extends Visitor {
                                 }
                             }
                             out("return ");
-                            if (!isNaturalLiteral(specStmt.getSpecifierExpression().getExpression().getTerm())) {
+                            //if (!isNaturalLiteral(specStmt.getSpecifierExpression().getExpression().getTerm())) {
                                 specStmt.getSpecifierExpression().visit(this);
-                            }
+                            //}
                             out("(", paramNames.toString(), ");}");
                             endLine(true);
                         }
@@ -2732,12 +2800,12 @@ public class GenerateJsVisitor extends Visitor {
         
         BmeGenerator.generateMemberAccess(lhsExpr, new GenerateCallback() {
             @Override public void generateValue() {
-                if (!isNaturalLiteral(that.getRightTerm())) {
+                //if (!isNaturalLiteral(that.getRightTerm())) {
                     int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
                     that.getRightTerm().visit(GenerateJsVisitor.this);
                     if (boxType == 4) out("/*TODO: callable targs 7*/");
                     boxUnboxEnd(boxType);
-                }
+                //}
             }
         }, null, this);
         
@@ -2934,7 +3002,8 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.Return that) {
-        if (that.getExpression() == null) {
+        Tree.Expression ex = that.getExpression();
+		if (ex == null) {
             final Declaration contDecl = ModelUtil.getContainingDeclarationOfScope(that.getScope());
             if (contDecl instanceof Class) {
                 out("return ", names.self((Class)contDecl), ";");
@@ -2945,7 +3014,7 @@ public class GenerateJsVisitor extends Visitor {
             return;
         }
         out("return ");
-        final Type returnType = that.getExpression().getTypeModel();
+        final Type returnType = ex.getTypeModel();
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(returnType)) {
             Declaration cont = ModelUtil.getContainingDeclarationOfScope(that.getScope());
             Type dectype = ((Declaration)cont).getReference().getType();
@@ -2971,17 +3040,20 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }
             if (!ModelUtil.isTypeUnknown(dectype)) {
-                TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
+                TypeUtils.generateDynamicCheck(ex, dectype, this, false,
                         returnType.getTypeArguments());
                 endLine(true);
                 return;
             }
         }
-        if (isNaturalLiteral(that.getExpression().getTerm())) {
-            out(";");
-        } else {
-            super.visit(that);
-        }
+        box(ex.getTerm());
+        out(";");
+        endLine();
+//        if (isNaturalLiteral(that.getExpression().getTerm())) {
+//            out(";");
+//        } else {
+//            super.visit(that);
+//        }
     }
 
     @Override
@@ -3013,9 +3085,6 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "plus", "+", null, this);
         } else {
             if (TypeUtils.intsOrFloats(lt,rt)) {
-                if (lt.isFloat() || rt.isFloat()) {
-                    out(getClAlias(), "Float");
-                }
                 Operators.simpleBinaryOp(that, "(", "+", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
@@ -3031,9 +3100,6 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "minus", "-", null, this);
         } else {
             if (TypeUtils.intsOrFloats(lt,rt)) {
-                if (lt.isFloat() || rt.isFloat()) {
-                    out(getClAlias(), "Float");
-                }
                 Operators.simpleBinaryOp(that, "(", "-", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
@@ -3049,9 +3115,6 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "times", "*", null, this);
         } else {
             if (TypeUtils.intsOrFloats(lt,rt)) {
-                if (lt.isFloat() || rt.isFloat()) {
-                    out(getClAlias(), "Float");
-                }
                 Operators.simpleBinaryOp(that, "(", "*", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".times(", ")", this);
@@ -3066,12 +3129,8 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "divided", "/", null, this);
         } else {
-        	if (TypeUtils.bothInts(lt, rt) || TypeUtils.bothFloats(lt, rt)) {
-	            out(getClAlias(), TypeUtils.bothInts(lt, rt) ? "i$div(" : "f$div(");
-	            Operators.unwrappedNumberOrTerm(that.getLeftTerm(), false, this);
-	            out(",");
-	            Operators.unwrappedNumberOrTerm(that.getRightTerm(), false, this);
-	            out(")");
+        	if (TypeUtils.intsOrFloats(lt, rt)) {
+	        	Operators.simpleBinaryOp(that, "(", "/", ")", this);
 	        } else {
 	            Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
 	        }
@@ -3085,11 +3144,7 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "remainder", "%", null, this);
         } else {
         	if (TypeUtils.bothInts(lt, rt)) {
-        		out(getClAlias(), "i$mod(");
-	            Operators.unwrappedNumberOrTerm(that.getLeftTerm(), false, this);
-	            out(",");
-	            Operators.unwrappedNumberOrTerm(that.getRightTerm(), false, this);
-	            out(")");
+        		Operators.simpleBinaryOp(that, "(", "%", ")", this);
         	}
         	else {
         		Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
@@ -3187,9 +3242,9 @@ public class GenerateJsVisitor extends Visitor {
                             out(getClAlias(), "f$(");
                         }
                         out(getLHS, operand);
-                        if (!isNaturalLiteral(that.getRightTerm())) {
+//                        if (!isNaturalLiteral(that.getRightTerm())) {
                             that.getRightTerm().visit(GenerateJsVisitor.this);
-                        }
+//                        }
                         if (oneFloat) {
                             out(")");
                         }
@@ -3213,9 +3268,9 @@ public class GenerateJsVisitor extends Visitor {
                     if (boxType == 4) out("/*TODO: callable targs*/");
                     boxUnboxEnd(boxType);
                     out(operand);
-                    if (!isNaturalLiteral(that.getRightTerm())) {
+//                    if (!isNaturalLiteral(that.getRightTerm())) {
                         that.getRightTerm().visit(this);
-                    }
+//                    }
                     out(")");
                 } else {
                     final String lhsPrimaryVar = createRetainedTempVar();
@@ -3226,9 +3281,9 @@ public class GenerateJsVisitor extends Visitor {
                     BmeGenerator.generateMemberAccess(lhsQME, new GenerateCallback() {
                         @Override public void generateValue() {
                             out(getLHS, operand);
-                            if (!isNaturalLiteral(that.getRightTerm())) {
+//                            if (!isNaturalLiteral(that.getRightTerm())) {
                                 that.getRightTerm().visit(GenerateJsVisitor.this);
-                            }
+//                            }
                         }
                     }, lhsPrimaryVar, this);
 
@@ -3263,9 +3318,9 @@ public class GenerateJsVisitor extends Visitor {
                     } else {
                         out(getLHS, ".", functionName, "(");
                     }
-                    if (!isNaturalLiteral(that.getRightTerm())) {
+//                    if (!isNaturalLiteral(that.getRightTerm())) {
                         that.getRightTerm().visit(GenerateJsVisitor.this);
-                    }
+//                    }
                     if (!isNative) {
                         if (targs != null) {
                             out(",");
@@ -3293,9 +3348,9 @@ public class GenerateJsVisitor extends Visitor {
                 if (boxType == 4) out("/*TODO: callable targs 8*/");
                 boxUnboxEnd(boxType);
                 out(".", functionName, "(");
-                if (!isNaturalLiteral(that.getRightTerm())) {
+//                if (!isNaturalLiteral(that.getRightTerm())) {
                     that.getRightTerm().visit(this);
-                }
+//                }
                 out("))");
                 
             } else {
@@ -3308,9 +3363,9 @@ public class GenerateJsVisitor extends Visitor {
                     @Override public void generateValue() {
                         out(getLHS, ".", functionName, "(");
                         Tree.Term term = that.getRightTerm();
-                        if (!isNaturalLiteral(term)) {
+//                        if (!isNaturalLiteral(term)) {
                             term.visit(GenerateJsVisitor.this);
-                        }
+//                        }
                         out(")");
                     }
                 }, lhsPrimaryVar, this);
@@ -3323,6 +3378,10 @@ public class GenerateJsVisitor extends Visitor {
         } else if (lhs instanceof Tree.IndexExpression) {
             lhs.addUnsupportedError("Index expressions are not supported in this kind of assignment.");
         }
+    }
+
+    @Override public void visit(final Tree.PositiveOp that) {
+        box(that.getTerm());
     }
 
     @Override public void visit(final Tree.NegativeOp that) {
@@ -3388,8 +3447,10 @@ public class GenerateJsVisitor extends Visitor {
 
    @Override public void visit(final Tree.EntryOp that) {
        out(getClAlias(), "Entry(");
-       Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(),
-               that.getTypeModel().getVarianceOverrides(), this);
+       Operators.genericBinaryOp(that, ",", 
+    		   that.getTypeModel().getTypeArguments(),
+               that.getTypeModel().getVarianceOverrides(), 
+               this);
    }
 
    @Override public void visit(final Tree.RangeOp that) {
@@ -3407,9 +3468,9 @@ public class GenerateJsVisitor extends Visitor {
 
    @Override public void visit(final Tree.Element that) {
        out(".$_get(");
-       if (!isNaturalLiteral(that.getExpression().getTerm())) {
+//       if (!isNaturalLiteral(that.getExpression().getTerm())) {
            that.getExpression().visit(this);
-       }
+//       }
        out(")");
    }
 
@@ -3638,9 +3699,9 @@ public class GenerateJsVisitor extends Visitor {
 
     public void visit(final Tree.InOp that) {
         out(getClAlias(), "$cnt$2(");
-        if (!isNaturalLiteral(that.getLeftTerm())) {
+//        if (!isNaturalLiteral(that.getLeftTerm())) {
             box(that.getLeftTerm());
-        }
+//        }
         out(",");
         box(that.getRightTerm());
         out(")");
@@ -3958,11 +4019,11 @@ public class GenerateJsVisitor extends Visitor {
         return exitCode;
     }
 
-    @Override public void visit(Tree.ListedArgument that) {
-        if (!isNaturalLiteral(that.getExpression().getTerm())) {
-            super.visit(that);
-        }
-    }
+//    @Override public void visit(Tree.ListedArgument that) {
+//        if (!isNaturalLiteral(that.getExpression().getTerm())) {
+//            super.visit(that);
+//        }
+//    }
 
     @Override public void visit(Tree.LetExpression that) {
         if (errVisitor.hasErrors(that))return;
@@ -4002,16 +4063,17 @@ public class GenerateJsVisitor extends Visitor {
         out(names.name(d));
     }
 
-    boolean isNaturalLiteral(Tree.Term that) {
-        if (that instanceof Tree.NaturalLiteral) {
-            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that, false)));
-            return true;
-        } else if (that instanceof Tree.NegativeOp) {
-            that.visit(this);
-            return true;
-        }
-        return false;
-    }
+//    boolean isNaturalLiteral(Tree.Term that) {
+//    	that = TreeUtil.unwrapExpressionUntilTerm(that);
+//        if (that instanceof Tree.NaturalLiteral) {
+//            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that, false)));
+//            return true;
+//        } else if (that instanceof Tree.NegativeOp) {
+//            that.visit(this);
+//            return true;
+//        }
+//        return false;
+//    }
 
     public void saveNativeHeader(Tree.Declaration that) {
         headers.put(that.getDeclarationModel().getQualifiedNameString(), that);

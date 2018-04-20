@@ -15,13 +15,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.ceylon.common.Backend;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.model.typechecker.model.Declaration;
-import org.eclipse.ceylon.model.typechecker.model.Value;
-
 import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
 import org.eclipse.ceylon.compiler.js.util.RetainedVars;
 import org.eclipse.ceylon.compiler.js.util.TypeUtils;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.model.typechecker.model.Declaration;
+import org.eclipse.ceylon.model.typechecker.model.Value;
 
 /** This component is used by the main JS visitor to generate code for comprehensions.
  * 
@@ -59,9 +58,9 @@ class ComprehensionGenerator {
         gen.endLine(true);
         gen.out("return ");
         final Tree.Expression _expr = startClause.getExpression();
-        if (!gen.isNaturalLiteral(_expr.getTerm())) {
+//        if (!gen.isNaturalLiteral(_expr.getTerm())) {
             _expr.visit(gen);
-        }
+//        }
         gen.endBlockNewLine(true);
         for (int i = 0; i < initialIfClauses; i++) {
             gen.endBlock();

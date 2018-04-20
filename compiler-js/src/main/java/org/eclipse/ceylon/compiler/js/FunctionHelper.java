@@ -66,9 +66,9 @@ public class FunctionHelper {
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Function ? (Function)scope : null);
                 gen.out("return ");
-                if (!gen.isNaturalLiteral(expr.getTerm())) {
+//                if (!gen.isNaturalLiteral(expr.getTerm())) {
                     gen.visitSingleExpression(expr);
-                }
+//                }
                 gen.out("}");
             }
         }, emitFunctionKeyword, gen);
@@ -130,9 +130,9 @@ public class FunctionHelper {
         Tree.SpecifierExpression specExpr = that.getSpecifierExpression();
         if (specExpr != null) {
             gen.out("return ");
-            if (!gen.isNaturalLiteral(specExpr.getExpression().getTerm())) {
+//            if (!gen.isNaturalLiteral(specExpr.getExpression().getTerm())) {
                 gen.visitSingleExpression(specExpr.getExpression());
-            }
+//            }
         }
         else if (block != null) {
             gen.visitStatements(block.getStatements());

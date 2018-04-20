@@ -11,6 +11,7 @@ package org.eclipse.ceylon.compiler.js;
 
 import java.util.Set;
 
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Expression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
@@ -23,8 +24,6 @@ import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 
 public class AttributeGenerator {
 
@@ -49,9 +48,9 @@ public class AttributeGenerator {
             gen.out("{");
             gen.initSelf(that);
             gen.out("return ");
-            if (!gen.isNaturalLiteral(that.getSpecifierExpression().getExpression().getTerm())) {
+//            if (!gen.isNaturalLiteral(that.getSpecifierExpression().getExpression().getTerm())) {
                 that.getSpecifierExpression().visit(gen);
-            }
+//            }
             gen.out(";}");
         }
     }
@@ -307,9 +306,9 @@ public class AttributeGenerator {
                     if (!stitch) {
                         final Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                         gen.out("return ");
-                        if (!gen.isNaturalLiteral(expr.getTerm())) {
+//                        if (!gen.isNaturalLiteral(expr.getTerm())) {
                             gen.visitSingleExpression(expr);
-                        }
+//                        }
                     }
                     gen.endBlock();
                     Tree.AttributeSetterDefinition setterDef = null;

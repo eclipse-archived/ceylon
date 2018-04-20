@@ -451,7 +451,8 @@ public class ConditionGenerator {
         Value caseDec = null;
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            gen.generateIsOfType(item, expvar, isCaseItem.getType().getTypeModel(), null, false, false);
+            Type caseType = isCaseItem.getType().getTypeModel();
+			gen.generateIsOfType(item, expvar, caseType, null, false, false);
             caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 caseDec = caseVar.getDeclarationModel();
@@ -462,7 +463,8 @@ public class ConditionGenerator {
             item.addError("case(satisfies) not yet supported", Backend.JavaScript);
             gen.out("true");
         } else if (item instanceof MatchCase) {
-            final boolean isNull = switchTerm.getTypeModel().covers(switchTerm.getUnit().getNullType());
+            Type switchType = switchTerm.getTypeModel();
+			final boolean isNull = switchType.covers(switchTerm.getUnit().getNullType());
             boolean first = true;
             MatchCase matchCaseItem = (MatchCase) item;
             Tree.MatchList matchList = matchCaseItem.getExpressionList();
@@ -472,29 +474,48 @@ public class ConditionGenerator {
                 for (Tree.Type type: matchList.getTypes()) {
                    ModelUtil.addToUnion(union, type.getTypeModel());
                 }
-                gen.generateIsOfType(item, expvar, ModelUtil.union(union, matchList.getUnit()), null, false, false);
+                gen.generateIsOfType(item, expvar, 
+                		ModelUtil.union(union, matchList.getUnit()), 
+                		null, false, false);
             }
             for (Expression exp : matchList.getExpressions()) {
                 if (!first) gen.out(" || ");
                 final Tree.Term term = exp.getTerm();
-                if (term instanceof Tree.StringLiteral || term instanceof Tree.NaturalLiteral) {
+                if (term instanceof Tree.NaturalLiteral 
+                		|| term instanceof Tree.NegativeOp 
+                		&& ((Tree.NegativeOp)term).getTerm() 
+                			instanceof Tree.NaturalLiteral) {
+                	if (isNull) {
+                        gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
+                    }
+                	if (switchType.isInteger()) {
+                    	gen.out(expvar, "==");
+                    	exp.visit(gen);
+                    }
+                    else {
+	                    gen.out(expvar, ".equals(");
+	                    gen.box(term);
+	                    gen.out(")");
+                    }
+                } else if (term instanceof Tree.StringLiteral) {
                     if (isNull) {
                         gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
                     }
-                    exp.visit(gen);
-                    gen.out(".equals(", expvar, ")");
-                } else if (ModelUtil.isTypeUnknown(switchTerm.getTypeModel())) {
-                    gen.out(expvar, "===");
-                    if (!gen.isNaturalLiteral(term)) {
-                        exp.visit(gen);
-                    }
-                } else if (term instanceof Tree.Literal) {
-                    if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
-                        gen.out(expvar, "!==null&&");
+                    gen.out(expvar, ".equals(");
+                    gen.box(term);
+                    gen.out(")");
+                } else if (term instanceof Tree.CharLiteral) {
+                    if (isNull) {
+                    	gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
                     }
                     gen.out(expvar, ".equals(");
-                    exp.visit(gen);
+                    gen.box(term);
                     gen.out(")");
+                } else if (ModelUtil.isTypeUnknown(switchType)) {
+                    gen.out(expvar, "===");
+//                    if (!gen.isNaturalLiteral(term)) {
+                        exp.visit(gen);
+//                    }
                 } else if (term instanceof Tree.Tuple) {
                     if (((Tree.Tuple) term).getSequencedArgument() == null) {
                         gen.out(expvar, "===", gen.getClAlias(), "empty()");
