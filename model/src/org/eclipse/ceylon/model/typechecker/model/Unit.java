@@ -907,6 +907,15 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return null;
     }
     
+    @Override
+    public Interface getBinaryDeclaration() {
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getBinaryDeclaration();
+        }
+        return null;
+    }
+    
     public Value getTrueValueDeclaration() {
         return (Value) getLanguageModuleDeclaration("true");
     }

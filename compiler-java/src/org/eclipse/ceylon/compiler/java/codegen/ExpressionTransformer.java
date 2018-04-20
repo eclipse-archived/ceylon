@@ -49,11 +49,11 @@ import org.eclipse.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.Warning;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Expression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.langtools.tools.javac.code.Flags;
 import org.eclipse.ceylon.langtools.tools.javac.code.TypeTag;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree;
@@ -2169,7 +2169,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(op);
         return  make().Binary(JCTree.Tag.NE, expression, makeNull());
     }
-
+    
+    public JCExpression transform(Tree.FlipOp op) {
+    	return transformOverridableUnaryOperator(op, op.getUnit().getBinaryDeclaration());
+    }
+    
     public JCExpression transform(Tree.PositiveOp op) {
         if (op.getTerm() instanceof Tree.NaturalLiteral) {
             try {
@@ -2231,7 +2235,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(op);
         Tree.Term term = op.getTerm();
 
-        OperatorTranslation operator = Operators.getOperator(op.getClass());
+        OperatorTranslation operator = Operators.getOperator(op);
         if (operator == null) {
             return makeErroneous(op, "compiler bug: " + op.getClass() + " is an unhandled operator class");
         }
@@ -2504,7 +2508,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Logical operators
     
     public JCExpression transform(Tree.LogicalOp op) {
-        OperatorTranslation operator = Operators.getOperator(op.getClass());
+        OperatorTranslation operator = Operators.getOperator(op);
         if(operator == null){
             return makeErroneous(op, "compiler bug: " + op.getNodeType() + " is not a supported logical operator");
         }
@@ -2648,7 +2652,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         protected OperatorTranslation getOperatorTranslation(Tree.Bound lowerBound) {
-            return Operators.getOperator(lowerBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
+            return lowerBound instanceof Tree.OpenBound ? 
+            		OperatorTranslation.BINARY_SMALLER : 
+        			OperatorTranslation.BINARY_SMALL_AS;
         }
 
         private JCExpression transformWithin(Tree.WithinOp op, 
@@ -2668,7 +2674,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression upper = transformBound(upperBound, middleName.makeIdent(), 
                     middleType, right, upperType, getOperatorTranslation(upperBound), opt, middleTerm, true);
             at(op);
-            OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
+            OperatorTranslation andOp = OperatorTranslation.BINARY_AND;
             OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
             JCExpression andExpr = transformOverridableBinaryOperator(op, andOp, 
                     optimisationStrategy, lower, upper, null, null, op.getTypeModel()).build();
@@ -2746,7 +2752,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.ScaleOp op) {
-        OperatorTranslation operator = Operators.getOperator(Tree.ScaleOp.class);
+        OperatorTranslation operator = Operators.getOperator(op);
         Tree.Term scalableTerm = op.getRightTerm();
         Type scalableTermType = getSupertype(scalableTerm, typeFact().getScalableDeclaration());
         SyntheticName scaleableName = naming.alias("scalable");
@@ -2851,9 +2857,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.BitwiseOp op) {
-        Type leftType = getSupertype(op.getLeftTerm(), typeFact().getSetDeclaration());
-        Type rightType = getSupertype(op.getRightTerm(), typeFact().getSetDeclaration());
-    	return transformOverridableBinaryOperator(op, leftType, rightType).build();
+		if (op.getBinary()) {
+        	return transformOverridableBinaryOperator(op, typeFact().getBinaryDeclaration()).build();
+        }
+        else {
+            Interface sd = typeFact().getSetDeclaration();
+            Type leftType = getSupertype(op.getLeftTerm(), sd);
+            Type rightType = getSupertype(op.getRightTerm(), sd);
+        	return transformOverridableBinaryOperator(op, leftType, rightType).build();
+        }
     }    
 
     // Overridable binary operators
@@ -2898,7 +2910,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     BinOpTransformation transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Type leftType, Type rightType) {
-        OperatorTranslation operator = Operators.getOperator(op.getClass());
+        OperatorTranslation operator = Operators.getOperator(op);
         return transformOverridableBinaryOperator(op, operator, leftType, rightType);
     }
 
@@ -3034,9 +3046,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCExpression> typeArgs = null;
         
         // Set operators need reified generics
-        if(operator == OperatorTranslation.BINARY_UNION 
+        if(/*operator == OperatorTranslation.BINARY_UNION 
                 || operator == OperatorTranslation.BINARY_INTERSECTION
-                || operator == OperatorTranslation.BINARY_COMPLEMENT){
+                ||*/ operator == OperatorTranslation.BINARY_COMPLEMENT){
             Type otherSetElementType = typeFact().getIteratedType(rightTerm.getTypeModel());
             args = args.prepend(makeReifiedTypeArgument(otherSetElementType));
             typeArgs = List.<JCExpression>of(makeJavaType(otherSetElementType, JT_TYPE_ARGUMENT));
@@ -3201,7 +3213,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Postfix operator
     
     public JCExpression transform(Tree.PostfixOperatorExpression expr) {
-        OperatorTranslation operator = Operators.getOperator(expr.getClass());
+        OperatorTranslation operator = Operators.getOperator(expr);
         if(operator == null){
             return makeErroneous(expr, "compiler bug "+expr.getNodeType() + " is not yet supported");
         }
@@ -3337,7 +3349,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Prefix operator
     
     public JCExpression transform(final Tree.PrefixOperatorExpression expr) {
-        final OperatorTranslation operator = Operators.getOperator(expr.getClass());
+        final OperatorTranslation operator = Operators.getOperator(expr);
         if(operator == null){
             return makeErroneous(expr, "compiler bug: "+expr.getNodeType() + " is not supported yet");
         }
@@ -4820,12 +4832,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = checkForQualifiedMemberExpressionOptimisation(expr);
         if(ret != null)
             return ret;
-        if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
-            Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
-            return transformMemberReference(expr, primary);
-        } else if (expr.getPrimary() instanceof Tree.QualifiedTypeExpression) {
-            Tree.QualifiedTypeExpression primary = (Tree.QualifiedTypeExpression)expr.getPrimary();
-            return transformMemberReference(expr, primary);
+        Tree.Primary primary = expr.getPrimary();
+        if (primary instanceof Tree.BaseTypeExpression) {
+            return transformMemberReference(expr, (Tree.BaseTypeExpression)primary);
+        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+            return transformMemberReference(expr, (Tree.QualifiedTypeExpression)primary);
         }
         return transform(expr, null);
     }

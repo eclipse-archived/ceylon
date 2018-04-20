@@ -38,6 +38,7 @@ public interface LanguageModuleProvider {
     public static final String mapName = "Map";
     public static final String comparisonName = "Comparison";
     public static final String booleanName = "Boolean";
+    public static final String binaryName = "Binary";
     public static final String stringName = "String";
     public static final String floatName = "Float";
     public static final String integerName = "Integer";
@@ -86,6 +87,7 @@ public interface LanguageModuleProvider {
     Interface getIntegralDeclaration();
     Interface getInvertableDeclaration();
     Interface getExponentiableDeclaration();
+    Interface getBinaryDeclaration();
     Interface getSetDeclaration();
     Interface getMapDeclaration();
     Class getComparisonDeclaration();
