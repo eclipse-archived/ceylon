@@ -3100,14 +3100,37 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Operator-Assignment expressions
 
+	private Type getRightType(final Tree.Term leftTerm, final Tree.Term rightTerm, Interface compoundType) {
+		final Type leftSupertype = getSupertype(leftTerm, compoundType);
+        
+        // Normally we don't look at the RHS type because it can lead to unknown types, but if we want to extract its
+        // underlying type we have to, and we deal with any eventual unknown type. Presumably unknown types will not 
+        // have any useful underlying type anyways.
+        // Note that looking at the RHS allows us to not have the issue of using the LHS type wrongly for the RHS type 
+        // when the LHS type is Float and the RHS type is Integer with implicit Float coercion
+		Type rightSupertype = getSupertype(rightTerm, compoundType);
+        if (rightSupertype == null || rightSupertype.isUnknown()) {
+            // supertype could be null if, e.g. right type is Nothing
+            rightSupertype = leftSupertype;
+        }
+        Type rightTypeArgument = getTypeArgument(rightSupertype);
+        if (rightTypeArgument == null || rightTypeArgument.isUnknown()) {
+            rightTypeArgument = getTypeArgument(leftSupertype);
+        }
+        return getMostPreciseType(leftTerm, rightTypeArgument);
+	}
+
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
-        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
+        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op);
         if(operator == null){
             return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not a supported arithmetic assignment operator");
         }
 
+        final Tree.Term leftTerm = op.getLeftTerm();
+        final Tree.Term rightTerm = op.getRightTerm();
+
         // see if we can optimise it
-        if(op.getUnboxed() && CodegenUtil.isDirectAccessVariable(op.getLeftTerm())){
+		if(op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -3126,79 +3149,84 @@ public class ExpressionTransformer extends AbstractTransformer {
             compoundType = op.getUnit().getIntegralDeclaration();
         }
         
-        final Type leftType = getSupertype(op.getLeftTerm(), compoundType);
-        
-        // Normally we don't look at the RHS type because it can lead to unknown types, but if we want to extract its
-        // underlying type we have to, and we deal with any eventual unknown type. Presumably unknown types will not have
-        // any useful underlying type anyways.
-        // Note  that looking at the RHS allows us to not have the issue of using the LHS type wrongly for the RHS type when
-        // the LHS type is Float and the RHS type is Integer with implicit Float coercion
-        Type rightSupertype = getSupertype(op.getRightTerm(), compoundType);
-        if (rightSupertype == null || rightSupertype.isUnknown()) {
-            // supertype could be null if, e.g. right type is Nothing
-            rightSupertype = leftType;
-        }
-        Type rightTypeArgument = getTypeArgument(rightSupertype);
-        if(rightTypeArgument == null || rightTypeArgument.isUnknown())
-            rightTypeArgument = getTypeArgument(leftType);
-        final Type rightType = getMostPreciseType(op.getLeftTerm(), rightTypeArgument);
+        final Type rightType = getRightType(leftTerm, rightTerm, compoundType);
+        final Type resultType = getLeastPreciseType(leftTerm, rightTerm);
+        Type leftType = leftTerm.getTypeModel();
 
-        final Type resultType = getLeastPreciseType(op.getLeftTerm(), op.getRightTerm());
-        
         // we work on boxed types
-        return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
-                op.getLeftTerm().getTypeModel(), resultType, 
-                new AssignAndReturnOperationFactory(){
+		return transformAssignAndReturnOperation(op, leftTerm, boxResult, leftType, resultType, 
+                new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                JCExpression ret = transformOverridableBinaryOperator(op, op.getLeftTerm(), op.getRightTerm(), rightType,
+                return transformOverridableBinaryOperator(op, leftTerm, rightTerm, rightType,
                         operator.binaryOperator, 
                         boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE, 
                         previousValue, op.getTypeModel());
-                return ret;
             }
         });
     }
 
+    //This is very nearly a copy/paste of Tree.ArithmeticAssignmentOp
     public JCExpression transform(final Tree.BitwiseAssignmentOp op){
-        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
+        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op);
         if(operator == null){
             return makeErroneous(op, "compiler bug: "+op.getNodeType() +" is not a supported bitwise assignment operator");
         }
-    	
-        Type valueType = op.getLeftTerm().getTypeModel();
-        final Type rightType = getSupertype(op.getRightTerm(), typeFact().getSetDeclaration());
+
+        final Tree.Term leftTerm = op.getLeftTerm();
+        final Tree.Term rightTerm = op.getRightTerm();
+
+        // see if we can optimise it
+		if(op.getBinary() && op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
+            return optimiseAssignmentOperator(op, operator);
+        }
         
-        return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, valueType, valueType, new AssignAndReturnOperationFactory() {
+        // we can use unboxed types if both operands are unboxed
+        final boolean boxResult = op.getBinary() && !op.getUnboxed();
+
+        Interface compoundType = op.getBinary() ? typeFact().getBinaryDeclaration() : typeFact().getSetDeclaration();
+
+        final Type leftType = leftTerm.getTypeModel();
+        final Type rightType = getRightType(leftTerm, rightTerm, compoundType);
+		final Type resultType = getLeastPreciseType(leftTerm, rightTerm);
+        
+        return transformAssignAndReturnOperation(op, leftTerm, boxResult, leftType, resultType, 
+        		new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
-            	JCExpression result = transformOverridableBinaryOperator(op, op.getLeftTerm(), op.getRightTerm(), rightType, operator.binaryOperator, OptimisationStrategy.NONE, previousValue, op.getTypeModel());
-            	return result;
+            	// make this call: previousValue OP RHS
+            	return transformOverridableBinaryOperator(op, leftTerm, rightTerm, rightType, 
+            			operator.binaryOperator, 
+            			boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE,
+    					previousValue, op.getTypeModel());
             }
         });
     }
 
     public JCExpression transform(final Tree.LogicalAssignmentOp op){
-        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
+        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op);
         if(operator == null){
             return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not a supported logical assignment operator");
         }
         
+        final Tree.Term leftTerm = op.getLeftTerm();
+        final Tree.Term rightTerm = op.getRightTerm();
+        
         // optimise if we can
-        if(CodegenUtil.isDirectAccessVariable(op.getLeftTerm())){
+		if(CodegenUtil.isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
-        Type valueType = op.getLeftTerm().getTypeModel();
+        Type valueType = leftTerm.getTypeModel();
         // we work on unboxed types
-        return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, 
+        return transformAssignAndReturnOperation(op, leftTerm, false, 
                 valueType, valueType, new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                return transformLogicalOp(op, operator.binaryOperator, 
-                        previousValue, op.getRightTerm());
+				return transformLogicalOp(op, operator.binaryOperator, 
+                        previousValue, rightTerm);
             }
         });
     }
