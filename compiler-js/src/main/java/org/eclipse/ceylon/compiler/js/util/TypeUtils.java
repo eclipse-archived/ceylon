@@ -1594,7 +1594,8 @@ public class TypeUtils {
 
     /** Returns true if the declaration is annotated "nativejs" */
     public static boolean isNativeJs(Declaration d) {
-        return hasAnnotationByName(TypeUtils.getToplevel(d), "nativejs") || TypeUtils.isUnknown(d);
+        return hasAnnotationByName(TypeUtils.getToplevel(d), "nativejs") 
+    		|| TypeUtils.isUnknown(d);
     }
 
     private static boolean hasAnnotationByName(Declaration d, String name){

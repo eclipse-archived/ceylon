@@ -12,17 +12,15 @@ package org.eclipse.ceylon.compiler.js;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import org.eclipse.ceylon.model.typechecker.model.Functional;
-import org.eclipse.ceylon.model.typechecker.model.Generic;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
-
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 
 public class SequenceGenerator {
 
@@ -223,7 +221,12 @@ public class SequenceGenerator {
                     if (count > 0) {
                         gen.out(",");
                     }
-                    expr.visit(gen);
+                    if (expr instanceof Tree.ListedArgument) {
+                    	gen.box(((Tree.ListedArgument) expr).getExpression());
+                    }
+                    else {
+                    	expr.visit(gen);
+                    }
                 }
                 count++;
             }
