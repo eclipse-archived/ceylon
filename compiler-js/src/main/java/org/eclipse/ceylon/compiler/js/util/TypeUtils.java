@@ -77,12 +77,12 @@ public class TypeUtils {
                 final TypeDeclaration d = pt.getDeclaration();
                 if (pt.isTypeParameter()) {
                     resolveTypeParameter(node, (TypeParameter)d, gen, skipSelfDecl);
-                    if (((TypeParameter)d).isInvariant() &&
-                            (e.getKey().isCovariant() || e.getKey().isContravariant())) {
-                        gen.out("/*ORALE!",d.getQualifiedNameString()," inv pero ",
-                                e.getKey().getQualifiedNameString(),
-                                e.getKey().isCovariant()?" out":" in", "*/");
-                    }
+//                    if (((TypeParameter)d).isInvariant() &&
+//                            (e.getKey().isCovariant() || e.getKey().isContravariant())) {
+//                        gen.out("/*Warning:",d.getQualifiedNameString()," inv but ",
+//                                e.getKey().getQualifiedNameString(),
+//                                e.getKey().isCovariant()?" out":" in", "*/");
+//                    }
                 } else {
                     closeBracket = !pt.isTypeAlias();
                     if (closeBracket)gen.out("{t:");
