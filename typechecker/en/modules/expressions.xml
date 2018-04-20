@@ -3193,6 +3193,25 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Bitwise assignment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>lhs |= rhs</literal></entry>
+            <entry>bitwise or</entry>
+            <entry><literal>lhs=lhs.or(rhs)</literal></entry>
+            <entry>variable of type <literal>Binary&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>lhs &amp;= rhs</literal></entry>
+            <entry>bitwise and</entry>
+            <entry><literal>lhs=lhs.and(rhs)</literal></entry>
+            <entry>variable of type <literal>Binary&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
                 
     </tbody>
     </tgroup>
