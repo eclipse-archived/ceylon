@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.ceylon.common.Backend;
+import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
@@ -32,9 +34,6 @@ import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 
 public class BmeGenerator {
 
@@ -114,8 +113,10 @@ public class BmeGenerator {
     }
 
     static boolean hasTypeParameters(final Tree.StaticMemberOrTypeExpression expr) {
-        return expr.getTypeArguments() != null && expr.getTypeArguments().getTypeModels() != null
-                && !expr.getTypeArguments().getTypeModels().isEmpty();
+        Tree.TypeArguments typeArguments = expr.getTypeArguments();
+		return typeArguments != null 
+    		&& typeArguments.getTypeModels() != null
+            && !typeArguments.getTypeModels().isEmpty();
     }
 
     /** Create a map with type arguments from the type parameter list in the expression's declaration and the

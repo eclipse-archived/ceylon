@@ -1619,14 +1619,17 @@ public class TypeUtils {
     }
 
     public static boolean intsOrFloats(Type t1, Type t2) {
-        return t1 != null && t2 != null &&
-                (t1.isInteger() || t1.isFloat()) && (t2.isInteger() || t2.isFloat());
+        return t1 != null && t2 != null 
+    		&& (t1.isInteger() || t1.isFloat()) 
+    		&& (t2.isInteger() || t2.isFloat());
     }
 
     public static boolean bothInts(Type t1, Type t2) {
-        return t1 != null && t2 != null && t1.isInteger() && t2.isInteger();
+        return t1 != null && t2 != null 
+    		&& t1.isInteger() && t2.isInteger();
     }
     public static boolean bothFloats(Type t1, Type t2) {
-        return t1 != null && t2 != null && t1.isFloat() && t2.isFloat();
+        return t1 != null && t2 != null 
+    		&& t1.isFloat() && t2.isFloat();
     }
 }

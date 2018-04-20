@@ -1,5 +1,5 @@
 function toInt(f) {
-  return (f >= 0) ? Math.floor(f) : Math.ceil(f);
+  return f >= 0 ? Math.floor(f) : Math.ceil(f);
 }
 function nflt$(n) {
   if (n.float$)return true;
@@ -311,6 +311,13 @@ function i$div(a,b) {
   return toInt(a/b);
 }
 ex$.i$div=i$div;
+function i$mod(a,b) {
+  if (b===0) {
+    throw Exception("Division by Zero");
+  }
+  return toInt(a%b);
+}
+ex$.i$mod=i$mod;
 //Divide two floats
 function f$div(a,b) {
   if (a.fmz$) {
