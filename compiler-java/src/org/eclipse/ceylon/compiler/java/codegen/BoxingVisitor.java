@@ -31,6 +31,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BitwiseAssignmentOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BitwiseOp;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Bound;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
@@ -398,6 +399,15 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getLeftTerm().getUnboxed()
                 || that.getRightTerm().getUnboxed()
                 || BooleanUtil.isFalse(preferredExpressionBoxing))
+            CodegenUtil.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(BitwiseAssignmentOp that) {
+        super.visit(that);
+        if(that.getBinary() 
+        		&& (that.getLeftTerm().getUnboxed()
+                && that.getRightTerm().getUnboxed()))
             CodegenUtil.markUnBoxed(that);
     }
 
