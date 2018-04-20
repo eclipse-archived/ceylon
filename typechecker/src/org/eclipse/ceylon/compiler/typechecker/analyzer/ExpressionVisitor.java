@@ -7244,8 +7244,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        Type lhst = leftType(that);
-        if (lhst.getSupertype(unit.getSetDeclaration())!=null) {
+        if (interpretAsSetOperator(that.getLeftTerm())) {
 			visitSetOperator(that);
         }
 		else {
@@ -7254,6 +7253,13 @@ public class ExpressionVisitor extends Visitor {
         			unit.getBinaryDeclaration());
 		}
     }
+
+	private boolean interpretAsSetOperator(Tree.Term term) {
+		Type lhst = term.getTypeModel();
+		return lhst==null 
+			|| lhst.resolveAliases().getDeclaration()
+				.inherits(unit.getSetDeclaration());
+	}
 
     @Override public void visit(Tree.ScaleOp that) {
         super.visit(that);
@@ -7369,10 +7375,18 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
-        assign(that.getLeftTerm());
+        Tree.Term leftTerm = that.getLeftTerm();
+		assign(leftTerm);
         super.visit(that);
-        visitSetAssignmentOperator(that);
-        checkAssignability(that.getLeftTerm(), that);
+        if (interpretAsSetOperator(leftTerm)) {
+        	visitSetAssignmentOperator(that);
+        }
+		else {
+			that.setBinary(true);
+        	visitArithmeticAssignOperator(that, 
+        			unit.getBinaryDeclaration());
+        }
+        checkAssignability(leftTerm, that);
     }
     
     @Override public void visit(Tree.RangeOp that) {

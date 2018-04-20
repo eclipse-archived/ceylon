@@ -338,9 +338,12 @@ public class Operators {
         AND(Tree.AndAssignOp.class, OperatorTranslation.BINARY_AND, JCTree.Tag.BITAND_ASG),
         OR(Tree.OrAssignOp.class, OperatorTranslation.BINARY_OR, JCTree.Tag.BITOR_ASG),
         
+        BINARY_BITWISE_OR(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_BITWISE_OR_OP, JCTree.Tag.BITOR_ASG),
+        BINARY_BITWISE_AND(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_BITWISE_AND_OP, JCTree.Tag.BITAND_ASG),
+        
         // Set assignment
-//        BINARY_UNION(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_UNION),
-//        BINARY_INTERSECTION(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_INTERSECTION),
+        BINARY_UNION(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_UNION),
+        BINARY_INTERSECTION(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_INTERSECTION),
         BINARY_COMPLEMENT(Tree.ComplementAssignOp.class, OperatorTranslation.BINARY_COMPLEMENT),
         ;
         
@@ -412,8 +415,21 @@ public class Operators {
         return methodsAsOperators.get(signature);
     }
 
-    public static AssignmentOperatorTranslation getAssignmentOperator(Class<? extends Tree.AssignmentOp> operatorClass) {
-        return assignmentOperators.get(operatorClass);
+    public static AssignmentOperatorTranslation getAssignmentOperator(Tree.AssignmentOp operator) {
+    	if (operator instanceof Tree.BitwiseAssignmentOp) {
+    		Tree.BitwiseAssignmentOp bo = (Tree.BitwiseAssignmentOp) operator;
+			if (operator instanceof Tree.UnionAssignOp) {
+				return bo.getBinary() ? 
+						AssignmentOperatorTranslation.BINARY_BITWISE_OR : 
+						AssignmentOperatorTranslation.BINARY_UNION;
+			}
+			if (operator instanceof Tree.IntersectAssignOp) {
+				return bo.getBinary() ? 
+						AssignmentOperatorTranslation.BINARY_BITWISE_AND : 
+						AssignmentOperatorTranslation.BINARY_INTERSECTION;
+			}
+		}
+        return assignmentOperators.get(operator.getClass());
     }
     
     // only there to make sure this class is initialised before the enums defined in it, otherwise we
