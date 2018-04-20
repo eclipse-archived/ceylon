@@ -31,12 +31,21 @@ import java.util.Stack;
 import org.antlr.runtime.Token;
 import org.eclipse.ceylon.cmr.impl.NpmRepository;
 import org.eclipse.ceylon.common.Backend;
+import org.eclipse.ceylon.compiler.js.loader.JsonModule;
+import org.eclipse.ceylon.compiler.js.util.ContinueBreakVisitor;
+import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
+import org.eclipse.ceylon.compiler.js.util.JsOutput;
+import org.eclipse.ceylon.compiler.js.util.JsUtils;
+import org.eclipse.ceylon.compiler.js.util.JsWriter;
+import org.eclipse.ceylon.compiler.js.util.Options;
+import org.eclipse.ceylon.compiler.js.util.RetainedVars;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.Warning;
 import org.eclipse.ceylon.compiler.typechecker.io.VirtualFile;
+import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
-import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -49,6 +58,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerE
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Statement;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.util.NativeUtil;
 import org.eclipse.ceylon.model.typechecker.model.Annotation;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -77,17 +87,6 @@ import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.js.loader.JsonModule;
-import org.eclipse.ceylon.compiler.js.util.ContinueBreakVisitor;
-import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
-import org.eclipse.ceylon.compiler.js.util.JsOutput;
-import org.eclipse.ceylon.compiler.js.util.JsUtils;
-import org.eclipse.ceylon.compiler.js.util.JsWriter;
-import org.eclipse.ceylon.compiler.js.util.Options;
-import org.eclipse.ceylon.compiler.js.util.RetainedVars;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
 
 public class GenerateJsVisitor extends Visitor {
 
@@ -3008,20 +3007,93 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.SumOp that) {
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        Type lt = that.getLeftTerm().getTypeModel();
+        Type rt = that.getRightTerm().getTypeModel();
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "plus", "+", null, this);
         } else {
-            Type lt = that.getLeftTerm().getTypeModel();
-            Type rt = that.getRightTerm().getTypeModel();
             if (TypeUtils.intsOrFloats(lt,rt)) {
                 if (lt.isFloat() || rt.isFloat()) {
                     out(getClAlias(), "Float");
                 }
-                out("(");
-                Operators.simpleBinaryOp(that, null, "+", ")", this);
+                Operators.simpleBinaryOp(that, "(", "+", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
             }
+        }
+    }
+
+    @Override
+    public void visit(final Tree.DifferenceOp that) {
+        Type lt = that.getLeftTerm().getTypeModel();
+        Type rt = that.getRightTerm().getTypeModel();
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
+            Operators.nativeBinaryOp(that, "minus", "-", null, this);
+        } else {
+            if (TypeUtils.intsOrFloats(lt,rt)) {
+                if (lt.isFloat() || rt.isFloat()) {
+                    out(getClAlias(), "Float");
+                }
+                Operators.simpleBinaryOp(that, "(", "-", ")", this);
+            } else {
+                Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
+            }
+        }
+    }
+
+    @Override
+    public void visit(final Tree.ProductOp that) {
+        Type lt = that.getLeftTerm().getTypeModel();
+        Type rt = that.getRightTerm().getTypeModel();
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
+            Operators.nativeBinaryOp(that, "times", "*", null, this);
+        } else {
+            if (TypeUtils.intsOrFloats(lt,rt)) {
+                if (lt.isFloat() || rt.isFloat()) {
+                    out(getClAlias(), "Float");
+                }
+                Operators.simpleBinaryOp(that, "(", "*", ")", this);
+            } else {
+                Operators.simpleBinaryOp(that, null, ".times(", ")", this);
+            }
+        }
+    }
+
+    @Override
+    public void visit(final Tree.QuotientOp that) {
+        Type lt = that.getLeftTerm().getTypeModel();
+        Type rt = that.getRightTerm().getTypeModel();
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
+            Operators.nativeBinaryOp(that, "divided", "/", null, this);
+        } else {
+        	if (TypeUtils.bothInts(lt, rt) || TypeUtils.bothFloats(lt, rt)) {
+	            out(getClAlias(), TypeUtils.bothInts(lt, rt) ? "i$div(" : "f$div(");
+	            Operators.unwrappedNumberOrTerm(that.getLeftTerm(), false, this);
+	            out(",");
+	            Operators.unwrappedNumberOrTerm(that.getRightTerm(), false, this);
+	            out(")");
+	        } else {
+	            Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
+	        }
+        }
+    }
+
+    @Override public void visit(final Tree.RemainderOp that) {
+        Type lt = that.getLeftTerm().getTypeModel();
+        Type rt = that.getRightTerm().getTypeModel();
+		if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
+            Operators.nativeBinaryOp(that, "remainder", "%", null, this);
+        } else {
+        	if (TypeUtils.bothInts(lt, rt)) {
+        		out(getClAlias(), "i$mod(");
+	            Operators.unwrappedNumberOrTerm(that.getLeftTerm(), false, this);
+	            out(",");
+	            Operators.unwrappedNumberOrTerm(that.getRightTerm(), false, this);
+	            out(")");
+        	}
+        	else {
+        		Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
+        	}
         }
     }
 
@@ -3031,72 +3103,9 @@ public class GenerateJsVisitor extends Visitor {
         Operators.simpleBinaryOp(that, "(function(){var "+lhs+"=", ";return ", ".scale("+lhs+");}())", this);
     }
 
-    @Override
-    public void visit(final Tree.DifferenceOp that) {
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            Operators.nativeBinaryOp(that, "minus", "-", null, this);
-        } else {
-            Type lt = that.getLeftTerm().getTypeModel();
-            Type rt = that.getRightTerm().getTypeModel();
-            if (TypeUtils.intsOrFloats(lt,rt)) {
-                if (lt.isFloat() || rt.isFloat()) {
-                    out(getClAlias(), "Float");
-                }
-                out("(");
-                Operators.simpleBinaryOp(that, null, "-", ")", this);
-            } else {
-                Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
-            }
-        }
-    }
-
-    @Override
-    public void visit(final Tree.ProductOp that) {
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            Operators.nativeBinaryOp(that, "times", "*", null, this);
-        } else {
-            Type lt = that.getLeftTerm().getTypeModel();
-            Type rt = that.getRightTerm().getTypeModel();
-            if (TypeUtils.intsOrFloats(lt,rt)) {
-                if (lt.isFloat() || rt.isFloat()) {
-                    out(getClAlias(), "Float");
-                }
-                out("(");
-                Operators.simpleBinaryOp(that, null, "*", ")", this);
-            } else {
-                Operators.simpleBinaryOp(that, null, ".times(", ")", this);
-            }
-        }
-    }
-
-    @Override
-    public void visit(final Tree.QuotientOp that) {
-        Type ltype = that.getLeftTerm().getTypeModel();
-        Type rtype = that.getRightTerm().getTypeModel();
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(ltype)) {
-            Operators.nativeBinaryOp(that, "divided", "/", null, this);
-        } else if (TypeUtils.bothInts(ltype, rtype) || TypeUtils.bothFloats(ltype, rtype)) {
-            out(getClAlias(), TypeUtils.bothInts(ltype, rtype) ? "i$div(" : "f$div(");
-            Operators.unwrappedNumberOrTerm(that.getLeftTerm(), false, this);
-            out(",");
-            Operators.unwrappedNumberOrTerm(that.getRightTerm(), false, this);
-            out(")");
-        } else {
-            Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
-        }
-    }
-
-    @Override public void visit(final Tree.RemainderOp that) {
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            Operators.nativeBinaryOp(that, "remainder", "%", null, this);
-        } else {
-            Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
-        }
-    }
-
     @Override public void visit(final Tree.PowerOp that) {
-        final Type left = that.getLeftTerm().getTypeModel();
-        Operators.simpleBinaryOp(that, null, left.isFloat()?".$fpower(":".power(", ")", this);
+        final Type lt = that.getLeftTerm().getTypeModel();
+        Operators.simpleBinaryOp(that, null, lt.isFloat()?".$fpower(":".power(", ")", this);
     }
 
     @Override public void visit(final Tree.AddAssignOp that) {
@@ -3118,7 +3127,9 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override public void visit(final Tree.DivideAssignOp that) {
-        assignOp(that, "divided", null);
+//    	if (!arithmeticAssignOp(that, "/")) {
+    		assignOp(that, "divided", null);
+//    	}
     }
 
     @Override public void visit(final Tree.RemainderAssignOp that) {
@@ -3128,13 +3139,27 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(Tree.ComplementAssignOp that) {
-        assignOp(that, "complement", TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"));
+    	assignOp(that, "complement", TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"));
     }
     public void visit(Tree.UnionAssignOp that) {
-        assignOp(that, "union", TypeUtils.mapTypeArgument(that, "union", "Element", "Other"));
+    	if (that.getBinary()) {
+    		if (!arithmeticAssignOp(that, "|")) {
+    			assignOp(that, "or", null);
+    		}
+    	}
+    	else {
+    		assignOp(that, "union", TypeUtils.mapTypeArgument(that, "union", "Element", "Other"));
+    	}
     }
     public void visit(Tree.IntersectAssignOp that) {
-        assignOp(that, "intersection", TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"));
+    	if (that.getBinary()) {
+    		if (!arithmeticAssignOp(that, "&")) {
+    			assignOp(that, "and", null);
+    		}
+    	}
+    	else {
+    		assignOp(that, "intersection", TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"));
+    	}
     }
 
     public void visit(Tree.AndAssignOp that) {
@@ -3159,7 +3184,7 @@ public class GenerateJsVisitor extends Visitor {
                 BmeGenerator.generateMemberAccess(lhsBME, new GenerateCallback() {
                     @Override public void generateValue() {
                         if (oneFloat) {
-                            out(getClAlias(), "Float(");
+                            out(getClAlias(), "f$(");
                         }
                         out(getLHS, operand);
                         if (!isNaturalLiteral(that.getRightTerm())) {
@@ -3185,7 +3210,7 @@ public class GenerateJsVisitor extends Visitor {
                     out(",", tmp, ".", dec, "=");
                     int boxType = boxStart(lhsQME);
                     out(tmp, ".", dec);
-                    if (boxType == 4) out("/*TODO: callable targs 8*/");
+                    if (boxType == 4) out("/*TODO: callable targs*/");
                     boxUnboxEnd(boxType);
                     out(operand);
                     if (!isNaturalLiteral(that.getRightTerm())) {
@@ -3304,11 +3329,14 @@ public class GenerateJsVisitor extends Visitor {
         Operators.neg(that, this);
     }
 
-    @Override public void visit(final Tree.PositiveOp that) {
-        final Type d = that.getTerm().getTypeModel();
-        final boolean nat = d.isSubtypeOf(that.getUnit().getIntegerType());
-        //TODO if it's positive we leave it as is?
-        Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
+//    @Override public void visit(final Tree.PositiveOp that) {
+//        final boolean nat = that.getTerm().getTypeModel().isInteger();
+//        //TODO if it's positive we leave it as is?
+//        Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
+//    }
+
+    @Override public void visit(final Tree.FlipOp that) {
+    	Operators.flip(that, this);
     }
 
     @Override public void visit(final Tree.EqualOp that) {
@@ -3320,17 +3348,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override public void visit(final Tree.NotOp that) {
-        final Term t = that.getTerm();
-        final boolean omitParens = t instanceof BaseMemberExpression
-                || t instanceof QualifiedMemberExpression
-                || t instanceof Tree.IsOp || t instanceof Tree.Exists || t instanceof Tree.IdenticalOp
-                || t instanceof Tree.InOp || t instanceof Tree.Nonempty
-                || (t instanceof Tree.InvocationExpression && ((Tree.InvocationExpression)t).getNamedArgumentList() == null);
-        if (omitParens) {
-            Operators.unaryOp(that, "!", null, this);
-        } else {
-            Operators.unaryOp(that, "(!", ")", this);
-        }
+    	Operators.not(that, this);
     }
 
     @Override public void visit(final Tree.IdenticalOp that) {
@@ -3339,16 +3357,6 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override public void visit(final Tree.CompareOp that) {
         Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-    }
-
-    /** Returns true if both Terms' types is either Integer or Boolean. */
-    boolean canUseNativeComparator(final Tree.Term left, final Tree.Term right) {
-        if (left == null || right == null || left.getTypeModel() == null || right.getTypeModel() == null) {
-            return false;
-        }
-        final Type lt = left.getTypeModel();
-        final Type rt = right.getTypeModel();
-        return TypeUtils.bothInts(lt, rt) || (lt.isBoolean() && rt.isBoolean());
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
@@ -3437,16 +3445,48 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.UnionOp that) {
-        Operators.genericBinaryOp(that, ".union(",
-                TypeUtils.mapTypeArgument(that, "union", "Element", "Other"),
-                that.getTypeModel().getVarianceOverrides(), this);
+    	Type lt = that.getLeftTerm().getTypeModel();
+    	Type rt = that.getRightTerm().getTypeModel();
+		if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
+            Operators.nativeBinaryOp(that, "or", "|", null, this);
+        } else {
+	    	if (that.getBinary()) {
+	    		if (TypeUtils.bothInts(lt, rt)) {
+	    			Operators.simpleBinaryOp(that, "(", "|", ")", this);
+	    		}
+	    		else {
+	    			Operators.simpleBinaryOp(that, null, ".or(", ")", this);
+	    		}
+	    	}
+	    	else {
+	    		Operators.genericBinaryOp(that, ".union(",
+	    				TypeUtils.mapTypeArgument(that, "union", "Element", "Other"),
+	    				that.getTypeModel().getVarianceOverrides(), this);
+	    	}
+        }
     }
 
     @Override
     public void visit(final Tree.IntersectionOp that) {
-        Operators.genericBinaryOp(that, ".intersection(",
-                TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"),
-                that.getTypeModel().getVarianceOverrides(), this);
+    	Type lt = that.getLeftTerm().getTypeModel();
+    	Type rt = that.getRightTerm().getTypeModel();
+		if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
+            Operators.nativeBinaryOp(that, "and", "&", null, this);
+        } else {
+	    	if (that.getBinary()) {
+	    		if (TypeUtils.bothInts(lt, rt)) {
+	    			Operators.simpleBinaryOp(that, "(", "&", ")", this);
+	    		}
+	    		else {
+	    			Operators.simpleBinaryOp(that, null, ".and(", ")", this);
+	    		}
+	    	}
+	    	else {
+	    		Operators.genericBinaryOp(that, ".intersection(",
+	    				TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"),
+	    				that.getTypeModel().getVarianceOverrides(), this);
+	    	}
+        }
     }
 
     @Override

@@ -1943,25 +1943,25 @@ shared void checkUseSiteVariance(){
     assert(eq(classModel1.typeArgumentWithVariances[tpDecl1], [argModel, invariant]));
     assert(classModel1.string == "metamodel::TypeParams<ceylon.language::String>");
 
-    value classModel2 = `TypeParams<in String>`;
-    assert(classModel2.typeArgumentWithVarianceList == [[argModel, contravariant]]);
-    assert(classModel2.typeArgumentWithVariances.size == 1);
-    assert(eq(classModel2.typeArgumentWithVariances[tpDecl1], [argModel, contravariant]));
-    assert(classModel2.string == "metamodel::TypeParams<in ceylon.language::String>");
+//    value classModel2 = `TypeParams<in String>`;
+//    assert(classModel2.typeArgumentWithVarianceList == [[argModel, contravariant]]);
+//    assert(classModel2.typeArgumentWithVariances.size == 1);
+//    assert(eq(classModel2.typeArgumentWithVariances[tpDecl1], [argModel, contravariant]));
+//    assert(classModel2.string == "metamodel::TypeParams<in ceylon.language::String>");
+//
+//    value classModel3 = `TypeParams<out String>`;
+//    assert(classModel3.typeArgumentWithVarianceList == [[argModel, covariant]]);
+//    assert(classModel3.typeArgumentWithVariances.size == 1);
+//    assert(eq(classModel3.typeArgumentWithVariances[tpDecl1], [argModel, covariant]));
+//    assert(classModel3.string == "metamodel::TypeParams<out ceylon.language::String>");
 
-    value classModel3 = `TypeParams<out String>`;
-    assert(classModel3.typeArgumentWithVarianceList == [[argModel, covariant]]);
-    assert(classModel3.typeArgumentWithVariances.size == 1);
-    assert(eq(classModel3.typeArgumentWithVariances[tpDecl1], [argModel, covariant]));
-    assert(classModel3.string == "metamodel::TypeParams<out ceylon.language::String>");
-
-    assert(classModel1 == `TypeParams<String>`);
-    assert(classModel2 != classModel1);
-    assert(classModel2 != classModel3);
-
-    assert(classModel1.hash == `TypeParams<String>`.hash);
-    assert(classModel2.hash != classModel1.hash);
-    assert(classModel2.hash != classModel3.hash);
+//    assert(classModel1 == `TypeParams<String>`);
+//    assert(classModel2 != classModel1);
+//    assert(classModel2 != classModel3);
+//
+//    assert(classModel1.hash == `TypeParams<String>`.hash);
+//    assert(classModel2.hash != classModel1.hash);
+//    assert(classModel2.hash != classModel3.hash);
 
     // this one is covariant
     assert(exists tpDecl2 = `interface Top`.typeParameterDeclarations.first);
