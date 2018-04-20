@@ -1787,7 +1787,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="operatorprecedence">
         <title>Operator precedence</title>
         
-        <para>There are 19 distinct operator precedence levels, but these levels
+        <para>There are 20 distinct operator precedence levels, but these levels
         are arranged into layers in order to make them easier to predict.</para>
         
         <itemizedlist>
@@ -1880,10 +1880,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <entry>Right</entry>
             </row>            
             <row>
-                <entry>Negation:</entry>
+                <entry>Negation, bitwise complement:</entry>
                 <entry>
                 <literal>+</literal>,
-                <literal>-</literal>
+                <literal>-</literal>,
+                <literal>~</literal>
                 </entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
@@ -1895,7 +1896,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <entry>Left</entry>
             </row-->
             <row>
-                <entry>Set intersection:</entry> 
+                <entry>Bitwise or, set intersection:</entry> 
                 <entry>
                 <literal>&amp;</literal>
                 </entry>
@@ -1903,7 +1904,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Set union and complement:</entry> 
+                <entry>Bitwise and, set union and complement:</entry> 
                 <entry>
                 <literal>|</literal>,
                 <literal>~</literal>
@@ -3133,6 +3134,70 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             </listitem>
         </itemizedlist-->
         
+    </section>
+    
+    <section id="bitwise">
+    <title>Bitwise operators</title>
+    
+        <para>These operators manipulate the bits of types like
+        <literal>Byte</literal> and <literal>Integer</literal>.</para>
+    
+    <table>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Definition</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Bitwise operators</emphasis></entry></row>
+        
+        <!-- Unary complement -->
+        
+        <row>
+            <entry><literal>~rhs</literal></entry>
+            <entry>bitwise complement</entry>
+            <entry><literal>rhs.not</literal></entry>
+            <entry></entry>
+            <entry><literal>Binary &lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        
+        <!-- And and Or -->
+        
+        <row>
+            <entry><literal>lhs | rhs</literal></entry>
+            <entry>bitwise or</entry>
+            <entry><literal>lhs.or(rhs)</literal></entry>
+            <entry><literal>Binary&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>lhs &amp; rhs</literal></entry>
+            <entry>bitwise and</entry>
+            <entry><literal>lhs.and(rhs)</literal></entry>
+            <entry><literal>Binary &lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+                
+    </tbody>
+    </tgroup>
+    </table>
+    
     </section>
     
     <section id="sets">

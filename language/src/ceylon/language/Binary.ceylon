@@ -10,8 +10,16 @@
 "Abstraction of types that are conceptually a sequence of 
  bits, and may be the subject of bitwise operations. A bit 
  is a [[Boolean]] value. Bits are indexed from right to 
- left, where `0` is the index of the least significant bit."
-see (class Integer)
+ left, where `0` is the index of the least significant bit.
+ 
+ Binary types support bitwise operations including:
+ 
+ - bitwise complement, written `~b`,
+ - bitwise OR, written `a | b`,
+ - bitwise AND, written `a & b`,
+ - bitwise XOR, and
+ - bitshifting operations."
+see (class Integer, class Byte)
 by ("Stef")
 shared interface Binary<Other> of Other 
     given Other satisfies Binary<Other> {
@@ -40,13 +48,23 @@ shared interface Binary<Other> of Other
      the sign is preserved."
     shared formal Other rightArithmeticShift(Integer shift);
 
-    "Performs a logical AND operation."
+    "Performs a logical AND operation.
+     
+     For any two instances `x` and `y` of a type that 
+     implements `Binary`, `x.and(y)` may be written as:
+     
+         x & y"
     shared formal Other and(Other other);
 
-    "Performs a logical inclusive OR operation."
+    "Performs a logical OR operation.
+     
+     For any two instances `x` and `y` of a type that 
+     implements `Binary`, `x.plus(y)` may be written as:
+     
+         x | y"
     shared formal Other or(Other other);
 
-    "Performs a logical exclusive OR operation."
+    "Performs a logical XOR (exclusive or) operation."
     shared formal Other xor(Other other);
 
     "Retrieves a given bit from this bit sequence if 
