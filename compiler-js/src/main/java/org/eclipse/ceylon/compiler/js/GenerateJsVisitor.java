@@ -524,8 +524,10 @@ public class GenerateJsVisitor extends Visitor {
 
     public void visitSingleExpression(Tree.Expression that) {
         List<String> oldRetainedVars = retainedVars.reset(null);
-        final int boxType = boxUnboxStart(that.getTerm(), false, true, true);
-        that.visit(this);
+        final int boxType = boxUnboxStart(that.getTerm(), false, 
+        		//notFloat(declaredTypeAssignedTo), 
+        		true, true);
+        that.getTerm().visit(this);
         if (boxType == 4) out("/*TODO: callable targs 3*/");
         boxUnboxEnd(boxType);
         endLine(true);
@@ -613,7 +615,7 @@ public class GenerateJsVisitor extends Visitor {
     void initSelf(Node node) {
         final NeedsThisVisitor ntv = new NeedsThisVisitor(node);
         if (ntv.needsThisReference()) {
-            final String me=names.self(prototypeOwner);
+            final String me = names.self(prototypeOwner);
             out("var ", me, "=this");
             //Code inside anonymous inner types sometimes gens direct refs to the outer instance
             //We can detect if that's going to happen and declare the ref right here
@@ -1464,7 +1466,8 @@ public class GenerateJsVisitor extends Visitor {
                         // function parameter defaulted using "=>"
                         FunctionHelper.singleExprFunction(
                                 ((Tree.MethodDeclaration)node).getParameterLists(),
-                                expr.getExpression(), null, true, true, this);
+                                expr.getExpression(), null, true, true, this,
+                                node.getType());
                     } else /*if (!isNaturalLiteral(expr.getExpression().getTerm()))*/ {
                         expr.visit(this);
                     }
@@ -1557,7 +1560,8 @@ public class GenerateJsVisitor extends Visitor {
                 // function parameter defaulted using "=>"
                 FunctionHelper.singleExprFunction(
                         ((Tree.MethodDeclaration)node).getParameterLists(),
-                        expr.getExpression(), m, false, true, this);
+                        expr.getExpression(), m, false, true, this,
+                        node.getType());
             } else {
                 expr.visit(this);
             }
@@ -1760,53 +1764,59 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.AttributeDeclaration that) {
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
-        final Value d = that.getDeclarationModel();
+        final Value value = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
-        final Parameter param = d.isParameter() ? ((Functional)d.getContainer()).getParameter(d.getName()) : null;
-        final boolean asprop = AttributeGenerator.defineAsProperty(d);
-        if (d.isFormal()) {
+        final Parameter param = value.getInitializerParameter();
+        if (value.isFormal()) {
             if (!opts.isOptimize()) {
                 comment(that);
                 AttributeGenerator.generateAttributeMetamodel(that, false, false, this);
             }
-        } else if (!d.isStatic()) {
-            SpecifierOrInitializerExpression specInitExpr =
+        } else if (!value.isStatic()) {
+            SpecifierOrInitializerExpression specifier =
                         that.getSpecifierOrInitializerExpression();
-            final boolean addGetter = specInitExpr != null || param != null || !d.isMember()
-                    || d.isVariable() || d.isLate();
-            boolean setterGend=false;
-            if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
+            final boolean getter = 
+            		   specifier != null 
+            		|| param != null 
+            		|| !value.isMember()
+                    || value.isVariable() 
+                    || value.isLate();
+            boolean setter = false;
+            if (opts.isOptimize() && value.isClassOrInterfaceMember()) {
                 //Stitch native member attribute declaration with no value
-                final boolean eagerExpr = specInitExpr != null
-                        && !(specInitExpr instanceof LazySpecifierExpression); 
-                if (eagerExpr && !TypeUtils.isNativeExternal(d)) {
+                final boolean eagerExpr = specifier != null
+                        && !(specifier instanceof LazySpecifierExpression); 
+                if (eagerExpr && !TypeUtils.isNativeExternal(value)) {
                     comment(that);
-                    outerSelf(d);
-                    out(".", names.privateName(d), "=");
-                    if (d.isLate()) {
+                    outerSelf(value);
+                    out(".", names.privateName(value), "=");
+                    if (value.isLate()) {
                         out("undefined");
                     } else {
-                        super.visit(specInitExpr);
+                    	visitSingleExpression(specifier.getExpression());
                     }
                     endLine(true);
                 }
             }
-            else if (specInitExpr instanceof LazySpecifierExpression) {
+            else if (specifier instanceof LazySpecifierExpression) {
+                final boolean asprop = AttributeGenerator.defineAsProperty(value);
                 comment(that);
                 if (asprop) {
-                    defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
+                    TypeDeclaration typeDec = (TypeDeclaration) value.getContainer();
+					defineAttribute(names.self(typeDec), names.name(value));
                     out("{");
                 } else {
-                    out(function, names.getter(d, false), "(){");
+                    out(function, names.getter(value, false), "(){");
                 }
                 initSelf(that);
                 boolean genatr=true;
-                if (TypeUtils.isNativeExternal(d)) {
-                    if (stitchNative(d, that)) {
+                if (TypeUtils.isNativeExternal(value)) {
+                    if (stitchNative(value, that)) {
                         if (verboseStitcher) {
-                            spitOut("Stitching in native attribute " + d.getQualifiedNameString() +
-                                ", ignoring Ceylon declaration");
+                            spitOut("Stitching in native attribute " 
+                            		+ value.getQualifiedNameString() 
+                            		+ ", ignoring Ceylon declaration");
                         }
                         genatr=false;
                         out(";};");
@@ -1814,14 +1824,17 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 if (genatr) {
                     out("return ");
+                    AttributeGenerator.visitSpecifiedExpression(that, value, 
+                    		specifier.getExpression(), this);
                     //if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
-                        visitSingleExpression(specInitExpr.getExpression());
+//                        visitSingleExpression(specifier.getExpression(), 
+//                        		that.getType());
                     //}
                     out("}");
                     if (asprop) {
                         Tree.AttributeSetterDefinition setterDef = null;
-                        if (d.isVariable()) {
-                            setterDef = associatedSetterDefinition(d);
+                        if (value.isVariable()) {
+                            setterDef = associatedSetterDefinition(value);
                             if (setterDef != null) {
                                 out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
                                 AttributeGenerator.setter(setterDef, this);
@@ -1841,25 +1854,26 @@ public class GenerateJsVisitor extends Visitor {
                         endLine(true);
                     } else {
                         endLine(true);
-                        shareGetter(d);
+                        shareGetter(value);
                     }
                 }
             }
-            else if (!(d.isParameter() && d.getContainer() instanceof Function)) {
-                if (addGetter) {
-                    AttributeGenerator.generateAttributeGetter(that, d, specInitExpr,
+            else if (!value.isParameter() || !(value.getContainer() instanceof Function)) {
+                if (getter) {
+                    AttributeGenerator.generateAttributeGetter(that, value, specifier,
                             names.name(param), this, directAccess, verboseStitcher);
                 }
-                if ((d.isVariable() || d.isLate()) && !asprop) {
-                    setterGend=AttributeGenerator.generateAttributeSetter(that, d, this);
+                if ((value.isVariable() || value.isLate()) 
+                		&& !AttributeGenerator.defineAsProperty(value)) {
+                    setter = AttributeGenerator.generateAttributeSetter(that, value, this);
                 }
             }
-            boolean addMeta=!opts.isOptimize() || d.isToplevel();
-            if (!d.isToplevel()) {
-                addMeta |= ModelUtil.getContainingDeclaration(d).isAnonymous();
+            boolean addMeta = !opts.isOptimize() || value.isToplevel();
+            if (!value.isToplevel()) {
+                addMeta |= ModelUtil.getContainingDeclaration(value).isAnonymous();
             }
             if (addMeta) {
-                AttributeGenerator.generateAttributeMetamodel(that, addGetter, setterGend, this);
+                AttributeGenerator.generateAttributeMetamodel(that, getter, setter, this);
             }
         }
     }
@@ -2324,14 +2338,14 @@ public class GenerateJsVisitor extends Visitor {
         }
         
         if (wrapFloat && !toNative && fromType.isFloat()) {
-        	if (isFloatLiteral(fromTerm)) {
+        	if (isFloatLiteral(fromTerm) || isLocalRef(fromTerm)) {
     			out(getClAlias(), "f$(");
         		return 1;
         	} else if (isFloatOperatorExpression(fromTerm)) {
     			out(getClAlias(), "f$");
         		return 0;
         	}
-	        }
+        }
         if (checkInt && fromType.isInteger()) {
         	if (isIntegerLiteral(fromTerm)) {
         		//we can't write 123.method
@@ -2370,7 +2384,9 @@ public class GenerateJsVisitor extends Visitor {
                 //Don't box callables if they're not members or anonymous
                 if (t instanceof Tree.MemberOrTypeExpression) {
                     final Declaration d = ((Tree.MemberOrTypeExpression)t).getDeclaration();
-                    if (d != null && !(d.isClassOrInterfaceMember() || d.isAnonymous())) {
+                    if (d != null 
+                    		&& !d.isClassOrInterfaceMember() 
+                    		&& !d.isAnonymous()) {
                         return 0;
                     }
                 }
@@ -2391,6 +2407,12 @@ public class GenerateJsVisitor extends Visitor {
         default: //nothing
         }
     }
+
+	private boolean isLocalRef(final Tree.Term fromTerm) {
+		Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+		return term instanceof Tree.BaseMemberExpression
+			&& !((Tree.BaseMemberExpression)term).getDeclaration().isShared();
+	}
 
 	private boolean isFloatOperatorExpression(Tree.Term fromTerm) {
         Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
@@ -2496,8 +2518,9 @@ public class GenerateJsVisitor extends Visitor {
             final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
         final Tree.Term term = specStmt.getBaseMemberExpression();
-        final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression
-                ? (Tree.StaticMemberOrTypeExpression)term : null;
+        final Tree.StaticMemberOrTypeExpression smte = 
+        		term instanceof Tree.StaticMemberOrTypeExpression ? 
+        				(Tree.StaticMemberOrTypeExpression)term : null;
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(term.getTypeModel())) {
             if (smte != null && smte.getDeclaration() == null) {
                 out(smte.getIdentifier().getText());
@@ -2688,7 +2711,8 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 out(names.name(bmeDecl), "=");
                 FunctionHelper.singleExprFunction(paramExpr.getParameterLists(), expr,
-                        bmeDecl instanceof Scope ? (Scope)bmeDecl : null, true, true, this);
+                		bmeDecl instanceof Scope ? (Scope) bmeDecl : null, 
+                		true, true, this, null);
                 out(";");
             }
         }
