@@ -1213,7 +1213,7 @@ public class GenerateJsVisitor extends Visitor {
     void declareSelf(ClassOrInterface d) {
         out("if(", names.self(d), "===undefined)");
         if (d instanceof Class && d.isAbstract()) {
-            out(getClAlias(), "throwexc(", getClAlias(), "InvocationException$meta$model(");
+            out(getClAlias(), "err$(", getClAlias(), "InvocationException$meta$model(");
             out("\"Cannot instantiate abstract class ", d.getQualifiedNameString(), "\"),'?','?')");
         } else {
             out(names.self(d), "=new ");
@@ -4001,9 +4001,9 @@ public class GenerateJsVisitor extends Visitor {
         }
     }
 
-    /** Call internal function "throwexc" with the specified message and source location. */
+    /** Call internal function "err$" with the specified message and source location. */
     void generateThrow(String exceptionClass, String msg, Node node) {
-        out(getClAlias(), "throwexc(", exceptionClass==null ? getClAlias() + "Exception":exceptionClass, "(");
+        out(getClAlias(), "err$(", exceptionClass==null ? getClAlias() + "Exception":exceptionClass, "(");
         out("\"", JsUtils.escapeStringLiteral(msg), "\"),'", node.getLocation(), "','",
                 node.getUnit().getFilename(), "')");
     }

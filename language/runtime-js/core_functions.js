@@ -312,7 +312,7 @@ function wrapexc(e,loc,file) {
   if (file !== undefined) e.$file=file;
   return e;
 }
-function throwexc(e,loc,file) {
+function err$(e,loc,file) {
   if (loc !== undefined) e.$loc=loc;
   if (file !== undefined) e.$file=file;
   throw e;
@@ -347,7 +347,7 @@ function asrt$2(msg,loc,file) {
 }
 x$.set_type_args=set_type_args;
 x$.add_type_arg=add_type_arg;
-x$.throwexc=throwexc;
+x$.err$=err$;
 x$.wrapexc=wrapexc;
 x$.eorl$=eorl$;
 x$.asrt$=asrt$;
@@ -386,7 +386,7 @@ x$.$cnt$2=$cnt$2;
 //Check spread destructuring
 function $cksprdstr$(min,t,v,loc,f,s) {
   s=s.sequence();
-  if (s.shorterThan(min))throwexc(AssertionError('length of ' + v + ' is less than minimum length of its static type ' + t),loc,f);
+  if (s.shorterThan(min))err$(AssertionError('length of ' + v + ' is less than minimum length of its static type ' + t),loc,f);
   return s;
 }
 x$.$cksprdstr$=$cksprdstr$;

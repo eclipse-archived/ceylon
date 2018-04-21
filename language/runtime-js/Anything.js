@@ -1,6 +1,6 @@
 function Anything(anything$){
   $i$Anything();
-  if(anything$===undefined)throwexc(InvocationException$meta$model("Cannot instantiate abstract class"),'?','?')
+  if(anything$===undefined)err$(InvocationException$meta$model("Cannot instantiate abstract class"),'?','?')
   return anything$;
 }
 Anything.$m$=function(){return{mod:$M$,ps:[],of:[{t:$_Object},{t:Null}],pa:257,an:function(){return[doc$($M$,'$:Anything'),by($arr$(["Gavin"],{t:$_String}))];},d:['$','Anything']};};

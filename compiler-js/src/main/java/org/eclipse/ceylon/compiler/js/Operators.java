@@ -85,14 +85,18 @@ public class Operators {
             gen.out(before);
         }
         Tree.Term term = exp.getTerm();
+		boolean existsOp = exp instanceof Tree.Exists;
 		if (after==null || after.charAt(0)!='.') {
-        	gen.box(term, false, false);
+			if (term instanceof Tree.BaseMemberExpression) {
+                BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen, !existsOp);
+            } else {
+            	gen.box(term, false, false);
+            }
         } else {
             final Term fromTerm = term;
 			final int boxTypeLeft = gen.boxUnboxStart(fromTerm, false, true, true);
             if (term instanceof Tree.BaseMemberExpression) {
-                BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen,
-                        !(exp instanceof Tree.Exists));
+                BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen, !existsOp);
             } else {
                 term.visit(gen);
             }

@@ -1,8 +1,7 @@
 //nonempty
-function ne$(value){
-  return value!==null&&value!==undefined&&(is$(value,{t:Sequence})||(is$(value,{t:List})&&value.size>0));
+function ne$(s){
+  return s!==null&&s!==undefined&&is$(s,{t:Sequence});
 }
-
 //exists
 function nn$(e) {
   return e!==null&&e!==undefined&&e!==$_null();
