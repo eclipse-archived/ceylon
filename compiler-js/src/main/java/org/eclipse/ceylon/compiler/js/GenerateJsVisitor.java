@@ -2334,36 +2334,40 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     private int boxUnboxStart(final Tree.Term fromTerm, 
-    		boolean toNative, boolean wrapFloat) {
+    		boolean toNative, boolean wrapFloatCheckInt) {
         // Box the value
         final Type fromType = fromTerm.getTypeModel();
         if (fromType == null) {
             return 0;
         }
-
-    	if (wrapFloat && fromType.isFloat()) {
-        	if (isFloatLiteral(fromTerm)) {
-        		out(getClAlias(), "f$(");
-        		return 1;
-        	} else if (isFloatOperatorExpression(fromTerm)) {
-        		out(getClAlias(), "f$");
-        		return 0;
-        	}
+        
+        if (wrapFloatCheckInt && !toNative) {
+	    	if (fromType.isFloat()) {
+	        	if (isFloatLiteral(fromTerm)) {
+        			out(getClAlias(), "f$(");
+	        		return 1;
+	        	} else if (isFloatOperatorExpression(fromTerm)) {
+        			out(getClAlias(), "f$");
+	        		return 0;
+	        	}
+	        }
+	        if (fromType.isInteger()) {
+	        	if (isIntegerLiteral(fromTerm)) {
+	        		//we can't write 123.method
+	        		out("(");
+	        		return 1;
+	        	}
+	        	else if (isIntegerOperatorExpression(fromTerm)) {
+	        		//TODO: we only really need to do this
+	        		//      if there is some division somewhere
+	        		//      in the tree of operators, or if its
+	        		//      coming from a native call
+	        		out(getClAlias(), "i$");
+	        		return 0;
+	        	}
+	        }
         }
-        if (wrapFloat && fromType.isInteger()) {
-        	if (isIntegerLiteral(fromTerm)) {
-        		//we can't write 123.method
-        		out("(");
-        		return 1;
-        	}
-        	else if (isIntegerOperatorExpression(fromTerm)) {
-        		//TODO: we only really need to do this
-        		//      if there is some division somewhere
-        		//      in the tree of operators
-        		out(getClAlias(), "i$");
-        		return 0;
-        	}
-        }
+        
         final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
         if (fromNative != toNative || fromType.isCallable()) {
             if (fromNative) {
@@ -3133,7 +3137,9 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "divided", "/", null, this);
         } else {
-        	if (TypeUtils.intsOrFloats(lt, rt)) {
+        	if (TypeUtils.bothInts(lt, rt)) {
+        		Operators.simpleBinaryOp(that, getClAlias() + "i$(", "/", ")", this);
+        	} else if (TypeUtils.intsOrFloats(lt, rt)) {
 	        	Operators.simpleBinaryOp(that, "(", "/", ")", this);
 	        } else {
 	            Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
