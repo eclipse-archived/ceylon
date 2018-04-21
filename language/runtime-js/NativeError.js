@@ -11,6 +11,6 @@ function NatErr(e) {
     Throwable(msg,null,that);
     return that;
 }
-initTypeProto(NatErr, 'ceylon.language::NativeError', $init$Throwable());
+initTypeProto(NatErr, 'ceylon.language::NativeError', $i$Throwable());
 NatErr.$m$=function(){return{nm:'NativeError',mt:'c',ps:[{$t:{t:Throwable},nm:'src',mt:'prm'}],pa:1,mod:$CCMM$,d:['$','Throwable']};}
 ex$.NatErr=NatErr;

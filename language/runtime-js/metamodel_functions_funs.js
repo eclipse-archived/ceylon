@@ -22,8 +22,8 @@ function funmodstr$(fun) {
   if (mm.$cont) {
     qn=qname$(mm.$cont);
     if (mm.$cont.$m$.tp) {
-      var cnt=fun.$$targs$$&&fun.$$targs$$.Container$Function&&fun.$$targs$$.Container$Function.a;
-      if (!cnt)cnt=fun.$$targs$$&&fun.$$targs$$.Container$Method&&fun.$$targs$$.Container$Method.a;
+      var cnt=fun.$a$&&fun.$a$.Container$Function&&fun.$a$.Container$Function.a;
+      if (!cnt)cnt=fun.$a$&&fun.$a$.Container$Method&&fun.$a$.Container$Method.a;
       qn+="<";var first=true;
       for (var tp in mm.$cont.$m$.tp) {
         if (first)first=false;else qn+=",";

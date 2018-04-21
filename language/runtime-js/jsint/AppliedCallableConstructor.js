@@ -1,7 +1,7 @@
-function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
-  if ($$targs$$.Type$AppliedCallableConstructor===undefined)$$targs$$.Type$AppliedCallableConstructor=$$targs$$.Type$CallableConstructor;
-  if ($$targs$$.Arguments$AppliedCallableConstructor===undefined)$$targs$$.Arguments$AppliedCallableConstructor=$$targs$$.Type$CallableConstructor;
-  $init$AppliedCallableConstructor$jsint();
+function AppliedCallableConstructor$jsint(tipo,$a$,that,myTargs) {
+  if ($a$.Type$AppliedCallableConstructor===undefined)$a$.Type$AppliedCallableConstructor=$a$.Type$CallableConstructor;
+  if ($a$.Arguments$AppliedCallableConstructor===undefined)$a$.Arguments$AppliedCallableConstructor=$a$.Type$CallableConstructor;
+  $i$AppliedCallableConstructor$jsint();
   if (that===undefined){
     var mm=getrtmm$$(tipo);
     if (mm) {
@@ -53,10 +53,10 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getHash.$m$);
     }
   }
-  $_Function$meta$model({Arguments$Function:$$targs$$.Arguments$AppliedCallableConstructor,
-    Type$Function:$$targs$$.Type$AppliedCallableConstructor},that);
-  CallableConstructor$meta$model({Type$CallableConstructor:$$targs$$.Type$AppliedCallableConstructor,Arguments$CallableConstructor:$$targs$$.Arguments$AppliedCallableConstructor},that);
-  set_type_args(that,$$targs$$,AppliedCallableConstructor$jsint);
+  $_Function$meta$model({Arguments$Function:$a$.Arguments$AppliedCallableConstructor,
+    Type$Function:$a$.Type$AppliedCallableConstructor},that);
+  CallableConstructor$meta$model({Type$CallableConstructor:$a$.Type$AppliedCallableConstructor,Arguments$CallableConstructor:$a$.Arguments$AppliedCallableConstructor},that);
+  set_type_args(that,$a$,AppliedCallableConstructor$jsint);
   that.$targs=myTargs;
   that.tipo=tipo;
   return that;

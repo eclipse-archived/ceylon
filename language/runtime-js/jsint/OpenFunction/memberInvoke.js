@@ -13,7 +13,7 @@ function memberInvoke(cont,targs,args) {
     for (i=0;i<mm.length;i++) {
       var k=mm[i].nm + '$' + oname;
       ta[k] = {t:targs.$_get(i).tipo};
-      if (targs.$_get(i).$$targs$$.Target$Type.a)ta[k].a=targs.$_get(i).$$targs$$.Target$Type.a;
+      if (targs.$_get(i).$a$.Target$Type.a)ta[k].a=targs.$_get(i).$a$.Target$Type.a;
     }
     a.push(ta);
   }

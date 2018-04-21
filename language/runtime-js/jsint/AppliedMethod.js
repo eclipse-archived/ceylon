@@ -1,8 +1,8 @@
-function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
-  if (!$$targs$$.Type$AppliedMethod)$$targs$$.Type$AppliedMethod=$$targs$$.Type$Method;
-  if (!$$targs$$.Arguments$AppliedMethod)$$targs$$.Arguments$AppliedMethod=$$targs$$.Arguments$Method;
-  if (!$$targs$$.Container$AppliedMethod)$$targs$$.Container$AppliedMethod=$$targs$$.Container$Method;
-  $init$AppliedMethod$jsint();
+function AppliedMethod$jsint(tipo,typeArgs,$a$,$$appliedMethod){
+  if (!$a$.Type$AppliedMethod)$a$.Type$AppliedMethod=$a$.Type$Method;
+  if (!$a$.Arguments$AppliedMethod)$a$.Arguments$AppliedMethod=$a$.Arguments$Method;
+  if (!$a$.Container$AppliedMethod)$a$.Container$AppliedMethod=$a$.Container$Method;
+  $i$AppliedMethod$jsint();
   var mm = getrtmm$$(tipo);
   if (mm.tp) {
     if (typeArgs===undefined || typeArgs.length<1) {
@@ -31,8 +31,8 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   }
   if ($$appliedMethod===undefined){
     $$appliedMethod=function AppliedMtd1(x){
-      return AppliedFunction$jsint(tipo,{Type$Function:$$targs$$.Type$Method,Arguments$Function:$$targs$$.Arguments$Method,
-        Container$Function:$$targs$$.Container$Method},x,typeArgs);
+      return AppliedFunction$jsint(tipo,{Type$Function:$a$.Type$Method,Arguments$Function:$a$.Arguments$Method,
+        Container$Function:$a$.Container$Method},x,typeArgs);
     }
     var dummy=new AppliedMethod$jsint.$$;
     $$appliedMethod.getT$all=function(){return dummy.getT$all();};
@@ -40,9 +40,9 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
     $$appliedMethod.$$=AppliedMethod$jsint.$$;
   }
   if (_ta)$$appliedMethod.$targs=_ta;
-  Method$meta$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments$Method:$$appliedMethod.$$targs$$.Arguments$Method,
-    Type$Method:$$appliedMethod.$$targs$$.Type$Method,Container$Method:$$appliedMethod.$$targs$$.Container$Method},$$appliedMethod);
-  set_type_args($$appliedMethod,$$targs$$,AppliedMethod$jsint);
+  Method$meta$model($$appliedMethod.$a$===undefined?$a$:{Arguments$Method:$$appliedMethod.$a$.Arguments$Method,
+    Type$Method:$$appliedMethod.$a$.Type$Method,Container$Method:$$appliedMethod.$a$.Container$Method},$$appliedMethod);
+  set_type_args($$appliedMethod,$a$,AppliedMethod$jsint);
   $$appliedMethod.tipo=tipo;
 
   var _proto=AppliedMethod$jsint.$$.prototype;

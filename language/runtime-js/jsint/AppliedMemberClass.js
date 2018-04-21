@@ -1,8 +1,8 @@
-function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
-  if (!$$targs$$.Type$AppliedMemberClass)$$targs$$.Type$AppliedMemberClass=$$targs$$.Type$MemberClass;
-  if (!$$targs$$.Arguments$AppliedMemberClass)$$targs$$.Arguments$AppliedMemberClass=$$targs$$.Arguments$MemberClass;
-  if (!$$targs$$.Container$AppliedMemberClass)$$targs$$.Container$AppliedMemberClass=$$targs$$.Container$MemberClass;
-  $init$AppliedMemberClass$jsint();
+function AppliedMemberClass$jsint(tipo,$a$,that,myTargs){
+  if (!$a$.Type$AppliedMemberClass)$a$.Type$AppliedMemberClass=$a$.Type$MemberClass;
+  if (!$a$.Arguments$AppliedMemberClass)$a$.Arguments$AppliedMemberClass=$a$.Arguments$MemberClass;
+  if (!$a$.Container$AppliedMemberClass)$a$.Container$AppliedMemberClass=$a$.Container$MemberClass;
+  $i$AppliedMemberClass$jsint();
   if (that===undefined) {
     var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
@@ -10,9 +10,9 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
         var rv=tipo.bind(x);
         rv.$m$=tipo.$m$;
         var nt={t:tipo};
-        if (x && x.$$targs$$) {
+        if (x && x.$a$) {
           nt.a={};
-          for (var nta in x.$$targs$$)nt.a[nta]=x.$$targs$$[nta];
+          for (var nta in x.$a$)nt.a[nta]=x.$a$[nta];
         }
         if (that.$targs) {
           if (!nt.a)nt.a={};
@@ -27,7 +27,7 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
       throw IncompatibleTypeException$meta$model("Invalid metamodel data for MemberClass");
     }
   }
-  AppliedClass$jsint(tipo,{Type$AppliedClass:$$targs$$.Type$AppliedMemberClass,Arguments$AppliedClass:$$targs$$.Arguments$AppliedMemberClass},that);
+  AppliedClass$jsint(tipo,{Type$AppliedClass:$a$.Type$AppliedMemberClass,Arguments$AppliedClass:$a$.Arguments$AppliedMemberClass},that);
   var dummy = new AppliedMemberClass$jsint.$$;
   that.$$=AppliedMemberClass$jsint.$$;
   that.getT$all=function(){return dummy.getT$all();};
@@ -97,10 +97,10 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'hash',function(){return coihash$(that);},undefined,_proto.$prop$getHash.$m$);
   atr$(that,'container',function(){return coicont$(that); },undefined,_proto.$prop$getContainer.$m$);
   atr$(that,'declaringType',function(){return coicont$(that); },undefined,_proto.$prop$getDeclaringType.$m$);
-  set_type_args(that,$$targs$$,AppliedMemberClass$jsint);
-  MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$AppliedMemberClass,
-                         Type$MemberClass:that.$$targs$$.Type$AppliedMemberClass,
-                         Container$MemberClass:that.$$targs$$.Container$AppliedMemberClass},that);
+  set_type_args(that,$a$,AppliedMemberClass$jsint);
+  MemberClass$meta$model(that.$a$===undefined?$a$:{Arguments$MemberClass:that.$a$.Arguments$AppliedMemberClass,
+                         Type$MemberClass:that.$a$.Type$AppliedMemberClass,
+                         Container$MemberClass:that.$a$.Container$AppliedMemberClass},that);
   that.tipo=tipo;
   return that;
 }

@@ -1,7 +1,7 @@
-function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
-  if (!$$targs$$.Type$AppliedMemberInterface)$$targs$$.Type$AppliedMemberInterface=$$targs$$.Type$MemberInterface;
-  if (!$$targs$$.Container$AppliedMemberInterface)$$targs$$.Container$AppliedMemberInterface=$$targs$$.Container$MemberInterface;
-  $init$AppliedMemberInterface$jsint();
+function AppliedMemberInterface$jsint(tipo,$a$,that,myTargs){
+  if (!$a$.Type$AppliedMemberInterface)$a$.Type$AppliedMemberInterface=$a$.Type$MemberInterface;
+  if (!$a$.Container$AppliedMemberInterface)$a$.Container$AppliedMemberInterface=$a$.Container$MemberInterface;
+  $i$AppliedMemberInterface$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
@@ -9,9 +9,9 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
         var rv=tipo.bind(x);
         rv.$m$=tipo.$m$;
         var nt={t:tipo};
-        if (x && x.$$targs$$) {
+        if (x && x.$a$) {
           nt.a={};
-          for (var nta in x.$$targs$$)nt.a[nta]=x.$$targs$$[nta];
+          for (var nta in x.$a$)nt.a[nta]=x.$a$[nta];
         }
         if (that.$targs) {
           if (!nt.a)nt.a={};
@@ -27,9 +27,9 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
       that=new AppliedMemberInterface$jsint.$$;
     }
   }
-  set_type_args(that,$$targs$$,AppliedMemberInterface$jsint);
-  MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type$MemberInterface:that.$$targs$$.Type$AppliedMemberInterface,
-    Container$MemberInterface:that.$$targs$$.Container$AppliedMemberInterface},that);
+  set_type_args(that,$a$,AppliedMemberInterface$jsint);
+  MemberInterface$meta$model(that.$a$===undefined?$a$:{Type$MemberInterface:that.$a$.Type$AppliedMemberInterface,
+    Container$MemberInterface:that.$a$.Container$AppliedMemberInterface},that);
   that.$targs=myTargs;
   var _proto=AppliedMemberInterface$jsint.$$.prototype;
   that.getMethod=_proto.getMethod;

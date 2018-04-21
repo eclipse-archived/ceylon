@@ -21,10 +21,10 @@ if (this.$defcons$===undefined) {
   }
   if (cn) {
     mm=getrtmm$$(cn).ps;
-    var args=tupleize$params(getrtmm$$(cn).ps,this.$$targs$$.Type$AppliedMemberClass.a);
+    var args=tupleize$params(getrtmm$$(cn).ps,this.$a$.Type$AppliedMemberClass.a);
     var r=AppliedMemberClassCallableConstructor$jsint(cn,
-          {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
-           Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
+          {Type$AppliedMemberClassCallableConstructor:this.$a$.Type$AppliedMemberClass,
+           Container$AppliedMemberClassCallableConstructor:this.$a$.Container$AppliedMemberClass,
            Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
     r.cont$=this;
     this.$defcons$=r;

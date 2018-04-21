@@ -1,6 +1,6 @@
 function OpenCallableConstructor$jsint(pkg, meta, that){
     if (meta===undefined)throw new Error("Constructor reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-    $init$OpenCallableConstructor$jsint();
+    $i$OpenCallableConstructor$jsint();
     if (that===undefined)that=new OpenCallableConstructor$jsint.$$;
     that.containingPackage_=pkg;
     var _mm=getrtmm$$(meta);

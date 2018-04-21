@@ -9,18 +9,18 @@ function(anntypes){
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
   }
-  var cs=coiclsannconstrs$(this,anntypes,mtn+'$c_',this.$$targs$$.Type$AppliedMemberClass);
+  var cs=coiclsannconstrs$(this,anntypes,mtn+'$c_',this.$a$.Type$AppliedMemberClass);
   if (cs.length===0) {
-    cs=coiclsannconstrs$(this,anntypes,mtn+'_',this.$$targs$$.Type$AppliedMemberClass);
+    cs=coiclsannconstrs$(this,anntypes,mtn+'_',this.$a$.Type$AppliedMemberClass);
   }
   for (var i=0;i<cs.length;i++) {
     var r=AppliedMemberClassValueConstructor$jsint(cs[i].tipo,
-               {Type$AppliedMemberClassValueConstructor:this.$$targs$$.Type$AppliedMemberClass,
-                Container$AppliedMemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass});
+               {Type$AppliedMemberClassValueConstructor:this.$a$.Type$AppliedMemberClass,
+                Container$AppliedMemberClassValueConstructor:this.$a$.Container$AppliedMemberClass});
     r.$cont=this;
     cs[i]=r;
   }
   return $arr$sa$(cs,{t:MemberClassValueConstructor$meta$model,
-    a:{Type$MemberClassValueConstructor:this.$$targs$$.Type$AppliedClass,
-       Container$MemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass}});
+    a:{Type$MemberClassValueConstructor:this.$a$.Type$AppliedClass,
+       Container$MemberClassValueConstructor:this.$a$.Container$AppliedMemberClass}});
 }

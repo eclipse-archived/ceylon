@@ -1,9 +1,9 @@
-initExistingType($_String, String, 'ceylon.language::String', $_Object, $init$SearchableList(), $init$Comparable(),
-        $init$Ranged(), $init$Summable());
+initExistingType($_String, String, 'ceylon.language::String', $_Object, $i$SearchableList(), $i$Comparable(),
+        $i$Ranged(), $i$Summable());
 inheritProto($_String, $_Object, SearchableList, Comparable, Ranged, Summable);
 var origStrToString = String.prototype.toString;
 var str$proto = $_String.$$.prototype;
-str$proto.$$targs$$={Element$Iterable:{t:Character}, Absent$Iterable:{t:Null},
+str$proto.$a$={Element$Iterable:{t:Character}, Absent$Iterable:{t:Null},
   Element$List:{t:Character}, Other$Summable:{t:$_String}, Other$Comparable:{t:$_String},
   Index$Ranged:{t:Integer}, Element$Ranged:{t:Character}, Subrange$Ranged:{t:$_String},
   Element$Collection:{t:Character}, Key$Correspondence:{t:Integer}, Item$Correspondence:{t:Character}};

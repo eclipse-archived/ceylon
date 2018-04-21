@@ -155,7 +155,7 @@ public class SerializationHelper {
             } else {
                 gen.out(",");
             }
-            gen.out(tp.getName(), "$", d.getName(), ":", cmodel, ".$$targs$$.Type$Class.a.",
+            gen.out(tp.getName(), "$", d.getName(), ":", cmodel, ".$a$.Type$Class.a.",
                     tp.getName(), "$", d.getName());
         }
         if (!first) {

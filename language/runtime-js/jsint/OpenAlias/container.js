@@ -1,4 +1,4 @@
-var cont=this.$$targs$$.Container;
+var cont=this.$a$.Container;
 if (cont===undefined) {
   cont=this._alias.$m$.$cont;
   if (cont)cont={t:cont};

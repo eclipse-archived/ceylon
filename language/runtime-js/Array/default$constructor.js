@@ -1,15 +1,15 @@
-function $_Array$c_$c$(elems,$$targs$$) {
-    $init$$_Array();
+function $_Array$c_$c$(elems,$a$) {
+    $i$$_Array();
     var e=[];
     if (!(elems === null || elems === undefined)) {
         var item;for(var iter=elems.iterator();(item=iter.next())!==finished();) {
             e.push(item);
         }
     }
-    return $_Array$$c(e,$$targs$$);
+    return $_Array$$c(e,$a$);
 }
 $_Array.inst$$=function(cm){
-  return $_Array(undefined,cm.$$targs$$.Type$Class.a);
+  return $_Array(undefined,cm.$a$.Type$Class.a);
 }
 $_Array.ser$set$=function(ref,o,i){
   if (typeof(ref)==='number') {

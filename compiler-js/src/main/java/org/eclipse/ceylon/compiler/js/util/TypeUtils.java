@@ -140,7 +140,7 @@ public class TypeUtils {
                 }
             }
             if (_init && !isAnonCallable) {
-                gen.out("$init$");
+                gen.out("$i$");
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
@@ -357,7 +357,7 @@ public class TypeUtils {
                     }
                     gen.out(".");
                 }
-                gen.out("$$targs$$.", gen.getNames().typeParameterName(tp));
+                gen.out("$a$.", gen.getNames().typeParameterName(tp));
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT*/t:", gen.getClAlias(), "Anything}");
@@ -1138,7 +1138,7 @@ public class TypeUtils {
                 if (rtafs && ModelUtil.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
-                        gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".$$targs$$.",
+                        gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".$a$.",
                                 gen.getNames().typeParameterName(tparm));
                     } else if (tpowner instanceof Function) {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",

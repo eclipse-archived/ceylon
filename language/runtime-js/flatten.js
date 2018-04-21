@@ -2,10 +2,10 @@ function flatten(tf, $$$mptypes) {
   if (tf.$unflattened$)return tf.$unflattened$;
   var tf_targs;
   if (tf.jsc$) {
-    tf_targs=tf.$$targs$$;
+    tf_targs=tf.$a$;
     tf=tf.jsc$;
   } else if (tf.c2$) {
-    tf_targs=tf.$$targs$$;
+    tf_targs=tf.$a$;
     tf=tf.c2$;
   }
   var mm=getrtmm$$(tf);
@@ -88,7 +88,7 @@ function flatten(tf, $$$mptypes) {
     if (t0.a)rf.$m$.ps[0].$t.a=t0.a;
     if (extendsType(t0,{t:Empty}))rf.$m$.ps=[];
   }
-  rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
+  rf.$a$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
   rf.$flattened$=tf;
   return rf;
 }

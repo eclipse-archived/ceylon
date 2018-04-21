@@ -12,8 +12,8 @@ $_Boolean.$m$=function(){
   mod:$CCMM$,d:['$','Boolean']};
 };
 ex$.$_Boolean=$_Boolean;
-function $init$$_Boolean(){return $_Boolean;}
-ex$.$init$$_Boolean=$init$$_Boolean;
+function $i$$_Boolean(){return $_Boolean;}
+ex$.$i$$_Boolean=$i$$_Boolean;
 function $_true() {return true;}
 initType($_true, "ceylon.language::true", $_Boolean);
 $_true.$m$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','true']}};
@@ -40,7 +40,7 @@ ex$.$prop$getTrue=$_true;
 ex$.$prop$getFalse=$_false;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
-function $init$$_true(){return $_true;}
-function $init$$_false(){return $_false;}
-ex$.$init$$_true=$init$$_true;
-ex$.$init$$_false=$init$$_false;
+function $i$$_true(){return $_true;}
+function $i$$_false(){return $_false;}
+ex$.$i$$_true=$i$$_true;
+ex$.$i$$_false=$i$$_false;

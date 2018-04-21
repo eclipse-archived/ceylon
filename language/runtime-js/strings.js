@@ -12,9 +12,9 @@ function StringIterator(string) {
 }
 StringIterator.$m$=function(){return{nm:'StringIterator',mt:'c',ps:[{nm:'string',$t:{t:$_String}}],pa:1,mod:$CCMM$,d:['$','Iterator']}};
 
-initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), Iterator);
+initTypeProto(StringIterator, 'ceylon.language::StringIterator', $i$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
-StringIterator$proto.$$targs$$={Element$Iterator:{t:Character}, Absent$Iterator:{t:Null}};
+StringIterator$proto.$a$={Element$Iterator:{t:Character}, Absent$Iterator:{t:Null}};
 StringIterator$proto.next = function() {
     if (this.index >= this.str.length) { return finished(); }
     var first = this.str.charCodeAt(this.index++);

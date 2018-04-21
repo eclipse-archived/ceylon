@@ -2,7 +2,7 @@ var arrprot$=$_Array.$$.prototype;
 function $arr$(a,t,seq) {
   if (t===null || t===undefined)t={t:Anything};
   var a=$_Array$$c(a,{Element$Array:t});
-  if (seq)a.$$targs$$.Absent$Iterable={t:Nothing};
+  if (seq)a.$a$.Absent$Iterable={t:Nothing};
   return a;
 }
 ex$.$arr$=$arr$;
@@ -77,25 +77,25 @@ atr$(arrprot$,'rest', function() {
 },undefined,List.$$.prototype.$prop$getRest.$m$);
 
 //for sequenced enumerations
-function sarg$(elems,spread,$$targs$$){
-  $init$sarg();
+function sarg$(elems,spread,$a$){
+  $i$sarg();
   var that=new sarg$.$$;
-  set_type_args(that,{T$LazyIterable:$$targs$$.T$LazyIterable||$$targs$$.Element$Iterable},sarg$);
-  Iterable($$targs$$,that);
+  set_type_args(that,{T$LazyIterable:$a$.T$LazyIterable||$a$.Element$Iterable},sarg$);
+  Iterable($a$,that);
   that.e=elems;
   that.s=spread;
   return that;
 }
 sarg$.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{dv:'out'}},sts:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
 ex$.sarg$=sarg$;
-function $init$sarg(){if(sarg$.$$===undefined){
+function $i$sarg(){if(sarg$.$$===undefined){
   initTypeProto(sarg$,'ceylon.language::LazyIterable',Basic,Iterable);
   (function(that){
     function iter(sarg){
       var $$4=new iter.$$;
       $$4.outer$=sarg;
-      $$4.$$targs$$={Element$Iterator:sarg.$$targs$$.Element$Iterable};
-      Iterator($$4.$$targs$$,$$4);
+      $$4.$a$={Element$Iterator:sarg.$a$.Element$Iterable};
+      Iterator($$4.$a$,$$4);
       $$4.i=0;
       $$4.e=sarg.e;
       $$4.s=sarg.s;
@@ -133,9 +133,9 @@ function $init$sarg(){if(sarg$.$$===undefined){
 }
 return sarg$;
 }
-$init$sarg();
-ex$.$init$sarg=$init$sarg;
-$init$sarg();
+$i$sarg();
+ex$.$i$sarg=$i$sarg;
+$i$sarg();
 //Turn a comprehension into a native array
 function nfor$(c) {
   var a = [];

@@ -1,6 +1,6 @@
 function OpenClassWithConstructors$jsint(pkg, meta, that){
     if (meta===undefined)throw new Error("Class reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-    $init$OpenClassWithConstructors$jsint();
+    $i$OpenClassWithConstructors$jsint();
     if (that===undefined)that=new OpenClassWithConstructors$jsint.$$;
     that.pkg_ = pkg;
     var _mm=getrtmm$$(meta);

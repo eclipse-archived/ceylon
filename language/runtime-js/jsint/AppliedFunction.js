@@ -1,6 +1,6 @@
-function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
-  if (!$$targs$$.Type$AppliedFunction)$$targs$$.Type$AppliedFunction=$$targs$$.Type$Function;
-  if (!$$targs$$.Arguments$AppliedFunction)$$targs$$.Arguments$AppliedFunction=$$targs$$.Arguments$Function;
+function AppliedFunction$jsint(m,$a$,o,mptypes) {
+  if (!$a$.Type$AppliedFunction)$a$.Type$AppliedFunction=$a$.Type$Function;
+  if (!$a$.Arguments$AppliedFunction)$a$.Arguments$AppliedFunction=$a$.Arguments$Function;
   var mm=getrtmm$$(m);
   var ttargs;
   if (mm.tp) {
@@ -16,7 +16,7 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
     }
   }
   var f = o===undefined&&mm.$cont?function AppliedFun1(x){
-    return AppliedFunction$jsint(m,$$targs$$,x,mptypes);
+    return AppliedFunction$jsint(m,$a$,x,mptypes);
   }:function AppliedFun2(){
     var _fu=(o&&o[mm.d[mm.d.length-1]])||m;//Get the object's method if possible
     if (mm.tp) {
@@ -32,10 +32,10 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
   f.$$=AppliedFunction$jsint.$$;
   f.getT$all=function(){return dummy.getT$all();}
   f.getT$name=function(){return dummy.getT$name();}
-  if ($$targs$$===undefined) {
+  if ($a$===undefined) {
     throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
   }
-  $_Function$meta$model($$targs$$,f);
+  $_Function$meta$model($a$,f);
   f.tipo=m;
   f.$targs=ttargs;
   if (o)f.$bound=o;

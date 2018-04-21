@@ -66,11 +66,11 @@ function dre$$(object, type, loc, stack) {
   //Initialize object with type info
   if (type.a) {
     type.t(type.a,object);
-    if (object.$$targs$$===undefined) {
-      object.$$targs$$={};
+    if (object.$a$===undefined) {
+      object.$a$={};
     }
     for (targ in type.a) {
-      if (!object.$$targs$$[targ])object.$$targs$$[targ]=type.a[targ];
+      if (!object.$a$[targ])object.$a$[targ]=type.a[targ];
     }
   } else {
     type.t(object);
@@ -120,14 +120,14 @@ function dre$$(object, type, loc, stack) {
             } else {
               var _t=proptype.$t;
               if (typeof(_t)==='string') {
-                if (object.$$targs$$ && object.$$targs$$[_t]) {
-                  _t=object.$$targs$$[_t];
+                if (object.$a$ && object.$a$[_t]) {
+                  _t=object.$a$[_t];
                 } else {
                   var mm=getrtmm$$(type.t);
                   if (mm && mm.sts) {
                     for (var j=0;j<mm.sts.length;j++) {
                       if (mm.sts[j].a && mm.sts[j].a[_t]) {
-                        object.$$targs$$[_t]=mm.sts[j].a[_t];
+                        object.$a$[_t]=mm.sts[j].a[_t];
                         _t=mm.sts[j].a[_t]; break;
                       }
                     }

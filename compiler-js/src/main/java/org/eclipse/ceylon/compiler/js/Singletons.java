@@ -87,7 +87,7 @@ public class Singletons {
                 }
             }
         }
-        gen.out(GenerateJsVisitor.function, className, targs.isEmpty()?"()":"($$targs$$)");
+        gen.out(GenerateJsVisitor.function, className, targs.isEmpty()?"()":"($a$)");
         gen.beginBlock();
         if (isObjExpr) {
             gen.out("var ", selfName, "=new ", className, ".$$;");
@@ -115,7 +115,7 @@ public class Singletons {
             }
         }
         if (!targs.isEmpty()) {
-            gen.out(selfName, ".$$targs$$=$$targs$$");
+            gen.out(selfName, ".$a$=$a$");
             gen.endLine(true);
         }
         TypeGenerator.callSupertypes(sats, superType, c, that, superDecs, superCall,
@@ -168,7 +168,7 @@ public class Singletons {
                     d.getName() + "' before it was set", that);
             gen.endLine(true);
             gen.out("if(", objvar, "===undefined){", objvar, "=", gen.getClAlias(), "INIT$;",
-                    objvar, "=$init$", oname);
+                    objvar, "=$i$", oname);
             if (!oname.endsWith("()")) {
                 gen.out("()");
             }
@@ -232,7 +232,7 @@ public class Singletons {
         gen.out(nested?"this.":"var ", objvar, "=undefined;function ", constructorName,
                 "(){if(", nested?"this.":"", objvar, "===undefined){");
         if (dc==null) {
-            gen.out("$init$", typevar, "();");
+            gen.out("$i$", typevar, "();");
         }
         if (nested) {
             gen.out("var ", selfvar, "=");

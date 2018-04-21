@@ -1,5 +1,5 @@
 function FunParamDecl(cont,param,$$funParamDecl){
-  $init$FunParamDecl();
+  $i$FunParamDecl();
   if ($$funParamDecl===undefined)$$funParamDecl=new FunParamDecl.$$;
   FunctionDeclaration$meta$declaration($$funParamDecl);
   $$funParamDecl.cont=cont;
@@ -23,7 +23,7 @@ function FunParamDecl(cont,param,$$funParamDecl){
   return $$funParamDecl;
 }
 FunParamDecl.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],sts:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunParamDecl']};};
-function $init$FunParamDecl(){
+function $i$FunParamDecl(){
   if (FunParamDecl.$$===undefined){
     initTypeProto(FunParamDecl,'ceylon.language.meta.declaration::FunParamDecl',Basic,FunctionDeclaration$meta$declaration);
     (function($$funParamDecl){
@@ -101,5 +101,5 @@ $$funParamDecl.annotations.$m$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{
   }
   return FunParamDecl;
 }
-ex$.$init$FunParamDecl=$init$FunParamDecl;
-$init$FunParamDecl();
+ex$.$i$FunParamDecl=$i$FunParamDecl;
+$i$FunParamDecl();
