@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.ceylon.compiler.js.loader.MetamodelGenerator;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -25,9 +27,7 @@ import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
-
-import org.eclipse.ceylon.compiler.js.loader.MetamodelGenerator;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
+import org.eclipse.ceylon.model.typechecker.model.Value;
 
 public class FunctionHelper {
 
@@ -54,7 +54,8 @@ public class FunctionHelper {
     }
     static void singleExprFunction(final List<Tree.ParameterList> paramLists,
                                     final Tree.Expression expr, final Scope scope, final boolean initSelf,
-                                    final boolean emitFunctionKeyword, final GenerateJsVisitor gen) {
+                                    final boolean emitFunctionKeyword, final GenerateJsVisitor gen, 
+                                    final Tree.Type type) {
         generateParameterLists(expr, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
@@ -189,8 +190,9 @@ public class FunctionHelper {
     static void methodArgument(final Tree.MethodArgument that, final GenerateJsVisitor gen) {
         gen.out("(");
         if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getSpecifierExpression().getExpression(),
-                    that.getScope(), false, true, gen);
+            singleExprFunction(that.getParameterLists(), 
+            		that.getSpecifierExpression().getExpression(),
+                    that.getScope(), false, true, gen, that.getType());
         } else {
             multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
         }
@@ -200,7 +202,9 @@ public class FunctionHelper {
     static void functionArgument(Tree.FunctionArgument that, final GenerateJsVisitor gen) {
         gen.out("(");
         if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope(), false, true, gen);
+            singleExprFunction(that.getParameterLists(), 
+            		that.getExpression(), that.getScope(), 
+            		false, true, gen, that.getType());
         } else {
             multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
         }
@@ -254,7 +258,8 @@ public class FunctionHelper {
                 }
             }
             singleExprFunction(that.getParameterLists(),
-                    that.getSpecifierExpression().getExpression(), m, true, !m.isToplevel(), gen);
+                    that.getSpecifierExpression().getExpression(), 
+                    m, true, !m.isToplevel(), gen, that.getType());
             gen.endLine(true);
             if (outer != null) {
                 if (m.isStatic()) {
@@ -385,14 +390,16 @@ public class FunctionHelper {
         gen.out("function(){var ");
         boolean first=true;
         HashSet<Declaration> decs2 = new HashSet<>();
-        for (Tree.Statement st : that.getLetClause().getVariables()) {
+        Tree.LetClause letClause = that.getLetClause();
+		for (Tree.Statement st : letClause.getVariables()) {
             if (!first)gen.out(",");
             if (st instanceof Tree.Variable) {
                 final Tree.Variable var = (Tree.Variable)st;
-                gen.out(gen.getNames().name(var.getDeclarationModel()), "=");
+                Value value = var.getDeclarationModel();
+				gen.out(gen.getNames().name(value), "=");
                 var.getSpecifierExpression().getExpression().visit(gen);
-                directs.add(var.getDeclarationModel());
-                decs2.add(var.getDeclarationModel());
+                directs.add(value);
+                decs2.add(value);
             } else if (st instanceof Tree.Destructure) {
                 final String expvar = gen.getNames().createTempVariable();
                 gen.out(expvar, "=");
@@ -404,7 +411,7 @@ public class FunctionHelper {
             first=false;
         }
         gen.out(";return ");
-        gen.visitSingleExpression(that.getLetClause().getExpression());
+        gen.visitSingleExpression(letClause.getExpression());
         gen.out("}()");
         directs.removeAll(decs2);
     }

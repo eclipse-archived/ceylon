@@ -766,6 +766,7 @@ public class InvocationGenerator {
                     if (first) { first = false; } else { gen.out(","); }
                     gen.out("Object.defineProperty(", tmpobjvar, ",'");
                     if (arg instanceof Tree.AttributeArgument) {
+                        Tree.AttributeArgument att = (Tree.AttributeArgument) arg;
                         String argName = arg.getIdentifier().getText();
                         if (JsIdentifierNames.isTrueReservedWord(argName)) {
                             gen.out("\"", argName, "\"");
@@ -774,7 +775,7 @@ public class InvocationGenerator {
                             gen.out(argName);
                         }
                         gen.out("',{get:function(){ return ");
-                        gen.visitSingleExpression(((Tree.AttributeArgument) arg).getSpecifierExpression().getExpression());
+						gen.visitSingleExpression(att.getSpecifierExpression().getExpression());
                         gen.out("},configurable:true,enumerable:true})");
                     }
                 }

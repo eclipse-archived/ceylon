@@ -22,6 +22,7 @@ import org.eclipse.ceylon.model.typechecker.model.Functional;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
+import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
 
@@ -58,7 +59,8 @@ public class AttributeGenerator {
     static void generateAttributeGetter(final Tree.AnyAttribute attributeNode, final FunctionOrValue decl,
             final Tree.SpecifierOrInitializerExpression expr, final String param, final GenerateJsVisitor gen,
             final Set<Declaration> directAccess, final boolean verboseStitcher) {
-        final boolean asProp = defineAsProperty(decl) && (gen.isCaptured(decl) || decl.isToplevel());
+        final boolean asProp = defineAsProperty(decl) 
+        		&& (gen.isCaptured(decl) || decl.isToplevel());
         final String varName;
         if (asProp) {
             varName = gen.getNames().valueName(decl);
@@ -74,7 +76,8 @@ public class AttributeGenerator {
                 gen.out("if(", varName, "===", gen.getClAlias(), "INIT$)");
                 gen.generateThrow(gen.getClAlias()+"InitializationError",
                         "Cyclic initialization trying to read the value of '" +
-                        decl.getName() + "' before it was set", attributeNode==null?expr:attributeNode);
+                        decl.getName() + "' before it was set", 
+                        attributeNode==null?expr:attributeNode);
                 gen.endLine(true);
                 gen.out("if(", varName, "===undefined){",
                         varName, "=", gen.getClAlias(), "INIT$;", varName, "=");
@@ -91,31 +94,7 @@ public class AttributeGenerator {
                 stitch=false;
             }
             if (genatr) {
-                int boxType = gen.boxUnboxStart(expr.getExpression().getTerm(), false, true, true);
-                if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getExpression().getTypeModel())
-                        && !ModelUtil.isTypeUnknown(decl.getType())) {
-                    TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false,
-                            expr.getExpression().getTypeModel().getTypeArguments());
-                } else {
-                    expr.visit(gen);
-                }
-                if (boxType == 4) {
-                    //Pass Callable argument types
-                    gen.out(",");
-                    if (decl instanceof Function) {
-                        //Add parameters
-                        TypeUtils.encodeParameterListForRuntime(true, attributeNode, ((Function)decl).getFirstParameterList(), gen);
-                    } else {
-                        //Type of value must be Callable
-                        //And the Args Type Parameters is a Tuple
-                        TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(attributeNode,
-                                expr.getExpression().getTypeModel(), gen);
-                    }
-                    gen.out(",");
-                    TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), gen, false,
-                            expr.getExpression().getTypeModel().getVarianceOverrides());
-                }
-                gen.boxUnboxEnd(boxType);
+                visitSpecifiedExpression(attributeNode, decl, expr.getExpression(), gen);
             }
             if (initVal) {
                 gen.out("};return ", varName, ";}");
@@ -199,6 +178,49 @@ public class AttributeGenerator {
         }
     }
 
+	static boolean notFloat(Tree.Type declaredTypeAssignedTo) {
+		return declaredTypeAssignedTo==null 
+			|| declaredTypeAssignedTo.getTypeModel() == null
+			|| !declaredTypeAssignedTo.getTypeModel().isFloat();
+	}
+
+	static void visitSpecifiedExpression(
+			final Tree.AnyAttribute that, 
+			final FunctionOrValue decl,
+			final Tree.Expression expr, 
+			final GenerateJsVisitor gen) {
+		int boxType = gen.boxUnboxStart(expr.getTerm(), false, 
+				decl.isShared() || notFloat(that.getType()), 
+				true);
+		Type type = expr.getTypeModel();
+		if (gen.isInDynamicBlock() 
+				&& ModelUtil.isTypeUnknown(type)
+		        && !ModelUtil.isTypeUnknown(decl.getType())) {
+		    TypeUtils.generateDynamicCheck(expr, decl.getType(), gen, false,
+		            type.getTypeArguments());
+		} else {
+		    expr.visit(gen);
+		}
+		if (boxType == 4) {
+		    //Pass Callable argument types
+		    gen.out(",");
+		    if (decl instanceof Function) {
+		        //Add parameters
+		        TypeUtils.encodeParameterListForRuntime(true, that, 
+		        		((Function)decl).getFirstParameterList(), gen);
+		    } else {
+		        //Type of value must be Callable
+		        //And the Args Type Parameters is a Tuple
+		        TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(that,
+		                type, gen);
+		    }
+		    gen.out(",");
+		    TypeUtils.printTypeArguments(expr, type.getTypeArguments(), gen, false,
+		            type.getVarianceOverrides());
+		}
+		gen.boxUnboxEnd(boxType);
+	}
+
     /** Generates a setter function. This is only needed for toplevel variable attributes. s*/
     static boolean generateAttributeSetter(final Tree.AnyAttribute that, final Value d,
             final GenerateJsVisitor gen) {
@@ -226,7 +248,9 @@ public class AttributeGenerator {
         if (!gen.opts.isOptimize()||d.isToplevel()) return;
         gen.comment(that);
         final String atname = gen.getNames().valueName(d);
-        final String outerName = d.isStatic() ? gen.getNames().name(outer) + ".$st$" : gen.getNames().self(outer);
+        final String outerName = d.isStatic() ? 
+        		gen.getNames().name(outer) + ".$st$" : 
+    			gen.getNames().self(outer);
         if (d.isFormal()) {
             generateAttributeMetamodel(that, false, false, gen);
         } else if (that.getSpecifierOrInitializerExpression() == null) {
@@ -287,8 +311,11 @@ public class AttributeGenerator {
             if (d.isParameter()) {
                 param = ((Functional)d.getContainer()).getParameter(d.getName());
             }
-            if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable() || param != null
-                    || d.isLate() || TypeUtils.isNativeExternal(d)) {
+            if (that.getSpecifierOrInitializerExpression() != null 
+            		|| d.isVariable() 
+            		|| param != null
+                    || d.isLate() 
+                    || TypeUtils.isNativeExternal(d)) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
@@ -379,7 +406,9 @@ public class AttributeGenerator {
 
     public static boolean defineAsProperty(Declaration d) {
         // for now, only define member attributes as properties, not toplevel attributes
-        return d.isMember() && d instanceof FunctionOrValue && !(d instanceof Function);
+        return d.isMember() 
+    		&& d instanceof FunctionOrValue 
+    		&& !(d instanceof Function);
     }
 
     /** Generate runtime metamodel info for an attribute declaration or definition. */
