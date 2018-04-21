@@ -104,7 +104,7 @@ public class BmeGenerator {
                     printGenericMethodReference(gen, bme, who, exp);
                 } else {
                     //Member methods must be passed as JsCallables
-                    gen.out(gen.getClAlias(), "jsc$3(", who, ",", exp, ")");
+                    gen.out(gen.getClAlias(), "f3$(", who, ",", exp, ")");
                 }
             } else {
                 gen.out(exp);
@@ -155,7 +155,7 @@ public class BmeGenerator {
     static void printGenericMethodReference(final GenerateJsVisitor gen,
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Function refs with type arguments must be passed as a special function
-        gen.out(gen.getClAlias(), "jsc$3(", who, ",", member, ",");
+        gen.out(gen.getClAlias(), "f3$(", who, ",", member, ",");
         TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, false,
                 expr.getTypeModel().getVarianceOverrides());
         gen.out(")");

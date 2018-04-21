@@ -2122,7 +2122,7 @@ public class GenerateJsVisitor extends Visitor {
                     if (BmeGenerator.hasTypeParameters(that)) {
                         BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(d));
                     } else {
-                        out(getClAlias(), "jsc$3($O$,$O$.", names.name(d), ")");
+                        out(getClAlias(), "f3$($O$,$O$.", names.name(d), ")");
                     }
                     out(";}");
                 }
@@ -2357,14 +2357,6 @@ public class GenerateJsVisitor extends Visitor {
 	        		out("(");
 	        		return 1;
 	        	}
-	        	else if (isIntegerOperatorExpression(fromTerm)) {
-	        		//TODO: we only really need to do this
-	        		//      if there is some division somewhere
-	        		//      in the tree of operators, or if its
-	        		//      coming from a native call
-	        		out(getClAlias(), "i$");
-	        		return 0;
-	        	}
 	        }
         }
         
@@ -2372,14 +2364,16 @@ public class GenerateJsVisitor extends Visitor {
         if (fromNative != toNative || fromType.isCallable()) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
-                if (fromType.isInteger() || fromType.isFloat()) {
-                    out("(");
+                if (fromType.isInteger()) {
+                    out("i$(");
+                } else if (fromType.isFloat()) {
+                    out("f$(");
                 } else if (fromType.isBoolean()) {
                     out("(");
                 } else if (fromType.isCharacter()) {
                     out(getClAlias(), "c$(");
                 } else if (fromType.isCallable()) {
-                    out(getClAlias(), "jsc$2(");
+                    out(getClAlias(), "f2$(");
                     return 4;
                 } else {
                     return 0;
@@ -2400,7 +2394,7 @@ public class GenerateJsVisitor extends Visitor {
                         return 0;
                     }
                 }
-                out(getClAlias(), "jsc$2(");
+                out(getClAlias(), "f2$(");
                 return 4;
             } else {
                 return 3;
@@ -2409,15 +2403,14 @@ public class GenerateJsVisitor extends Visitor {
         return 0;
     }
 
-	private boolean isIntegerOperatorExpression(Tree.Term fromTerm) {
-        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
-		return term instanceof Tree.ArithmeticOp
-				&& !(term instanceof Tree.PowerOp)
-				|| term instanceof Tree.NegativeOp
-				|| term instanceof Tree.UnionOp
-				|| term instanceof Tree.IntersectionOp
-				|| term instanceof Tree.FlipOp;
-	}
+    void boxUnboxEnd(int boxType) {
+        switch (boxType) {
+        case 1: out(")"); break;
+        case 2: out(".valueOf(/*UNFLOAT*/)"); break;
+        case 4: out(")"); break;
+        default: //nothing
+        }
+    }
 
 	private boolean isFloatOperatorExpression(Tree.Term fromTerm) {
         Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
@@ -2443,15 +2436,6 @@ public class GenerateJsVisitor extends Visitor {
 				|| term instanceof Tree.PositiveOp 
 				&& isFloatLiteral(((Tree.PositiveOp)term).getTerm());
 	}
-
-    void boxUnboxEnd(int boxType) {
-        switch (boxType) {
-        case 1: out(")"); break;
-        case 2: out(".valueOf(/*UNFLOAT*/)"); break;
-        case 4: out(")"); break;
-        default: //nothing
-        }
-    }
 
     @Override
     public void visit(final Tree.ObjectArgument that) {
@@ -3138,7 +3122,8 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "divided", "/", null, this);
         } else {
         	if (TypeUtils.bothInts(lt, rt)) {
-        		Operators.simpleBinaryOp(that, getClAlias() + "i$(", "/", ")", this);
+        		out(getClAlias());
+        		Operators.simpleBinaryOp(that, "i$(", "/", ")", this);
         	} else if (TypeUtils.intsOrFloats(lt, rt)) {
 	        	Operators.simpleBinaryOp(that, "(", "/", ")", this);
 	        } else {
@@ -3154,7 +3139,8 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "remainder", "%", null, this);
         } else {
         	if (TypeUtils.bothInts(lt, rt)) {
-        		Operators.simpleBinaryOp(that, "(", "%", ")", this);
+        		out(getClAlias());
+        		Operators.simpleBinaryOp(that, "i$(", "%", ")", this);
         	}
         	else {
         		Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
