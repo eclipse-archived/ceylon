@@ -29,6 +29,6 @@ function addtype$(t,l) {
   }
   l.push(t);
 }
-ex$.mut$=mut$;
-ex$.mit$=mit$;
-ex$.mtt$=mtt$;
+x$.mut$=mut$;
+x$.mit$=mit$;
+x$.mtt$=mtt$;

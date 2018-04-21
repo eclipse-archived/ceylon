@@ -120,7 +120,7 @@ public class SerializationHelper {
                 gen.out(",");
             }
             gen.out(gen.getClAlias(), "MemberImpl$impl(", gen.getClAlias(), "OpenValue$jsint(",
-                    gen.getClAlias(), "lmp$(ex$,'", "ceylon.language".equals(pkgname) ? "$" : pkgname,
+                    gen.getClAlias(), "lmp$(x$,'", "ceylon.language".equals(pkgname) ? "$" : pkgname,
                     "'),o.", gen.getNames().getter(v, true), "))");
         }
         if (supertype == null) {

@@ -194,7 +194,7 @@ public class Stitcher {
         mod = tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule();
         try (FileWriter writer = new FileWriter(file)) {
             JsCompiler.beginWrapper(writer);
-            writer.write("ex$.$CCMM$=");
+            writer.write("x$.$M$=");
             ModelEncoder.encodeModel(mmg.getModel(), writer);
             writer.write(";\n");
             final JsOutput jsout = new JsOutput(mod, true) {
@@ -274,9 +274,9 @@ public class Stitcher {
                         JsCompiler.beginWrapper(writer);
                         JsCompiler.requireWrapper(writer, mod);
                         //Model
-                        jsout.out("var _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('",
+                        jsout.out("var _CTM$;function $M$(){if (_CTM$===undefined)_CTM$=require('",
                                 "ceylon/language/", version, "/ceylon.language-", version, "-model",
-                                "').$CCMM$;return _CTM$;}\nex$.$CCMM$=$CCMM$;");
+                                "').$M$;return _CTM$;}\nx$.$M$=$M$;");
                         //Compile all the listed files
                         exitCode = stitch(infile, jsout);
                         //Unshared declarations

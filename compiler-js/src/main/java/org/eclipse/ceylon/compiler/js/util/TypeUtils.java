@@ -894,7 +894,7 @@ public class TypeUtils {
 
     public static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
             final RuntimeMetamodelAnnotationGenerator annGen) {
-        gen.out("function(){return{mod:$CCMM$");
+        gen.out("function(){return{mod:$M$");
         List<TypeParameter> tparms = d instanceof Generic ? d.getTypeParameters() : null;
         List<Type> satisfies = null;
         List<Type> caseTypes = null;
@@ -1292,7 +1292,7 @@ public class TypeUtils {
                 final Tree.StringLiteral lit = annotations.getAnonymousAnnotation().getStringLiteral();
                 final String ptmd = helper.getPathToModelDoc();
                 if (ptmd != null && ptmd.length() < lit.getText().length()) {
-                    gen.out(gen.getClAlias(), "doc$($CCMM$,", ptmd);
+                    gen.out(gen.getClAlias(), "doc$($M$,", ptmd);
                     if (helper.getAnPath() != null) {
                         gen.out(",", helper.getAnPath());
                     }
@@ -1401,7 +1401,7 @@ public class TypeUtils {
                             final String ref = pathToModelDoc(d);
                             final String doc = a.getPositionalArguments().get(0);
                             if (ref != null && ref.length() < doc.length()) {
-                                gen.out(gen.getClAlias(), "doc$($CCMM$,", ref);
+                                gen.out(gen.getClAlias(), "doc$($M$,", ref);
                             } else {
                                 gen.out(gen.getClAlias(), "doc(\"", JsUtils.escapeStringLiteral(doc), "\"");
                             }

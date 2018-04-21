@@ -440,7 +440,7 @@ public class AttributeGenerator {
             TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
             gen.out("}"); gen.endLine(true);
             if (d.isToplevel()) {
-                gen.out("ex$.", pnameMeta, "=", pnameMeta);
+                gen.out("x$.", pnameMeta, "=", pnameMeta);
                 gen.endLine(true);
             }
             gen.addGeneratedAttribute(d);

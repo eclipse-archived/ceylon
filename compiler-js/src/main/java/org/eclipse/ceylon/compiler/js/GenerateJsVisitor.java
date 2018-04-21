@@ -301,7 +301,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 ((JsonModule)that.getUnit().getPackage().getModule()).setNpmPath(npmName);
             }
-            out("ex$.$mod$ans$=");
+            out("x$.$mod$ans$=");
             TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), new TypeUtils.AnnotationFunctionHelper() {
                 @Override
                 public String getPathToModelDoc() {
@@ -332,7 +332,7 @@ public class GenerateJsVisitor extends Visitor {
             if (md.getImportModuleList() != null) {
                 List<Tree.ImportModule> importModules = md.getImportModuleList().getImportModules();
                 if (!importModules.isEmpty()) {
-                    out("ex$.$mod$imps=function(){return{");
+                    out("x$.$mod$imps=function(){return{");
                     if (!opts.isMinify())endLine();
                     boolean first=true;
                     for (final Tree.ImportModule im : importModules) {
@@ -387,7 +387,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
-            out("ex$.$pkg$ans$", pknm, "=");
+            out("x$.$pkg$ans$", pknm, "=");
             TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(),
                     new TypeUtils.AnnotationFunctionHelper(){
                 @Override
@@ -3057,7 +3057,7 @@ public class GenerateJsVisitor extends Visitor {
 
     boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
-            out("ex$");
+            out("x$");
             return true;
         }
         else if (d.isClassOrInterfaceMember()) {

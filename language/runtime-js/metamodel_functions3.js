@@ -17,7 +17,7 @@ function _openTypeFromTarg(targ,o) {
   } else if (targ.t==='T') {
     mm=getrtmm$$(Tuple);
     // FIXME: there must be an easier way to get to that package
-    var _m = typeof($CCMM$)==='function'?$CCMM$():$CCMM$;
+    var _m = typeof($M$)==='function'?$M$():$M$;
     //We need the module
     var _mod = modules$meta().find(_m['$mod-name'],_m['$mod-version']);
     var pkg_ = _mod.findPackage("ceylon.language");

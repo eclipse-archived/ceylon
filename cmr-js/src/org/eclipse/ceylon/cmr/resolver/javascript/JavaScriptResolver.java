@@ -38,7 +38,9 @@ public class JavaScriptResolver {
         try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
             String line = null;
             while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("ex$.$CCMM$=")
+                if ((line.startsWith("x$.$M$=")
+                        || line.startsWith("var $M$=")
+                        || line.startsWith("ex$.$CCMM$=")
                         || line.startsWith("var $CCMM$=")
                         || line.startsWith("var $$METAMODEL$$=")
                         || line.startsWith("var $$metamodel$$=")) && line.endsWith("};")) {

@@ -1,6 +1,6 @@
 function(meta,mod$) {
   mod$.$anns=mod$.meta.$mod$ans$;
-  var mm = mod$.meta.$CCMM$;
+  var mm = mod$.meta.$M$;
   if (typeof(mm)==='function') {
     mm=mm();
   }

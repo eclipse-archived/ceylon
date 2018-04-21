@@ -196,7 +196,7 @@ public class Singletons {
             gen.endLine(true);
             if (d.isToplevel()) {
                 final String objectGetterNameMM = gen.getNames().getter(d, true);
-                gen.out("ex$.", objectGetterNameMM, "=", objectGetterNameMM);
+                gen.out("x$.", objectGetterNameMM, "=", objectGetterNameMM);
                 gen.endLine(true);
             }
         } else if (isObjExpr) {
@@ -284,7 +284,7 @@ public class Singletons {
             gen.outerSelf(td);
             gen.out(".", constructorName, "=", constructorName, ";");
         } else if (td.isShared()) {
-            gen.out("ex$.", constructorName, "=", constructorName, ";");
+            gen.out("x$.", constructorName, "=", constructorName, ";");
         }
         gen.out(gen.getNames().name(td), ".", constructorName, "=", constructorName);
         gen.endLine(true);

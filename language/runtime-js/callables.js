@@ -6,7 +6,7 @@ function f2$(f,parms,targs) {
   }
   var set_meta = getrtmm$$(f) === undefined;
   if (set_meta) {
-    f.$m$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
+    f.$m$={ps:parms||[],mod:$M$,d:['$','Callable']};
   }
   if (targs !== undefined && f.$a$ === undefined) {
     f.$a$=targs;
@@ -57,7 +57,7 @@ function f3$(o,f,targs) {
   return fun;
 }
 f3$.$m$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
-  tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
+  tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$M$,d:['$','Callable']};}
 
 function spread$(a,f,targs,noInvoke) {
   if (a.length===undefined||a.getT$all)console.log("NO ES ARREGLO!",a);
@@ -129,7 +129,7 @@ function spread$(a,f,targs,noInvoke) {
   if (targs)arg.push(targs);
   return f.apply(undefined,arg);
 }
-ex$.spread$=spread$;
+x$.spread$=spread$;
 
 function spread$2(f) {
   var args=[].slice.call(arguments,1);
@@ -184,7 +184,7 @@ function spread$2(f) {
   }
   return f.apply(undefined,args);
 }
-ex$.spread$2=spread$2;
+x$.spread$2=spread$2;
 
 //This is used for spread method references
 //Pass it a list (or Iterable, really) and a function to execute on the item with the specified arguments
@@ -207,12 +207,12 @@ function JsCallableList(list,fun,$mpt,$et) {
     return $arr$sa$(rval,$et||{t:Anything});
   };
 }
-JsCallableList.$m$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};
+JsCallableList.$m$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$M$,d:['$','Callable']};
 function mkseq$(t,seq) {
   if (seq)t.seq=seq;
   return t;
 }
-ex$.JsCallableList=JsCallableList;
-ex$.mkseq$=mkseq$;
-ex$.f2$=f2$;
-ex$.f3$=f3$;
+x$.JsCallableList=JsCallableList;
+x$.mkseq$=mkseq$;
+x$.f2$=f2$;
+x$.f3$=f3$;

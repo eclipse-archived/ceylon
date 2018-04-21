@@ -80,7 +80,7 @@ function ser$et$(t) {
   if (t.$targs)r.a=t.$targs;
   return r;
 }
-ex$.ser$et$=ser$et$;
+x$.ser$et$=ser$et$;
 //Given a type structure that has an object value  as its "type",
 //return a new structure with the object's type
 function value2type$(t){

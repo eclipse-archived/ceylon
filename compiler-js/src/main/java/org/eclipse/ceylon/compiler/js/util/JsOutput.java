@@ -87,7 +87,7 @@ public class JsOutput {
         modfile = File.createTempFile("ceylon-jsmod-", ".tmp");
         try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
             JsCompiler.beginWrapper(fw);
-            fw.write("ex$.$CCMM$=");
+            fw.write("x$.$M$=");
             ModelEncoder.encodeModel(mmg.getModel(), fw);
             fw.write(";\n");
             JsCompiler.endWrapper(fw);
@@ -97,22 +97,22 @@ public class JsOutput {
 
     /** Write the function to retrieve or define the model JSON map. */
     protected void writeModelRetriever() throws IOException {
-        out("require('", JsCompiler.scriptPath(module), "-model').$CCMM$");
+        out("require('", JsCompiler.scriptPath(module), "-model').$M$");
     }
 
     public void encodeModel(final JsIdentifierNames names) throws IOException {
         if (!modelDone) {
             modelDone = true;
             writeModelFile();
-            out("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=");
+            out("\nvar _CTM$;function $M$(){if (_CTM$===undefined)_CTM$=");
             writeModelRetriever();
             out(";return _CTM$;}\n");
-            out("ex$.$CCMM$=$CCMM$;\n");
+            out("x$.$M$=$M$;\n");
             if (!compilingLanguageModule) {
                 Module clm = module.getLanguageModule();
                 clalias = names.moduleAlias(clm) + ".";
                 require(clm, names);
-                out(clalias, "$addmod$(ex$,'", module.getNameAsString(), "/", module.getVersion(), "');\n");
+                out(clalias, "$addmod$(x$,'", module.getNameAsString(), "/", module.getVersion(), "');\n");
             }
         }
     }
@@ -226,7 +226,7 @@ public class JsOutput {
                 }
             }
             if (!unsharedDecls.isEmpty()) {
-                out("ex$.$pkgunsh$", pkg.getNameAsString().replace('.', '$'), "={");
+                out("x$.$pkgunsh$", pkg.getNameAsString().replace('.', '$'), "={");
                 boolean first=true;
                 for (Declaration d : unsharedDecls) {
                     if (d.getName() == null) continue;

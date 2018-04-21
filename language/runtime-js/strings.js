@@ -10,7 +10,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-StringIterator.$m$=function(){return{nm:'StringIterator',mt:'c',ps:[{nm:'string',$t:{t:$_String}}],pa:1,mod:$CCMM$,d:['$','Iterator']}};
+StringIterator.$m$=function(){return{nm:'StringIterator',mt:'c',ps:[{nm:'string',$t:{t:$_String}}],pa:1,mod:$M$,d:['$','Iterator']}};
 
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', $i$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
@@ -44,5 +44,5 @@ function codepointFromString(str, index) {
     var second = str.charCodeAt(index+1);
     return isNaN(second) ? first : ((first<<10) + second - 0x35fdc00);
 }
-ex$.codepointFromString=codepointFromString;
+x$.codepointFromString=codepointFromString;
 

@@ -58,7 +58,7 @@ function dre$$(object, type, loc, stack) {
     object.T$all={};
     object.getT$all=function(){return this.T$all};
     object.T$all['ceylon.language::Object']=$_Object;
-    object.$m$={mod:$CCMM$,$t:{t:$_Object},sts:[],d:{mt:'c'}};
+    object.$m$={mod:$M$,$t:{t:$_Object},sts:[],d:{mt:'c'}};
   }
   //Add type
   object.T$all[tname]=type;
@@ -154,7 +154,7 @@ function dre$$(object, type, loc, stack) {
   }
   return object;
 }
-ex$.dre$$=dre$$;
+x$.dre$$=dre$$;
 //print native dynamic object
 function pndo$(o) {
   if (o === undefined)print("<undefined>");
@@ -165,7 +165,7 @@ function pndo$(o) {
     print(o.toString());
   }
 }
-ex$.pndo$=pndo$;
+x$.pndo$=pndo$;
 //check if numbers are really numbers
 function ndnc$(n,t,loc) {
   if (t==='f') {
@@ -178,14 +178,14 @@ function ndnc$(n,t,loc) {
   if (loc===false)return false;
   throw new TypeError('Expected ' + (t==='f'?'Float':'Integer') + ' (' + loc + ')');
 }
-ex$.ndnc$=ndnc$;
+x$.ndnc$=ndnc$;
 //Check if an object if really of a certain type
 function ndtc$(o,t,loc) {
   if (t==='$U' || is$(o,t))return o;
   if (loc===false)return false;
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
-ex$.ndtc$=ndtc$;
+x$.ndtc$=ndtc$;
 //Box native array, checking elements' type
 function natc$(a,t,loc,stack) {
   if (a===empty())return $arr$([],t);
@@ -200,7 +200,7 @@ function natc$(a,t,loc,stack) {
   if(loc===false)return false;
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
-ex$.natc$=natc$;
+x$.natc$=natc$;
 
 //A special kind of "require" for non-standard npm modules
 //that return a single function instead of a proper exports object
@@ -218,4 +218,4 @@ function npm$req(name,mod,req) {
   }
   return x;
 }
-ex$.npm$req=npm$req;
+x$.npm$req=npm$req;
