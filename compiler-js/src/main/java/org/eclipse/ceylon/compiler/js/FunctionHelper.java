@@ -432,7 +432,7 @@ public class FunctionHelper {
                 gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
                 TypeUtils.typeNameOrList(n, t, gen, false);
             }
-            gen.out("};};return ", gen.getClAlias(), "jsc$3(0,", name, ");");
+            gen.out("};};return ", gen.getClAlias(), "f3$(0,", name, ");");
         }
         Type tupleFromParameterList() {
             if (params.getParameters().isEmpty()) {
@@ -549,7 +549,7 @@ public class FunctionHelper {
                 if (BmeGenerator.hasTypeParameters(that)) {
                     BmeGenerator.printGenericMethodReference(gen, that, "x", "x."+name);
                 } else {
-                    gen.out(gen.getClAlias(), "jsc$3(x,x.", name, ")");
+                    gen.out(gen.getClAlias(), "f3$(x,x.", name, ")");
                 }
                 gen.out(";}");
             }
@@ -572,10 +572,10 @@ public class FunctionHelper {
                 BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
             } else {
                 if (that.getUnit().isOptionalType(that.getPrimary().getTypeModel())) {
-                    gen.out(gen.getClAlias(), "jsc$3(", primaryVar, ",", gen.getClAlias(),
+                    gen.out(gen.getClAlias(), "f3$(", primaryVar, ",", gen.getClAlias(),
                             "nn$(", primaryVar, ")?", member, ":null)");
                 } else {
-                    gen.out(gen.getClAlias(), "jsc$3(", primaryVar, ",", member, ")");
+                    gen.out(gen.getClAlias(), "f3$(", primaryVar, ",", member, ")");
                 }
             }
         }

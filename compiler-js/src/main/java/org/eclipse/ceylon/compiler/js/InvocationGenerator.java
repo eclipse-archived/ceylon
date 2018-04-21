@@ -359,7 +359,7 @@ public class InvocationGenerator {
             gen.out(varName, "=");
             if (arg instanceof Tree.MethodArgument) {
                 Tree.MethodArgument marg = (Tree.MethodArgument)arg;
-                gen.out(gen.getClAlias(), "jsc$2(");
+                gen.out(gen.getClAlias(), "f2$(");
                 FunctionHelper.methodArgument(marg, gen);
                 gen.out(",");
                 //Add parameters

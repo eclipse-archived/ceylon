@@ -1,115 +1,62 @@
-function $JsCallable(f$,parms,targs) {
-  //Do not wrap another $JsCallable
-  if (f$.jsc$)return f$;
-  if (f$.getT$all === undefined) {
-    f$.getT$all=Callable.getT$all;
+function f2$(f,parms,targs) {
+  //Do not wrap another JsCallable
+  if (f.jsc$)return f;
+  if (f.getT$all === undefined) {
+    f.getT$all=Callable.getT$all;
   }
-  var set_meta = getrtmm$$(f$) === undefined;
+  var set_meta = getrtmm$$(f) === undefined;
   if (set_meta) {
-    f$.$crtmm$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
+    f.$crtmm$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
   }
-  if (targs !== undefined && f$.$$targs$$ === undefined) {
-    f$.$$targs$$=targs;
+  if (targs !== undefined && f.$$targs$$ === undefined) {
+    f.$$targs$$=targs;
     if (set_meta) {
-      f$.$crtmm$.$t=targs.Return$Callable;
+      f.$crtmm$.$t=targs.Return$Callable;
     }
   }
-  if (f$.$flattened$||f$.$unflattened$)return f$;
-  var f=function c1(){
-    return f$.apply(undefined,spread$(arguments,f$,targs,1));
-  }
-  f.$crtmm$=f$.$crtmm$;
-  f.getT$all=f$.getT$all;
-  f.jsc$=f$;
-  f.equals=function(o) {
-    return false;//o===f || o===f$;
-  }
-  return f;
-}
-initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', $init$Callable());
-
-function jsc$2(f$,parms,targs) {
-  //Do not wrap another $JsCallable
-  if (f$.jsc$)return f$;
-  if (f$.getT$all === undefined) {
-    f$.getT$all=Callable.getT$all;
-  }
-  var set_meta = getrtmm$$(f$) === undefined;
-  if (set_meta) {
-    f$.$crtmm$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
-  }
-  if (targs !== undefined && f$.$$targs$$ === undefined) {
-    f$.$$targs$$=targs;
-    if (set_meta) {
-      f$.$crtmm$.$t=targs.Return$Callable;
-    }
-  }
-  if (f$.$flattened$||f$.$unflattened$)return f$;
-  var f=function c2(){
-    return f$.apply(undefined,arguments);
+  if (f.$flattened$||f.$unflattened$)return f;
+  var fun=function c2(){
+    return f.apply(undefined,arguments);
   };
   if (targs) {
-    f.$$targs$$=targs;
+    fun.$$targs$$=targs;
   }
-  f.$crtmm$=f$.$crtmm$;
-  f.getT$all=f$.getT$all;
-  f.jsc$=f$;
-  f.equals=function(o) {
-    return false;//o===f || o===f$;
+  fun.$crtmm$=f.$crtmm$;
+  fun.getT$all=f.getT$all;
+  fun.jsc$=f;
+  fun.equals=function(o) {
+    return false;//o===f || o===f;
   }
-  return f;
+  return fun;
 }
-initExistingTypeProto(jsc$2, Function, 'ceylon.language::JsCallable', $init$Callable());
+initExistingTypeProto(f2$, Function, 'ceylon.language::JsCallable', $init$Callable());
 
 function nop$(){return null;}
 
-//This is used for method references
-//o: The object used for "this"
-//f: The function itself
-//targs: The type arguments to pass in the function call
-function JsCallable(o,f,targs) {
+function f3$(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
-  var f2=function c4() {
-    var arg=spread$(arguments,f,targs,1);
-    if (targs)arg.push(targs);
-    return f.apply(o, arg);
-  };
-  f2.c2$=f;
-  f2.$$targs$$=targs;
-  f2.equals=function(x){
-    return false;//f===x || f2===x;
-  }
-  f2.$crtmm$=f.$crtmm$||Callable.$crtmm$;
-  return f2;
-}
-JsCallable.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
-  tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
-
-function jsc$3(o,f,targs) {
-  if (o===null || o===undefined) return nop$;
-  if (f.jsc$)f=f.jsc$;
-  var f2;
+  var fun;
   if (targs) {
-    f2=function c5() {
+    fun=function c5() {
       var a=[].slice.call(arguments,0);
       a.push(targs);
       return f.apply(o, a);
     };
   } else {
-    f2=function c6() {
+    fun=function c6() {
       return f.apply(o, arguments);
     };
   }
-  f2.c2$=f;
-  f2.$$targs$$=targs;
-  f2.equals=function(x){
-    return false;//f===x || f2===x;
+  fun.c2$=f;
+  fun.$$targs$$=targs;
+  fun.equals=function(x){
+    return false;//f===x || fun===x;
   }
-  f2.$crtmm$=f.$crtmm$||Callable.$crtmm$;
-  return f2;
+  fun.$crtmm$=f.$crtmm$||Callable.$crtmm$;
+  return fun;
 }
-jsc$3.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
+f3$.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 function spread$(a,f,targs,noInvoke) {
@@ -266,8 +213,6 @@ function mkseq$(t,seq) {
   return t;
 }
 ex$.JsCallableList=JsCallableList;
-ex$.JsCallable=JsCallable;
-ex$.$JsCallable=$JsCallable;
 ex$.mkseq$=mkseq$;
-ex$.jsc$2=jsc$2;
-ex$.jsc$3=jsc$3;
+ex$.f2$=f2$;
+ex$.f3$=f3$;

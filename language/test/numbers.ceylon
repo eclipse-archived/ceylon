@@ -1200,4 +1200,6 @@ void checkFormatFloat() {
     check(Float.sum([])==0.0, "Float.sum 1");
     check(Float.sum([0.5])==0.5, "Float.sum 2");
     check(Float.sum([0.1,0.1,0.1,0.1])==0.4, "Float sum 3");
+    
+    check(3/2*2==2, "Integer division");
 }
