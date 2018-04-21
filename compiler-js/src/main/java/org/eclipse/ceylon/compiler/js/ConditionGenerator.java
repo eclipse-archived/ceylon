@@ -182,8 +182,9 @@ public class ConditionGenerator {
 
     /** Handles the "is", "exists" and "nonempty" conditions, with a pre-generated
      * list of the variables from the conditions. */
-    void specialConditions(final List<VarHolder> vars, Tree.ConditionList conditions, String keyword,
-                           final boolean forAssert) {
+    void specialConditions(final List<VarHolder> vars, 
+    		Tree.ConditionList conditions, String keyword,
+    		final boolean forAssert) {
         //The first pass is gathering the conditions, which we already get here
         //Second pass: generate the conditions
         if (!keyword.isEmpty()) {
@@ -208,8 +209,9 @@ public class ConditionGenerator {
         }
     }
 
-    private void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName,
-                                       final boolean forAssert) {
+    private void specialConditionCheck(Condition condition, 
+    		Tree.Term variableRHS, String varName,
+    		final boolean forAssert) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             ExistsOrNonemptyCondition enc = (ExistsOrNonemptyCondition) condition;
             if (enc.getNot()) {
@@ -233,13 +235,22 @@ public class ConditionGenerator {
     void specialConditionRHS(Tree.Term variableRHS, String varName) {
         if (varName == null) {
             if (variableRHS!=null) {
-                variableRHS.visit(gen);
+            	specialConditionExpr(variableRHS);
             }
         } else {
             gen.out("(", varName, "=");
-            variableRHS.visit(gen);
+            specialConditionExpr(variableRHS);
             gen.out(")");
         }
+    }
+    
+    void specialConditionExpr(Tree.Term term) {
+    	if (term instanceof Tree.BaseMemberExpression) {
+    		BmeGenerator.generateBme((Tree.BaseMemberExpression) term, gen, false);
+    	}
+    	else {
+    		term.visit(gen);
+    	}
     }
 
     void specialConditionRHS(String variableRHS, String varName) {
