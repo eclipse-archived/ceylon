@@ -175,7 +175,7 @@ function $i$tpl$(){
       tuple.span=function(a,b){//from,to
         if (this.sp$) {
           if (a>=this.elem$.length&&b>=this.elem$.length){
-            return this.sp$.span(a-this.elem$.length,b-this.elem$.length);
+            return this.sp$.span(a-this.elem$.length,b-this.elem$.length).sequence();
           }
           if (b>=this.elem$.length) {
             var s1=this.elem$.slice(a);
@@ -189,7 +189,7 @@ function $i$tpl$(){
             return s1.chain(s2,{Other$chain:this.tps$,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
         }
-        return $arr$(this.elem$,this.t$).span(a,b);
+        return $arr$(this.elem$,this.t$).span(a,b).sequence();
       }
       tuple.span.$m$=Tuple.$$.prototype.span.$m$;
       tuple.spanTo=function(x){
@@ -218,9 +218,9 @@ function $i$tpl$(){
         if(b===0)return empty();
         if (this.sp$) {
           if (a>=this.elem$.length) {
-              var m1=this.sp$.measure(a-this.elem$.length,b);
+            var m1=this.sp$.measure(a-this.elem$.length,b);
             if (b>0) {
-              return m1;
+              return m1.sequence();
             } else {
               console.log("missing tpl.measure with negative length");
             }
@@ -231,7 +231,7 @@ function $i$tpl$(){
             return m1.chain(m2,{Other$chain:this.sp$.$a$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
         }
-        return $arr$(this.elem$,this.t$).measure(a,b);
+        return $arr$(this.elem$,this.t$).measure(a,b).sequence();
       }
       tuple.measure.$m$=Tuple.$$.prototype.measure.$m$;
       tuple.equals=function(o){

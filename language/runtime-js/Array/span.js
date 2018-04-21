@@ -4,5 +4,5 @@ function(from, to) {
         arr.reverseInPlace();
         return arr.sequence();
     }
-    return this.measure(from, to-from+1).sequence();
+    return this.measure(from, to-from+1);
 }
