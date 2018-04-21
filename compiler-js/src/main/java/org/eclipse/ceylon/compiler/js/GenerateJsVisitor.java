@@ -2333,7 +2333,8 @@ public class GenerateJsVisitor extends Visitor {
         return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toDecl), true);
     }
 
-    private int boxUnboxStart(final Tree.Term fromTerm, boolean toNative, boolean wrapFloat) {
+    private int boxUnboxStart(final Tree.Term fromTerm, 
+    		boolean toNative, boolean wrapFloat) {
         // Box the value
         final Type fromType = fromTerm.getTypeModel();
         if (fromType == null) {
@@ -2356,6 +2357,9 @@ public class GenerateJsVisitor extends Visitor {
         		return 1;
         	}
         	else if (isIntegerOperatorExpression(fromTerm)) {
+        		//TODO: we only really need to do this
+        		//      if there is some division somewhere
+        		//      in the tree of operators
         		out(getClAlias(), "i$");
         		return 0;
         	}
@@ -3265,7 +3269,7 @@ public class GenerateJsVisitor extends Visitor {
                     out(",", tmp, ".", dec, "=");
                     int boxType = boxStart(lhsQME);
                     out(tmp, ".", dec);
-                    if (boxType == 4) out("/*TODO: callable targs*/");
+                    if (boxType == 4) out("/*TODO: callable targs 8*/");
                     boxUnboxEnd(boxType);
                     out(operand);
 //                    if (!isNaturalLiteral(that.getRightTerm())) {

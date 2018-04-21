@@ -16,7 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
+import org.eclipse.ceylon.compiler.js.util.RetainedVars;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
@@ -26,16 +30,13 @@ import org.eclipse.ceylon.model.typechecker.model.Interface;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Parameter;
 import org.eclipse.ceylon.model.typechecker.model.ParameterList;
+import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
-import org.eclipse.ceylon.compiler.js.util.RetainedVars;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 
 /** Generates js code for invocation expression (named and positional). */
 public class InvocationGenerator {
@@ -66,29 +67,31 @@ public class InvocationGenerator {
                     && d.getContainer() instanceof Generic
                     && ((Generic)d.getContainer()).isParameterized();
             final boolean hasParentTargs = TypeUtils.isStaticWithGenericContainer(d);
-            if (hasTargs && ModelUtil.isConstructor(d)) {
-                return smote.getTarget().getTypeArguments();
+            Reference target = smote.getTarget();
+			TypeArguments typeArgs = smote.getTypeArguments();
+			if (hasTargs && ModelUtil.isConstructor(d)) {
+                return target.getTypeArguments();
             } else if (hasParentTargs) {
-                if (smote.getTypeArguments() != null 
-                        && !smote.getTypeArguments().getTypeModels().isEmpty()) {
-                    //If the type is static AND has type arguments of its own, we need to merge them
-                    Map<TypeParameter, Type> targs = new HashMap<>();
-                    targs.putAll(smote.getTarget().getTypeArguments());
-                    targs.putAll(smote.getTarget().getQualifyingType().getTypeArguments());
-                    return targs;
-                }
-                return smote.getTarget().getQualifyingType().getTypeArguments();
-            } else if (d instanceof Functional) {
-                Map<TypeParameter,Type> targs = 
-                        TypeUtils.matchTypeParametersWithArguments(
-                            d.getTypeParameters(),
-                            smote.getTypeArguments() == null ? null :
-                            smote.getTypeArguments().getTypeModels());
-                if (targs == null) {
-                    gen.out("/*TARGS != TPARAMS!!!!*/");
-                }
-                return targs;
-            }
+			    if (typeArgs != null 
+			            && !typeArgs.getTypeModels().isEmpty()) {
+			        //If the type is static AND has type arguments of its own, we need to merge them
+			        Map<TypeParameter, Type> targs = new HashMap<>();
+			        targs.putAll(target.getTypeArguments());
+			        targs.putAll(target.getQualifyingType().getTypeArguments());
+			        return targs;
+			    }
+			    return target.getQualifyingType().getTypeArguments();
+			} else if (d instanceof Functional) {
+			    Map<TypeParameter,Type> targs = 
+			            TypeUtils.matchTypeParametersWithArguments(
+			                d.getTypeParameters(),
+			                typeArgs == null ? null :
+			                typeArgs.getTypeModels());
+			    if (targs == null) {
+			        gen.out("/*TARGS != TPARAMS!!!!*/");
+			    }
+			    return targs;
+			}
         } else if (p instanceof Tree.ExtendedTypeExpression) {
             Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)p;
             return ete.getTarget().getTypeArguments();
@@ -99,7 +102,8 @@ public class InvocationGenerator {
     private void namedInvocation(final Tree.InvocationExpression that) {
         final Tree.Primary typeArgSource = that.getPrimary();
         Tree.NamedArgumentList argList = that.getNamedArgumentList();
-        if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.MemberOrTypeExpression
+        if (gen.isInDynamicBlock() 
+        		&& typeArgSource instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() == null) {
             final String fname = names.createTempVariable();
             gen.out("(", fname, "=");
@@ -116,7 +120,7 @@ public class InvocationGenerator {
             gen.out("))");
         } else {
             gen.out("(");
-            Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
+            Map<String,String> argVarNames = defineNamedArguments(typeArgSource, argList);
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen);
             } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
@@ -137,22 +141,25 @@ public class InvocationGenerator {
     }
 
     private void positionalInvocation(final Tree.InvocationExpression that) {
-        final Tree.Primary typeArgSource = that.getPrimary();
+        final Tree.Primary primary = that.getPrimary();
+        Type primaryType = primary.getTypeModel();
         final Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-        final Map<TypeParameter, Type> targs = getTypeArguments(typeArgSource);
-        if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
-                && ((Tree.BaseTypeExpression)typeArgSource).getDeclaration() == null) {
+        final Map<TypeParameter, Type> targs = getTypeArguments(primary);
+        List<Tree.PositionalArgument> positionalArgs = argList.getPositionalArguments();
+		if (gen.isInDynamicBlock() 
+        		&& primary instanceof Tree.BaseTypeExpression
+                && ((Tree.BaseTypeExpression)primary).getDeclaration() == null) {
             gen.out("(");
             //Could be a dynamic object, or a Ceylon one
             //We might need to call "new" so we need to get all the args to pass directly later
-            final List<String> argnames = generatePositionalArguments(typeArgSource,
-                    argList, argList.getPositionalArguments(), false, true);
+            final List<String> argnames = generatePositionalArguments(primary,
+                    argList, positionalArgs, false, true);
             if (!argnames.isEmpty()) {
                 gen.out(",");
             }
             final String fname = names.createTempVariable();
             gen.out(fname,"=");
-            typeArgSource.visit(gen);
+            primary.visit(gen);
             String theargs = "";
             if (!argnames.isEmpty()) {
                 theargs = argnames.toString().substring(1);
@@ -162,32 +169,37 @@ public class InvocationGenerator {
             //TODO we lose type args for now
             return;
         } else {
-            final Tree.PositionalArgument lastArg = argList.getPositionalArguments().isEmpty()?null:argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1);
-            boolean hasSpread = lastArg instanceof Tree.SpreadArgument 
-                    && that.getUnit().isUnknownArgumentsCallable(that.getPrimary().getTypeModel())
-                    && !typeArgSource.getTypeModel().isUnknown();
+            final Tree.PositionalArgument lastArg = positionalArgs.isEmpty() ?
+            		null : positionalArgs.get(positionalArgs.size()-1);
+			boolean hasSpread = lastArg instanceof Tree.SpreadArgument 
+                    && that.getUnit().isUnknownArgumentsCallable(primaryType)
+                    && !primaryType.isUnknown();
             if (hasSpread) {
                 gen.out(gen.getClAlias(), "spread$2(");
             }
-            if (typeArgSource instanceof Tree.BaseMemberExpression) {
-                final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
+            if (primary instanceof Tree.BaseMemberExpression) {
+                final Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)primary;
                 if (gen.isInDynamicBlock()) {
-                    if (_bme.getDeclaration() == null || _bme.getDeclaration().isDynamic()
-                            || (_bme.getDeclaration() instanceof TypedDeclaration &&
-                            ((TypedDeclaration)_bme.getDeclaration()).isDynamicallyTyped())) {
+                    Declaration dec = bme.getDeclaration();
+					if (dec == null 
+                    		|| dec.isDynamic()
+                            || dec instanceof TypedDeclaration 
+                            		&& ((TypedDeclaration)dec).isDynamicallyTyped()) {
                         if (lastArg instanceof Tree.SpreadArgument &&
-                                (lastArg.getTypeModel() == null || lastArg.getTypeModel().isUnknown())) {
-                            BmeGenerator.generateBme(_bme, gen);
+                                (lastArg.getTypeModel() == null 
+                                	|| lastArg.getTypeModel().isUnknown())) {
+                            BmeGenerator.generateBme(bme, gen);
                             gen.out(".apply(0,");
-                            if (argList.getPositionalArguments().size()==1) {
-                                generatePositionalArguments(typeArgSource,
-                                    argList, argList.getPositionalArguments(), false, true);
+                            if (positionalArgs.size()==1) {
+                                generatePositionalArguments(primary,
+                                    argList, positionalArgs, false, true);
                             } else {
                                 gen.out("[");
-                                ArrayList<Tree.PositionalArgument> subargs = new ArrayList<>(argList.getPositionalArguments().size());
-                                subargs.addAll(argList.getPositionalArguments());
+                                ArrayList<Tree.PositionalArgument> subargs = 
+                                		new ArrayList<>(positionalArgs.size());
+                                subargs.addAll(positionalArgs);
                                 subargs.remove(subargs.size()-1);
-                                generatePositionalArguments(typeArgSource,
+                                generatePositionalArguments(primary,
                                     argList, subargs, false, true);
                                 gen.out("].concat(");
                                 lastArg.visit(gen);
@@ -196,8 +208,8 @@ public class InvocationGenerator {
                             gen.out(")");
                             return;
                         }
-                    } else if ("ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
-                        Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
+                    } else if ("ceylon.language::print".equals(dec.getQualifiedNameString())) {
+                        Tree.PositionalArgument printArg = positionalArgs.get(0);
                         if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
                             gen.out(gen.getClAlias(), "pndo$("); //#397
                             printArg.visit(gen);
@@ -206,16 +218,16 @@ public class InvocationGenerator {
                         }
                     }
                 }
-                BmeGenerator.generateBme(_bme, gen);
-            } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+                BmeGenerator.generateBme(bme, gen);
+            } else if (primary instanceof Tree.QualifiedTypeExpression) {
+                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)primary, gen);
             } else {
-                typeArgSource.visit(gen);
+                primary.visit(gen);
             }
 
-            if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
-                gen.out(".call(", names.self(ModelUtil.getContainingClassOrInterface(typeArgSource.getScope())));
-                if (!argList.getPositionalArguments().isEmpty()) {
+            if (gen.opts.isOptimize() && (gen.getSuperMemberScope(primary) != null)) {
+                gen.out(".call(", names.self(ModelUtil.getContainingClassOrInterface(primary.getScope())));
+                if (!positionalArgs.isEmpty()) {
                     gen.out(",");
                 }
             } else if (hasSpread) {
@@ -224,8 +236,8 @@ public class InvocationGenerator {
                 gen.out("(");
             }
             //Check if args have params
-            boolean fillInParams = !argList.getPositionalArguments().isEmpty();
-            for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
+            boolean fillInParams = !positionalArgs.isEmpty();
+            for (Tree.PositionalArgument arg : positionalArgs) {
                 fillInParams &= arg.getParameter() == null;
             }
             if (fillInParams) {
@@ -233,8 +245,8 @@ public class InvocationGenerator {
                 Interface cd = that.getUnit().getCallableDeclaration();
                 final Type ed = that.getUnit().getEmptyType();
                 Class td = that.getUnit().getTupleDeclaration();
-                Type callable = typeArgSource.getTypeModel() == null ? null :
-                    typeArgSource.getTypeModel().getSupertype(cd);
+                Type callable = primaryType == null ? null :
+                    	primaryType.getSupertype(cd);
                 if (callable != null) {
                     //This is a tuple with the arguments to the callable
                     //(can be union with empty if first param is defaulted)
@@ -247,22 +259,20 @@ public class InvocationGenerator {
                         isUnion=callableArgs.isUnion();
                     }
                     //This is the type of the first argument
-                    boolean isSequenced = !(isUnion || td.equals(
-                            callableArgs.getDeclaration()));
+                    boolean isSequenced = !isUnion && !td.equals(callableArgs.getDeclaration());
                     Type argtype = isUnion ? callableArgs :
                         callableArgs.isTypeParameter() || callableArgs.isEmpty() ? callableArgs :
-                        callableArgs.isSequence()||callableArgs.isSequential() ? callableArgs.getTypeArgumentList().get(0) :
-                        callableArgs.getTypeArgumentList().get(
-                            isSequenced ? 0 : 1);
+                        callableArgs.isSequence() || callableArgs.isSequential() ? callableArgs.getTypeArgumentList().get(0) :
+                        callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
                     Parameter p = null;
                     int c = 0;
-                    for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
+                    for (Tree.PositionalArgument arg : positionalArgs) {
                         if (p == null) {
                             p = new Parameter();
                             p.setName("arg"+c);
-                            p.setDeclaration(typeArgSource.getTypeModel().getDeclaration());
+                            p.setDeclaration(primaryType.getDeclaration());
                             Value v = new Value();
-                            Scope scope = that.getPositionalArgumentList().getScope();
+                            Scope scope = argList.getScope();
                             v.setContainer(scope);
                             v.setScope(scope);
                             v.setType(argtype);
@@ -289,7 +299,8 @@ public class InvocationGenerator {
                                 } else {
                                     //If it's a tuple then there are more params
                                     callableArgs = next;
-                                    argtype = callableArgs == null ? null : callableArgs.getTypeArgumentList().get(1);
+                                    argtype = callableArgs == null ? null : 
+                                    	callableArgs.getTypeArgumentList().get(1);
                                 }
                             }
                         }
@@ -301,20 +312,21 @@ public class InvocationGenerator {
                     }
                 }
             }
-            generatePositionalArguments(typeArgSource, argList, argList.getPositionalArguments(), false, false);
+            generatePositionalArguments(primary, argList, positionalArgs, false, false);
         }
         if (targs != null && !targs.isEmpty()
-                && typeArgSource instanceof Tree.MemberOrTypeExpression
-                && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() instanceof Functional) {
-            if (argList.getPositionalArguments().size() > 0) {
+                && primary instanceof Tree.MemberOrTypeExpression
+                && ((Tree.MemberOrTypeExpression)primary).getDeclaration() 
+                		instanceof Functional) {
+            if (positionalArgs.size() > 0) {
                 gen.out(",");
             }
-            Functional bmed = (Functional)((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration();
+            Functional bmed = (Functional)((Tree.MemberOrTypeExpression)primary).getDeclaration();
             //If there are fewer arguments than there are parameters...
-            final int argsSize = argList.getPositionalArguments().size();
+            final int argsSize = positionalArgs.size();
             int paramArgDiff = bmed.getFirstParameterList().getParameters().size() - argsSize;
             if (paramArgDiff > 0) {
-                final Tree.PositionalArgument parg = argsSize > 0 ? argList.getPositionalArguments().get(argsSize-1) : null;
+                final Tree.PositionalArgument parg = argsSize > 0 ? positionalArgs.get(argsSize-1) : null;
                 if (parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument) {
                     paramArgDiff--;
                 }
@@ -323,7 +335,7 @@ public class InvocationGenerator {
                 }
             }
             if (targs != null && !targs.isEmpty()) {
-                TypeUtils.printTypeArguments(typeArgSource, targs, gen, false, null);
+                TypeUtils.printTypeArguments(primary, targs, gen, false, null);
             }
         }
         gen.out(")");
@@ -376,7 +388,8 @@ public class InvocationGenerator {
     }
 
     void applyNamedArguments(Tree.NamedArgumentList argList, Functional func,
-                Map<String, String> argVarNames, boolean superAccess, Map<TypeParameter, Type> targs) {
+                Map<String, String> argVarNames, boolean superAccess, 
+                Map<TypeParameter, Type> targs) {
         final ParameterList plist = func.getFirstParameterList();
         boolean first=true;
         if (superAccess) {
@@ -411,7 +424,8 @@ public class InvocationGenerator {
 
     /** Generate a list of PositionalArguments, optionally assigning a variable name to each one
      * and returning the variable names. */
-    List<String> generatePositionalArguments(final Tree.Primary primary, final Tree.ArgumentList that,
+    List<String> generatePositionalArguments(final Tree.Primary primary, 
+    		final Tree.ArgumentList that,
             final List<Tree.PositionalArgument> args,
             final boolean forceSequenced, final boolean generateVars) {
         if (args.isEmpty()) {
@@ -424,21 +438,29 @@ public class InvocationGenerator {
         for (Tree.PositionalArgument arg : args) {
             Tree.Expression expr;
             final Parameter pd = arg.getParameter();
-            if (arg instanceof Tree.ListedArgument) {
+            Type argType = arg.getTypeModel();
+			if (arg instanceof Tree.ListedArgument) {
                 if (!first) gen.out(",");
                 expr = ((Tree.ListedArgument) arg).getExpression();
                 Type exprType = expr.getTypeModel();
-                boolean dyncheck = gen.isInDynamicBlock() && pd != null && !ModelUtil.isTypeUnknown(pd.getType())
+                boolean dyncheck = gen.isInDynamicBlock() 
+                		&& pd != null 
+                		&& !ModelUtil.isTypeUnknown(pd.getType())
                         && exprType.containsUnknowns();
-                if (forceSequenced || (pd != null && pd.isSequenced())) {
+                if (forceSequenced || pd != null && pd.isSequenced()) {
                     if (dyncheck) {
                         //We don't have a real type so get the one declared in the parameter
                         exprType = pd.getType();
                     }
                     Type elemtype;
-                    if (pd == null || (pd.getType() != null && pd.getType().getTypeArgumentList().isEmpty())) {
+                    if (pd == null 
+                    		|| pd.getType() != null 
+                    		&& pd.getType().getTypeArgumentList().isEmpty()) {
                         elemtype = exprType;
-                    } else if (pd != null && pd.getType() == null && pd.getModel() != null && pd.getModel().getContainer() instanceof Value) {
+                    } else if (pd != null 
+                    		&& pd.getType() == null 
+                    		&& pd.getModel() != null 
+                    		&& pd.getModel().getContainer() instanceof Value) {
                         elemtype = ((Value)pd.getModel().getContainer()).getType();
                     } else {
                         elemtype = pd.getType().getTypeArgumentList().get(0);
@@ -457,7 +479,7 @@ public class InvocationGenerator {
                             argvars.add(argvar);
                             gen.out(argvar, "=");
                         }
-                        if (exprType.isSequential() || (pd != null && pd.isSequenced())) {
+                        if (exprType.isSequential() || pd != null && pd.isSequenced()) {
                             gen.out(gen.getClAlias(), "$arr$sa$([");
                         } else {
                             int argpos = args.indexOf(arg);
@@ -481,7 +503,8 @@ public class InvocationGenerator {
                     argvars.add(argvar);
                     gen.out(argvar, "=");
                 }
-                final int boxType = pd==null?0:gen.boxUnboxStart(expr.getTerm(), pd.getModel());
+                final int boxType = pd==null ? 0 :
+                	gen.boxUnboxStart(expr.getTerm(), pd.getModel());
                 Map<TypeParameter,Type> targs = null;
                 if (dyncheck) {
                     if (primary instanceof Tree.MemberOrTypeExpression) {
@@ -496,7 +519,7 @@ public class InvocationGenerator {
                     //Add parameters
                     describeMethodParameters(expr.getTerm());
                     gen.out(",");
-                    targs = arg.getTypeModel().getTypeArguments();
+                    targs = argType.getTypeArguments();
                     if (arg instanceof Tree.ListedArgument) {
                         Tree.Term argTerm = ((Tree.ListedArgument)arg).getExpression().getTerm();
                         if (argTerm instanceof Tree.MemberOrTypeExpression) {
@@ -504,7 +527,7 @@ public class InvocationGenerator {
                         }
                     }
                     TypeUtils.printTypeArguments(arg, targs, gen, false,
-                            arg.getTypeModel().getVarianceOverrides());
+                            argType.getVarianceOverrides());
                 }
                 gen.boxUnboxEnd(boxType);
             } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
@@ -528,7 +551,10 @@ public class InvocationGenerator {
                     generateSpreadArgument(primary, (Tree.SpreadArgument)arg, expr, pd);
                 } else {
                     arg.visit(gen);
-                    if ((pd != null && pd.getType().isSequential()) && !arg.getTypeModel().isSequential() && !arg.getTypeModel().isUnknown()) {
+                    if (pd != null 
+                    		&& pd.getType().isSequential() 
+                    		&& !argType.isSequential() 
+                    		&& !argType.isUnknown()) {
                         gen.out(".sequence()");
                     }
                 }
@@ -536,9 +562,10 @@ public class InvocationGenerator {
                     gen.out(",");
                     Map<TypeParameter,Type> _targs;
                     Map<TypeParameter, SiteVariance> _vo;
-                    if (expr == null) {
+                    Interface iterableDec = that.getUnit().getIterableDeclaration();
+					if (expr == null) {
                         //it's a comprehension
-                        _targs = TypeUtils.wrapAsIterableArguments(arg.getTypeModel());
+                        _targs = TypeUtils.wrapAsIterableArguments(argType);
                         _vo = null;
                     } else {
                         Type spreadType = TypeUtils.findSupertype(
@@ -546,7 +573,7 @@ public class InvocationGenerator {
                                 expr.getTypeModel());
                         if (spreadType == null) {
                             //Go directly to Iterable
-                            spreadType = TypeUtils.findSupertype(that.getUnit().getIterableDeclaration(),
+                            spreadType = TypeUtils.findSupertype(iterableDec,
                                     expr.getTypeModel());
                         }
                         _targs = spreadType.getTypeArguments();
@@ -564,7 +591,7 @@ public class InvocationGenerator {
                         if (_tlist[1] == null) {
                             _tlist[1] = that.getUnit().getNothingType();
                         }
-                        Function cdec = (Function)that.getUnit().getIterableDeclaration().getMember("chain", null, false);
+                        Function cdec = (Function)iterableDec.getMember("chain", null, false);
                         _targs = TypeUtils.matchTypeParametersWithArguments(cdec.getTypeParameters(), Arrays.asList(_tlist));
                     }
                     TypeUtils.printTypeArguments(that, _targs, gen, false, _vo);
@@ -581,11 +608,9 @@ public class InvocationGenerator {
         }
         if (sequencedType != null) {
             final Map<TypeParameter,Type> seqtargs;
-            if (forceSequenced && args.size() > 0) {
-                seqtargs = that.getUnit().getNonemptyIterableType(sequencedType).getTypeArguments();
-            } else {
-                seqtargs = TypeUtils.wrapAsIterableArguments(sequencedType);
-            }
+            seqtargs = forceSequenced && args.size() > 0 ? 
+            		that.getUnit().getNonemptyIterableType(sequencedType).getTypeArguments() : 
+        			TypeUtils.wrapAsIterableArguments(sequencedType);
             SequenceGenerator.closeSequenceWithReifiedType(primary,
                     seqtargs, gen, false);
         }
@@ -597,22 +622,31 @@ public class InvocationGenerator {
             final Parameter pd) {
         TypedDeclaration td = pd == null ? null : pd.getModel();
         int boxType = gen.boxUnboxStart(expr.getTerm(), td);
-        if (boxType == 4) {
+        Type argType = arg.getTypeModel();
+		if (boxType == 4) {
             arg.visit(gen);
             gen.out(",");
             describeMethodParameters(expr.getTerm());
             gen.out(",");
-            TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
-                    arg.getTypeModel().getVarianceOverrides());
+            TypeUtils.printTypeArguments(arg, 
+            		argType.getTypeArguments(), 
+            		gen, false,
+                    argType.getVarianceOverrides());
         } else if (pd == null) {
-            final Declaration primDec = primary instanceof Tree.MemberOrTypeExpression ? ((Tree.MemberOrTypeExpression)primary).getDeclaration() : null;
-            if (gen.isInDynamicBlock() && primary instanceof Tree.MemberOrTypeExpression
+            final Declaration primDec = 
+            		primary instanceof Tree.MemberOrTypeExpression ? 
+            				((Tree.MemberOrTypeExpression)primary).getDeclaration() : 
+        					null;
+            if (gen.isInDynamicBlock() 
+            		&& primary instanceof Tree.MemberOrTypeExpression
                     && (primDec == null || primDec.isDynamic() ||
-                    (primDec instanceof TypedDeclaration && ((TypedDeclaration)primDec).isDynamicallyTyped()))
-                    && arg.getTypeModel() != null && arg.getTypeModel().getDeclaration().inherits((
-                            arg.getUnit().getTupleDeclaration()))) {
+                    		(primDec instanceof TypedDeclaration 
+                    			&& ((TypedDeclaration)primDec).isDynamicallyTyped()))
+                    && argType != null 
+                    && argType.getDeclaration()
+                    		.inherits(arg.getUnit().getTupleDeclaration())) {
                 //Spread dynamic parameter
-                Type tupleType = arg.getTypeModel();
+                Type tupleType = argType;
                 Type targ = tupleType.getTypeArgumentList().get(2);
                 arg.visit(gen);
                 gen.out(".$_get(0)");
@@ -628,17 +662,17 @@ public class InvocationGenerator {
             }
         } else if (pd.isSequenced()) {
             arg.visit(gen);
-            if (!arg.getUnit().isSequentialType(arg.getTypeModel())) {
+            if (!arg.getUnit().isSequentialType(argType)) {
                 gen.out(".sequence()");
             }
-        } else if (!arg.getTypeModel().isEmpty()) {
+        } else if (!argType.isEmpty()) {
             final String specialSpreadVar = gen.getNames().createTempVariable();
             gen.out("(", specialSpreadVar, "=");
             arg.visit(gen);
-            final boolean unknownSpread = arg.getTypeModel().isUnknown();
+            final boolean unknownSpread = argType.isUnknown();
             final String get0 = unknownSpread ?"[":".$_get(";
             final String get1 = unknownSpread ?"]":")";
-            if (!unknownSpread && !arg.getUnit().isSequentialType(arg.getTypeModel())) {
+            if (!unknownSpread && !arg.getUnit().isSequentialType(argType)) {
                 gen.out(".sequence()");
             }
             gen.out(",");
@@ -694,7 +728,8 @@ public class InvocationGenerator {
     /** Generate the code to create a native js object. */
     void nativeObject(Tree.NamedArgumentList argList) {
         final List<Tree.NamedArgument> nargs = argList.getNamedArguments();
-        if (argList.getSequencedArgument() == null) {
+        Tree.SequencedArgument seqArg = argList.getSequencedArgument();
+		if (seqArg == null) {
             ArrayList<Tree.NamedArgument> getters = null;
             for (Tree.NamedArgument arg : nargs) {
                 if (arg instanceof Tree.AttributeArgument) {
@@ -704,14 +739,15 @@ public class InvocationGenerator {
                     getters.add(arg);
                 }
             }
-            final String tmpobjvar = getters == null ? null : gen.createRetainedTempVar();
+            final String tmpobjvar = getters == null ? null : 
+            		gen.createRetainedTempVar();
             if (getters != null) {
                 gen.out("(", tmpobjvar, "=");
             }
             gen.out("{");
             boolean first = true;
             for (Tree.NamedArgument arg : nargs) {
-                if (arg instanceof Tree.AttributeArgument == false) {
+                if (!(arg instanceof Tree.AttributeArgument)) {
                     if (first) { first = false; } else { gen.out(","); }
                     String argName = arg.getIdentifier().getText();
                     if (JsIdentifierNames.isTrueReservedWord(argName)) {
@@ -747,18 +783,20 @@ public class InvocationGenerator {
         } else {
             String arr = null;
             boolean isComp = false;
-            boolean isSpread = argList.getSequencedArgument() != null &&
-                    !argList.getSequencedArgument().getPositionalArguments().isEmpty() &&
-                    argList.getSequencedArgument().getPositionalArguments().get(
-                            argList.getSequencedArgument().getPositionalArguments().size() -1) instanceof Tree.SpreadArgument;
+            boolean isSpread = seqArg != null &&
+                    !seqArg.getPositionalArguments().isEmpty() &&
+                    seqArg.getPositionalArguments().get(
+                            seqArg.getPositionalArguments().size() -1) 
+                    	instanceof Tree.SpreadArgument;
             if (nargs.size() > 0) {
                 gen.out("function()");
                 gen.beginBlock();
                 arr = names.createTempVariable();
                 gen.out("var ", arr, "=");
             } else {
-                isComp = argList.getSequencedArgument().getPositionalArguments().size() == 1
-                        && argList.getSequencedArgument().getPositionalArguments().get(0) instanceof Tree.Comprehension;
+                isComp = seqArg.getPositionalArguments().size() == 1
+                        && seqArg.getPositionalArguments().get(0) 
+                    		instanceof Tree.Comprehension;
             }
             if (isComp) {
                 gen.out(gen.getClAlias(), "nfor$(");
@@ -768,7 +806,7 @@ public class InvocationGenerator {
                 gen.out("[");
             }
             boolean first = true;
-            for (Tree.PositionalArgument arg : argList.getSequencedArgument().getPositionalArguments()) {
+            for (Tree.PositionalArgument arg : seqArg.getPositionalArguments()) {
                 if (arg instanceof Tree.SpreadArgument) {
                     gen.out("],");
                     arg.visit(gen);
