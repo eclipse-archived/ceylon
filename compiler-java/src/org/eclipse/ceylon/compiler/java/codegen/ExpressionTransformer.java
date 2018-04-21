@@ -3046,9 +3046,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCExpression> typeArgs = null;
         
         // Set operators need reified generics
-        if(/*operator == OperatorTranslation.BINARY_UNION 
+        if(operator == OperatorTranslation.BINARY_UNION 
                 || operator == OperatorTranslation.BINARY_INTERSECTION
-                ||*/ operator == OperatorTranslation.BINARY_COMPLEMENT){
+                || operator == OperatorTranslation.BINARY_COMPLEMENT){
             Type otherSetElementType = typeFact().getIteratedType(rightTerm.getTypeModel());
             args = args.prepend(makeReifiedTypeArgument(otherSetElementType));
             typeArgs = List.<JCExpression>of(makeJavaType(otherSetElementType, JT_TYPE_ARGUMENT));
