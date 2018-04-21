@@ -5,14 +5,14 @@ function $arr$(a,t,seq) {
   if (seq)a.$a$.Absent$Iterable={t:Nothing};
   return a;
 }
-ex$.$arr$=$arr$;
+x$.$arr$=$arr$;
 
 function $arr$sa$(arr,t,ne) {
     if (arr.length===0)return empty();
     if (t===null || t===undefined)t={t:Anything};
     return ArraySequence($arr$(arr,t,ne),{Element$ArraySequence:t});
 }
-ex$.$arr$sa$=$arr$sa$;
+x$.$arr$sa$=$arr$sa$;
 
 function $arr$eq(a,o) {
   if (o===undefined||o===null||typeof(o.length)!='number')return false;
@@ -27,7 +27,7 @@ function $arr$eq(a,o) {
   }
   return false;
 }
-ex$.$arr$eq=$arr$eq;
+x$.$arr$eq=$arr$eq;
 //Ceylon Iterable to Native Array
 function $ci2na$(ci){
   if (ci===undefined||ci===empty())return [];
@@ -53,7 +53,7 @@ function $arr$cnt(a,o){
   }
   return false;
 }
-ex$.$arr$cnt=$arr$cnt;
+x$.$arr$cnt=$arr$cnt;
 empty().nativeArray=function(){return [];}
 
 atr$(arrprot$,'string', function() {
@@ -86,8 +86,8 @@ function sarg$(elems,spread,$a$){
   that.s=spread;
   return that;
 }
-sarg$.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{dv:'out'}},sts:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
-ex$.sarg$=sarg$;
+sarg$.$m$=function(){return{mod:$M$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{dv:'out'}},sts:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
+x$.sarg$=sarg$;
 function $i$sarg(){if(sarg$.$$===undefined){
   initTypeProto(sarg$,'ceylon.language::LazyIterable',Basic,Iterable);
   (function(that){
@@ -101,7 +101,7 @@ function $i$sarg(){if(sarg$.$$===undefined){
       $$4.s=sarg.s;
       return $$4;
     };
-    iter.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
+    iter.$m$=function(){return{mod:$M$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
     if(iter.$$===undefined){
       initTypeProto(iter,'LazyIterable.iterator',Basic,Iterator);
       iter.$$.prototype.next=function(){
@@ -123,18 +123,18 @@ function $i$sarg(){if(sarg$.$$===undefined){
         }
         return e;
       };
-      iter.$$.prototype.next.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:['T$LazyIterable',{t:Finished}]},ps:[],$cont:iter,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator','$o','it','$m','next']};};
+      iter.$$.prototype.next.$m$=function(){return{mod:$M$,$t:{t:'u',l:['T$LazyIterable',{t:Finished}]},ps:[],$cont:iter,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator','$o','it','$m','next']};};
     }
     that.iterator=function(){
       return iter(this);
     };
-    that.iterator.$m$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}},ps:[],$cont:$sarg,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator']};};
+    that.iterator.$m$=function(){return{mod:$M$,$t:{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}},ps:[],$cont:$sarg,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator']};};
   })(sarg$.$$.prototype);
 }
 return sarg$;
 }
 $i$sarg();
-ex$.$i$sarg=$i$sarg;
+x$.$i$sarg=$i$sarg;
 $i$sarg();
 //Turn a comprehension into a native array
 function nfor$(c) {
@@ -145,7 +145,7 @@ function nfor$(c) {
   }
   return a;
 }
-ex$.nfor$=nfor$;
+x$.nfor$=nfor$;
 
 function variadicness(t) {
   if (extendsType(t,{t:Tuple})) {
@@ -166,4 +166,4 @@ function $lai$(a){
     return i<a.length?a[i]:finished();
   }
 }
-ex$.$lai$=$lai$;
+x$.$lai$=$lai$;

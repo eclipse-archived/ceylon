@@ -307,7 +307,7 @@ function $i$tpl$(){
   }
 }
 $i$tpl$();
-ex$.tpl$=tpl$;
+x$.tpl$=tpl$;
 
 //Create a proper Tuple from a simplified tuple type description
 function retpl$(t) { //receives {t:'T',l:[...]}

@@ -74,5 +74,5 @@ function doc$(root, path, anPath) {
   }
   return doc(e[0]);
 }
-ex$.doc$=doc$;
+x$.doc$=doc$;
 

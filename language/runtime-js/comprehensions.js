@@ -6,7 +6,7 @@ function for$(makeNextFunc, $a$, compr) {
     compr.makeNextFunc = makeNextFunc;
     return compr;
 }
-for$.$m$={nm:'Comprehension',pa:1,mod:$CCMM$,d:['$','Iterable']};
+for$.$m$={nm:'Comprehension',pa:1,mod:$M$,d:['$','Iterable']};
 function $i$for$() {
     if (for$.$$===undefined) {
         initTypeProto(for$, 'ceylon.language::Comprehension', $i$Basic(), $i$Iterable());
@@ -21,8 +21,8 @@ for$$proto.iterator = function() {
 for$$proto.sequence = function() {
     return Iterable.$$.prototype.sequence.call(this);
 }
-for$$proto.sequence.$m$={pa:3,mod:$CCMM$,d:['$','Iterable','$m','sequence']}
-ex$.for$=for$;
+for$$proto.sequence.$m$={pa:3,mod:$M$,d:['$','Iterable','$m','sequence']}
+x$.for$=for$;
 
 function for$iter(nextFunc, $a$, it) {
     $i$for$iter();
@@ -32,7 +32,7 @@ function for$iter(nextFunc, $a$, it) {
     it.next = nextFunc;
     return it;
 }
-for$iter.$m$={nm:'ComprehensionIterator',pa:1,mod:$CCMM$,d:['$','Iterator']};
+for$iter.$m$={nm:'ComprehensionIterator',pa:1,mod:$M$,d:['$','Iterator']};
 function $i$for$iter() {
     if (for$iter.$$===undefined) {
         initTypeProto(for$iter, 'ceylon.language::ComprehensionIterator',

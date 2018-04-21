@@ -27,7 +27,7 @@ function AppliedFunction$jsint(m,$a$,o,mptypes) {
     }
     return _fu.apply(o,arguments);
   }
-  f.$m$={mod:$CCMM$,d:['ceylon.language.meta.model','Function'],$t:mm.$t,ps:mm.ps,an:mm.an};
+  f.$m$={mod:$M$,d:['ceylon.language.meta.model','Function'],$t:mm.$t,ps:mm.ps,an:mm.an};
   var dummy=new AppliedFunction$jsint.$$;
   f.$$=AppliedFunction$jsint.$$;
   f.getT$all=function(){return dummy.getT$all();}

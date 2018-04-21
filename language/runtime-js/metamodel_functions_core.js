@@ -3,7 +3,7 @@ function getrtmm$$(x) {
   if (typeof(x.$m$)==='function')x.$m$=x.$m$();
   return x.$m$;
 }
-ex$.getrtmm$$=getrtmm$$;
+x$.getrtmm$$=getrtmm$$;
 //From a runtime metamodel, get the model definition by following the path into the module's model.
 function get_model(mm) {
   var map=typeof(mm.mod)==='function'?mm.mod():mm.mod;
@@ -49,11 +49,11 @@ function applyIntersectionType(it,targ$2) { //return AppliedIntersectionType
 function fmp$(m,v,p) {
   return modules$meta().find(m,v).findPackage(p);
 }
-ex$.fmp$=fmp$;
+x$.fmp$=fmp$;
 function lmp$(x,p) {
   return Modulo$jsint(x).findPackage(p);
 }
-ex$.lmp$=lmp$;
+x$.lmp$=lmp$;
 //Some type arithmetic for metamodel queries
 //rt=real type, ta=Container type argument
 function mmfca$(rt, ta) {
@@ -81,7 +81,7 @@ function mmfca$(rt, ta) {
   }
   return rt;
 }
-ex$.mmfca$=mmfca$;
+x$.mmfca$=mmfca$;
 //Retrieve a prototype's member, UNLESS it's a property
 function getnpmem$(proto,n) {
   if (n.substring(0,6)==='$prop$')return undefined;
@@ -260,4 +260,4 @@ function findModuleOrThrow$(name, version){
     throw AssertionError("Module "+name+"/"+version+" is not available");
   return mod;
 }
-ex$.findModuleOrThrow$=findModuleOrThrow$;
+x$.findModuleOrThrow$=findModuleOrThrow$;

@@ -10,7 +10,7 @@ function find(name,version){
       }
       try {lm = require(mpath);}catch(e){return null;}
     }
-    if (lm && lm.$CCMM$) {
+    if (lm && lm.$M$) {
       lm = Modulo$jsint(lm);
       if (lm.version!=version) return null;
       $loadedModules$[modname] = lm;

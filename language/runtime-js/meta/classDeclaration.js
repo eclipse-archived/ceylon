@@ -1,6 +1,6 @@
 function classDeclaration$meta(o) {
   if (o==null) {
-    return openClass$jsint(m$1.lmp$(ex$,'$'),Null);
+    return openClass$jsint(m$1.lmp$(x$,'$'),Null);
   }
   var pkn=o.getT$name();
   var meta=o.getT$all()[pkn];

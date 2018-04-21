@@ -7,5 +7,5 @@ function ne$(value){
 function nn$(e) {
   return e!==null&&e!==undefined&&e!==$_null();
 }
-ex$.ne$=ne$;
-ex$.nn$=nn$;
+x$.ne$=ne$;
+x$.nn$=nn$;

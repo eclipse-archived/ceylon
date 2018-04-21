@@ -97,7 +97,7 @@ public class MetamodelHelper {
         gen.out("(", gen.getClAlias());
         final String pkgname = d.getUnit().getPackage().getNameAsString();
         if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
-            gen.out("lmp$(ex$,'");
+            gen.out("lmp$(x$,'");
         } else {
             //TODO use $ for language module as well
             gen.out("fmp$('", m.getNameAsString(), "','", m.getVersion(), "','");

@@ -17,8 +17,8 @@ function JSNumber(value) {
 }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 JSNumber.$m$=function(){return{nm:'JSNumber',mt:'c',pa:1,
-  mod:$CCMM$,d:['$','Number']};}
-ex$.JSNumber=JSNumber;
+  mod:$M$,d:['$','Number']};}
+x$.JSNumber=JSNumber;
 
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, $_Object, $_Number, $i$Integral(), $i$Exponentiable());
@@ -87,23 +87,23 @@ Integer.$st$={
     return x>y?x:y;
   }
 };
-Integer.$st$.format.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$i$Integer().$st$.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
-Integer.$st$.parse.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$i$Integer().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
-Integer.$st$.sum.$m$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,d:['$','Integer','$m','sum']};};
-Integer.$st$.product.$m$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:product'),since("1.3.2")];},d:['$','Integer','$m','product']};};
-Integer.$st$.max.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},'Absent$max']},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:'Absent$max'}}}],$cont:Integer,tp:{Absent$max:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:max'),since("1.3.2")];},d:['$','Integer','$m','max']};};
-Integer.$st$.min.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},'Absent$min']},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:'Absent$min'}}}],$cont:Integer,tp:{Absent$min:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:min'),since("1.3.2")];},d:['$','Integer','$m','min']};};
-Integer.$st$.smallest.$m$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'x',mt:'prm',$t:{t:Integer}},{nm:'y',mt:'prm',$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:smallest'),since("1.3.2")];},d:['$','Integer','$m','smallest']};};
-Integer.$st$.largest.$m$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'x',mt:'prm',$t:{t:Integer}},{nm:'y',mt:'prm',$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:largest'),since("1.3.2")];},d:['$','Integer','$m','largest']};};
+Integer.$st$.format.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(x$,'$'),$i$Integer().$st$.format),OpenFunction$jsint(lmp$(x$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
+Integer.$st$.parse.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(x$,'$'),$i$Integer().$$.prototype.format),OpenFunction$jsint(lmp$(x$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
+Integer.$st$.sum.$m$=function(){return{mod:$M$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,d:['$','Integer','$m','sum']};};
+Integer.$st$.product.$m$=function(){return{mod:$M$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,an:function(){return[doc$($M$,'$:Integer:$m:product'),since("1.3.2")];},d:['$','Integer','$m','product']};};
+Integer.$st$.max.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Integer},'Absent$max']},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:'Absent$max'}}}],$cont:Integer,tp:{Absent$max:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($M$,'$:Integer:$m:max'),since("1.3.2")];},d:['$','Integer','$m','max']};};
+Integer.$st$.min.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Integer},'Absent$min']},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:'Absent$min'}}}],$cont:Integer,tp:{Absent$min:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($M$,'$:Integer:$m:min'),since("1.3.2")];},d:['$','Integer','$m','min']};};
+Integer.$st$.smallest.$m$=function(){return{mod:$M$,$t:{t:Integer},ps:[{nm:'x',mt:'prm',$t:{t:Integer}},{nm:'y',mt:'prm',$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[doc$($M$,'$:Integer:$m:smallest'),since("1.3.2")];},d:['$','Integer','$m','smallest']};};
+Integer.$st$.largest.$m$=function(){return{mod:$M$,$t:{t:Integer},ps:[{nm:'x',mt:'prm',$t:{t:Integer}},{nm:'y',mt:'prm',$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[doc$($M$,'$:Integer:$m:largest'),since("1.3.2")];},d:['$','Integer','$m','largest']};};
 
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $i$Integral(), $i$Exponentiable(), $i$Binary());
-Integer.$m$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
+Integer.$m$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$M$,d:['$','Integer']};}
 function $i$Integer() {
   return Integer;
 }
 atr$(Integer.$$.prototype,'integer',function(){ return this; },undefined,
-     function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer$woput0']};});
+     function(){return {mod:$M$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer$woput0']};});
 
 function $$max(x, y) {
   if (isNaN(x)) return x;
@@ -182,19 +182,19 @@ Float.$st$={
     return Float($$max(x.valueOf(),y.valueOf()));
   }
 };
-Float.$st$.format.$m$=function(){return{mod:$CCMM$,$t:{t:$_String},ps:[{nm:'float',mt:'prm',$t:{t:Float}},{nm:'minDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'maxDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'decimalSeparator',mt:'prm',def:1,$t:{t:Character}},{nm:'thousandsSeparator',mt:'prm',def:1,$t:{t:'u',l:[{t:Null},{t:Character}]}}],$cont:Float,pa:4097,an:function(){return[tagged($arr$sa$(["Numbers"],{t:$_String})),see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$i$Float().$$.prototype.parse),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.format)],{t:FunctionDeclaration$meta$declaration})),since("1.3.1")];},d:['$','Float','$m','format']};};
-Float.$st$.parse.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:Float,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$i$Float().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Float','$m','parse']};};
-Float.$st$.sum.$m$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,d:['$','Float','$m','sum']};};
-Float.$st$.product.$m$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,an:function(){return[m$1.doc$($CCMM$,'$:Float:$m:product'),since("1.3.2")];},d:['$','Float','$m','product']};};
-Float.$st$.max.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},'Absent$max']},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:'Absent$max'}}}],$cont:Float,tp:{Absent$max:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:max'),since("1.3.2")];},d:['$','Float','$m','max']};};
-Float.$st$.min.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},'Absent$min']},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:'Absent$min'}}}],$cont:Float,tp:{Absent$min:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:min'),since("1.3.2")];},d:['$','Float','$m','min']};};
-Float.$st$.smallest.$m$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'x',mt:'prm',$t:{t:Float}},{nm:'y',mt:'prm',$t:{t:Float}}],$cont:Float,pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:smallest'),since("1.3.2")];},d:['$','Float','$m','smallest']};};
-Float.$st$.largest.$m$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'x',mt:'prm',$t:{t:Float}},{nm:'y',mt:'prm',$t:{t:Float}}],$cont:Float,pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:largest'),since("1.3.2")];},d:['$','Float','$m','largest']};};
+Float.$st$.format.$m$=function(){return{mod:$M$,$t:{t:$_String},ps:[{nm:'float',mt:'prm',$t:{t:Float}},{nm:'minDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'maxDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'decimalSeparator',mt:'prm',def:1,$t:{t:Character}},{nm:'thousandsSeparator',mt:'prm',def:1,$t:{t:'u',l:[{t:Null},{t:Character}]}}],$cont:Float,pa:4097,an:function(){return[tagged($arr$sa$(["Numbers"],{t:$_String})),see($arr$sa$([OpenFunction$jsint(lmp$(x$,'$'),$i$Float().$$.prototype.parse),OpenFunction$jsint(lmp$(x$,'$'),Integer.$$.prototype.format)],{t:FunctionDeclaration$meta$declaration})),since("1.3.1")];},d:['$','Float','$m','format']};};
+Float.$st$.parse.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Float},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:Float,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(x$,'$'),$i$Float().$$.prototype.format),OpenFunction$jsint(lmp$(x$,'$'),Integer.$$.prototype.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Float','$m','parse']};};
+Float.$st$.sum.$m$=function(){return{mod:$M$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,d:['$','Float','$m','sum']};};
+Float.$st$.product.$m$=function(){return{mod:$M$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,an:function(){return[m$1.doc$($M$,'$:Float:$m:product'),since("1.3.2")];},d:['$','Float','$m','product']};};
+Float.$st$.max.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Float},'Absent$max']},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:'Absent$max'}}}],$cont:Float,tp:{Absent$max:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($M$,'$:Float:$m:max'),since("1.3.2")];},d:['$','Float','$m','max']};};
+Float.$st$.min.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:Float},'Absent$min']},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:'Absent$min'}}}],$cont:Float,tp:{Absent$min:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($M$,'$:Float:$m:min'),since("1.3.2")];},d:['$','Float','$m','min']};};
+Float.$st$.smallest.$m$=function(){return{mod:$M$,$t:{t:Float},ps:[{nm:'x',mt:'prm',$t:{t:Float}},{nm:'y',mt:'prm',$t:{t:Float}}],$cont:Float,pa:4097,an:function(){return[doc$($M$,'$:Float:$m:smallest'),since("1.3.2")];},d:['$','Float','$m','smallest']};};
+Float.$st$.largest.$m$=function(){return{mod:$M$,$t:{t:Float},ps:[{nm:'x',mt:'prm',$t:{t:Float}},{nm:'y',mt:'prm',$t:{t:Float}}],$cont:Float,pa:4097,an:function(){return[doc$($M$,'$:Float:$m:largest'),since("1.3.2")];},d:['$','Float','$m','largest']};};
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$i$Exponentiable(), JSNumber);
-Float.$m$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
+Float.$m$=function(){return{pa:97,mod:$M$,d:['$','Float']};}
 function $i$Float(){return Float;}
 atr$(Float.$$.prototype,'integer',function(){ return Integer(Math.floor(this)); },undefined,
-     function(){return {mod:$CCMM$,$t:{t:Integer},pa:65,$cont:Float,d:['$','Float','$at','integer']};});
+     function(){return {mod:$M$,$t:{t:Integer},pa:65,$cont:Float,d:['$','Float','$at','integer']};});
 
 var JSNum$proto = JSNumber.$$.prototype;
 JSNum$proto.getT$all = function() {
@@ -239,9 +239,9 @@ atr$(JSNum$proto, 'string', function(){
           s+='.0';
   }
   return s;
-},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
-$specialiseForNumber$(Integer, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Integer,d:['$','Integer','$at','string']};})
-$specialiseForNumber$(Float, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Float,d:['$','Float','$at','string']};})
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Object,d:['$','Object','$at','string']};});
+$specialiseForNumber$(Integer, 'string', function(){return {mod:$M$,$t:{t:$_String},pa:67,$cont:Integer,d:['$','Integer','$at','string']};})
+$specialiseForNumber$(Float, 'string', function(){return {mod:$M$,$t:{t:$_String},pa:67,$cont:Float,d:['$','Float','$at','string']};})
 
 //Add a function to the specified prototype
 function $addnm$(nm,s) {
@@ -262,23 +262,23 @@ JSNum$proto.plus = function(other) {
     return (nflt$(this)||nflt$(other)) ? Float(this+other) : (this+other);
 }
 $addnm$('plus');
-$specialiseForNumber$(Integer, 'plus', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','plus']};})
-$specialiseForNumber$(Float, 'plus', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','plus']};})
+$specialiseForNumber$(Integer, 'plus', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','plus']};})
+$specialiseForNumber$(Float, 'plus', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','plus']};})
 
 JSNum$proto.plusInteger = function(other) {
     return nflt$(this) ? Float(this+other) : (this+other);
 }
 $addnm$('plusInteger');
-$specialiseForNumber$(Integer, 'plusInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','plusInteger']};})
-$specialiseForNumber$(Float, 'plusInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','plusInteger']};})
+$specialiseForNumber$(Integer, 'plusInteger', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','plusInteger']};})
+$specialiseForNumber$(Float, 'plusInteger', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','plusInteger']};})
 
 JSNum$proto.minus = function(other) {
     if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
     return (nflt$(this)||nflt$(other)) ? Float(this-other) : (this-other);
 }
 $addnm$('minus');
-$specialiseForNumber$(Integer, 'minus', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','minus']};})
-$specialiseForNumber$(Float, 'minus', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','minus']};})
+$specialiseForNumber$(Integer, 'minus', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','minus']};})
+$specialiseForNumber$(Float, 'minus', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','minus']};})
 
 JSNum$proto.times = function(other) {
   if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
@@ -292,15 +292,15 @@ JSNum$proto.times = function(other) {
   return fls ? Float(this*other) : (this*other);
 }
 $addnm$('times');
-$specialiseForNumber$(Integer, 'times', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','times']};})
-$specialiseForNumber$(Float, 'times', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','times']};})
+$specialiseForNumber$(Integer, 'times', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','times']};})
+$specialiseForNumber$(Float, 'times', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','times']};})
 
 JSNum$proto.timesInteger = function(other) {
   return nflt$(this) ? Float(this*other) : (this*other);
 }
 $addnm$('timesInteger');
-$specialiseForNumber$(Integer, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','timesInteger']};})
-$specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','timesInteger']};})
+$specialiseForNumber$(Integer, 'timesInteger', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','timesInteger']};})
+$specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','timesInteger']};})
 
 JSNum$proto.divided=function(other) {
   if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
@@ -322,8 +322,8 @@ JSNum$proto.divided=function(other) {
   return i$(this/other);
 }
 $addnm$('divided');
-$specialiseForNumber$(Integer, 'divided', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divided']};})
-$specialiseForNumber$(Float, 'divided', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','divided']};})
+$specialiseForNumber$(Integer, 'divided', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divided']};})
+$specialiseForNumber$(Float, 'divided', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','divided']};})
 
 JSNum$proto.remainder = function(other) {
   if (other == 0) {
@@ -333,7 +333,7 @@ JSNum$proto.remainder = function(other) {
   return this%other;
 }
 $addnm$('remainder',Integral.$$.prototype.remainder);
-$specialiseForNumber$(Integer, 'remainder', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','remainder']};})
+$specialiseForNumber$(Integer, 'remainder', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','remainder']};})
 
 JSNum$proto.modulo = function(modulus) {
     if (typeof(modulus)!=='number'&&modulus.constructor!==Number)throw new TypeError("Number expected");
@@ -347,10 +347,10 @@ JSNum$proto.modulo = function(modulus) {
     return ret;
 }
 $addnm$('modulo',Integral.$$.prototype.modulo);
-$specialiseForNumber$(Integer, 'modulo', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','modulo']};})
+$specialiseForNumber$(Integer, 'modulo', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','modulo']};})
 
 JSNum$proto.divides=function(o){return o%this===0;}
-$specialiseForNumber$(Integer, 'divides', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};})
+$specialiseForNumber$(Integer, 'divides', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};})
 
 JSNum$proto.power = function(exp) {
     if (typeof(exp)!=='number'&&exp.constructor!==Number)throw new TypeError("Number expected");
@@ -384,8 +384,8 @@ JSNum$proto.$fpower=function(exp){
   return Float(Math.pow(this, exp));
 }
 $addnm$('power',Exponentiable.$$.prototype.power);
-$specialiseForNumber$(Integer, 'power', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','power']};})
-$specialiseForNumber$(Float, 'power', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','power']};})
+$specialiseForNumber$(Integer, 'power', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','power']};})
+$specialiseForNumber$(Float, 'power', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','power']};})
 
 JSNum$proto.powerOfInteger = function(exp) {
     if (nflt$(this)) {
@@ -402,8 +402,8 @@ JSNum$proto.powerOfInteger = function(exp) {
     return i$(Math.pow(this, exp));
 }
 $addnm$('powerOfInteger');
-$specialiseForNumber$(Integer, 'powerOfInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','powerOfInteger']};})
-$specialiseForNumber$(Float, 'powerOfInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','powerOfInteger']};})
+$specialiseForNumber$(Integer, 'powerOfInteger', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','powerOfInteger']};})
+$specialiseForNumber$(Float, 'powerOfInteger', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','powerOfInteger']};})
 
 atr$(JSNum$proto, 'negated', function() {
 //  if (this.valueOf()==0) {
@@ -415,21 +415,21 @@ atr$(JSNum$proto, 'negated', function() {
 //    return 0;
 //  }
   return nflt$(this) ? Float(-this) : -this;
-},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertible,d:['$','Invertible','$at','negated']};});
-$specialiseForNumber$(Integer, 'negated', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','negated']};})
-$specialiseForNumber$(Float, 'negated', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','negated']};})
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$M$,$cont:Invertible,d:['$','Invertible','$at','negated']};});
+$specialiseForNumber$(Integer, 'negated', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','negated']};})
+$specialiseForNumber$(Float, 'negated', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','negated']};})
 
 atr$(JSNum$proto, 'negative', function(){
   return nflt$(this) ? this < 0.0 || this == -Infinity : this.valueOf() < 0;
-},undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','negative']};});
-$specialiseForNumber$(Integer, 'negative', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','negative']};})
-$specialiseForNumber$(Float, 'negative', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','negative']};})
+},undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Number,d:['$','Number','$at','negative']};});
+$specialiseForNumber$(Integer, 'negative', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','negative']};})
+$specialiseForNumber$(Float, 'negative', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','negative']};})
 
 atr$(JSNum$proto, 'positive', function(){
   return nflt$(this) ? this > 0.0 : this.valueOf() > 0;
-},undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','positive']};});
-$specialiseForNumber$(Integer, 'positive', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','positive']};})
-$specialiseForNumber$(Float, 'positive', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','positive']};})
+},undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Number,d:['$','Number','$at','positive']};});
+$specialiseForNumber$(Integer, 'positive', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','positive']};})
+$specialiseForNumber$(Float, 'positive', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','positive']};})
 
 JSNum$proto.equals=function(other){
   if(typeof(other)==='number' || other.constructor===Number){
@@ -442,8 +442,8 @@ JSNum$proto.equals=function(other){
   return false;
 }
 $addnm$('equals',$_Object.$$.prototype.equals);
-$specialiseForNumber$(Integer, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Integer','$m','equals']};})
-$specialiseForNumber$(Float, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Float','$m','equals']};})
+$specialiseForNumber$(Integer, 'equals', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Integer','$m','equals']};})
+$specialiseForNumber$(Float, 'equals', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Float','$m','equals']};})
 
 JSNum$proto.compare = function(other) {
     if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
@@ -452,57 +452,57 @@ JSNum$proto.compare = function(other) {
     return value==other ? equal() : (value<other ? smaller():larger());
 }
 $addnm$('compare',Comparable.$$.prototype.compare);
-$specialiseForNumber$(Integer, 'compare', function(){return {mod:$CCMM$,$t:{t:Comparison},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','compare']};})
-$specialiseForNumber$(Float, 'compare', function(){return {mod:$CCMM$,$t:{t:Comparison},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','compare']};})
+$specialiseForNumber$(Integer, 'compare', function(){return {mod:$M$,$t:{t:Comparison},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','compare']};})
+$specialiseForNumber$(Float, 'compare', function(){return {mod:$M$,$t:{t:Comparison},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','compare']};})
 
 JSNum$proto.smallerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return this<o;
 }
 $addnm$('smallerThan',Comparable.$$.prototype.smallerThan);
-$specialiseForNumber$(Integer, 'smallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','smallerThan']};})
-$specialiseForNumber$(Float, 'smallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','smallerThan']};})
+$specialiseForNumber$(Integer, 'smallerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','smallerThan']};})
+$specialiseForNumber$(Float, 'smallerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','smallerThan']};})
 
 JSNum$proto.largerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return this>o;
 }
 $addnm$('largerThan',Comparable.$$.prototype.largerThan);
-$specialiseForNumber$(Integer, 'largerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','largerThan']};})
-$specialiseForNumber$(Float, 'largerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','largerThan']};})
+$specialiseForNumber$(Integer, 'largerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','largerThan']};})
+$specialiseForNumber$(Float, 'largerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','largerThan']};})
 
 JSNum$proto.notSmallerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return this>=o;
 }
 $addnm$('notSmallerThan',Comparable.$$.prototype.notSmallerThan);
-$specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
-$specialiseForNumber$(Float, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','notSmallerThan']};})
+$specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
+$specialiseForNumber$(Float, 'notSmallerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','notSmallerThan']};})
 
 JSNum$proto.notLargerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return this<=o;
 }
 $addnm$('notLargerThan',Comparable.$$.prototype.notLargerThan);
-$specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
-$specialiseForNumber$(Float, 'notLargerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','notLargerThan']};})
+$specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
+$specialiseForNumber$(Float, 'notLargerThan', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','notLargerThan']};})
 
 atr$(JSNum$proto, '$_float', function(){
   if (this.magnitude>runtime().maxExactIntegralFloat) {
     throw OverflowException(this+' cannot be coerced into a 64 bit floating point value');
   }
   return Float(this.valueOf());
-},undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Float},$cont:Integer,d:['$','Integer','$at','float']};});
-$specialiseForNumber$(Integer, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Integer,d:['$','Integer','$at','float']};})
+},undefined,function(){return{pa:65,mod:$M$,$t:{t:Float},$cont:Integer,d:['$','Integer','$at','float']};});
+$specialiseForNumber$(Integer, '$_float', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Integer,d:['$','Integer','$at','float']};})
 // its (private) constructor parameter
-$specialiseForNumber$(Float, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:0,$cont:Float,d:['$','Float','$at','float$oirx2o']};})
+$specialiseForNumber$(Float, '$_float', function(){return {mod:$M$,$t:{t:Float},pa:0,$cont:Float,d:['$','Float','$at','float$oirx2o']};})
 
 atr$(JSNum$proto, 'integer', function(){ return i$(this); },
-  undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Integer},$cont:$_Number,d:['$','Float','$at','integer']};});
+  undefined,function(){return{pa:65,mod:$M$,$t:{t:Integer},$cont:$_Number,d:['$','Float','$at','integer']};});
 
 atr$(JSNum$proto, '$_byte', function(){ return Byte(this); },
-  undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Byte},$cont:Integer,d:['$','Integer','$at','byte']};});
-$specialiseForNumber$(Integer, '$_byte', function(){return {mod:$CCMM$,$t:{t:Byte},pa:67,$cont:Integer,d:['$','Integer','$at','byte']};})
+  undefined,function(){return{pa:65,mod:$M$,$t:{t:Byte},$cont:Integer,d:['$','Integer','$at','byte']};});
+$specialiseForNumber$(Integer, '$_byte', function(){return {mod:$M$,$t:{t:Byte},pa:67,$cont:Integer,d:['$','Integer','$at','byte']};})
 
 atr$(JSNum$proto, 'character', function(){
   var c=this.valueOf();
@@ -510,35 +510,35 @@ atr$(JSNum$proto, 'character', function(){
     throw OverflowException(c + ' is not a possible Unicode code point');
   }
   return Character(c);
-},undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Character},$cont:Integer,d:['$','Integer','$at','character']};});
-$specialiseForNumber$(Integer, 'character', function(){return {mod:$CCMM$,$t:{t:Character},pa:67,$cont:Integer,d:['$','Integer','$at','character']};})
+},undefined,function(){return{pa:65,mod:$M$,$t:{t:Character},$cont:Integer,d:['$','Integer','$at','character']};});
+$specialiseForNumber$(Integer, 'character', function(){return {mod:$M$,$t:{t:Character},pa:67,$cont:Integer,d:['$','Integer','$at','character']};})
 
 atr$(JSNum$proto, 'successor', function(){ return this+1; },
-  undefined,function(){return{pa:67,mod:$CCMM$,$t:{t:Integer},$cont:Integer,d:['$','Integer','$at','successor']};});
-$specialiseForNumber$(Integer, 'successor', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','successor']};})
+  undefined,function(){return{pa:67,mod:$M$,$t:{t:Integer},$cont:Integer,d:['$','Integer','$at','successor']};});
+$specialiseForNumber$(Integer, 'successor', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','successor']};})
 
 atr$(JSNum$proto, 'predecessor', function(){ return this-1; },
-  undefined,function(){return{pa:67,mod:$CCMM$,$t:{t:Integer},$cont:Integer,d:['$','Integer','$at','predecessor']};});
-$specialiseForNumber$(Integer, 'predecessor', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','predecessor']};})
+  undefined,function(){return{pa:67,mod:$M$,$t:{t:Integer},$cont:Integer,d:['$','Integer','$at','predecessor']};});
+$specialiseForNumber$(Integer, 'predecessor', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','predecessor']};})
 
 atr$(JSNum$proto, 'unit', function(){ return this == 1; },
-  undefined,function(){return{pa:67,mod:$CCMM$,$t:{t:$_Boolean},$cont:Integer,d:['$','Integer','$at','unit']};});
-$specialiseForNumber$(Integer, 'unit', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','unit']};})
+  undefined,function(){return{pa:67,mod:$M$,$t:{t:$_Boolean},$cont:Integer,d:['$','Integer','$at','unit']};});
+$specialiseForNumber$(Integer, 'unit', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','unit']};})
 
 atr$(JSNum$proto, 'zero', function(){ return this == 0; },
-  undefined,function(){return{pa:67,mod:$CCMM$,$t:{t:$_Boolean},$cont:Integer,d:['$','Integer','$at','zero']};});
-$specialiseForNumber$(Integer, 'zero', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','zero']};})
+  undefined,function(){return{pa:67,mod:$M$,$t:{t:$_Boolean},$cont:Integer,d:['$','Integer','$at','zero']};});
+$specialiseForNumber$(Integer, 'zero', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','zero']};})
 
 atr$(JSNum$proto, 'even', function(){ return this%2 == 0; },
-  undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:$_Boolean},$cont:Integer,d:['$','Integer','$at','even']};});
-$specialiseForNumber$(Integer, 'even', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:65,$cont:Integer,d:['$','Integer','$at','even']};})
+  undefined,function(){return{pa:65,mod:$M$,$t:{t:$_Boolean},$cont:Integer,d:['$','Integer','$at','even']};});
+$specialiseForNumber$(Integer, 'even', function(){return {mod:$M$,$t:{t:$_Boolean},pa:65,$cont:Integer,d:['$','Integer','$at','even']};})
 
 atr$(JSNum$proto, 'fractionalPart', function() {
     if (!nflt$(this)) { return 0; }
     return Float(this - i$(this));
-},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','fractionalPart']};});
-$specialiseForNumber$(Integer, 'fractionalPart', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','fractionalPart']};})
-$specialiseForNumber$(Float, 'fractionalPart', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','fractionalPart']};})
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Number,d:['$','Number','$at','fractionalPart']};});
+$specialiseForNumber$(Integer, 'fractionalPart', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','fractionalPart']};})
+$specialiseForNumber$(Float, 'fractionalPart', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','fractionalPart']};})
 
 atr$(JSNum$proto, 'wholePart', function() {
     if (!nflt$(this)) { return this.valueOf(); }
@@ -546,20 +546,20 @@ atr$(JSNum$proto, 'wholePart', function() {
     var wret = Float(ret);
 //    if(ret == 0 && (this < 0 || this.fmz$)){ wret.fmz$ = true; }
     return wret;
-},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','wholePart']};});
-$specialiseForNumber$(Integer, 'wholePart', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','wholePart']};})
-$specialiseForNumber$(Float, 'wholePart', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','wholePart']};})
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Number,d:['$','Number','$at','wholePart']};});
+$specialiseForNumber$(Integer, 'wholePart', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','wholePart']};})
+$specialiseForNumber$(Float, 'wholePart', function(){return {mod:$M$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','wholePart']};})
 
 atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
-  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','sign']};});
-$specialiseForNumber$(Integer, 'sign', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','sign']};})
-$specialiseForNumber$(Float, 'sign', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Float,d:['$','Float','$at','sign']};})
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Number,d:['$','Number','$at','sign']};});
+$specialiseForNumber$(Integer, 'sign', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','sign']};})
+$specialiseForNumber$(Float, 'sign', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Float,d:['$','Float','$at','sign']};})
 
 atr$(JSNum$proto, 'hash', function() {
     return nflt$(this) ? $_String(this.toPrecision()).hash : this.valueOf();
-},undefined,function(){return{mod:$CCMM$,pa:64,$cont:Integer,d:['$','Number','$at','hash']};});
-$specialiseForNumber$(Integer, 'hash', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','hash']};})
-$specialiseForNumber$(Float, 'hash', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Float,d:['$','Float','$at','hash']};})
+},undefined,function(){return{mod:$M$,pa:64,$cont:Integer,d:['$','Number','$at','hash']};});
+$specialiseForNumber$(Integer, 'hash', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','hash']};})
+$specialiseForNumber$(Float, 'hash', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Float,d:['$','Float','$at','hash']};})
 
 // FIXME: I think this one is just gone from the language module
 JSNum$proto.distanceFrom = function(other) {
@@ -568,32 +568,32 @@ JSNum$proto.distanceFrom = function(other) {
 
 //Binary interface
 atr$(JSNum$proto, 'not', function(){ return ~this; },
-  undefined,function(){return{pa:64,mod:$CCMM$,$cont:Binary,d:['$','Integer','$at','not']};});
-$specialiseForNumber$(Integer, 'not', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','not']};})
+  undefined,function(){return{pa:64,mod:$M$,$cont:Binary,d:['$','Integer','$at','not']};});
+$specialiseForNumber$(Integer, 'not', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','not']};})
 
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
 $addnm$('leftLogicalShift',Binary.$$.prototype.leftLogicalShift);
-$specialiseForNumber$(Integer, 'leftLogicalShift', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'shift'}],d:['$','Integer','$m','leftLogicalShift']};})
+$specialiseForNumber$(Integer, 'leftLogicalShift', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'shift'}],d:['$','Integer','$m','leftLogicalShift']};})
 
 JSNum$proto.rightLogicalShift = function(i) { return this >>> i; }
 $addnm$('rightLogicalShift',Binary.$$.prototype.rightLogicalShift);
-$specialiseForNumber$(Integer, 'rightLogicalShift', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'shift'}],d:['$','Integer','$m','rightLogicalShift']};})
+$specialiseForNumber$(Integer, 'rightLogicalShift', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'shift'}],d:['$','Integer','$m','rightLogicalShift']};})
 
 JSNum$proto.rightArithmeticShift = function(i) { return this >> i; }
 $addnm$('rightArithmeticShift',Binary.$$.prototype.rightArithmeticShift);
-$specialiseForNumber$(Integer, 'rightArithmeticShift', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'shift'}],d:['$','Integer','$m','rightArithmeticShift']};})
+$specialiseForNumber$(Integer, 'rightArithmeticShift', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'shift'}],d:['$','Integer','$m','rightArithmeticShift']};})
 
 JSNum$proto.and = function(x) { return this & x; }
 $addnm$('and',Binary.$$.prototype.and);
-$specialiseForNumber$(Integer, 'and', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','and']};})
+$specialiseForNumber$(Integer, 'and', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','and']};})
 
 JSNum$proto.or = function(x) { return this | x; }
 $addnm$('or',Binary.$$.prototype.or);
-$specialiseForNumber$(Integer, 'or', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','or']};})
+$specialiseForNumber$(Integer, 'or', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','or']};})
 
 JSNum$proto.xor = function(x) { return this ^ x; }
 $addnm$('xor',Binary.$$.prototype.xor);
-$specialiseForNumber$(Integer, 'xor', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','xor']};})
+$specialiseForNumber$(Integer, 'xor', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','xor']};})
 
 JSNum$proto.$_get = function(idx) {
     if (idx < 0 || idx >31) {
@@ -603,7 +603,7 @@ JSNum$proto.$_get = function(idx) {
     return (this & mask) != 0 ? true : false;
 }
 $addnm$('$_get',Binary.$$.prototype.$_get);
-$specialiseForNumber$(Integer, 'get', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','get']};})
+$specialiseForNumber$(Integer, 'get', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','get']};})
 
 JSNum$proto.set=function(idx,bit) {
   if (idx<0 || idx>31) {
@@ -614,7 +614,7 @@ JSNum$proto.set=function(idx,bit) {
   return (bit === true) ? this|mask : this & ~mask;
 }
 $addnm$('set',Binary.$$.prototype.set);
-$specialiseForNumber$(Integer, 'set', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'},{$t:{t:$_Boolean},nm:'bit'}],d:['$','Integer','$m','set']};})
+$specialiseForNumber$(Integer, 'set', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'},{$t:{t:$_Boolean},nm:'bit'}],d:['$','Integer','$m','set']};})
 
 JSNum$proto.flip = function(idx) {
     if (idx < 0 || idx >31) {
@@ -624,13 +624,13 @@ JSNum$proto.flip = function(idx) {
     return this ^ mask;
 }
 $addnm$('flip',Binary.$$.prototype.flip);
-$specialiseForNumber$(Integer, 'flip', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','flip']};})
+$specialiseForNumber$(Integer, 'flip', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','flip']};})
 
 JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
 $addnm$('clear',Binary.$$.prototype.clear);
-$specialiseForNumber$(Integer, 'clear', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','clear']};})
+$specialiseForNumber$(Integer, 'clear', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'index'}],d:['$','Integer','$m','clear']};})
 
 function checkintoverflow$(a){
   if(a>runtime().maxIntegerValue || a<runtime().minIntegerValue)throw OverflowException();
@@ -640,13 +640,13 @@ JSNum$proto.neighbour=function(offset) {
   return checkintoverflow$(this+offset);
 }
 $addnm$('neighbour',Enumerable.$$.prototype.neighbour);
-$specialiseForNumber$(Integer, 'neighbour', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'offset'}],d:['$','Integer','$m','neighbour']};})
+$specialiseForNumber$(Integer, 'neighbour', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'offset'}],d:['$','Integer','$m','neighbour']};})
 
 JSNum$proto.offset=function(other) {
   return checkintoverflow$(this-other);
 }
 $addnm$('offset',Enumerable.$$.prototype.offset);
-$specialiseForNumber$(Integer, 'offset', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'offset'}],d:['$','Integer','$m','offset']};})
+$specialiseForNumber$(Integer, 'offset', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'offset'}],d:['$','Integer','$m','offset']};})
 
 JSNum$proto.offsetSign=function(other) {
   var v = this.valueOf();
@@ -656,43 +656,43 @@ JSNum$proto.offsetSign=function(other) {
   return 0;
 }
 $addnm$('offsetSign',Enumerable.$$.prototype.offsetSign);
-$specialiseForNumber$(Integer, 'offsetSign', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'offset'}],d:['$','Integer','$m','offsetSign']};})
+$specialiseForNumber$(Integer, 'offsetSign', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'offset'}],d:['$','Integer','$m','offsetSign']};})
 
 atr$(JSNum$proto,'magnitude',function(){
   var m=Math.abs(this);
   if (nflt$(this))m=Float(m);
   return m;
-},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
-$specialiseForNumber$(Integer, 'magnitude', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','magnitude']};})
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$M$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
+$specialiseForNumber$(Integer, 'magnitude', function(){return {mod:$M$,$t:{t:Integer},pa:67,$cont:Integer,d:['$','Integer','$at','magnitude']};})
 
 atr$(JSNum$proto, '$_undefined', function(){ return isNaN(this); },
-  undefined,function(){return{pa:1,mod:$CCMM$,$cont:Float,d:['$','Float','$at','undefined']};});
-$specialiseForNumber$(Float, '$_undefined', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','undefined']};})
+  undefined,function(){return{pa:1,mod:$M$,$cont:Float,d:['$','Float','$at','undefined']};});
+$specialiseForNumber$(Float, '$_undefined', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','undefined']};})
 
 atr$(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
-  undefined,function(){return{pa:1,mod:$CCMM$,$t:{t:$_Boolean},$cont:Float,d:['$','Float','$at','finite']};});
-$specialiseForNumber$(Float, 'finite', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','finite']};})
+  undefined,function(){return{pa:1,mod:$M$,$t:{t:$_Boolean},$cont:Float,d:['$','Float','$at','finite']};});
+$specialiseForNumber$(Float, 'finite', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','finite']};})
   
 atr$(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
-  undefined,function(){return{pa:67,mod:$CCMM$,$cont:Float,d:['$','Float','$at','infinite']};});
-$specialiseForNumber$(Float, 'infinite', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','infinite']};})
+  undefined,function(){return{pa:67,mod:$M$,$cont:Float,d:['$','Float','$at','infinite']};});
+$specialiseForNumber$(Float, 'infinite', function(){return {mod:$M$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','infinite']};})
 
 atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || this==0 && 1/this>0; },
-  undefined,function(){return{pa:65,mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
-$specialiseForNumber$(Float, 'strictlyPositive', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:65,$cont:Float,d:['$','Float','$at','strictlyPositive']};})
+  undefined,function(){return{pa:65,mod:$M$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
+$specialiseForNumber$(Float, 'strictlyPositive', function(){return {mod:$M$,$t:{t:$_Boolean},pa:65,$cont:Float,d:['$','Float','$at','strictlyPositive']};})
   
 atr$(JSNum$proto, 'strictlyNegative', function(){ return this<0 || this==0 && 1/this<0; },
-  undefined,function(){return{pa:65,mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
-$specialiseForNumber$(Float, 'strictlyNegative', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:65,$cont:Float,d:['$','Float','$at','strictlyNegative']};})
+  undefined,function(){return{pa:65,mod:$M$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
+$specialiseForNumber$(Float, 'strictlyNegative', function(){return {mod:$M$,$t:{t:$_Boolean},pa:65,$cont:Float,d:['$','Float','$at','strictlyNegative']};})
   
 atr$(JSNum$proto, 'nearestFloat', function(){ return Float(this.valueOf()); },
-  undefined,function(){return{pa:65,mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','nearestFloat']};});
-$specialiseForNumber$(Integer, 'nearestFloat', function(){return {mod:$CCMM$,$t:{t:Float},pa:65,$cont:Integer,d:['$','Integer','$at','nearestFloat']};})
+  undefined,function(){return{pa:65,mod:$M$,$cont:Integer,d:['$','Integer','$at','nearestFloat']};});
+$specialiseForNumber$(Integer, 'nearestFloat', function(){return {mod:$M$,$t:{t:Float},pa:65,$cont:Integer,d:['$','Integer','$at','nearestFloat']};})
 
-ex$.Integer=Integer;
-ex$.Float=Float;
+x$.Integer=Integer;
+x$.Float=Float;
 
-ex$.i$ = i$;
-ex$.f$ = f$;
+x$.i$ = i$;
+x$.f$ = f$;
 
 nativeJSParseFloat=parseFloat;

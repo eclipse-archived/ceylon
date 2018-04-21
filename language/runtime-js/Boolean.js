@@ -5,21 +5,21 @@ $_Boolean.$st$={
     return b==null?ParseException('illegal format for Boolean'):b;
   }
 };
-$_Boolean.$st$.parse.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:$_Boolean},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:$_Boolean,pa:4097,an:function(){return[tagged($arr$sa$(["Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Boolean','$m','parse']};};
+$_Boolean.$st$.parse.$m$=function(){return{mod:$M$,$t:{t:'u',l:[{t:$_Boolean},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:$_Boolean,pa:4097,an:function(){return[tagged($arr$sa$(["Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Boolean','$m','parse']};};
 initExistingTypeProto($_Boolean, Boolean, 'ceylon.language::Boolean');
 $_Boolean.$m$=function(){
   return{ps:[],pa:257,of:[getTrue,getFalse],
-  mod:$CCMM$,d:['$','Boolean']};
+  mod:$M$,d:['$','Boolean']};
 };
-ex$.$_Boolean=$_Boolean;
+x$.$_Boolean=$_Boolean;
 function $i$$_Boolean(){return $_Boolean;}
-ex$.$i$$_Boolean=$i$$_Boolean;
+x$.$i$$_Boolean=$i$$_Boolean;
 function $_true() {return true;}
 initType($_true, "ceylon.language::true", $_Boolean);
-$_true.$m$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','true']}};
+$_true.$m$=function(){return{'super':{t:$_Boolean},mod:$M$,pa:65,d:['$','true']}};
 function $_false() {return false;}
 initType($_false, "ceylon.language::false", $_Boolean);
-$_false.$m$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','false']}};
+$_false.$m$=function(){return{'super':{t:$_Boolean},mod:$M$,pa:65,d:['$','false']}};
 Boolean.prototype.getT$name = function() {
     return 'ceylon.language::Boolean';
 }
@@ -28,19 +28,19 @@ Boolean.prototype.getT$all = function() {
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
 atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1231:1237; },
-  undefined,{$t:{t:Integer},pa:3,mod:$CCMM$,d:['$','Object','$at','hash']});
+  undefined,{$t:{t:Integer},pa:3,mod:$M$,d:['$','Object','$at','hash']});
 atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?"true":"false"; },
-  undefined,{$t:{t:$_String},pa:3,mod:$CCMM$,d:['$','Object','$at','string']});
+  undefined,{$t:{t:$_String},pa:3,mod:$M$,d:['$','Object','$at','string']});
 
 function getTrue() {return true;}
-getTrue.$m$=function(){return{mod:$CCMM$,pa:65,d:['$','true'],$t:{t:$_true}};};
+getTrue.$m$=function(){return{mod:$M$,pa:65,d:['$','true'],$t:{t:$_true}};};
 function getFalse() {return false;}
-getFalse.$m$=function(){return{mod:$CCMM$,pa:65,d:['$','false'],$t:{t:$_false}};};
-ex$.$prop$getTrue=$_true;
-ex$.$prop$getFalse=$_false;
-ex$.getTrue=getTrue;
-ex$.getFalse=getFalse;
+getFalse.$m$=function(){return{mod:$M$,pa:65,d:['$','false'],$t:{t:$_false}};};
+x$.$prop$getTrue=$_true;
+x$.$prop$getFalse=$_false;
+x$.getTrue=getTrue;
+x$.getFalse=getFalse;
 function $i$$_true(){return $_true;}
 function $i$$_false(){return $_false;}
-ex$.$i$$_true=$i$$_true;
-ex$.$i$$_false=$i$$_false;
+x$.$i$$_true=$i$$_true;
+x$.$i$$_false=$i$$_false;

@@ -130,16 +130,16 @@ function attrGetter(type, name) {
 function attrSetter(type, name, value) {
     return Object.getOwnPropertyDescriptor(type.$$.prototype, name).set;
 }
-ex$.initType=initType;
-ex$.initTypeProto=initTypeProto;
-ex$.initTypeProtoI=initTypeProtoI;
-ex$.initExistingType=initExistingType;
-ex$.initExistingTypeProto=initExistingTypeProto;
-ex$.inheritProto=inheritProto;
-ex$.atr$=atr$;
-ex$.copySuperAttr=copySuperAttr;
-ex$.attrGetter=attrGetter;
-ex$.attrSetter=attrSetter;
+x$.initType=initType;
+x$.initTypeProto=initTypeProto;
+x$.initTypeProtoI=initTypeProtoI;
+x$.initExistingType=initExistingType;
+x$.initExistingTypeProto=initExistingTypeProto;
+x$.inheritProto=inheritProto;
+x$.atr$=atr$;
+x$.copySuperAttr=copySuperAttr;
+x$.attrGetter=attrGetter;
+x$.attrSetter=attrSetter;
 
 function removeSupertypes(list) {
     for (var i=0; i < list.length; i++) {
@@ -345,21 +345,21 @@ function asrt$2(msg,loc,file) {
     }
   }
 }
-ex$.set_type_args=set_type_args;
-ex$.add_type_arg=add_type_arg;
-ex$.throwexc=throwexc;
-ex$.wrapexc=wrapexc;
-ex$.eorl$=eorl$;
-ex$.asrt$=asrt$;
-ex$.asrt$2=asrt$2;
+x$.set_type_args=set_type_args;
+x$.add_type_arg=add_type_arg;
+x$.throwexc=throwexc;
+x$.wrapexc=wrapexc;
+x$.eorl$=eorl$;
+x$.asrt$=asrt$;
+x$.asrt$2=asrt$2;
 var INIT$={a:1};
-ex$.INIT$=INIT$;
+x$.INIT$=INIT$;
 
 //For foo[bar]=baz
 function setObjectProperty(object, key, value) {
   object[key]=value;
 }
-ex$.setObjectProperty=setObjectProperty;
+x$.setObjectProperty=setObjectProperty;
 
 function $eq$(a,b) {
   if (a===null)return b===null;
@@ -370,23 +370,23 @@ function $eq$(a,b) {
   if (a.equals)return a.equals(b);
   return a==b;
 }
-ex$.$eq$=$eq$;
+x$.$eq$=$eq$;
 function $cnt$(a,b) {
   if (a===null||a===undefined)return false;
   if (Array.isArray(a))return $arr$cnt(a,b);
   return a.contains?a.contains(b):false;
 }
-ex$.$cnt$=$cnt$;
+x$.$cnt$=$cnt$;
 function $cnt$2(b,a) {
   if (a===null||a===undefined)return false;
   if (Array.isArray(a))return $arr$cnt(a,b);
   return a.contains?a.contains(b):false;
 }
-ex$.$cnt$2=$cnt$2;
+x$.$cnt$2=$cnt$2;
 //Check spread destructuring
 function $cksprdstr$(min,t,v,loc,f,s) {
   s=s.sequence();
   if (s.shorterThan(min))throwexc(AssertionError('length of ' + v + ' is less than minimum length of its static type ' + t),loc,f);
   return s;
 }
-ex$.$cksprdstr$=$cksprdstr$;
+x$.$cksprdstr$=$cksprdstr$;

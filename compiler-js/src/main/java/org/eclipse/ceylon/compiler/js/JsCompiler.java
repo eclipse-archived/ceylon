@@ -441,7 +441,7 @@ public class JsCompiler {
                             if (isResourceFile 
                                     || type!=null && type.startsWith("text")) {
                                 Writer writer = lastOut.getWriter();
-                                writer.write("ex$.");
+                                writer.write("x$.");
                                 writer.write(resourceKey(module, file));
                                 writer.write("=\"");
                                 Pattern pattern = Pattern.compile("\\\\|\\t|\\r|\\f|\\n");
@@ -725,7 +725,7 @@ public class JsCompiler {
 
     /** Writes the beginning of the wrapper function for a JS module. */
     public static void beginWrapper(Writer writer) throws IOException {
-        writer.write("(function(define) { define(function(require, ex$, module) {\n");
+        writer.write("(function(define) { define(function(require, x$, module) {\n");
     }
 
     /** Writes the require wrapper handling for our wrapper */
