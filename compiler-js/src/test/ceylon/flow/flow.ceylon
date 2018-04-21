@@ -184,6 +184,11 @@ void testIfNonempty() {
     } else {
         fail("if (nonempty x=expr)");
     }
+    if (nonempty s7 = s4.span(0, 0)) {
+        check(s7.first=="hi", "if (nonempty x=expr)");
+    } else {
+        fail("if (nonempty x=expr)");
+    }
 }
 
 class I6206() {
