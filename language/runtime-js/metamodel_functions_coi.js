@@ -171,7 +171,7 @@ function coiatr$(coi,name,m,noInherit){
   if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
     return null;
   var rv=AppliedAttribute(name, at, {Get$Attribute:_t,Set$Attribute:at.set?_t:{t:Nothing}, Container$Attribute:{t:_tipo}});
-  if (coi.$targs)rv.$$targs$$.Container$Attribute.a=coi.$targs;
+  if (coi.$targs)rv.$a$.Container$Attribute.a=coi.$targs;
   rv.$parent=coi;
   return rv;
 }
@@ -325,9 +325,9 @@ function coicase$(coi){
 }
 //ClassOrInterface.string
 function coistr$(coi) {
-  if (coi.tipo===Tuple && coi.$$targs$$.Target$Type.t==='T' && coi.$$targs$$.Target$Type.l){
+  if (coi.tipo===Tuple && coi.$a$.Target$Type.t==='T' && coi.$a$.Target$Type.l){
     var tn='[';
-    var ttl=coi.$$targs$$.Target$Type.l;
+    var ttl=coi.$a$.Target$Type.l;
     for (var i=0; i<ttl.length;i++) {
       if (i>0)tn+=',';
       if (ttl[i].t==='u' && ttl[i].l.length===2 && ttl[i].seq) {
@@ -398,13 +398,13 @@ function coistr$(coi) {
   if (cc[0].tipo===Callable) {
     qn+=addtargs({t:Callable});
   } else {
-    qn+=addtargs(cc[0].$$targs$$.Target$Type);
+    qn+=addtargs(cc[0].$a$.Target$Type);
   }
   for (var i=1;i<cc.length;i++) {
     mm=getrtmm$$(cc[i].tipo)
     var nm=mm.d[mm.d.length-1];
     if (nm.indexOf('$')>0)nm=nm.substring(0,nm.indexOf('$'));
-    qn+='.'+nm+addtargs(cc[i].$$targs$$.Target$Type);
+    qn+='.'+nm+addtargs(cc[i].$a$.Target$Type);
   }
   return qn;
 }
@@ -415,8 +415,8 @@ function coihash$(coi) {
   if (mm.tp) {
     for (var tp in mm.tp) {
       var targ;
-      if (coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface && coi.$$targs$$.Type$ClassOrInterface.a && coi.$$targs$$.Type$ClassOrInterface.a[tp]) {
-        var _targ=coi.$$targs$$.Type$ClassOrInterface.a[tp];
+      if (coi.$a$ && coi.$a$.Type$ClassOrInterface && coi.$a$.Type$ClassOrInterface.a && coi.$a$.Type$ClassOrInterface.a[tp]) {
+        var _targ=coi.$a$.Type$ClassOrInterface.a[tp];
         if (typeof(_targ)==='string') {
           console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
           _targ={t:Anything};
@@ -451,7 +451,7 @@ function coicont$(coi) {
   if (!cont)return null;
   var _t={t:cont};
   var rv;
-  var ttargs=coi.$$targs$$ && (coi.$$targs$$.Container$Member||coi.$$targs$$.Container$AppliedMemberClass||coi.$$targs$$.Container$AppliedMemberInterface);
+  var ttargs=coi.$a$ && (coi.$a$.Container$Member||coi.$a$.Container$AppliedMemberClass||coi.$a$.Container$AppliedMemberInterface);
   if (ttargs) {
     ttargs=ttargs.a;
   } else {
@@ -460,8 +460,8 @@ function coicont$(coi) {
   if (ttargs)_t.a=ttargs;
   if (coi.src$ && coi.src$.outer$) {
     var _out=coi.src$.outer$;
-    if (_out.$$targs$$) {
-      _t.a=_out.$$targs$$;
+    if (_out.$a$) {
+      _t.a=_out.$a$;
     }
     //TODO this could still be a member class
     rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
@@ -482,11 +482,11 @@ function _coitarg_$(coi,makeItem,maptarg){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
     if (mm.tp) {
-      var typeTargs=coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface;
+      var typeTargs=coi.$a$ && coi.$a$.Type$ClassOrInterface;
       if (typeTargs) {
         if (coi.tipo===Tuple && typeTargs.t==='T') {
           typeTargs=retpl$(typeTargs);
-          coi.$$targs$$.Type$ClassOrInterface=typeTargs;
+          coi.$a$.Type$ClassOrInterface=typeTargs;
         }
         typeTargs=typeTargs.a;
       }
@@ -538,11 +538,11 @@ function _coitargl_$(coi,makeItem,listarg){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
     if (mm.tp) {
-      var typeTargs=coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface;
+      var typeTargs=coi.$a$ && coi.$a$.Type$ClassOrInterface;
       if (typeTargs) {
         if (coi.tipo===Tuple && typeTargs.t==='T') {
           typeTargs=retpl$(typeTargs);
-          coi.$$targs$$.Type$ClassOrInterface=typeTargs;
+          coi.$a$.Type$ClassOrInterface=typeTargs;
         }
         typeTargs=typeTargs.a;
       }
@@ -592,7 +592,7 @@ function coirestarg$(root,type) {
     var t2 = {t:type.t, a:{}};
     for (var targ in type.a) {
       if (typeof(type.a[targ])==='string') {
-        var ttt=root.$$targs$$.Type$ClassOrInterface;
+        var ttt=root.$a$.Type$ClassOrInterface;
         if (ttt.t==='T') {
           t2.a[targ]=ttt;
         } else {
@@ -619,7 +619,7 @@ function coiut$(coi,t,ot){
   if (is$(t,{t:AppliedUnionType$jsint})) {
     return t.union(coi,{Other$union:ot});
   }
-  var _ut={t:'u',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
+  var _ut={t:'u',l:[coi.$a$.Type$ClassOrInterface,t.$a$.Target$Type]};
   return AppliedUnionType$jsint(_ut,$arr$([coi,t],_ut,1),{Union$AppliedUnionType:_ut});
 }
 //Intersection type of the receiving type with a new one
@@ -627,7 +627,7 @@ function coiit$(coi,t,ot){
   if (is$(t,{t:AppliedIntersectionType$jsint})) {
     return t.intersection(coi,{Other$intersection:ot});
   }
-  var _ut={t:'i',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
+  var _ut={t:'i',l:[coi.$a$.Type$ClassOrInterface,t.$a$.Target$Type]};
   return AppliedIntersectionType$jsint(_ut,$arr$([coi,t],_ut,1),{Union$AppliedIntersectionType:_ut});
 }
 //Get annotations from ClassOrInterface, based on the specified annotation types

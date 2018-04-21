@@ -130,14 +130,14 @@ public class ClassGenerator {
         gen.beginBlock();
         if (!hasConstructors) {
             //This takes care of top-level attributes defined before the class definition
-            gen.out("$init$", typeName, "();");
+            gen.out("$i$", typeName, "();");
             gen.endLine();
             gen.declareSelf(d);
             gen.referenceOuter(d);
         }
         final String me = gen.getNames().self(d);
         if (withTargs) {
-            gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$);");
+            gen.out(gen.getClAlias(), "set_type_args(", me, ",$a$);");
             gen.endLine();
         }
         addFunctionTypeArguments(d, me, gen);

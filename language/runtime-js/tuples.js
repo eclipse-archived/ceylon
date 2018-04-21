@@ -16,12 +16,12 @@ function tpl$(elems,spread){
   for (var i=0; i < elems.length; i++){
     var e=elems[i];
     if (e===null) {
-      types.push({t:$init$$_null()});
+      types.push({t:$i$$_null()});
     } else if (e===undefined) {
       types.push({t:Anything});
     } else if (e.getT$all && e.getT$name) {
       var _et={t:e.getT$all()[e.getT$name()]};
-      if (e.$$targs$$)_et.a=e.$$targs$$;
+      if (e.$a$)_et.a=e.$a$;
       types.push(_et);
     } else {
       console.log("Tuple: WTF do I use for the type of " + e);
@@ -29,28 +29,28 @@ function tpl$(elems,spread){
     }
   }
   //Check if I need to do this
-  //if (spread && spread.$$targs$$) {
-  //  types.push(spread.$$targs$$.Element$Sequence);
+  //if (spread && spread.$a$) {
+  //  types.push(spread.$a$.Element$Sequence);
   //}
   types={t:'T',l:types};
-  $init$tpl$();
+  $i$tpl$();
   var that=new tpl$.$$;
-  that.$$targs$$=types;
+  that.$a$=types;
   $_Object(that);
   var _t=types.l.length===1?types.l[0]:{t:'u',l:types.l};
   Sequence({Element$Sequence:_t},that);
-  elems.$$targs$$={Element$Tuple:_t,First$Tuple:types.l[0],Element$Iterable:_t,
+  elems.$a$={Element$Tuple:_t,First$Tuple:types.l[0],Element$Iterable:_t,
     Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
     Element$Collection:_t,Key$Correspondence:{t:Integer},Item$Correspondence:_t};
-  set_type_args(that,elems.$$targs$$,Tuple);
-  that.$$targs$$.Element$Tuple=_t;
-  that.$$targs$$.First$Tuple=types.l[0];
+  set_type_args(that,elems.$a$,Tuple);
+  that.$a$.Element$Tuple=_t;
+  that.$a$.First$Tuple=types.l[0];
   if (spread!==undefined) {
-    that.$$targs$$.Rest$Tuple={t:Sequence,a:_t};
+    that.$a$.Rest$Tuple={t:Sequence,a:_t};
   } else if (types.l.length===1) {
-    that.$$targs$$.Rest$Tuple={t:Empty};
+    that.$a$.Rest$Tuple={t:Empty};
   } else {
-    that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.slice(1)};
+    that.$a$.Rest$Tuple={t:'T',l:_t.l.slice(1)};
   }
   //This is awful as well. When you start getting weird undefined refs calling tuple.first, update this (check Tuple.first)
   that.$z_=elems[0];
@@ -62,9 +62,9 @@ function tpl$(elems,spread){
   that.tps$=types;
   return that;
 }
-function $init$tpl$(){
+function $i$tpl$(){
   if (tpl$.$$===undefined) {
-    initTypeProto(tpl$,'ceylon.language::Tuple',$init$Tuple());
+    initTypeProto(tpl$,'ceylon.language::Tuple',$i$Tuple());
     (function(tuple) {
       tuple.getFromFirst=function(i){
         if (this.sp$ && i>=this.elem$.length) {
@@ -75,7 +75,7 @@ function $init$tpl$(){
       tuple.getFromFirst.$m$=Tuple.$$.prototype.getFromFirst.$m$;
       tuple.iterator=function(){
         if (this.sp$) {
-          return ChainedIterator($arr$(this.elem$,this.t$),this.sp$,{Element$ChainedIterator:this.tps$,Other$ChainedIterator:this.sp$.$$targs$$.Element$Sequential});
+          return ChainedIterator($arr$(this.elem$,this.t$),this.sp$,{Element$ChainedIterator:this.tps$,Other$ChainedIterator:this.sp$.$a$.Element$Sequential});
         }
         var i=0,e=this.elem$;
         return for$iter(function(){
@@ -181,7 +181,7 @@ function $init$tpl$(){
             var s1=this.elem$.slice(a);
             var s2=this.sp$.spanTo(b-this.elem$.length);
             return $arr$(s1,this.t$).chain(s2,
-              {Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+              {Other$chain:this.sp$.$a$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
           if (a>=this.elem$.length) {
             var s1=this.sp$.span(a-this.elem$.length,0);
@@ -208,7 +208,7 @@ function $init$tpl$(){
           } else if (x<0) {
             return this;
           }
-          return $arr$(this.elem$.slice(x),this.t$).chain(this.sp$,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+          return $arr$(this.elem$.slice(x),this.t$).chain(this.sp$,{Other$chain:this.sp$.$a$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
         }
         var r=this.elem$.slice(x);
         return r.size===0?empty():tpl$(r);
@@ -228,7 +228,7 @@ function $init$tpl$(){
           if (b>0 && a+b-1>=this.elem$.length) {
             var m1=$arr$(this.elem$,this.t$).measure(a,this.elem$.length-a);
             var m2=this.sp$.measure(0,b-m1.size);
-            return m1.chain(m2,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+            return m1.chain(m2,{Other$chain:this.sp$.$a$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
         }
         return $arr$(this.elem$,this.t$).measure(a,b);
@@ -306,7 +306,7 @@ function $init$tpl$(){
     })(tpl$.$$.prototype);
   }
 }
-$init$tpl$();
+$i$tpl$();
 ex$.tpl$=tpl$;
 
 //Create a proper Tuple from a simplified tuple type description

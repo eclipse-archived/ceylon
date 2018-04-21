@@ -33,11 +33,11 @@ function className(obj) {
             tn = 'UNKNOWN';
         }
     }
-    /*else if (obj.$$targs$$) {
+    /*else if (obj.$a$) {
         tn += '<';
-        for (var i=0; i < obj.$$targs$$.length; i++) {
+        for (var i=0; i < obj.$a$.length; i++) {
             if (i>0) { tn += ','; }
-            tn += _typename(obj.$$targs$$[i]);
+            tn += _typename(obj.$a$[i]);
         }
         tn += '>';
     }*/

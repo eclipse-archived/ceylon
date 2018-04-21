@@ -1,5 +1,5 @@
 function Byte(bits,that) {
-  $init$Byte();
+  $i$Byte();
   if (that===undefined)that=new Byte.$$;
   $_Object(that);
   Binary({Other$Binary:{t:Byte}},that);

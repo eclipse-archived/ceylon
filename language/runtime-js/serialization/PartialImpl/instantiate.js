@@ -10,7 +10,7 @@ function instantiate(){
   } else if (is$(classModel,{t:AppliedMemberClass$jsint})) {
     outer=this.container;
     if (is$(outer,{t:Partial$serialization}))outer=outer.instance_;
-    outerClass=type$meta(outer,{Type$type:classModel.$$targs$$.Container$AppliedMemberClass});
+    outerClass=type$meta(outer,{Type$type:classModel.$a$.Container$AppliedMemberClass});
   } else {
     throw AssertionError("unexpected class model " + (classModel&&classModel.string||"NULL"));
   }

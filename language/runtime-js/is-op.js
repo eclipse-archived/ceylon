@@ -1,5 +1,5 @@
 function isNullType(t) {
-    return t.t===$init$$_null()||t.t===Null||t.t===Anything;
+    return t.t===$i$$_null()||t.t===Null||t.t===Anything;
 }
 function is$(obj,type,containers){
   if(type && type.t){
@@ -49,7 +49,7 @@ function is$(obj,type,containers){
       return false;
     }
     //Native arrays with no reified type args are NOT Ceylon objects.
-    if (obj.$$targs$$===undefined && Array.isArray(obj))return false;
+    if (obj.$a$===undefined && Array.isArray(obj))return false;
     if (type.t==='T') {
       if (is$(obj,{t:Tuple})) {
           var last_type = type.l[type.l.length-1];
@@ -78,17 +78,17 @@ function is$(obj,type,containers){
     }
     type=value2type$(type);
     if(type.t.$$.T$name in obj.getT$all()){
-      if(type.t==Callable&&!(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
+      if(type.t==Callable&&!(obj.$a$ && obj.$a$.Return$Callable && obj.$a$.Arguments$Callable)
           && getrtmm$$(obj)&&obj.$m$.$t && obj.$m$.ps!==undefined){
-        //Callable with no $$targs$$, we can build them from metamodel
+        //Callable with no $a$, we can build them from metamodel
         add_type_arg(obj,'Return$Callable',obj.$m$.$t);
         add_type_arg(obj,'Arguments$Callable',{t:'T',l:[]});
         for(var i=0;i<obj.$m$.ps.length;i++){
-          obj.$$targs$$.Arguments$Callable.l.push(obj.$m$.ps[i].$t);
+          obj.$a$.Arguments$Callable.l.push(obj.$m$.ps[i].$t);
         }
-        if (obj.$$targs$$.Arguments$Callable.l.length===0)obj.$$targs$$.Arguments$Callable={t:Empty};
+        if (obj.$a$.Arguments$Callable.l.length===0)obj.$a$.Arguments$Callable={t:Empty};
       }
-      if(type.a && obj.$$targs$$) {
+      if(type.a && obj.$a$) {
         for(var i in type.a) {
           var cmptype=type.a[i];
           var tmpobj=obj;
@@ -131,7 +131,7 @@ function is$(obj,type,containers){
               if(iance===null)_omm=getrtmm$$(_omm.$cont);
             }
           }
-          var _targ=tmpobj.$$targs$$[i];
+          var _targ=tmpobj.$a$[i];
           if (iance === 'out') {
             if (!extendsType(_targ,cmptype,true)) {
               return false;
@@ -181,20 +181,20 @@ function is$(obj,type,containers){
             if (!is$(cnt,containers[i]))return false;
             cnt=cnt.outer$;
           }
-        } else if (obj.$$targs$$) {
+        } else if (obj.$a$) {
           if (Array.isArray(containers)) {
             //Static type, check type arguments against all containers
             for (var i=0;i<containers.length;i++) {
               if (containers[i].a) {
                 for (var t in containers[i].a) {
-                  if (obj.$$targs$$[t] && !extendsType(obj.$$targs$$[t], containers[i].a[t], true))return false;
+                  if (obj.$a$[t] && !extendsType(obj.$a$[t], containers[i].a[t], true))return false;
                 }
               }
             }
           } else {
             //Method argument types
             for (var t in containers) {
-              if (obj.$$targs$$[t] && !extendsType(obj.$$targs$$[t], containers[t], true))return false;
+              if (obj.$a$[t] && !extendsType(obj.$a$[t], containers[t], true))return false;
             }
           }
         }

@@ -18,8 +18,8 @@ function(nm,$m){
     if (mm.d[mm.d.length-2]==='$cn' && mm.ps!==undefined) {
       var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
       return AppliedMemberClassCallableConstructor$jsint(cn,
-             {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
-              Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
+             {Type$AppliedMemberClassCallableConstructor:this.$a$.Type$AppliedMemberClass,
+              Container$AppliedMemberClassCallableConstructor:this.$a$.Container$AppliedMemberClass,
               Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
     }
   }

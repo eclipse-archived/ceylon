@@ -8,8 +8,8 @@ function f2$(f,parms,targs) {
   if (set_meta) {
     f.$m$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
   }
-  if (targs !== undefined && f.$$targs$$ === undefined) {
-    f.$$targs$$=targs;
+  if (targs !== undefined && f.$a$ === undefined) {
+    f.$a$=targs;
     if (set_meta) {
       f.$m$.$t=targs.Return$Callable;
     }
@@ -19,7 +19,7 @@ function f2$(f,parms,targs) {
     return f.apply(undefined,arguments);
   };
   if (targs) {
-    fun.$$targs$$=targs;
+    fun.$a$=targs;
   }
   fun.$m$=f.$m$;
   fun.getT$all=f.getT$all;
@@ -29,7 +29,7 @@ function f2$(f,parms,targs) {
   }
   return fun;
 }
-initExistingTypeProto(f2$, Function, 'ceylon.language::JsCallable', $init$Callable());
+initExistingTypeProto(f2$, Function, 'ceylon.language::JsCallable', $i$Callable());
 
 function nop$(){return null;}
 
@@ -49,7 +49,7 @@ function f3$(o,f,targs) {
     };
   }
   fun.c2$=f;
-  fun.$$targs$$=targs;
+  fun.$a$=targs;
   fun.equals=function(x){
     return false;//f===x || fun===x;
   }
@@ -72,7 +72,7 @@ function spread$(a,f,targs,noInvoke) {
     if (arg.length>0 && is$(arg[spridx],{t:Sequence})) {
       //In this case we need to check the size of the sequence against the size of the remaining arguments
       //And check that the remaining parameter types match the sequence's element type
-      var elemento=arg[spridx].$$targs$$.Element$Sequence;
+      var elemento=arg[spridx].$a$.Element$Sequence;
       var mm=getrtmm$$(f);
       if (mm && mm.ps && mm.ps.length==arg.length-spridx+arg[spridx].size-1) {
         //If the argument is already of the parameter's type, forget about it
@@ -147,7 +147,7 @@ function spread$2(f) {
     if (params.length===1 && args.length===(targs?2:1) && is$(args[0],{t:Sequential}) && args[0].size===1) {
       var pt=params[0].$t;
       if (typeof(pt)==='string') {
-        if (f.$$targs$$ && f.$$targs$$[pt])pt=f.$$targs$$[pt];
+        if (f.$a$ && f.$a$[pt])pt=f.$a$[pt];
         else if (targs && targs[pt])pt=targs[pt];
         else console.log("SPREAD can't resolve",pt,"with",targs?Object.keys(targs):"no type arguments");
       }
@@ -160,7 +160,7 @@ function spread$2(f) {
       var e=args[j];
       var pt=params[i].$t;
       if (typeof(pt)==='string') {
-        if (f.$$targs$$ && f.$$targs$$[pt])pt=f.$$targs$$[pt];
+        if (f.$a$ && f.$a$[pt])pt=f.$a$[pt];
         else if (targs && targs[pt])pt=targs[pt];
         else console.log("SPREAD can't resolve",pt,"with",targs?Object.keys(targs):"no type arguments");
       }

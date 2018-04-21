@@ -1,5 +1,5 @@
 function OpenSetter(v, $$openSetter){
-  $init$OpenSetter();
+  $i$OpenSetter();
   if ($$openSetter===undefined)$$openSetter=new OpenSetter.$$;
   $$openSetter.variable_=v;
   SetterDeclaration$meta$declaration($$openSetter);
@@ -12,7 +12,7 @@ function OpenSetter(v, $$openSetter){
   return $$openSetter;
 }
 OpenSetter.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
-function $init$OpenSetter(){
+function $i$OpenSetter(){
   if (OpenSetter.$$===undefined){
     initTypeProto(OpenSetter,'ceylon.language.meta.declaration::OpenSetter',Basic,SetterDeclaration$meta$declaration);
     (function($$openSetter){
@@ -29,4 +29,4 @@ atr$($$openSetter,'name',function(){return this.variable.name;},undefined,functi
   return OpenSetter;
 }
 ex$.OpenSetter=OpenSetter;
-$init$OpenSetter();
+$i$OpenSetter();

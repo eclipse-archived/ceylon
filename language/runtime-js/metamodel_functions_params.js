@@ -82,10 +82,10 @@ function tupleize$params(ps,aux) {
 }
 //Resolve a type argument by looking into the metamodel,
 //as well as the type arguments provided (if any)
-function resolve$typearg(ta,mm,$$targs$$) {
+function resolve$typearg(ta,mm,$a$) {
   var r;
-  if ($$targs$$ && $$targs$$[ta]) {
-    r=$$targs$$[ta];
+  if ($a$ && $a$[ta]) {
+    r=$a$[ta];
     if (typeof(r)!=='string')return r;
   }
   r=mm.tp?mm.tp[ta]:undefined;
@@ -102,7 +102,7 @@ function resolve$typearg(ta,mm,$$targs$$) {
   return {t:Anything};
 }
 
-function convert$params(mm,a,$$targs$$) {
+function convert$params(mm,a,$a$) {
   function sequenceToArray(as) {
     if (is$(as,{t:Sequential})) {
       var _a=[];
@@ -129,15 +129,15 @@ function convert$params(mm,a,$$targs$$) {
   }
   var type0;
   if (a.length===1 && (Array.isArray(a[0]) || is$(a[0],{t:Sequential}))
-      && (ps.length!=1 || (!extendsType((type0=restype2$(ps[0].$t,$$targs$$)),{t:Sequential}) && !is$(a[0],type0)))) {
+      && (ps.length!=1 || (!extendsType((type0=restype2$(ps[0].$t,$a$)),{t:Sequential}) && !is$(a[0],type0)))) {
     //We sometimes get an array with a single array (double wrapping)
     a=sequenceToArray(a[0]);
   }
   var fa=[],sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
     var p=ps[i];
-    var val_t=restype2$(sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,$$targs$$);
-    if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$$targs$$);
+    var val_t=restype2$(sarg?sarg.$a$.a.Element$Iterable:p.$t,$a$);
+    if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$a$);
     if (a[i]===undefined) {
       if (p.def||p.seq) {
         if (p.seq && p.$t.t===Sequence)
@@ -150,14 +150,14 @@ function convert$params(mm,a,$$targs$$) {
       sarg.push(a[i]);
     } else if (p.seq) {
       for (var eta in p.$t.a)if(eta.startsWith("Element$"))val_t=p.$t.a[eta];
-      if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$$targs$$);
+      if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm,$a$);
       if (is$(a[i],{t:Iterable,a:{Element$Iterable:val_t}})) {
         fa.push(a[i]);
         val_t={t:Iterable,a:{Element$Iterable:val_t}};
       } else {
         sarg=[];
         for (var j=i; j<a.length;j++){
-          if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
+          if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$a$).string + " got " + className(a[j]));
           sarg.push(a[j]);
         }
         fa.push($arr$sa$(sarg,val_t));
@@ -166,7 +166,7 @@ function convert$params(mm,a,$$targs$$) {
     } else {
       fa.push(a[i]);
     }
-    if (a[i]!==undefined && !is$(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[i]));
+    if (a[i]!==undefined && !is$(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$a$).string + " got " + className(a[i]));
   }
   if (a.length>i)throw InvocationException$meta$model("Too many arguments");
   a = fa;

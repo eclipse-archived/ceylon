@@ -1,2 +1,2 @@
 initTypeProto(AppliedCallableConstructor$jsint,'ceylon.language.jsint::AppliedCallableConstructor',
-              Basic,$init$CallableConstructor$meta$model(),$init$$_Function$meta$model());
+              Basic,$i$CallableConstructor$meta$model(),$i$$_Function$meta$model());

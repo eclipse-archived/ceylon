@@ -85,7 +85,7 @@ public class Constructors {
                 container, gen);
         gen.beginBlock();
         if (!d.isAbstract()) {
-            gen.out("$init$", gen.getNames().name(container), "();");
+            gen.out("$i$", gen.getNames().name(container), "();");
             gen.endLine();
             gen.declareSelf(container);
             gen.referenceOuter(container);
@@ -95,7 +95,7 @@ public class Constructors {
             //Call common initializer
             gen.out(gen.getNames().name(container), "$$c(");
             if (withTargs) {
-                gen.out("$$targs$$,");
+                gen.out("$a$,");
             }
             gen.out(me, ");");
             gen.endLine();

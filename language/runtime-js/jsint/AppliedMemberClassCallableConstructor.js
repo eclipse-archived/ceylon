@@ -1,17 +1,17 @@
-function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
-  if ($$targs$$.Type$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Type$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
-  if ($$targs$$.Container$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Container$AppliedMemberClassCallableConstructor=$$targs$$.Container$MemberClassCallableConstructor;
-  if ($$targs$$.Arguments$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Arguments$AppliedMemberClassCallableConstructor=$$targs$$.Arguments$MemberClassCallableConstructor;
-  $init$AppliedMemberClassCallableConstructor$jsint();
+function AppliedMemberClassCallableConstructor$jsint(tipo,$a$,that,myTargs) {
+  if ($a$.Type$AppliedMemberClassCallableConstructor===undefined)$a$.Type$AppliedMemberClassCallableConstructor=$a$.Type$MemberClassCallableConstructor;
+  if ($a$.Container$AppliedMemberClassCallableConstructor===undefined)$a$.Container$AppliedMemberClassCallableConstructor=$a$.Container$MemberClassCallableConstructor;
+  if ($a$.Arguments$AppliedMemberClassCallableConstructor===undefined)$a$.Arguments$AppliedMemberClassCallableConstructor=$a$.Arguments$MemberClassCallableConstructor;
+  $i$AppliedMemberClassCallableConstructor$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
     that=function AppliedMemConstr1(x){
       var rv=tipo.bind(x);
       rv.$m$=tipo.$m$;
       var nt={t:tipo};
-      if (x.$$targs$$) {
+      if (x.$a$) {
         nt.a={};
-        for (var nta in x.$$targs$$)nt.a[nta]=x.$$targs$$[nta];
+        for (var nta in x.$a$)nt.a[nta]=x.$a$[nta];
       }
       if (that.$targs) {
         if (!nt.a)nt.a={};
@@ -59,10 +59,10 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.$m$);
   }
-  MemberClassCallableConstructor$meta$model({Type$MemberClassCallableConstructor:$$targs$$.Type$AppliedMemberClassCallableConstructor,
-    Arguments$MemberClassCallableConstructor:$$targs$$.Arguments$AppliedMemberClassCallableConstructor,
-    Container$MemberClassCallableConstructor:$$targs$$.Container$AppliedMemberClassCallableConstructor},that);
-  set_type_args(that,$$targs$$,AppliedMemberClassCallableConstructor$jsint);
+  MemberClassCallableConstructor$meta$model({Type$MemberClassCallableConstructor:$a$.Type$AppliedMemberClassCallableConstructor,
+    Arguments$MemberClassCallableConstructor:$a$.Arguments$AppliedMemberClassCallableConstructor,
+    Container$MemberClassCallableConstructor:$a$.Container$AppliedMemberClassCallableConstructor},that);
+  set_type_args(that,$a$,AppliedMemberClassCallableConstructor$jsint);
   that.$targs=myTargs;
   that.tipo=tipo;
   return that;

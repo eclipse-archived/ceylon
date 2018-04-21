@@ -1,5 +1,5 @@
 function ValParamDecl$jsint(cont,param,vpd$){
-  $init$ValParamDecl$jsint();
+  $i$ValParamDecl$jsint();
   if (vpd$===undefined)vpd$=new ValParamDecl$jsint.$$;
   vpd$.cont_=cont;
   vpd$.param_=param;

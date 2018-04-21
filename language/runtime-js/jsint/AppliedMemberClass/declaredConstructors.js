@@ -15,21 +15,21 @@ if (this.$constrs$===undefined) {
       if (mm.d[mm.d.length-2]!=='$cn')continue;
       if (mm.ps===undefined) {
         var r=AppliedMemberClassValueConstructor$jsint(this.tipo[k],
-              {Container$AppliedMemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass,
-              Type$AppliedMemberClassValueConstructor:this.$$targs$$.Type$AppliedMemberClass});
+              {Container$AppliedMemberClassValueConstructor:this.$a$.Container$AppliedMemberClass,
+              Type$AppliedMemberClassValueConstructor:this.$a$.Type$AppliedMemberClass});
       } else {
         var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
         var r=AppliedMemberClassCallableConstructor$jsint(this.tipo[k],
-              {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
-               Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
+              {Type$AppliedMemberClassCallableConstructor:this.$a$.Type$AppliedMemberClass,
+               Container$AppliedMemberClassCallableConstructor:this.$a$.Container$AppliedMemberClass,
                Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
       }
       ccc.push(r);
     }
   }
   var targ={t:'u',l:[
-    {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedMemberClass,Arguments:{t:Nothing}}},
-    {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedMemberClass}}]};
+    {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$a$.Type$AppliedMemberClass,Arguments:{t:Nothing}}},
+    {t:ValueModel$meta$model,a:{Type$ValueModel:this.$a$.Type$AppliedMemberClass}}]};
   this.$constrs$=$arr$sa$(ccc,targ);
 }
 return this.$constrs$;

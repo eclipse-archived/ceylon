@@ -1,6 +1,6 @@
 function(f){
   var r=[];
-  var _t={t:Entry,a:{Key$Entry:{t:Integer},Item$Entry:{t:'i',l:[this.$$targs$$.Element$Array, {t:$_Object}]}}};
+  var _t={t:Entry,a:{Key$Entry:{t:Integer},Item$Entry:{t:'i',l:[this.$a$.Element$Array, {t:$_Object}]}}};
   for (var i=0;i<this.arr$.length;i++) {
     var c=this.$_get(i);
     if (nn$(c)&&f(c))r.push(Entry(i,c,_t.a));

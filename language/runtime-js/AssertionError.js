@@ -1,5 +1,5 @@
 function AssertionError(msg,cause,that){
-  $init$AssertionError();
+  $i$AssertionError();
   if (cause===undefined)cause=null;
   if(that===undefined) {
     that=new Error(msg);

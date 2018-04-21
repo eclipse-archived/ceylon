@@ -127,12 +127,12 @@ public class TypeGenerator {
         if (d.isAnonymous()) {
             String _initname = gen.getNames().objectName(d);
             if (d.isToplevel()) {
-                initname = "$init$" + _initname.substring(0, _initname.length()-2);
+                initname = "$i$" + _initname.substring(0, _initname.length()-2);
             } else {
-                initname = "$init$" + _initname;
+                initname = "$i$" + _initname;
             }
         } else {
-            initname = "$init$" + typename;
+            initname = "$i$" + typename;
         }
         gen.out("function ", initname, "()");
         gen.beginBlock();
@@ -205,7 +205,7 @@ public class TypeGenerator {
         }
     }
 
-    /** Returns the name of the type or its $init$ function if it's local. */
+    /** Returns the name of the type or its $i$ function if it's local. */
     static String typeFunctionName(final Tree.StaticType type, final ClassOrInterface coi,
             final GenerateJsVisitor gen) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
@@ -226,14 +226,14 @@ public class TypeGenerator {
             }
             dname = gen.getNames().name(d2);
         }
-        final String initName = "$init$" + dname + "()";
+        final String initName = "$i$" + dname + "()";
         if (!imported && !d.isClassOrInterfaceMember()) {
             return initName;
         }
         if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == cont
                 || ModelUtil.contains(d, coi))) {
             //A member class that extends or satisfies another member of its same container,
-            //use its $init$ function
+            //use its $i$ function
             return initName;
         }
         String tfn;
@@ -284,7 +284,7 @@ public class TypeGenerator {
                 sb.append('.');
             }
             if (!td.isAlias()) {
-                sb.append("$init$");
+                sb.append("$i$");
             }
             sb.append(gen.getNames().name(td));
             if (!td.isAlias()) {
@@ -322,7 +322,7 @@ public class TypeGenerator {
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
-                    ",$$targs$$,", gen.getNames().name(d), ")");
+                    ",$a$,", gen.getNames().name(d), ")");
             gen.endLine(true);
         }
         callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
@@ -385,7 +385,7 @@ public class TypeGenerator {
             }
         }
         if (withTargs) {
-            gen.out("$$targs$$,");
+            gen.out("$a$,");
         }
         gen.out(gen.getNames().self(d), ")");
         return withTargs;
@@ -452,7 +452,7 @@ public class TypeGenerator {
                 if (typeParams != null && !typeParams.isEmpty()) {
                     typeParams = null;
                     if (ModelUtil.contains(d, typeDecl)) {
-                        gen.out("$$targs$$,");
+                        gen.out("$a$,");
                     } else {
                         TypeUtils.printTypeArguments(that,
                                 extendedType.getTypeModel().getQualifyingType().getTypeArguments(),

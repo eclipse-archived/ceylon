@@ -1,6 +1,6 @@
 function OpenValue$jsint(pkg, meta, that){
   if (meta===undefined)throw Exception("Value reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-  $init$OpenValue$jsint();
+  $i$OpenValue$jsint();
   if (that===undefined)that=new OpenValue$jsint.$$;
   that.pkg_ = pkg;
   var _mm=getrtmm$$(meta);

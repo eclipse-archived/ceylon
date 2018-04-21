@@ -107,7 +107,7 @@ function _findTypeFromModel(pkg,mdl,cont) {
   var rv=out[nm];
   if (rv===undefined)rv=out['$_'+nm];
   if (rv===undefined){
-    rv=out['$init$'+nm];
+    rv=out['$i$'+nm];
     if (typeof(rv)==='function')rv=rv();
   }
   if(rv === undefined){
@@ -157,7 +157,7 @@ function tparms2targs$(c,t){
     if (Object.keys(mm).length == t.size) {
       var r={},i=0;
       for (var k in mm) {
-        r[k]=t.$_get(i++).$$targs$$.Target$Type;
+        r[k]=t.$_get(i++).$a$.Target$Type;
       }
       return r;
     }

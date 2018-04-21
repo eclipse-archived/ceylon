@@ -16,12 +16,12 @@ function openClass$jsint(pkg,meta,that) {
   return (meta_&&meta_.$cn?OpenClassWithConstructors$jsint:OpenClassWithInitializer$jsint)(pkg,meta,that);
 }
 ex$.openClass$jsint=openClass$jsint;
-function $init$openClass$jsint(){
-  $init$OpenClassWithInitializer$jsint();
-  $init$OpenClassWithConstructors$jsint();
+function $i$openClass$jsint(){
+  $i$OpenClassWithInitializer$jsint();
+  $i$OpenClassWithConstructors$jsint();
   return openClass$jsint;
 }
-ex$.$init$openClass$jsint=$init$openClass$jsint;
+ex$.$i$openClass$jsint=$i$openClass$jsint;
 //Addendum to model.declaration.ClassOrInterfaceDeclaration
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function(name$20,$$$mptypes,noInherit){
   var _m=undefined;

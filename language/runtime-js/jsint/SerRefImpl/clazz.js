@@ -1,4 +1,4 @@
-var _inst=this.$$targs$$.Instance$SerRefImpl;
+var _inst=this.$a$.Instance$SerRefImpl;
 if (typeof(_inst.t)!=='function') {
   throw new Error("WTF?");
 }
@@ -9,8 +9,8 @@ if (mm && mm.ps) {
   for (var i=0; i < mm.ps.length; i++) {
     var pt=mm.ps[i].$t;
     if (typeof pt === 'string') {
-      pt=this.instance().$$targs$$[pt];
-      if (!pt)console.log("AGUAS! no encuentro tipo de parametro " + mm.ps[i].$t + " en " + /*require('util').inspect(*/this.instance().$$targs$$);
+      pt=this.instance().$a$[pt];
+      if (!pt)console.log("AGUAS! no encuentro tipo de parametro " + mm.ps[i].$t + " en " + /*require('util').inspect(*/this.instance().$a$);
     }
     args.l.push(pt);
   }

@@ -50,7 +50,7 @@ function initExistingType(type, cons, typeName) {
 }
 function initExistingTypeProto(type, cons, typeName) {
     var args = [].slice.call(arguments, 0);
-    args.push($init$Basic());
+    args.push($i$Basic());
     initExistingType.apply(this, args);
     var proto = cons.prototype;
     if ((proto !== undefined) && (proto.getHash === undefined)) {
@@ -276,8 +276,8 @@ function it$(a,b){
 //t: the type function
 function set_type_args(obj,targs,t) {
   if (obj===undefined)return;
-  if (obj.$$targs$$ === undefined) {
-    obj.$$targs$$={};
+  if (obj.$a$ === undefined) {
+    obj.$a$={};
   }
   var mm=getrtmm$$(t);
   for (x in targs) {
@@ -286,7 +286,7 @@ function set_type_args(obj,targs,t) {
       if (mm && mm.tp[x] && mm.tp[x].def)n=mm.tp[x].def;
       else continue;
     }
-    var e=obj.$$targs$$[x];
+    var e=obj.$a$[x];
     if (e) {
       var iance=mm && mm.tp && mm.tp[x] && mm.tp[x].dv;
       if (iance === 'out') {
@@ -297,15 +297,15 @@ function set_type_args(obj,targs,t) {
         n=ut$(e,n);
       }
     }
-    obj.$$targs$$[x] = n;
+    obj.$a$[x] = n;
   }
 }
 function add_type_arg(obj, name, type) {
     if (obj===undefined)return;
-    if (obj.$$targs$$ === undefined) {
-        obj.$$targs$$={};
+    if (obj.$a$ === undefined) {
+        obj.$a$={};
     }
-    obj.$$targs$$[name]=type;
+    obj.$a$[name]=type;
 }
 function wrapexc(e,loc,file) {
   if (loc !== undefined) e.$loc=loc;

@@ -20,8 +20,8 @@ if (this.$defcons$===undefined) {
   }
   if (cn) {
     mm=getrtmm$$(cn).ps;
-    var args=tupleize$params(getrtmm$$(cn).ps,this.$$targs$$.Target$Type.a);
-    var r=AppliedCallableConstructor$jsint(cn,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
+    var args=tupleize$params(getrtmm$$(cn).ps,this.$a$.Target$Type.a);
+    var r=AppliedCallableConstructor$jsint(cn,{Type$AppliedCallableConstructor:this.$a$.Type$AppliedClass,
           Arguments$AppliedCallableConstructor:args},undefined,this.$targs);
     r.cont$=this;
     this.$defcons$=r;

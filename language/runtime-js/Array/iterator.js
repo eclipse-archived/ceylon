@@ -3,5 +3,5 @@ function() {
     var $arr$=this.arr$;
     return for$iter(function() {
         return ($idx$===$arr$.length) ? finished() : $arr$[$idx$++];
-    },{Element$Iterable:this.$$targs$$.Element$Array,Absent$Iterable:{t:Null}});
+    },{Element$Iterable:this.$a$.Element$Array,Absent$Iterable:{t:Null}});
 }

@@ -1,8 +1,8 @@
-function type$meta(x,$$targs$$) {
+function type$meta(x,$a$) {
   if (x===null){
-    return AppliedClass$jsint($init$$_null(),{Type$AppliedClass:{t:$init$$_null()},Arguments$AppliedClass:{t:Empty}});
+    return AppliedClass$jsint($i$$_null(),{Type$AppliedClass:{t:$i$$_null()},Arguments$AppliedClass:{t:Empty}});
   }
-  if ($$targs$$.Type$type.t===Nothing) {
+  if ($a$.Type$type.t===Nothing) {
     return nothingType$meta$model();
   }
   if (x===true||x===false) {
@@ -10,7 +10,7 @@ function type$meta(x,$$targs$$) {
     return AppliedClass$jsint(cls,{Type$AppliedClass:{t:cls},Arguments$AppliedClass:{t:Empty}});
   }
   var mm=getrtmm$$(x);
-  var _t=$$targs$$.Type$type.t;
+  var _t=$a$.Type$type.t;
   if (mm===undefined) {
     if (x.getT$name && x.getT$all) {
       var mmm=x.getT$all()[x.getT$name()];
@@ -27,9 +27,9 @@ function type$meta(x,$$targs$$) {
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
       if (_classOrInterfaceMember) {
-        return AppliedMethod$jsint(x,undefined,{Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:{t:Nothing},Container$AppliedMethod:{t:mm.$cont}},x.$$targs$$);
+        return AppliedMethod$jsint(x,undefined,{Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:{t:Nothing},Container$AppliedMethod:{t:mm.$cont}},x.$a$);
       }
-      return AppliedFunction$jsint(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}},undefined,x.$$targs$$);
+      return AppliedFunction$jsint(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}},undefined,x.$a$);
     }
     var rv=_classOrInterfaceMember?AppliedMemberClass$jsint(mm.$t.t, {Type$AppliedMemberClass:mm.$t,Arguments$AppliedMemberClass:{t:Nothing},Container$AppliedMemberClass:{t:mm.$cont}})
            : AppliedClass$jsint(mm.$t.t, {Type$AppliedClass:mm.$t,Arguments$AppliedClass:{t:Nothing}});
@@ -37,26 +37,26 @@ function type$meta(x,$$targs$$) {
     return rv;
   }
   var c;
-  if ($$targs$$.Type$type.t==='T') {
-    var rt=x.$$targs$$.l ? x.$$targs$$ : $$targs$$.Type$type;
-    c=AppliedClass$jsint(Tuple,{Type$AppliedClass:rt, Arguments$AppliedClass:{t:'T',l:[x.$$targs$$.First$Tuple,x.$$targs$$.Rest$Tuple]}});
+  if ($a$.Type$type.t==='T') {
+    var rt=x.$a$.l ? x.$a$ : $a$.Type$type;
+    c=AppliedClass$jsint(Tuple,{Type$AppliedClass:rt, Arguments$AppliedClass:{t:'T',l:[x.$a$.First$Tuple,x.$a$.Rest$Tuple]}});
   } else {
     var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
     var mytargs;
-    if (x.$$targs$$) {
+    if (x.$a$) {
       //Tuple with tuple targs
-      if (_ta.T.t===Tuple && x.$$targs$$.t==='T')return type$meta(x,{Type$type:x.$$targs$$});
-      _ta.T.a=x.$$targs$$;
+      if (_ta.T.t===Tuple && x.$a$.t==='T')return type$meta(x,{Type$type:x.$a$});
+      _ta.T.a=x.$a$;
     }
     if (x.outer$) {
       _ta.C={t:x.outer$.getT$all()[x.outer$.getT$name()]};
-      if (x.outer$.$$targs$$)_ta.C.a=x.outer$.$$targs$$;
+      if (x.outer$.$a$)_ta.C.a=x.outer$.$a$;
       mytargs={};
-      for (ta in x.$$targs$$)mytargs[ta]=x.$$targs$$[ta];
+      for (ta in x.$a$)mytargs[ta]=x.$a$[ta];
       var ou=x.outer$;
       while (ou) {
-        if (ou.$$targs$$) {
-          for (ta in ou.$$targs$$)mytargs[ta]=ou.$$targs$$[ta];
+        if (ou.$a$) {
+          for (ta in ou.$a$)mytargs[ta]=ou.$a$[ta];
         }
         ou=ou.outer$;
       }
@@ -64,10 +64,10 @@ function type$meta(x,$$targs$$) {
     if (_classOrInterfaceMember) {
       c=AppliedMemberClass$jsint(_t, {Type$AppliedMemberClass:_ta.T,Arguments$AppliedMemberClass:_ta.A,Container$AppliedMemberClass:_ta.C},undefined,mytargs);
     } else {
-      c=AppliedClass$jsint(_t, {Type$AppliedClass:_ta.T,Arguments$AppliedClass:_ta.A},undefined,x.$$targs$$);
+      c=AppliedClass$jsint(_t, {Type$AppliedClass:_ta.T,Arguments$AppliedClass:_ta.A},undefined,x.$a$);
     }
   }
-  if ($$targs$$.Type$type.a)c.$targs=$$targs$$.Type$type.a;
+  if ($a$.Type$type.a)c.$targs=$a$.Type$type.a;
   c.src$=x;
   return c;
 }

@@ -41,7 +41,7 @@ public class MetamodelHelper {
                 || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
             if (compilingLanguageModule) {
-                gen.out("$init$");
+                gen.out("$i$");
             } else {
                 gen.out(gen.getClAlias());
             }
@@ -144,7 +144,7 @@ public class MetamodelHelper {
                 if (d.isToplevel()) {
                     gen.qualify(that, d);
                 }
-                gen.out("$init$", oname);
+                gen.out("$i$", oname);
                 if (!d.isToplevel()) {
                     gen.out("()");
                 }
@@ -164,16 +164,16 @@ public class MetamodelHelper {
                 || ModelUtil.isConstructor(td);
         if (ltype.isClass()) {
             if (td.isClassOrInterfaceMember()) {
-                gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
+                gen.out(gen.getClAlias(), "$i$AppliedMemberClass$jsint()(");
             } else {
-                gen.out(gen.getClAlias(), "$init$AppliedClass$jsint()(");
+                gen.out(gen.getClAlias(), "$i$AppliedClass$jsint()(");
             }
             //Tuple is a special case, otherwise gets gen'd as {t:'T'...
             if (that.getUnit().isTupleType(ltype)) {
                 gen.qualify(that, td);
                 gen.out(gen.getNames().name(td));
             } else if (ltype.isNullValue()) {
-                gen.out(gen.getClAlias(), "$init$$_null()");
+                gen.out(gen.getClAlias(), "$i$$_null()");
             } else {
                 TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             }
@@ -190,9 +190,9 @@ public class MetamodelHelper {
             constructorLiteral(ltype, TypeUtils.getConstructor(td), that, gen);
         } else if (ltype.isInterface()) {
             if (td.isToplevel()) {
-                gen.out(gen.getClAlias(), "$init$AppliedInterface$jsint()(");
+                gen.out(gen.getClAlias(), "$i$AppliedInterface$jsint()(");
             } else {
-                gen.out(gen.getClAlias(), "$init$AppliedMemberInterface$jsint()(");
+                gen.out(gen.getClAlias(), "$i$AppliedMemberInterface$jsint()(");
             }
             TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
@@ -221,11 +221,11 @@ public class MetamodelHelper {
             final Tree.MetaLiteral meta, final GenerateJsVisitor gen) {
         Class _pc = (Class)cd.getContainer();
         if (_pc.isClassOrInterfaceMember()) {
-            gen.out(gen.getClAlias(), "$init$AppliedMemberClass",
+            gen.out(gen.getClAlias(), "$i$AppliedMemberClass",
                     cd.isValueConstructor() ? "Value" : "Callable",
                     "Constructor$jsint()(");
         } else {
-            gen.out(gen.getClAlias(), "$init$Applied",
+            gen.out(gen.getClAlias(), "$i$Applied",
                     cd.isValueConstructor() ? "Value" : "Callable",
                     "Constructor$jsint()(");
         }
@@ -324,10 +324,10 @@ public class MetamodelHelper {
             }
             Value vd = (Value)d;
             if (vd.isMember()) {
-                gen.out(gen.getClAlias(), "$init$AppliedAttribute$meta$model()('");
+                gen.out(gen.getClAlias(), "$i$AppliedAttribute$meta$model()('");
                 gen.out(d.getName(), "',");
             } else {
-                gen.out(gen.getClAlias(), "$init$AppliedValue$jsint()(undefined,");
+                gen.out(gen.getClAlias(), "$i$AppliedValue$jsint()(undefined,");
             }
             if (anonClass != null) {
                 gen.qualify(that, anonClass);
@@ -398,10 +398,10 @@ public class MetamodelHelper {
                         gen.out(oname);
                         parentIsObject = true;
                     } else {
-                        gen.out("$init$", oname, "()");
+                        gen.out("$i$", oname, "()");
                     }
                 } else {
-                    if (!imported)gen.out("$init$");
+                    if (!imported)gen.out("$i$");
                     gen.out(gen.getNames().name(_d), imported?"":"()");
                 }
                 imported=true;

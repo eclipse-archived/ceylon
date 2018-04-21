@@ -1,7 +1,7 @@
-function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
-  if (!$$targs$$.Type$AppliedClass)$$targs$$.Type$AppliedClass=$$targs$$.Type$Class;
-  if (!$$targs$$.Arguments$AppliedClass)$$targs$$.Arguments$AppliedClass=$$targs$$.Arguments$Class;
-  $init$AppliedClass$jsint();
+function AppliedClass$jsint(tipo,$a$,that,classTargs){
+  if (!$a$.Type$AppliedClass)$a$.Type$AppliedClass=$a$.Type$Class;
+  if (!$a$.Arguments$AppliedClass)$a$.Arguments$AppliedClass=$a$.Arguments$Class;
+  $i$AppliedClass$jsint();
   var _proto=AppliedClass$jsint.$$.prototype;
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -90,11 +90,11 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   that.union=_proto.union;
   that.intersection=_proto.intersection;
   that.$targs=classTargs;
-  set_type_args(that,$$targs$$,AppliedClass$jsint);
-  Class$meta$model({Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
-                   Type$Class:that.$$targs$$.Type$AppliedClass},that);
+  set_type_args(that,$a$,AppliedClass$jsint);
+  Class$meta$model({Arguments$Class:that.$a$.Arguments$AppliedClass,
+                   Type$Class:that.$a$.Type$AppliedClass},that);
   //This is for serialization
-  if (tipo===Tuple && classTargs)that.$$targs$$.Type$Class={t:Tuple,a:classTargs};
+  if (tipo===Tuple && classTargs)that.$a$.Type$Class={t:Tuple,a:classTargs};
   that.tipo=tipo;
   return that;
 }

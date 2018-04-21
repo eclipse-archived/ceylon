@@ -1,7 +1,7 @@
 function $_Array$c_ofSize(s,e,t$) {
   asrt$(s<=runtime().maxArraySize,
         "Invalid array size","0:0","Array.ceylon");
-  $init$$_Array();
+  $i$$_Array();
   if (s>0) {
     var a=new Array(s);
     for (var i=0;i<s;i++) {

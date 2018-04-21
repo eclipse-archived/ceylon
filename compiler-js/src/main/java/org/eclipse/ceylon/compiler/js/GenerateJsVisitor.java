@@ -886,7 +886,7 @@ public class GenerateJsVisitor extends Visitor {
         Tree.StaticType ext = that.getTypeSpecifier().getType();
         out(function, aname, "(");
         if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
-            out("$$targs$$,");
+            out("$a$,");
         }
         out(names.self(d), "){");
         final Type pt = ext.getTypeModel();
@@ -920,7 +920,7 @@ public class GenerateJsVisitor extends Visitor {
             out(", ");
         }
         if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
-            out("$$targs$$,");
+            out("$a$,");
         }
         out(names.self(d), "){");
         initSelf(that);
@@ -1248,7 +1248,7 @@ public class GenerateJsVisitor extends Visitor {
             out(names.name(type), ".$st$.", names.name(d),
                     "=function(){if(", names.name(type), ".$st$.$INIT$",
                     names.name(d), "===undefined)", names.name(type), ".$st$.$INIT$",
-                    names.name(d), "=$init$", names.name(d), "()();return ",
+                    names.name(d), "=$i$", names.name(d), "()();return ",
                     names.name(type), ".$st$.$INIT$", names.name(d), "};");
             out(names.name(type), ".$st$.", names.name(c), "=", names.name(c), ";");
         } else {

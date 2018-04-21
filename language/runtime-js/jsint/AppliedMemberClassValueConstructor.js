@@ -1,12 +1,12 @@
-function AppliedMemberClassValueConstructor$jsint(tipo,$$targs$$,that) {
-  if (!$$targs$$.Type$AppliedMemberClassValueConstructor)$$targs$$.Type$AppliedValueConstructor=$$targs$$.Type$MemberClassValueConstructor;
-  if (!$$targs$$.Container$AppliedMemberClassValueConstructor)$$targs$$.Container$AppliedValueConstructor=$$targs$$.Container$MemberClassValueConstructor;
-  $init$AppliedMemberClassValueConstructor$jsint();
+function AppliedMemberClassValueConstructor$jsint(tipo,$a$,that) {
+  if (!$a$.Type$AppliedMemberClassValueConstructor)$a$.Type$AppliedValueConstructor=$a$.Type$MemberClassValueConstructor;
+  if (!$a$.Container$AppliedMemberClassValueConstructor)$a$.Container$AppliedValueConstructor=$a$.Container$MemberClassValueConstructor;
+  $i$AppliedMemberClassValueConstructor$jsint();
   if (that===undefined)that=new AppliedMemberClassValueConstructor$jsint.$$;
-  set_type_args(that,$$targs$$);
+  set_type_args(that,$a$);
   MemberClassValueConstructor$meta$model(
-    {Type$MemberClassValueConstructor:$$targs$$.Type$AppliedMemberClassValueConstructor,
-    Container$MemberClassValueConstructor:$$targs$$.Container$AppliedMemberClassValueConstructor},that);
+    {Type$MemberClassValueConstructor:$a$.Type$AppliedMemberClassValueConstructor,
+    Container$MemberClassValueConstructor:$a$.Container$AppliedMemberClassValueConstructor},that);
   that.tipo=tipo;
   return that;
 }

@@ -74,11 +74,11 @@ function unflatten(ff, $$$mptypes) {
       for (var i = 0; i < seq.size; i++) {
         a[i] = seq.$_get(i);
       }
-      a[i]=ru.$$targs$$;
+      a[i]=ru.$a$;
       return ff.apply(ru, a);
     }
   }
   ru.$unflattened$=ff;
-  ru.$$targs$$={Return$Callable:$$$mptypes.Return$unflatten,Arguments$Callable:{t:'T',l:[$$$mptypes.Args$unflatten]}};
+  ru.$a$={Return$Callable:$$$mptypes.Return$unflatten,Arguments$Callable:{t:'T',l:[$$$mptypes.Args$unflatten]}};
   return ru;
 }

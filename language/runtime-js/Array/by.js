@@ -6,5 +6,5 @@ function(c){
     r.push(this.arr$[idx]);
     idx+=c;
   }
-  return $arr$(r,this.$$targs$$.Element$Array);
+  return $arr$(r,this.$a$.Element$Array);
 }

@@ -1,6 +1,6 @@
 function OpenInterface$jsint(pkg, meta, that) {
   if (meta===undefined)throw Exception("Interface reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-  $init$OpenInterface$jsint();
+  $i$OpenInterface$jsint();
   if (that===undefined)that=new OpenInterface$jsint.$$;
   that.pkg_ = pkg;
   var _mm=getrtmm$$(meta);
