@@ -524,7 +524,7 @@ public class GenerateJsVisitor extends Visitor {
 
     public void visitSingleExpression(Tree.Expression that) {
         List<String> oldRetainedVars = retainedVars.reset(null);
-        final int boxType = boxStart(that.getTerm());
+        final int boxType = boxUnboxStart(that.getTerm(), false, true, true);
         that.visit(this);
         if (boxType == 4) out("/*TODO: callable targs 3*/");
         boxUnboxEnd(boxType);
@@ -1928,7 +1928,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 final Expression expr = exprs.get(i);
                 final Type t = expr.getTypeModel();
-                box(expr);
+                box(expr, true, true);
                 if (t == null || t.isUnknown()) {
                     out(".toString()");
                 } else if (!t.isString()) {
@@ -2140,7 +2140,7 @@ public class GenerateJsVisitor extends Visitor {
                     if (isDynamic) {
                         out("(");
                     }
-                    box(that.getPrimary());
+                    box(that.getPrimary(), true, true);
                     if (isDynamic) {
                         out(")");
                     }
@@ -2301,13 +2301,9 @@ public class GenerateJsVisitor extends Visitor {
         invoker.generatePositionalArguments(null, that, that.getPositionalArguments(), false, false);
     }
 
-    void box(final Tree.Term term) {
-    	box(term, true);
-    }
-    
     /** Box a term, visit it, unbox it. */
-    void box(final Tree.Term term, boolean wrapFloat) {
-        final int t = boxUnboxStart(term, false, wrapFloat);
+    void box(final Tree.Term term, boolean wrapFloat, boolean checkInt) {
+        final int t = boxUnboxStart(term, false, wrapFloat, checkInt);
         term.visit(this);
         if (t == 4) {
             final Type ct = term.getTypeModel();
@@ -2319,45 +2315,29 @@ public class GenerateJsVisitor extends Visitor {
         boxUnboxEnd(t);
     }
 
-    // Make sure fromTerm is compatible with toTerm by boxing it when necessary
-    int boxStart(final Tree.Term fromTerm) {
-        return boxUnboxStart(fromTerm, false, true);
-    }
-    // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
-    int boxUnboxStart(final Tree.Term fromTerm, final Tree.Term toTerm) {
-        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toTerm), true);
-    }
-
-    // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
-    int boxUnboxStart(final Tree.Term fromTerm, TypedDeclaration toDecl) {
-        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toDecl), true);
-    }
-
-    private int boxUnboxStart(final Tree.Term fromTerm, 
-    		boolean toNative, boolean wrapFloatCheckInt) {
+    int boxUnboxStart(final Tree.Term fromTerm, 
+    		boolean toNative, boolean wrapFloat, boolean checkInt) {
         // Box the value
         final Type fromType = fromTerm.getTypeModel();
         if (fromType == null) {
             return 0;
         }
         
-        if (wrapFloatCheckInt && !toNative) {
-	    	if (fromType.isFloat()) {
-	        	if (isFloatLiteral(fromTerm)) {
-        			out(getClAlias(), "f$(");
-	        		return 1;
-	        	} else if (isFloatOperatorExpression(fromTerm)) {
-        			out(getClAlias(), "f$");
-	        		return 0;
-	        	}
+        if (wrapFloat && !toNative && fromType.isFloat()) {
+        	if (isFloatLiteral(fromTerm)) {
+    			out(getClAlias(), "f$(");
+        		return 1;
+        	} else if (isFloatOperatorExpression(fromTerm)) {
+    			out(getClAlias(), "f$");
+        		return 0;
+        	}
 	        }
-	        if (fromType.isInteger()) {
-	        	if (isIntegerLiteral(fromTerm)) {
-	        		//we can't write 123.method
-	        		out("(");
-	        		return 1;
-	        	}
-	        }
+        if (checkInt && fromType.isInteger()) {
+        	if (isIntegerLiteral(fromTerm)) {
+        		//we can't write 123.method
+        		out("(");
+        		return 1;
+        	}
         }
         
         final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
@@ -2416,25 +2396,25 @@ public class GenerateJsVisitor extends Visitor {
         Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
 		return term instanceof Tree.ArithmeticOp
 				&& !(term instanceof Tree.PowerOp)
-				|| term instanceof Tree.NegativeOp;
+			|| term instanceof Tree.NegativeOp;
 	}
 
 	private boolean isFloatLiteral(Tree.Term fromTerm) {
 		Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
 		return term instanceof Tree.FloatLiteral
-				|| term instanceof Tree.NegativeOp 
+			|| term instanceof Tree.NegativeOp 
 				&& isFloatLiteral(((Tree.NegativeOp)term).getTerm())
-				|| term instanceof Tree.PositiveOp 
+			|| term instanceof Tree.PositiveOp 
 				&& isFloatLiteral(((Tree.PositiveOp)term).getTerm());
 	}
 
 	private boolean isIntegerLiteral(Tree.Term fromTerm) {
 		Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
 		return term instanceof Tree.NaturalLiteral
-				|| term instanceof Tree.NegativeOp 
-				&& isFloatLiteral(((Tree.NegativeOp)term).getTerm())
-				|| term instanceof Tree.PositiveOp 
-				&& isFloatLiteral(((Tree.PositiveOp)term).getTerm());
+			|| term instanceof Tree.NegativeOp 
+				&& isIntegerLiteral(((Tree.NegativeOp)term).getTerm())
+			|| term instanceof Tree.PositiveOp 
+				&& isIntegerLiteral(((Tree.PositiveOp)term).getTerm());
 	}
 
     @Override
@@ -2535,7 +2515,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }
             out("=");
-            int box = boxUnboxStart(expr, term);
+            int box = boxUnboxStart(expr, TypeUtils.isNativeJs(term), true, true);
             expr.visit(this);
             if (box == 4) out("/*TODO: callable targs 6.1*/");
             boxUnboxEnd(box);
@@ -2588,7 +2568,7 @@ public class GenerateJsVisitor extends Visitor {
                     // simple assignment to a variable attribute
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
-                            int boxType = boxUnboxStart(expr.getTerm(), moval);
+                            int boxType = boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(moval), true, true);
                             if (isInDynamicBlock() 
                                     && !ModelUtil.isTypeUnknown(moval.getType())
                                     && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
@@ -2754,7 +2734,7 @@ public class GenerateJsVisitor extends Visitor {
         if (leftDynamic) {
             that.getLeftTerm().visit(this);
             out("=");
-            int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
+            int box = boxUnboxStart(that.getRightTerm(), TypeUtils.isNativeJs(that.getLeftTerm()), true, true);
             that.getRightTerm().visit(this);
             if (box == 4) out("/*TODO: callable targs 6.2*/");
             boxUnboxEnd(box);
@@ -2793,7 +2773,7 @@ public class GenerateJsVisitor extends Visitor {
         BmeGenerator.generateMemberAccess(lhsExpr, new GenerateCallback() {
             @Override public void generateValue() {
                 //if (!isNaturalLiteral(that.getRightTerm())) {
-                    int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
+                    int boxType = boxUnboxStart(that.getRightTerm(), TypeUtils.isNativeJs(that.getLeftTerm()), true, true);
                     that.getRightTerm().visit(GenerateJsVisitor.this);
                     if (boxType == 4) out("/*TODO: callable targs 7*/");
                     boxUnboxEnd(boxType);
@@ -3038,7 +3018,7 @@ public class GenerateJsVisitor extends Visitor {
                 return;
             }
         }
-        box(ex.getTerm());
+        box(ex.getTerm(), true, true);
         out(";");
         endLine();
 //        if (isNaturalLiteral(that.getExpression().getTerm())) {
@@ -3259,7 +3239,8 @@ public class GenerateJsVisitor extends Visitor {
                     out("(", tmp, "=");
                     lhsQME.getPrimary().visit(this);
                     out(",", tmp, ".", dec, "=");
-                    int boxType = boxStart(lhsQME);
+					final Term fromTerm = lhsQME;
+                    int boxType = boxUnboxStart(fromTerm, false, true, true);
                     out(tmp, ".", dec);
                     if (boxType == 4) out("/*TODO: callable targs 8*/");
                     boxUnboxEnd(boxType);
@@ -3339,7 +3320,8 @@ public class GenerateJsVisitor extends Visitor {
                 out("(", tmp, "=");
                 lhsQME.getPrimary().visit(this);
                 out(",", tmp, ".", dec, "=");
-                int boxType = boxStart(lhsQME);
+				final Term fromTerm = lhsQME;
+                int boxType = boxUnboxStart(fromTerm, false, true, true);
                 out(tmp, ".", dec);
                 if (boxType == 4) out("/*TODO: callable targs 8*/");
                 boxUnboxEnd(boxType);
@@ -3377,7 +3359,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override public void visit(final Tree.PositiveOp that) {
-        box(that.getTerm());
+        box(that.getTerm(), true, true);
     }
 
     @Override public void visit(final Tree.NegativeOp that) {
@@ -3473,9 +3455,9 @@ public class GenerateJsVisitor extends Visitor {
    @Override public void visit(final Tree.DefaultOp that) {
        String lhsVar = createRetainedTempVar();
        out("(", lhsVar, "=");
-       box(that.getLeftTerm());
+       box(that.getLeftTerm(), true, true);
        out(",", getClAlias(), "nn$(", lhsVar, ")?", lhsVar, ":");
-       box(that.getRightTerm());
+       box(that.getRightTerm(), true, true);
        out(")");
    }
 
@@ -3568,7 +3550,7 @@ public class GenerateJsVisitor extends Visitor {
    }
 
    @Override public void visit(final Tree.BooleanCondition that) {
-       int boxType = boxStart(that.getExpression().getTerm());
+       int boxType = boxUnboxStart(that.getExpression().getTerm(), false, true, true);
        super.visit(that);
        if (boxType == 4) out("/*TODO: callable targs 10*/");
        boxUnboxEnd(boxType);
@@ -3696,10 +3678,10 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.InOp that) {
         out(getClAlias(), "$cnt$2(");
 //        if (!isNaturalLiteral(that.getLeftTerm())) {
-            box(that.getLeftTerm());
+            box(that.getLeftTerm(), true, true);
 //        }
         out(",");
-        box(that.getRightTerm());
+        box(that.getRightTerm(), true, true);
         out(")");
     }
 
@@ -3757,7 +3739,7 @@ public class GenerateJsVisitor extends Visitor {
         int _box=0;
         final Tree.SpecifierExpression expr = that.getSpecifierExpression();
         if (that.getParameter() != null && expr != null) {
-            _box = boxUnboxStart(expr.getExpression().getTerm(), that.getParameter().getModel());
+            _box = boxUnboxStart(expr.getExpression().getTerm(), TypeUtils.isNativeJs(that.getParameter().getModel()), true, true);
         }
         expr.visit(this);
         if (_box == 4) {
