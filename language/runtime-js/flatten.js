@@ -67,10 +67,10 @@ function flatten(tf, $$$mptypes) {
         return tf(tpl$(t));
       }
     }
-    rf.$crtmm$={$t:mm.$t,ps:[]};
+    rf.$m$={$t:mm.$t,ps:[]};
     for(var i=0;i<t0.l.length;i++){
-      rf.$crtmm$.ps.push({$t:t0.l[i],mt:'prm',nm:'flat'+i});
-      if (t0.l[i].seq)rf.$crtmm$.ps[i].$t.seq=t0.l[i].seq;
+      rf.$m$.ps.push({$t:t0.l[i],mt:'prm',nm:'flat'+i});
+      if (t0.l[i].seq)rf.$m$.ps[i].$t.seq=t0.l[i].seq;
     }
   } else {
     //Single variadic argument
@@ -84,9 +84,9 @@ function flatten(tf, $$$mptypes) {
       if (is$(s,{t:$_Array}))return tf(tpl$(s.arr$),$mpt);
       return tf(s?tpl$(s):empty(),$mpt);
     };
-    rf.$crtmm$={$t:mm.$t,ps:[{$t:{t:t0.t},nm:'flat#0',seq:iadic}]};
-    if (t0.a)rf.$crtmm$.ps[0].$t.a=t0.a;
-    if (extendsType(t0,{t:Empty}))rf.$crtmm$.ps=[];
+    rf.$m$={$t:mm.$t,ps:[{$t:{t:t0.t},nm:'flat#0',seq:iadic}]};
+    if (t0.a)rf.$m$.ps[0].$t.a=t0.a;
+    if (extendsType(t0,{t:Empty}))rf.$m$.ps=[];
   }
   rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
   rf.$flattened$=tf;

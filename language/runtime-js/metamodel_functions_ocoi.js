@@ -1,7 +1,7 @@
 //OpenClassOrInterface.typeArguments
 //(implementations are called FreeClass, FreeInterface)
 function _ocoitarg_$(coi,makeItem,maptarg) {
-  var tps=coi.declaration.tipo.$crtmm$.tp;
+  var tps=coi.declaration.tipo.$m$.tp;
   if (tps) {
     var rtps = coi.declaration._targs;
     var targs={};
@@ -55,7 +55,7 @@ function ocoitargv$(coi) {
 //OpenClassOrInterface.typeArgumentList
 //(implementations are called FreeClass, FreeInterface)
 function _ocoitargl_$(coi,makeItem,listarg){
-  var tps=coi.declaration.tipo.$crtmm$.tp;
+  var tps=coi.declaration.tipo.$m$.tp;
   if (tps) {
     var rtps = coi.declaration._targs;
     var ord=[];
@@ -107,7 +107,7 @@ function ocoitargvl$(coi) {
 //OpenClassOrInterface.string
 function ocoistr$(coi){
   var s=coi.declaration.qualifiedName;
-  var tps=coi.declaration.tipo.$crtmm$.tp;
+  var tps=coi.declaration.tipo.$m$.tp;
   if (tps) {
     var rtps=coi.declaration._targs;
     s+="<";

@@ -1,7 +1,7 @@
 function getrtmm$$(x) {
   if (x===undefined||x===null)return undefined;
-  if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
-  return x.$crtmm$;
+  if (typeof(x.$m$)==='function')x.$m$=x.$m$();
+  return x.$m$;
 }
 ex$.getrtmm$$=getrtmm$$;
 //From a runtime metamodel, get the model definition by following the path into the module's model.
@@ -138,7 +138,7 @@ function qname$(mm) {
   if (mm.t) {
     mm=mm.t;
   }
-  if (mm.$crtmm$)mm=getrtmm$$(mm);
+  if (mm.$m$)mm=getrtmm$$(mm);
   if (!mm.d && mm._alias)mm=getrtmm$$(mm._alias);
   if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];

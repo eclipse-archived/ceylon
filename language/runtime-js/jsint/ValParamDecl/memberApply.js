@@ -5,7 +5,7 @@ function memberApply(c,$mpt){
     var nono=function(){
       throw StorageException$meta$model("Attribute " + n + " is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
     }
-    nono.$crtmm$=r.$crtmm$;
+    nono.$m$=r.$m$;
     r=nono;
   }
   return r;

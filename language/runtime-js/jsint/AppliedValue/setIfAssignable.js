@@ -1,5 +1,5 @@
 function(v) {
-  var mm = this.tipo.$crtmm$;
+  var mm = this.tipo.$m$;
   if (!is$(v,mm.$t))throw IncompatibleTypeException$meta$model("The specified value has the wrong type");
   var mdl=get_model(mm);
   if (!mdl || (mdl.pa & 1024)===0)throw MutationException$meta$model("Attempt to modify a value that is not variable");

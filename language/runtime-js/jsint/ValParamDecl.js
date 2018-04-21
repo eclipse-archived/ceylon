@@ -5,7 +5,7 @@ function ValParamDecl$jsint(cont,param,vpd$){
   vpd$.param_=param;
   OpenValue$jsint(cont.containingPackage,param,vpd$);
   if (is$(cont,{t:ClassDeclaration$meta$declaration})) {
-    vpd$.at$=cont.getMemberDeclaration(vpd$.tipo.$crtmm$.nm,{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
+    vpd$.at$=cont.getMemberDeclaration(vpd$.tipo.$m$.nm,{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
   }
   return vpd$;
 }

@@ -124,7 +124,7 @@ public class Singletons {
         gen.visitStatements(stmts);
         gen.out("return ", selfName, ";");
         gen.endBlock();
-        gen.out(";", className, ".$crtmm$=");
+        gen.out(";", className, ".$m$=");
         TypeUtils.encodeForRuntime(that, c, gen);
         gen.endLine(true);
         TypeGenerator.initializeType(that, gen, initDeferrer);
@@ -176,7 +176,7 @@ public class Singletons {
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, gen, false, null);
             }
-            gen.out(");", objvar, ".$crtmm$=", objectGetterName, ".$crtmm$;}");
+            gen.out(");", objvar, ".$m$=", objectGetterName, ".$m$;}");
             gen.endLine();
             gen.out("return ", objvar, ";");
             gen.endBlockNewLine();            
@@ -189,7 +189,7 @@ public class Singletons {
             if (!d.isToplevel()) {
                 if(gen.outerSelf(d))gen.out(".");
             }
-            gen.out(objectGetterName, ".$crtmm$=");
+            gen.out(objectGetterName, ".$m$=");
             TypeUtils.encodeForRuntime(that, d, annots, gen);
             gen.endLine(true);
             gen.out(gen.getNames().getter(c, true), "=", objectGetterName);
@@ -277,7 +277,7 @@ public class Singletons {
         if (nested) {
             gen.out("this.", objvar, "=", selfvar, ";");
         }
-        gen.out("}return ", nested?"this.":"", objvar, ";};", constructorName, ".$crtmm$=");
+        gen.out("}return ", nested?"this.":"", objvar, ";};", constructorName, ".$m$=");
         TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
         gen.out(";");
         if (td.isClassOrInterfaceMember()) {

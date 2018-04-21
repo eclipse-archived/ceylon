@@ -8,7 +8,7 @@ function OpenValue$jsint(pkg, meta, that){
     //it's a metamodel
     that.meta_=meta;
     if (meta['mt']==='prm') {
-      that.tipo={$crtmm$:meta};
+      that.tipo={$m$:meta};
       //TODO I think we need to do something else here
     } else {
       that.tipo=_findTypeFromModel(pkg,meta);

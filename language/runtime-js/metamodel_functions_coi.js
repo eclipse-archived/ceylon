@@ -39,11 +39,11 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
     if (coi.$targs)_cont.a=coi.$targs;
     if (md.mt==='i') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
-      validate$typeparams(ict,ic.$crtmm$.tp,types$3);
+      validate$typeparams(ict,ic.$m$.tp,types$3);
       rv=AppliedMemberInterface$jsint(ic, {Container$AppliedMemberInterface:_cont,Type$AppliedMemberInterface:ict});
     } else if (md.mt==='c'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
-      validate$typeparams(ict,ic.$crtmm$.tp,types$3);
+      validate$typeparams(ict,ic.$m$.tp,types$3);
       rv=AppliedMemberClass$jsint(ic, {Container$AppliedMemberClass:_cont,Type$AppliedMemberClass:ict, Arguments$AppliedMemberClass:$$$mptypes.Arguments$getClassOrInterface});
     } else {
       throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
@@ -94,7 +94,7 @@ function coimoddcl$(ifc) {
 }
 //Class.parameterTypes (works also for constructors)
 function clsparamtypes(cls) {
-  var ps=cls.tipo.$crtmm$.ps;
+  var ps=cls.tipo.$m$.ps;
   if (!ps || ps.length==0)return empty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
@@ -227,7 +227,7 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
         if (coi.$targs && coi.$targs[_t])_t=coi.$targs[_t];
         else if ($$$mptypes.Container$getMethod && $$$mptypes.Container$getMethod.a && $$$mptypes.Container$getMethod.a[_t])_t=$$$mptypes.Container$getMethod.a[_t];
         else if (mm.tp && mm.tp[_t])_ta=mm.tp[_t];
-        else if (_tipo.$crtmm$.tp && _tipo.$crtmm$.tp[_t])_ta=_tipo.$crtmm$.tp[_t];
+        else if (_tipo.$m$.tp && _tipo.$m$.tp[_t])_ta=_tipo.$m$.tp[_t];
         if (_ta && _ta.sts)_t=_ta.sts.length===1?_ta.sts[0]:{t:'i',l:_ta.sts};
         if (typeof(_t)==='string')_t={t:Anything};
       }
@@ -278,7 +278,7 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
 }
 //ClassOrInterface.satisfiedTypes
 function coisattype$(coi){
-  var ints = coi.tipo.$crtmm$.sts;
+  var ints = coi.tipo.$m$.sts;
   if (ints && ints.length) {
     var rv = [];
     for (var i=0; i < ints.length; i++) {
@@ -311,7 +311,7 @@ function coiexttype$(coi){
   return ac;
 }
 function coicase$(coi){
-  var cts = coi.tipo.$crtmm$.of;
+  var cts = coi.tipo.$m$.of;
   if (cts && cts.length > 0) {
     var rv=[];
     for (var i=0; i < cts.length; i++) {

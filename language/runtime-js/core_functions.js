@@ -105,8 +105,8 @@ function inheritProto(type) {
 function atr$(obj, name, get, set, metamodel,settermm) {
   Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
   //if (name[0]==='$')name=name.substring(1);//names matching reserved words are prefixed with $
-  obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $crtmm$:metamodel};
-  if (settermm)set.$crtmm$=settermm;
+  obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $m$:metamodel};
+  if (settermm)set.$m$=settermm;
 }
 // Create a copy of the given property. The name of the copied property is name+suffix.
 // This is used in closure mode to provide access to inherited attribute implementations.

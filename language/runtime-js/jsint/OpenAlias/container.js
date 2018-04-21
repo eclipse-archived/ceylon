@@ -1,6 +1,6 @@
 var cont=this.$$targs$$.Container;
 if (cont===undefined) {
-  cont=this._alias.$crtmm$.$cont;
+  cont=this._alias.$m$.$cont;
   if (cont)cont={t:cont};
 }
 if (cont) {

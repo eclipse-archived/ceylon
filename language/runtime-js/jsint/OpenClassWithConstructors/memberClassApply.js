@@ -1,5 +1,5 @@
 function(cont,targs,$mptypes){
-  var mm=this.tipo.$crtmm$;
+  var mm=this.tipo.$m$;
   if (cont!==nothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
     throw IncompatibleTypeException$meta$model("Incompatible Container specified");
   if (!extendsType({t:this.tipo},$mptypes.Type$memberClassApply))

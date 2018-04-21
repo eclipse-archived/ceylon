@@ -34,7 +34,7 @@ public class Constructors {
             generateConstructor(that, cdef, constructors, fullName, gen);
         }
         //Add reference to metamodel
-        gen.out(fullName, ".$crtmm$=");
+        gen.out(fullName, ".$m$=");
         TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.out(gen.getNames().name(container), ".", fullName, "=", fullName);

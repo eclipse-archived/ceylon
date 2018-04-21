@@ -6,12 +6,12 @@ function f2$(f,parms,targs) {
   }
   var set_meta = getrtmm$$(f) === undefined;
   if (set_meta) {
-    f.$crtmm$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
+    f.$m$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
   }
   if (targs !== undefined && f.$$targs$$ === undefined) {
     f.$$targs$$=targs;
     if (set_meta) {
-      f.$crtmm$.$t=targs.Return$Callable;
+      f.$m$.$t=targs.Return$Callable;
     }
   }
   if (f.$flattened$||f.$unflattened$)return f;
@@ -21,7 +21,7 @@ function f2$(f,parms,targs) {
   if (targs) {
     fun.$$targs$$=targs;
   }
-  fun.$crtmm$=f.$crtmm$;
+  fun.$m$=f.$m$;
   fun.getT$all=f.getT$all;
   fun.jsc$=f;
   fun.equals=function(o) {
@@ -53,10 +53,10 @@ function f3$(o,f,targs) {
   fun.equals=function(x){
     return false;//f===x || fun===x;
   }
-  fun.$crtmm$=f.$crtmm$||Callable.$crtmm$;
+  fun.$m$=f.$m$||Callable.$m$;
   return fun;
 }
-f3$.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
+f3$.$m$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 function spread$(a,f,targs,noInvoke) {
@@ -207,7 +207,7 @@ function JsCallableList(list,fun,$mpt,$et) {
     return $arr$sa$(rval,$et||{t:Anything});
   };
 }
-JsCallableList.$crtmm$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};
+JsCallableList.$m$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};
 function mkseq$(t,seq) {
   if (seq)t.seq=seq;
   return t;

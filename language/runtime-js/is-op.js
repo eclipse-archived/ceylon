@@ -16,7 +16,7 @@ function is$(obj,type,containers){
       return isNullType(type);
     }
     if(obj.getT$all===undefined || !obj.getT$all()){
-      if(obj.$crtmm$){
+      if(obj.$m$){
         var _mm=getrtmm$$(obj);
         //We can navigate the metamodel
         if(_mm.d['mt']==='m'){
@@ -79,12 +79,12 @@ function is$(obj,type,containers){
     type=value2type$(type);
     if(type.t.$$.T$name in obj.getT$all()){
       if(type.t==Callable&&!(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
-          && getrtmm$$(obj)&&obj.$crtmm$.$t && obj.$crtmm$.ps!==undefined){
+          && getrtmm$$(obj)&&obj.$m$.$t && obj.$m$.ps!==undefined){
         //Callable with no $$targs$$, we can build them from metamodel
-        add_type_arg(obj,'Return$Callable',obj.$crtmm$.$t);
+        add_type_arg(obj,'Return$Callable',obj.$m$.$t);
         add_type_arg(obj,'Arguments$Callable',{t:'T',l:[]});
-        for(var i=0;i<obj.$crtmm$.ps.length;i++){
-          obj.$$targs$$.Arguments$Callable.l.push(obj.$crtmm$.ps[i].$t);
+        for(var i=0;i<obj.$m$.ps.length;i++){
+          obj.$$targs$$.Arguments$Callable.l.push(obj.$m$.ps[i].$t);
         }
         if (obj.$$targs$$.Arguments$Callable.l.length===0)obj.$$targs$$.Arguments$Callable={t:Empty};
       }
@@ -202,7 +202,7 @@ function is$(obj,type,containers){
       return true;
     } else {
       // try narrowing to subtype if both current and requested type are dynamic
-      if (obj.getT$name()==="<Dynamic>" && extendsType(type, {t:'u',l:obj.$crtmm$.sts}, true)) {
+      if (obj.getT$name()==="<Dynamic>" && extendsType(type, {t:'u',l:obj.$m$.sts}, true)) {
         var _getT$all = obj.getT$all;
         var _$$ = obj.$$;
         try {

@@ -19,7 +19,7 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
   that.tipo=atr;
   that.pname=pname;
   atr$(that,'declaringType',function(){return memberDeclaringType$(that);
-  },undefined,Member$meta$model.$$.prototype.$prop$getDeclaringType.$crtmm$);
+  },undefined,Member$meta$model.$$.prototype.$prop$getDeclaringType.$m$);
   atr$(that,'type',function(){
     var t = getrtmm$$(atr);
     if (t===undefined)throw Exception("Attribute reference not found. Metamodel doesn't work in modules compiled in lexical scope style.");
@@ -39,9 +39,9 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
   }
   atr$(that,'string',function(){
     var c=getrtmm$$(atr).$cont;
-    if (typeof(c.$crtmm$)==='function')c.$crtmm$=c.$crtmm$();
+    if (typeof(c.$m$)==='function')c.$m$=c.$m$();
     if (!c)return qname$(atr);
-    c=c.$crtmm$;
+    c=c.$m$;
     var qn=qname$(c);
     if (c.tp) {
       qn+="<"; var first=true;
@@ -69,7 +69,7 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
   },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:AppliedAttribute,pa:67,d:['ceylon.language','Object','$at','hash']};});
   return that;
 }
-AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{dv:'out','def':{t:Anything}},Set:{dv:'in','def':{t:Nothing}},Container:{dv:'in'}},sts:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],pa:1,d:['ceylon.language.meta.model','Attribute']};};
+AppliedAttribute.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{dv:'out','def':{t:Anything}},Set:{dv:'in','def':{t:Nothing}},Container:{dv:'in'}},sts:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],pa:1,d:['ceylon.language.meta.model','Attribute']};};
 ex$.AppliedAttribute=AppliedAttribute;
 function $init$AppliedAttribute(){
     if (AppliedAttribute.$$===undefined){

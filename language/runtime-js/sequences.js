@@ -68,13 +68,13 @@ atr$(arrprot$,'string', function() {
   }
   s+=" }";
   return s;
-},undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
+},undefined,$_Object.$$.prototype.$prop$getString.$m$);
 atr$(arrprot$,'reversed', function() {
   return this.Reversed$List();
-},undefined,List.$$.prototype.$prop$getReversed.$crtmm$);
+},undefined,List.$$.prototype.$prop$getReversed.$m$);
 atr$(arrprot$,'rest', function() {
   return this.Sublist$List(1, this.size-1);
-},undefined,List.$$.prototype.$prop$getRest.$crtmm$);
+},undefined,List.$$.prototype.$prop$getRest.$m$);
 
 //for sequenced enumerations
 function sarg$(elems,spread,$$targs$$){
@@ -86,7 +86,7 @@ function sarg$(elems,spread,$$targs$$){
   that.s=spread;
   return that;
 }
-sarg$.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{dv:'out'}},sts:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
+sarg$.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{dv:'out'}},sts:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
 ex$.sarg$=sarg$;
 function $init$sarg(){if(sarg$.$$===undefined){
   initTypeProto(sarg$,'ceylon.language::LazyIterable',Basic,Iterable);
@@ -101,7 +101,7 @@ function $init$sarg(){if(sarg$.$$===undefined){
       $$4.s=sarg.s;
       return $$4;
     };
-    iter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
+    iter.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
     if(iter.$$===undefined){
       initTypeProto(iter,'LazyIterable.iterator',Basic,Iterator);
       iter.$$.prototype.next=function(){
@@ -123,12 +123,12 @@ function $init$sarg(){if(sarg$.$$===undefined){
         }
         return e;
       };
-      iter.$$.prototype.next.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:['T$LazyIterable',{t:Finished}]},ps:[],$cont:iter,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator','$o','it','$m','next']};};
+      iter.$$.prototype.next.$m$=function(){return{mod:$CCMM$,$t:{t:'u',l:['T$LazyIterable',{t:Finished}]},ps:[],$cont:iter,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator','$o','it','$m','next']};};
     }
     that.iterator=function(){
       return iter(this);
     };
-    that.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}},ps:[],$cont:$sarg,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator']};};
+    that.iterator.$m$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}},ps:[],$cont:$sarg,an:function(){return[shared(),actual()];},d:['$','LazyIterable','$m','iterator']};};
   })(sarg$.$$.prototype);
 }
 return sarg$;

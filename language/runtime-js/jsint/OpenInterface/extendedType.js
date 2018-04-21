@@ -1,4 +1,4 @@
-var sc = this.tipo.$crtmm$['super'];
+var sc = this.tipo.$m$['super'];
 if (sc === undefined)return null;
 var mm = getrtmm$$(sc.t);
 var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;

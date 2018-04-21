@@ -812,7 +812,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         out(_tmp, "=");
         TypeUtils.typeNameOrList(that, pt, this, skip);
-        out(";", _tmp, ".$crtmm$=");
+        out(";", _tmp, ".$m$=");
         TypeUtils.encodeForRuntime(that,d,this);
         out(";return ", _tmp, ";}");
         endLine(true);
@@ -900,7 +900,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         out(names.self(d), ");}");
         endLine();
-        out(aname,".$crtmm$=");
+        out(aname,".$m$=");
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
@@ -959,7 +959,7 @@ public class GenerateJsVisitor extends Visitor {
         qualify(that, aliased);
         out(aliasedName, ".$$");
         endLine(true);
-        out(aname,".$crtmm$=");
+        out(aname,".$m$=");
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
@@ -1017,7 +1017,7 @@ public class GenerateJsVisitor extends Visitor {
         final String tname=names.createTempVariable();
         out(function, names.name(d), "{var ", tname, "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, false);
-        out(";", tname, ".$crtmm$=");
+        out(";", tname, ".$m$=");
         TypeUtils.encodeForRuntime(that, d, this, new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 TypeUtils.outputAnnotationsFunction(that.getAnnotationList(), d, GenerateJsVisitor.this);
@@ -1259,7 +1259,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             out(names.self(type), ".", names.name(c));
         }
-        out(".$crtmm$=");
+        out(".$m$=");
         TypeUtils.encodeForRuntime(objDef, d, this);
         endLine(true);
     }
@@ -1337,7 +1337,7 @@ public class GenerateJsVisitor extends Visitor {
             } else if (n instanceof Tree.AttributeDeclaration || n instanceof Tree.AttributeGetterDefinition) {
                 return true;
             }
-            out(names.name(d), ".$crtmm$=");
+            out(names.name(d), ".$m$=");
             TypeUtils.encodeForRuntime(n, d, n.getAnnotationList(), this);
             endLine(true);
             return true;
@@ -1405,7 +1405,7 @@ public class GenerateJsVisitor extends Visitor {
             initDefaultedParameters(that.getParameterLists().get(0), that);
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
             //Add reference to metamodel
-            out(names.name(d), ".$crtmm$=");
+            out(names.name(d), ".$m$=");
             TypeUtils.encodeMethodForRuntime(that, this);
             endLine(true);
         }
@@ -1586,9 +1586,9 @@ public class GenerateJsVisitor extends Visitor {
         FunctionHelper.methodDefinition(that, this, false, verboseStitcher);
         //Add reference to metamodel
         if (d.isStatic()) {
-            out(names.name(outer), ".$st$.", names.name(d), ".$crtmm$=");
+            out(names.name(outer), ".$st$.", names.name(d), ".$m$=");
         } else {
-            out(names.self(outer), ".", names.name(d), ".$crtmm$=");
+            out(names.self(outer), ".", names.name(d), ".$m$=");
         }
         TypeUtils.encodeMethodForRuntime(that, this);
         endLine(true);
@@ -1635,7 +1635,7 @@ public class GenerateJsVisitor extends Visitor {
                 AttributeGenerator.getter(that, this, true);
             }
             endLine();
-            out(names.getter(d, false), ".$crtmm$=");
+            out(names.getter(d, false), ".$m$=");
             TypeUtils.encodeForRuntime(that, d, this);
             if (!shareGetter(d)) { out(";"); }
             AttributeGenerator.generateAttributeMetamodel(that, true, false, this);
@@ -1720,7 +1720,7 @@ public class GenerateJsVisitor extends Visitor {
         AttributeGenerator.setter(that, this);
         if (!shareSetter(d)) { out(";"); }
         if (!d.isToplevel())outerSelf(d);
-        out(names.setter(d.getGetter()), ".$crtmm$=");
+        out(names.setter(d.getGetter()), ".$m$=");
         TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         endLine(true);
         AttributeGenerator.generateAttributeMetamodel(that, false, true, this);
