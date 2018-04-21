@@ -190,7 +190,7 @@ shared void issues() {
             \iFoo.Bar();
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: Foo");
+        check(e.message == "undefined native reference: Foo");
     }
     //#439.2
     try {
@@ -198,35 +198,35 @@ shared void issues() {
             foo.bar += 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     try {
         dynamic {
             foo.bar -= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     try {
         dynamic {
             foo.bar *= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     try {
         dynamic {
             foo.bar /= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     try {
         dynamic {
             foo.bar %= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     value test465=["a","b"];
     dynamic {
@@ -252,21 +252,21 @@ shared void issues() {
             foo.bar |= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     try {
         dynamic {
             foo.bar &= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }
     try {
         dynamic {
             foo.bar ~= 1;
         }
     } catch (Exception e) {
-        check(e.message == "Undefined or null reference: foo");
+        check(e.message == "undefined native reference: foo");
     }*/
     issue604();
     issue5952();

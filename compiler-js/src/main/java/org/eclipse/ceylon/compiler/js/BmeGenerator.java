@@ -77,17 +77,20 @@ public class BmeGenerator {
             if ("undefined".equals(exp)) {
                 gen.out(exp);
             } else if (nonNull) {
-                gen.out("(typeof ", exp, "==='undefined'||", exp, "===null?");
-                gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
-                gen.out(":", exp, ")");
+                gen.out("(typeof ",exp,"==='undefined'?", 
+                		gen.getClAlias(), "err$(", 
+                		gen.getClAlias(), "Exception('undefined native reference: ", exp, "')):", 
+                		exp, ")");
             } else {
-                gen.out(exp);
+                gen.out("(typeof ",exp,"==='undefined'?undefined:", exp, ")");
             }
         } else {
-            final boolean isCallable = !forInvoke && (decl instanceof Functional
-                    || bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration()));
+            final boolean isCallable = !forInvoke 
+            		&& (decl instanceof Functional
+                    || bme.getUnit().getCallableDeclaration()
+                    	.equals(bme.getTypeModel().getDeclaration()));
             final boolean hasTparms = hasTypeParameters(bme);
-            if (isCallable && (decl.isParameter() || (decl.isToplevel() && !hasTparms))) {
+            if (isCallable && (decl.isParameter() || decl.isToplevel() && !hasTparms)) {
                 //Callables passed as arguments are already wrapped in JsCallable
                 gen.out(exp);
                 return;
