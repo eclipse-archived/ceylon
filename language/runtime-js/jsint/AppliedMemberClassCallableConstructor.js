@@ -7,7 +7,7 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
     var mm = getrtmm$$(tipo);
     that=function AppliedMemConstr1(x){
       var rv=tipo.bind(x);
-      rv.$crtmm$=tipo.$crtmm$;
+      rv.$m$=tipo.$m$;
       var nt={t:tipo};
       if (x.$$targs$$) {
         nt.a={};
@@ -30,34 +30,34 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
     that.$_bind=AppliedMemberClassCallableConstructor$jsint.$$.prototype.$_bind;
     atr$(that,'declaration',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.$m$);
     atr$(that,'container',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getContainer.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getContainer.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getContainer.$m$);
     atr$(that,'type',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getType.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getType.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getType.$m$);
     atr$(that,'typeArguments',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.$m$);
     atr$(that,'typeArgumentList',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$m$);
     atr$(that,'typeArgumentWithVariances',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.$m$);
     atr$(that,'typeArgumentWithVarianceList',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.$m$);
     atr$(that,'parameterTypes',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$m$);
     atr$(that,'string',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.$m$);
     atr$(that,'hash',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.get.call(that);
-    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.$crtmm$);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.$m$);
   }
   MemberClassCallableConstructor$meta$model({Type$MemberClassCallableConstructor:$$targs$$.Type$AppliedMemberClassCallableConstructor,
     Arguments$MemberClassCallableConstructor:$$targs$$.Arguments$AppliedMemberClassCallableConstructor,

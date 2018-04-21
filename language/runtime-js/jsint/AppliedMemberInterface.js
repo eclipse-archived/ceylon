@@ -7,7 +7,7 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
     if (mm && mm.$cont) {
       that=function AppliedMemIface1(x){
         var rv=tipo.bind(x);
-        rv.$crtmm$=tipo.$crtmm$;
+        rv.$m$=tipo.$m$;
         var nt={t:tipo};
         if (x && x.$$targs$$) {
           nt.a={};
@@ -54,35 +54,35 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
   that.getT$all=function(){return dummy.getT$all();};
   that.getT$name=function(){return dummy.getT$name();};
   that.equals=_proto.equals;
-  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
-  atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object.$$.prototype.$prop$getString.$m$);
+  atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$m$);
   atr$(that,'declaration',function(){
     return coimoddcl$(that);
-  },undefined,_proto.$prop$getDeclaration.$crtmm$);
+  },undefined,_proto.$prop$getDeclaration.$m$);
   atr$(that,'typeArguments',function(){
     return coitarg$(that);
-  },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  },undefined,_proto.$prop$getTypeArguments.$m$);
   atr$(that,'typeArgumentList',function(){
     return coitargl$(that);
-  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentList.$m$);
   atr$(that,'typeArgumentWithVariances',function(){
     return coitargv$(that);
-  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$m$);
   atr$(that,'typeArgumentWithVarianceList',function(){
     return coitargvl$(that);
-  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$m$);
   atr$(that,'container',function(){
     return coicont$(that);
-  },undefined,_proto.$prop$getContainer.$crtmm$);
+  },undefined,_proto.$prop$getContainer.$m$);
   atr$(that,'declaringType',function(){return memberDeclaringType$(that);
-  },undefined,_proto.$prop$getDeclaringType.$crtmm$);
+  },undefined,_proto.$prop$getDeclaringType.$m$);
   atr$(that,'extendedType',function(){return coiexttype$(that);
-  },undefined,_proto.$prop$getExtendedType.$crtmm$);
+  },undefined,_proto.$prop$getExtendedType.$m$);
   atr$(that,'satisfiedTypes',function(){return coisattype$(that);
-  },undefined,_proto.$prop$getSatisfiedTypes.$crtmm$);
+  },undefined,_proto.$prop$getSatisfiedTypes.$m$);
   atr$(that,'caseValues',function(){
     return _proto.$prop$getCaseValues.get.call(that);
-  },undefined,_proto.$prop$getCaseValues.$crtmm$);
+  },undefined,_proto.$prop$getCaseValues.$m$);
   that.$_bind=_proto.$_bind;
   return that;
 }

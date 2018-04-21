@@ -7,11 +7,11 @@ function OpenSetter(v, $$openSetter){
   if (v.tipo.set && getrtmm$$(v.tipo.set)) {
     var mm=getrtmm$$(v.tipo.set)
     if (typeof(mm.an)==='function')mm.an=mm.an();
-    v.tipo.set.$crtmm$=mm;
+    v.tipo.set.$m$=mm;
   }
   return $$openSetter;
 }
-OpenSetter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
+OpenSetter.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
 function $init$OpenSetter(){
   if (OpenSetter.$$===undefined){
     initTypeProto(OpenSetter,'ceylon.language.meta.declaration::OpenSetter',Basic,SetterDeclaration$meta$declaration);

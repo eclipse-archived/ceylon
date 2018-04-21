@@ -1,6 +1,6 @@
 //Basically the same as clsparamtypes but for functions
 function funparamtypes(fun) {
-  var ps=fun.tipo.$crtmm$.ps;
+  var ps=fun.tipo.$m$.ps;
   if (!ps || ps.length==0)return empty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
@@ -17,15 +17,15 @@ function funparamtypes(fun) {
 }
 //FunctionModel.string
 function funmodstr$(fun) {
-  var mm=fun.tipo.$crtmm$;
+  var mm=fun.tipo.$m$;
   var qn;
   if (mm.$cont) {
     qn=qname$(mm.$cont);
-    if (mm.$cont.$crtmm$.tp) {
+    if (mm.$cont.$m$.tp) {
       var cnt=fun.$$targs$$&&fun.$$targs$$.Container$Function&&fun.$$targs$$.Container$Function.a;
       if (!cnt)cnt=fun.$$targs$$&&fun.$$targs$$.Container$Method&&fun.$$targs$$.Container$Method.a;
       qn+="<";var first=true;
-      for (var tp in mm.$cont.$crtmm$.tp) {
+      for (var tp in mm.$cont.$m$.tp) {
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];
         if (_ta && _ta.dv)qn+=_ta.dv+' ';
@@ -56,7 +56,7 @@ function funmodstr$(fun) {
 }
 //Function.typeArguments
 function _funtypearg_$(fun,makeItem,maptarg){
-  var mm = fun.tipo.$crtmm$;
+  var mm = fun.tipo.$m$;
   if (mm) {
     if (mm.tp) {
       if (fun.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+fun.string);
@@ -86,7 +86,7 @@ function funtypearg$(fun) {
 //Function.typeArgumentWithVariance
 function funtypeargv$(fun) {
   return _funtypearg_$(fun,function(c,t,a){
-    var iance,usv=fun.tipo.$crtmm$.tp[t].uv;
+    var iance,usv=fun.tipo.$m$.tp[t].uv;
     if (usv==='out'){
       iance=covariant$meta$declaration();
     } else if (usv==='in'){
@@ -99,7 +99,7 @@ function funtypeargv$(fun) {
 }
 //Function.typeArgumentList
 function _funtypeargl_$(fun,makeItem,listarg){
-  var mm = fun.tipo.$crtmm$;
+  var mm = fun.tipo.$m$;
   if (mm) {
     if (mm.tp) {
       if (fun.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+fun.string);

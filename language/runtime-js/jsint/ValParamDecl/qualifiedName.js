@@ -1,1 +1,1 @@
-return qname$(this.cont.tipo.$crtmm$)+"."+this.param.nm;
+return qname$(this.cont.tipo.$m$)+"."+this.param.nm;

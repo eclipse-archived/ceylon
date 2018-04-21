@@ -5,7 +5,7 @@ function annotatedMembers($$$mptypes){
     var mask = getAnnotationBitmask($$$mptypes.Annotation$annotatedMembers);
     for (var i=0; i < ms.size; i++) {
       var _mem=ms.$_get(i);
-      if (_mem.tipo && _mem.tipo.$crtmm$) {
+      if (_mem.tipo && _mem.tipo.$m$) {
         var mm=getrtmm$$(_mem.tipo);
         if (mm.pa&mask) {
           rv.push(_mem);

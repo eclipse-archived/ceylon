@@ -436,7 +436,7 @@ public class AttributeGenerator {
                 gen.out(".");
             }
             //issue 297 this is only needed in some cases
-            gen.out(pnameMeta, "={$crtmm$:");
+            gen.out(pnameMeta, "={$m$:");
             TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
             gen.out("}"); gen.endLine(true);
             if (d.isToplevel()) {
@@ -454,7 +454,7 @@ public class AttributeGenerator {
             if (gen.isCaptured(d) && !defineAsProperty(d)) {
                 gen.out(pname);
                 gen.endLine(true);
-                gen.out(pname, ".$crtmm$=", pnameMeta, ".$crtmm$");
+                gen.out(pname, ".$m$=", pnameMeta, ".$m$");
             } else {
                 if (d.isToplevel()) {
                     gen.out(pname);
@@ -472,7 +472,7 @@ public class AttributeGenerator {
             }
             gen.out(pnameMeta, ".set=", pset);
             gen.endLine(true);
-            gen.out("if(", pset, ".$crtmm$===undefined)", pset, ".$crtmm$=", pnameMeta, ".$crtmm$");
+            gen.out("if(", pset, ".$m$===undefined)", pset, ".$m$=", pnameMeta, ".$m$");
             gen.endLine(true);
         }
     }

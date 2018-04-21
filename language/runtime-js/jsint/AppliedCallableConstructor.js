@@ -13,7 +13,7 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
         }
         return tipo.apply(undefined,_a);
       }
-      that.$crtmm$=mm;
+      that.$m$=mm;
       var dummy=new AppliedCallableConstructor$jsint.$$;
       that.$$=dummy.$$;
       that.getT$all=function(){return dummy.getT$all();}
@@ -23,34 +23,34 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
       that.namedApply=AppliedCallableConstructor$jsint.$$.prototype.namedApply;
       atr$(that,'declaration',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.$m$);
       atr$(that,'container',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getContainer.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getContainer.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getContainer.$m$);
       atr$(that,'type',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getType.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getType.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getType.$m$);
       atr$(that,'typeArguments',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.$m$);
       atr$(that,'typeArgumentList',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$m$);
       atr$(that,'typeArgumentWithVariances',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.$m$);
       atr$(that,'typeArgumentWithVarianceList',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.$m$);
       atr$(that,'parameterTypes',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$m$);
       atr$(that,'string',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getString.$m$);
       atr$(that,'hash',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getHash.get.call(this);
-      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getHash.$crtmm$);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getHash.$m$);
     }
   }
   $_Function$meta$model({Arguments$Function:$$targs$$.Arguments$AppliedCallableConstructor,

@@ -14,13 +14,13 @@ function type$meta(x,$$targs$$) {
   if (mm===undefined) {
     if (x.getT$name && x.getT$all) {
       var mmm=x.getT$all()[x.getT$name()];
-      if (mmm){mm=mmm.$crtmm$;_t=mmm;}
+      if (mmm){mm=mmm.$m$;_t=mmm;}
       if (typeof(mm)==='function') {
-        mm=mm(); mmm.$crtmm$=mm;
+        mm=mm(); mmm.$m$=mm;
       }
     }
   }
-  if (mm===undefined&&x.rt$)mm=$_Array.$crtmm$;
+  if (mm===undefined&&x.rt$)mm=$_Array.$m$;
   if (mm===undefined)throw new Error("Cannot retrieve metamodel for " + x);
   var _cntr=mm.$cont && !is$(x,{t:'u',l:[{t:AppliedCallableConstructor$jsint},{t:AppliedMemberClassCallableConstructor$jsint}]}) ? get_model(getrtmm$$(mm.$cont)) : undefined;
   var _classOrInterfaceMember = _cntr && (_cntr.mt==='c' || _cntr.mt==='i' || _cntr.mt==='o');

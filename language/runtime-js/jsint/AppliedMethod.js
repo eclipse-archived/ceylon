@@ -48,38 +48,38 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   var _proto=AppliedMethod$jsint.$$.prototype;
   atr$($$appliedMethod,'declaration',function(){
     return _proto.$prop$getDeclaration.get.call($$appliedMethod);
-  },undefined,_proto.$prop$getDeclaration.$crtmm$);
+  },undefined,_proto.$prop$getDeclaration.$m$);
   atr$($$appliedMethod,'type',function(){
     return _proto.$prop$getType.get.call($$appliedMethod);
-  },undefined,_proto.$prop$getType.$crtmm$);
+  },undefined,_proto.$prop$getType.$m$);
   atr$($$appliedMethod,'typeArguments',function(){
     return funtypearg$($$appliedMethod);
-  },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  },undefined,_proto.$prop$getTypeArguments.$m$);
   atr$($$appliedMethod,'typeArgumentList',function(){
     return funtypeargl$($$appliedMethod);
-  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentList.$m$);
   atr$($$appliedMethod,'typeArgumentWithVariances',function(){
     return funtypeargv$($$appliedMethod);
-  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$m$);
   atr$($$appliedMethod,'typeArgumentWithVarianceList',function(){
     return funtypeargvl$($$appliedMethod);
-  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$m$);
   atr$($$appliedMethod,'parameterTypes',function(){
     return funparamtypes($$appliedMethod);
-  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
+  },undefined,_proto.$prop$getParameterTypes.$m$);
   $$appliedMethod.equals=_proto.equals;
   $$appliedMethod.$_bind=_proto.$_bind;
   atr$($$appliedMethod,'string',function(){
     return funmodstr$($$appliedMethod);
-  },undefined,_proto.$prop$getString.$crtmm$);
+  },undefined,_proto.$prop$getString.$m$);
   atr$($$appliedMethod,'hash',function(){
     return _proto.$prop$getHash.get.call($$appliedMethod);
-  },undefined,_proto.$prop$getHash.$crtmm$);
+  },undefined,_proto.$prop$getHash.$m$);
   atr$($$appliedMethod,'declaringType',function(){
     return _proto.$prop$getDeclaringType.get.call($$appliedMethod);
-  },undefined,_proto.$prop$getDeclaringType.$crtmm$);
+  },undefined,_proto.$prop$getDeclaringType.$m$);
   atr$($$appliedMethod,'container',function(){
     return _proto.$prop$getContainer.get.call($$appliedMethod);
-  },undefined,_proto.$prop$getContainer.$crtmm$);
+  },undefined,_proto.$prop$getContainer.$m$);
   return $$appliedMethod;
 }

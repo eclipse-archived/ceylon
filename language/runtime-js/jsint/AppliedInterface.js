@@ -36,17 +36,17 @@ function AppliedInterface$jsint(tipo,$$targs$$,that,myTargs) {
       that.$$=AppliedInterface$jsint.$$;
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
-      atr$(that,'string',function(){return coistr$(that); },undefined,dummy.$prop$getString.$crtmm$);
-      atr$(that,'hash',function(){return coihash$(that);},undefined,dummy.$prop$getHash.$crtmm$);
-      atr$(that,'declaration',function(){return coimoddcl$(that);},undefined,dummy.$prop$getDeclaration.$crtmm$);
-      atr$(that,'container',function(){return coicont$(that); },undefined,dummy.$prop$getContainer.$crtmm$);
-      atr$(that,'typeArguments',function(){return coitarg$(that);},undefined,dummy.$prop$getTypeArguments.$crtmm$);
-      atr$(that,'typeArgumentList',function(){return coitargl$(that);},undefined,dummy.$prop$getTypeArgumentList.$crtmm$);
-      atr$(that,'typeArgumentWithVariances',function(){return coitargv$(that);},undefined,dummy.$prop$getTypeArgumentWithVariances.$crtmm$);
-      atr$(that,'typeArgumentWithVarianceList',function(){return coitargvl$(that);},undefined,dummy.$prop$getTypeArgumentWithVarianceList.$crtmm$);
-      atr$(that,'extendedType',function(){return coiexttype$(that); },undefined,dummy.$prop$getExtendedType.$crtmm$);
-      atr$(that,'satisfiedTypes',function(){return coisattype$(that); },undefined,dummy.$prop$getSatisfiedTypes.$crtmm$);
-      atr$(that,'caseValues',function(){return coicase$(that); },undefined,dummy.$prop$getCaseValues.$crtmm$);
+      atr$(that,'string',function(){return coistr$(that); },undefined,dummy.$prop$getString.$m$);
+      atr$(that,'hash',function(){return coihash$(that);},undefined,dummy.$prop$getHash.$m$);
+      atr$(that,'declaration',function(){return coimoddcl$(that);},undefined,dummy.$prop$getDeclaration.$m$);
+      atr$(that,'container',function(){return coicont$(that); },undefined,dummy.$prop$getContainer.$m$);
+      atr$(that,'typeArguments',function(){return coitarg$(that);},undefined,dummy.$prop$getTypeArguments.$m$);
+      atr$(that,'typeArgumentList',function(){return coitargl$(that);},undefined,dummy.$prop$getTypeArgumentList.$m$);
+      atr$(that,'typeArgumentWithVariances',function(){return coitargv$(that);},undefined,dummy.$prop$getTypeArgumentWithVariances.$m$);
+      atr$(that,'typeArgumentWithVarianceList',function(){return coitargvl$(that);},undefined,dummy.$prop$getTypeArgumentWithVarianceList.$m$);
+      atr$(that,'extendedType',function(){return coiexttype$(that); },undefined,dummy.$prop$getExtendedType.$m$);
+      atr$(that,'satisfiedTypes',function(){return coisattype$(that); },undefined,dummy.$prop$getSatisfiedTypes.$m$);
+      atr$(that,'caseValues',function(){return coicase$(that); },undefined,dummy.$prop$getCaseValues.$m$);
     } else {
       that=new AppliedInterface$jsint.$$;
     }

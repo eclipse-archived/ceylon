@@ -58,11 +58,11 @@ function dre$$(object, type, loc, stack) {
     object.T$all={};
     object.getT$all=function(){return this.T$all};
     object.T$all['ceylon.language::Object']=$_Object;
-    object.$crtmm$={mod:$CCMM$,$t:{t:$_Object},sts:[],d:{mt:'c'}};
+    object.$m$={mod:$CCMM$,$t:{t:$_Object},sts:[],d:{mt:'c'}};
   }
   //Add type
   object.T$all[tname]=type;
-  object.$crtmm$.sts.push(type);
+  object.$m$.sts.push(type);
   //Initialize object with type info
   if (type.a) {
     type.t(type.a,object);
@@ -97,7 +97,7 @@ function dre$$(object, type, loc, stack) {
             //avoid instance circularity
             if (!is$(val,proptype.$t)) {
               //add satisfied type
-              object.$crtmm$.sts.push(proptype.$t);
+              object.$m$.sts.push(proptype.$t);
               object.T$all[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
               if (proptype.$t.a) {
                 proptype.$t.t(proptype.$t.a,object);
@@ -145,11 +145,11 @@ function dre$$(object, type, loc, stack) {
   if (typeof(object)==='object') {
     if (actual.indexOf('string')<0) {
       atr$(object,'string',function(){return object.toString();},undefined,
-           $_Object.$$.prototype.$prop$getString.$crtmm$);
+           $_Object.$$.prototype.$prop$getString.$m$);
     }
     if (actual.indexOf('hash')<0) {
       atr$(object,'hash',function(){return identityHash(object);},undefined,
-           $_Object.$$.prototype.$prop$getHash.$crtmm$);
+           $_Object.$$.prototype.$prop$getHash.$m$);
     }
   }
   return object;

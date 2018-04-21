@@ -1,12 +1,12 @@
 function typeLiteral$meta($$targs$$,targ$2) {
   if ($$targs$$ === undefined || $$targs$$.Type$typeLiteral === undefined) {
     throw new Error("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
-  } else if ($$targs$$.Type$typeLiteral.$crtmm$ == undefined) {
+  } else if ($$targs$$.Type$typeLiteral.$m$ == undefined) {
     //closed type
     var t = $$targs$$.Type$typeLiteral.t
     if (t === undefined) {
       t = $$targs$$.Type$typeLiteral.setter;
-      if (t && t.$crtmm$) {
+      if (t && t.$m$) {
         var mm = getrtmm$$(t);
         var _m=typeof(mm.mod)==='function'?mm.mod():mm.mod;
         var _mod = modules$meta().find(_m['$mod-name'],_m['$mod-version']);
@@ -22,7 +22,7 @@ function typeLiteral$meta($$targs$$,targ$2) {
         return AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:Empty}});
       }
       return AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$typeLiteral,Arguments$AppliedClass:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
-    } else if (t.$crtmm$ === undefined) {
+    } else if (t.$m$ === undefined) {
       throw new Error("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
       var mm = getrtmm$$(t);

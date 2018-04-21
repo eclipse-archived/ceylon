@@ -27,7 +27,7 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
     }
     return _fu.apply(o,arguments);
   }
-  f.$crtmm$={mod:$CCMM$,d:['ceylon.language.meta.model','Function'],$t:mm.$t,ps:mm.ps,an:mm.an};
+  f.$m$={mod:$CCMM$,d:['ceylon.language.meta.model','Function'],$t:mm.$t,ps:mm.ps,an:mm.an};
   var dummy=new AppliedFunction$jsint.$$;
   f.$$=AppliedFunction$jsint.$$;
   f.getT$all=function(){return dummy.getT$all();}
@@ -42,35 +42,35 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
   var _proto=AppliedFunction$jsint.$$.prototype;
   atr$(f,'typeArguments',function(){
     return funtypearg$(f);
-  },undefined,_proto.$prop$getTypeArguments.$crtmm$);
+  },undefined,_proto.$prop$getTypeArguments.$m$);
   atr$(f,'typeArgumentList',function(){
     return funtypeargl$(f);
-  },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentList.$m$);
   atr$(f,'typeArgumentWithVariances',function(){
     return funtypeargv$(f);
-  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$m$);
   atr$(f,'typeArgumentWithVarianceList',function(){
     return funtypeargvl$(f);
-  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$m$);
   f.equals=_proto.equals;
   atr$(f,'string',function(){
     return _proto.$prop$getString.get.call(f);
-  },undefined,_proto.$prop$getString.$crtmm$);
+  },undefined,_proto.$prop$getString.$m$);
   atr$(f,'hash',function(){
     return _proto.$prop$getHash.get.call(f);
-  },undefined,_proto.$prop$getHash.$crtmm$);
+  },undefined,_proto.$prop$getHash.$m$);
   atr$(f,'parameterTypes',function(){
     return _proto.$prop$getParameterTypes.get.call(f);
-  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
+  },undefined,_proto.$prop$getParameterTypes.$m$);
   atr$(f,'declaration',function(){
     return _proto.$prop$getDeclaration.get.call(f);
-  },undefined,_proto.$prop$getDeclaration.$crtmm$);
+  },undefined,_proto.$prop$getDeclaration.$m$);
   atr$(f,'container',function(){
     return _proto.$prop$getContainer.get.call(f);
-  },undefined,_proto.$prop$getContainer.$crtmm$);
+  },undefined,_proto.$prop$getContainer.$m$);
   atr$(f,'type',function(){
     return _proto.$prop$getType.get.call(f);
-  },undefined,_proto.$prop$getType.$crtmm$);
+  },undefined,_proto.$prop$getType.$m$);
   f.$_apply=_proto.$_apply;
   f.namedApply=_proto.namedApply;
   return f;

@@ -41,7 +41,7 @@ function members($$$mptypes){
       } else if (mt==='s') {
         r.push(OpenSetter(OpenValue$jsint(this, m)));
       } else if (mt==='als') {
-        r.push(OpenAlias$jsint(m.$crtmm$?m:_findTypeFromModel(this,m)));
+        r.push(OpenAlias$jsint(m.$m$?m:_findTypeFromModel(this,m)));
       }
     }
   }

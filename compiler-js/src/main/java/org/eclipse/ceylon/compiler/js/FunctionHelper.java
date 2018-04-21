@@ -172,7 +172,7 @@ public class FunctionHelper {
         gen.out("return ", gen.getNames().self(c), ";");
         gen.endBlock(false, true);
         //Add reference to metamodel
-        gen.out(gen.getNames().name(c), ".$crtmm$=");
+        gen.out(gen.getNames().name(c), ".$m$=");
         TypeUtils.encodeForRuntime(that, c, gen);
         gen.endLine(true);
 
@@ -268,7 +268,7 @@ public class FunctionHelper {
                     gen.out(gen.getNames().self(outer), ".");
                 }
             }
-            gen.out(gen.getNames().name(m), ".$crtmm$=");
+            gen.out(gen.getNames().name(m), ".$m$=");
             TypeUtils.encodeMethodForRuntime(that, gen);
             gen.endLine(true);
             gen.share(m);
@@ -306,7 +306,7 @@ public class FunctionHelper {
             gen.out(gen.getNames().self((TypeDeclaration)m.getContainer()), ".",
                     gen.getNames().name(m), "=");
             if (m.isFormal()) {
-                gen.out("{$fml:1,$crtmm$:");
+                gen.out("{$fml:1,$m$:");
                 TypeUtils.encodeForRuntime(that, m, gen);
                 gen.out("};");
             } else if (TypeUtils.isNativeExternal(m)) {
@@ -432,7 +432,7 @@ public class FunctionHelper {
         Node n;
         Tree.ParameterList params;
         void outputMetamodelAndReturn(GenerateJsVisitor gen, Type t) {
-            gen.out(name,  ".$crtmm$=function(){return{", MetamodelGenerator.KEY_PARAMS,":");
+            gen.out(name,  ".$m$=function(){return{", MetamodelGenerator.KEY_PARAMS,":");
             TypeUtils.encodeParameterListForRuntime(true, n, params.getModel(), gen);
             if (t != null) {
                 //Add the type to the innermost method

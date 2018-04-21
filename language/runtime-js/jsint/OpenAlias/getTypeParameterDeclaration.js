@@ -1,5 +1,5 @@
 function(name$2){
-var tp=this._alias.$crtmm$;
+var tp=this._alias.$m$;
 var tpn=undefined;
 if (tp.tp) {
   for (var ftn in tp.tp) {

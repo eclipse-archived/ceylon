@@ -5,7 +5,7 @@ function unflatten(ff, $$$mptypes) {
   if (mm && mm.ps) {
     if (mm.ps.length===0) {
       var ru=function(){ return ff();}  
-      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:Empty},nm:'unf0',mt:'prm'}]};
+      ru.$m$={$t:mm.$t,ps:[{$t:{t:Empty},nm:'unf0',mt:'prm'}]};
       return ru;
     }
     var last=mm.ps[mm.ps.length-1];
@@ -18,7 +18,7 @@ function unflatten(ff, $$$mptypes) {
         if (seq===undefined || seq.size === 0)seq=empty();
         return ff(seq,$mptypes);
       }
-      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:last.$t.t,a:last.$t.a},nm:'unf0',mt:'prm'}]};
+      ru.$m$={$t:mm.$t,ps:[{$t:{t:last.$t.t,a:last.$t.a},nm:'unf0',mt:'prm'}]};
     } else if (iadic) {
       //Args and variadic, gets unfinished Tuple
       var cut=mm.ps.length-1;
@@ -60,12 +60,12 @@ function unflatten(ff, $$$mptypes) {
         return ff.apply(0,a);
       }
     }
-    if (!ru.$crtmm$) {
-      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:'T',l:[]},nm:'unf'}]};
+    if (!ru.$m$) {
+      ru.$m$={$t:mm.$t,ps:[{$t:{t:'T',l:[]},nm:'unf'}]};
       for (var i=0;i<mm.ps.length;i++){
-        ru.$crtmm$.ps[0].$t.l.push(mm.ps[i].$t);
+        ru.$m$.ps[0].$t.l.push(mm.ps[i].$t);
       }
-      if (iadic)ru.$crtmm$.ps[0].$t.l[mm.ps.length-1].seq=iadic;
+      if (iadic)ru.$m$.ps[0].$t.l[mm.ps.length-1].seq=iadic;
     }
   } else {
     var ru=function runomm(seq) {

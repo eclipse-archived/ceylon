@@ -4,25 +4,25 @@ function FunParamDecl(cont,param,$$funParamDecl){
   FunctionDeclaration$meta$declaration($$funParamDecl);
   $$funParamDecl.cont=cont;
   $$funParamDecl.param=param;
-  $$funParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$rt,ps:param.ps,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an,pa:param.pa}};
+  $$funParamDecl.tipo={$m$:{$cont:cont.tipo,$t:param.$rt,ps:param.ps,mt:'prm',d:cont.tipo.$m$.d,an:param.an,pa:param.pa}};
 
-  $$funParamDecl.$prop$getParameter={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
+  $$funParamDecl.$prop$getParameter={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
   $$funParamDecl.$prop$getParameter.get=function(){return true;};
-  $$funParamDecl.$prop$getAnnotation={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};}};
+  $$funParamDecl.$prop$getAnnotation={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};}};
   $$funParamDecl.$prop$getAnnotation.get=function(){return false;};
-  $$funParamDecl.$prop$getShared={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};}};
+  $$funParamDecl.$prop$getShared={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};}};
   $$funParamDecl.$prop$getShared.get=function(){return false;};
-  $$funParamDecl.$prop$getToplevel={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};}};
+  $$funParamDecl.$prop$getToplevel={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};}};
   $$funParamDecl.$prop$getToplevel.get=function(){return false;};
-  $$funParamDecl.$prop$getFormal={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};}};
+  $$funParamDecl.$prop$getFormal={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};}};
   $$funParamDecl.$prop$getFormal.get=function(){return false;};
-  $$funParamDecl.$prop$getDefault={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};}};
+  $$funParamDecl.$prop$getDefault={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};}};
   $$funParamDecl.$prop$getDefault.get=function(){return false};
-  $$funParamDecl.$prop$getActual={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};}};
+  $$funParamDecl.$prop$getActual={$m$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};}};
   $$funParamDecl.$prop$getActual.get=function(){return false;};
   return $$funParamDecl;
 }
-FunParamDecl.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],sts:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunParamDecl']};};
+FunParamDecl.$m$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],sts:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunParamDecl']};};
 function $init$FunParamDecl(){
   if (FunParamDecl.$$===undefined){
     initTypeProto(FunParamDecl,'ceylon.language.meta.declaration::FunParamDecl',Basic,FunctionDeclaration$meta$declaration);
@@ -64,10 +64,10 @@ function $init$FunParamDecl(){
       atr$($$funParamDecl,'$_default',function(){return (this.param.pa&8)>0;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};});
       atr$($$funParamDecl,'actual',function(){return (this.param.pa&2)>0;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};});
       atr$($$funParamDecl,'qualifiedName',function(){
-        return qname$(this.tipo.$crtmm$)+"."+this.param.nm;
+        return qname$(this.tipo.$m$)+"."+this.param.nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','qualifiedName']};});
       atr$($$funParamDecl,'string',function(){return "function " + this.qualifiedName;
-      },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
+      },undefined,$_Object.$$.prototype.$prop$getString.$m$);
       atr$($$funParamDecl,'name',function(){
         return this.param.nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','name']};});
@@ -77,26 +77,26 @@ function $init$FunParamDecl(){
         if (name$6.equals(pd[i].name))return pd[i];
       }
       return null;
-      };$$funParamDecl.getParameterDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u', l:[{t:Null},{t:FunctionOrValueDeclaration$meta$declaration}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String},an:function(){return[];}}],$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','getParameterDeclaration']};};
+      };$$funParamDecl.getParameterDeclaration.$m$=function(){return{mod:$CCMM$,$t:{t:'u', l:[{t:Null},{t:FunctionOrValueDeclaration$meta$declaration}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String},an:function(){return[];}}],$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','getParameterDeclaration']};};
       
       //MethodDef apply at caca.ceylon (31:2-32:74)
       $$funParamDecl.$_apply=function $_apply(typeArguments$11,$$$mptypes){
           if(typeArguments$11===undefined){typeArguments$11=empty();}
           throw Exception("IMPL FunParamDecl.apply");
-      };$$funParamDecl.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Function$meta$model,a:{Arguments:'Arguments',Type:'Return'}},ps:[{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
+      };$$funParamDecl.$_apply.$m$=function(){return{mod:$CCMM$,$t:{t:$_Function$meta$model,a:{Arguments:'Arguments',Type:'Return'}},ps:[{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
       
       //MethodDef memberApply at caca.ceylon (33:2-34:80)
       $$funParamDecl.memberApply=function memberApply(containerType$12,typeArguments$13,$$$mptypes){
           if(typeArguments$13===undefined){typeArguments$13=empty();}
           throw Exception("IMPL FunParamDecl.memberApply");
-      };$$funParamDecl.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
+      };$$funParamDecl.memberApply.$m$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
 $$funParamDecl.annotated=function($mpt){
   var x=annd$annotations(this,{Annotation$annotations:$mpt.Annotation$annotated});
   return x&&x.size>0;
 }
-$$funParamDecl.annotated.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:FunParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
+$$funParamDecl.annotated.$m$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[],$cont:FunParamDecl,tp:{Annotation$annotated:{sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','annotated']};};
 $$funParamDecl.annotations=function($mpt){return annd$annotations(this,$mpt);};
-$$funParamDecl.annotations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation$annotations'}},ps:[],$cont:FunParamDecl,tp:{Annotation$annotations:{dv:'out',sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.jsint','FunctionDeclaration','$m','annotations']};};
+$$funParamDecl.annotations.$m$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation$annotations'}},ps:[],$cont:FunParamDecl,tp:{Annotation$annotations:{dv:'out',sts:[{t:Annotation}]}},pa:67,d:['ceylon.language.jsint','FunctionDeclaration','$m','annotations']};};
     })(FunParamDecl.$$.prototype);
   }
   return FunParamDecl;
