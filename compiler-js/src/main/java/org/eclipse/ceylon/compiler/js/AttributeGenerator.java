@@ -91,7 +91,7 @@ public class AttributeGenerator {
                 stitch=false;
             }
             if (genatr) {
-                int boxType = gen.boxStart(expr.getExpression().getTerm());
+                int boxType = gen.boxUnboxStart(expr.getExpression().getTerm(), false, true, true);
                 if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getExpression().getTypeModel())
                         && !ModelUtil.isTypeUnknown(decl.getType())) {
                     TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false,

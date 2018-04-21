@@ -245,7 +245,7 @@ public class SequenceGenerator {
 
 	private static void boxArg(final GenerateJsVisitor gen, PositionalArgument arg) {
 		if (arg instanceof Tree.ListedArgument) {
-			gen.box(((Tree.ListedArgument) arg).getExpression());
+			gen.box(((Tree.ListedArgument) arg).getExpression(), true, true);
 		}
 		else {
 			arg.visit(gen);

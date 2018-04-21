@@ -494,7 +494,7 @@ public class ConditionGenerator {
                     }
                     else {
 	                    gen.out(expvar, ".equals(");
-	                    gen.box(term);
+	                    gen.box(term, true, true);
 	                    gen.out(")");
                     }
                 } else if (term instanceof Tree.StringLiteral) {
@@ -502,14 +502,14 @@ public class ConditionGenerator {
                         gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
                     }
                     gen.out(expvar, ".equals(");
-                    gen.box(term);
+                    gen.box(term, true, true);
                     gen.out(")");
                 } else if (term instanceof Tree.CharLiteral) {
                     if (isNull) {
                     	gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
                     }
                     gen.out(expvar, ".equals(");
-                    gen.box(term);
+                    gen.box(term, true, true);
                     gen.out(")");
                 } else if (ModelUtil.isTypeUnknown(switchType)) {
                     gen.out(expvar, "===");

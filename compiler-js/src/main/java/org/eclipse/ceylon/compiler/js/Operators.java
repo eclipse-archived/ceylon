@@ -52,9 +52,10 @@ public class Operators {
         }
         Tree.Term leftTerm = exp.getLeftTerm();
         Tree.Term rightTerm = exp.getRightTerm();
-        gen.box(leftTerm, op.charAt(0)=='.');
+        boolean isMethod = op.charAt(0)=='.';
+		gen.box(leftTerm, isMethod, isMethod);
         gen.out(op);
-		gen.box(rightTerm, op.charAt(0)=='.');
+		gen.box(rightTerm, isMethod, isMethod);
         if (after != null) {
             gen.out(after);
         }
@@ -65,9 +66,11 @@ public class Operators {
             final GenerateJsVisitor gen) {
         Tree.Term leftTerm = exp.getLeftTerm();
         Tree.Term rightTerm = exp.getRightTerm();
-		gen.box(leftTerm);
+		final Term term = leftTerm;
+		gen.box(term, true, true);
         gen.out(op);
-		gen.box(rightTerm);
+		final Term term1 = rightTerm;
+		gen.box(term1, true, true);
         if (targs != null) {
             gen.out(",");
             TypeUtils.printTypeArguments(exp, targs, gen, false, overrides);
@@ -83,9 +86,10 @@ public class Operators {
         }
         Tree.Term term = exp.getTerm();
 		if (after==null || after.charAt(0)!='.') {
-        	gen.box(term, false);
+        	gen.box(term, false, false);
         } else {
-            final int boxTypeLeft = gen.boxStart(term);
+            final Term fromTerm = term;
+			final int boxTypeLeft = gen.boxUnboxStart(fromTerm, false, true, true);
             if (term instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen,
                         !(exp instanceof Tree.Exists));
@@ -225,15 +229,15 @@ public class Operators {
     static void withinOp(final Tree.WithinOp that, GenerateJsVisitor gen) {
         final String ttmp = gen.getNames().createTempVariable();
         gen.out("(", ttmp, "=");
-        gen.box(that.getTerm());
+        gen.box(that.getTerm(), true, true);
         gen.out(",");
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel())) {
             final String tmpl = gen.getNames().createTempVariable();
             final String tmpu = gen.getNames().createTempVariable();
             gen.out(tmpl, "=");
-            gen.box(that.getLowerBound().getTerm());
+            gen.box(that.getLowerBound().getTerm(), true, true);
             gen.out(",", tmpu, "=");
-            gen.box(that.getUpperBound().getTerm());
+            gen.box(that.getUpperBound().getTerm(), true, true);
             gen.out(",(", gen.getClAlias(), "nn$(", ttmp,")&&");
             if (that.getLowerBound() instanceof Tree.OpenBound) {
                 gen.out(ttmp, ".largerThan&&", ttmp, ".largerThan(", tmpl, ")||", ttmp, ">", tmpl, ")");
@@ -252,14 +256,14 @@ public class Operators {
             } else {
                 gen.out(ttmp,".notSmallerThan(");
             }
-            gen.box(that.getLowerBound().getTerm());
+            gen.box(that.getLowerBound().getTerm(), true, true);
             gen.out(")&&");
             if (that.getUpperBound() instanceof Tree.OpenBound) {
                 gen.out(ttmp, ".smallerThan(");
             } else {
                 gen.out(ttmp, ".notLargerThan(");
             }
-            gen.box(that.getUpperBound().getTerm());
+            gen.box(that.getUpperBound().getTerm(), true, true);
             gen.out(")");
         }
         gen.out(")");
@@ -348,9 +352,9 @@ public class Operators {
     static void builtInBinaryOp(final Tree.BinaryOperatorExpression that, final String builtInOp,
             final GenerateJsVisitor gen) {
         gen.out(gen.getClAlias(), builtInOp, "(");
-        gen.box(that.getLeftTerm());
+        gen.box(that.getLeftTerm(), true, true);
         gen.out(",");
-        gen.box(that.getRightTerm());
+        gen.box(that.getRightTerm(), true, true);
         gen.out(")");
     }
 
@@ -360,9 +364,9 @@ public class Operators {
         String ltmp = gen.getNames().createTempVariable();
         String rtmp = gen.getNames().createTempVariable();
         gen.out("(", ltmp, "=");
-        gen.box(that.getLeftTerm());
+        gen.box(that.getLeftTerm(), true, true);
         gen.out(",", rtmp, "=");
-        gen.box(that.getRightTerm());
+        gen.box(that.getRightTerm(), true, true);
         gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".", method, "&&",
                 ltmp, ".", method, "(", rtmp, ")");
         if (post != null) {

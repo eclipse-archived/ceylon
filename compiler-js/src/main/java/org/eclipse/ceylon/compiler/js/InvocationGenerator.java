@@ -504,7 +504,7 @@ public class InvocationGenerator {
                     gen.out(argvar, "=");
                 }
                 final int boxType = pd==null ? 0 :
-                	gen.boxUnboxStart(expr.getTerm(), pd.getModel());
+                	gen.boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(pd.getModel()), true, true);
                 Map<TypeParameter,Type> targs = null;
                 if (dyncheck) {
                     if (primary instanceof Tree.MemberOrTypeExpression) {
@@ -621,7 +621,7 @@ public class InvocationGenerator {
             final Tree.SpreadArgument arg, Tree.Expression expr,
             final Parameter pd) {
         TypedDeclaration td = pd == null ? null : pd.getModel();
-        int boxType = gen.boxUnboxStart(expr.getTerm(), td);
+        int boxType = gen.boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(td), true, true);
         Type argType = arg.getTypeModel();
 		if (boxType == 4) {
             arg.visit(gen);
