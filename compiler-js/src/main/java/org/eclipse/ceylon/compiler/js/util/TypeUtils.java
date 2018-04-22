@@ -506,7 +506,8 @@ public class TypeUtils {
                 targs = getDefaultTypeArguments(params);
             }
             if (params.size() == targs.size()) {
-                HashMap<TypeParameter, Type> r = new HashMap<TypeParameter, Type>();
+                HashMap<TypeParameter, Type> r = 
+                		new HashMap<TypeParameter, Type>();
                 for (int i = 0; i < targs.size(); i++) {
                     r.put(params.get(i), targs.get(i));
                 }
