@@ -894,8 +894,9 @@ public class GenerateJsVisitor extends Visitor {
         qualify(that,aliased);
         out(names.name(aliased), "(");
         if (!pt.getTypeArguments().isEmpty()) {
-            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this, true,
-                    pt.getVarianceOverrides());
+            TypeUtils.printTypeArguments(that, this, true,
+            		pt.getTypeArguments(), 
+            		pt.getVarianceOverrides());
             out(",");
         }
         out(names.self(d), ");}");
@@ -949,8 +950,9 @@ public class GenerateJsVisitor extends Visitor {
         }
         Map<TypeParameter, Type> invargs = ext.getType().getTypeModel().getTypeArguments();
         if (invargs != null && !invargs.isEmpty()) {
-            TypeUtils.printTypeArguments(that, invargs, this, true,
-                    ext.getType().getTypeModel().getVarianceOverrides());
+            TypeUtils.printTypeArguments(that, this, true,
+            		invargs, 
+            		ext.getType().getTypeModel().getVarianceOverrides());
             out(",");
         }
         out(names.self(d), ");}");
@@ -2324,7 +2326,7 @@ public class GenerateJsVisitor extends Visitor {
             out(",");
             TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, ct, this);
             out(",");
-            TypeUtils.printTypeArguments(term, ct.getTypeArguments(), this, true, null);
+            TypeUtils.printTypeArguments(term, this, true, ct.getTypeArguments(), null);
         }
         boxUnboxEnd(t);
     }
@@ -2616,8 +2618,10 @@ public class GenerateJsVisitor extends Visitor {
                                         out("[/*VALUE Callable params ", ps.asString()+"*/],");
                                     }
                                 }
-                                TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),
-                                        GenerateJsVisitor.this, false, expr.getTypeModel().getVarianceOverrides());
+                                TypeUtils.printTypeArguments(expr, 
+                                        GenerateJsVisitor.this, false, 
+                                        expr.getTypeModel().getTypeArguments(),
+                                        expr.getTypeModel().getVarianceOverrides());
                             }
                             boxUnboxEnd(boxType);
                         }
@@ -3325,7 +3329,9 @@ public class GenerateJsVisitor extends Visitor {
                     if (!isNative) {
                         if (targs != null) {
                             out(",");
-                            TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false, null);
+                            TypeUtils.printTypeArguments(that, 
+                            		GenerateJsVisitor.this, 
+                            		false, targs, null);
                         }
                         out(")");
                     }
@@ -3771,8 +3777,7 @@ public class GenerateJsVisitor extends Visitor {
             //Add parameters
             invoker.describeMethodParameters(expr.getExpression().getTerm());
             out(",");
-            TypeUtils.printTypeArguments(that, expr.getExpression().getTypeModel().getTypeArguments(), this, false,
-                    expr.getExpression().getTypeModel().getVarianceOverrides());
+            TypeUtils.printTypeArguments(that, expr.getExpression().getTypeModel(), this, false);
         }
         boxUnboxEnd(_box);
     }

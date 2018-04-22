@@ -59,7 +59,7 @@ public class SequenceGenerator {
         if (seqarg == null) {
             gen.out("}return ", gen.getClAlias(), "finished();},undefined,");
         }
-        TypeUtils.printTypeArguments(node, seqType.getTypeArguments(), gen, false, seqType.getVarianceOverrides());
+        TypeUtils.printTypeArguments(node, seqType, gen, false);
         gen.out(")");
     }
 
@@ -139,11 +139,11 @@ public class SequenceGenerator {
 			if (typeArgs != null 
 					&& typeArgs.getTypeModels()!=null
                     && !typeArgs.getTypeModels().isEmpty()) {
-                TypeUtils.printTypeArguments(that, 
+                TypeUtils.printTypeArguments(that, gen, true, 
                         TypeUtils.matchTypeParametersWithArguments(
-                            that.getDeclaration().getTypeParameters(),
-                            typeArgs.getTypeModels()), 
-                        gen, true, null);
+                                that.getDeclaration().getTypeParameters(),
+                                typeArgs.getTypeModels()),
+                        null);
             } else {
                 gen.out("undefined");
             }

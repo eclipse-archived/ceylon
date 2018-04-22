@@ -159,8 +159,9 @@ public class BmeGenerator {
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Function refs with type arguments must be passed as a special function
         gen.out(gen.getClAlias(), "f3$(", who, ",", member, ",");
-        TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, false,
-                expr.getTypeModel().getVarianceOverrides());
+        TypeUtils.printTypeArguments(expr, gen, false,
+        		createTypeArguments(expr), 
+        		expr.getTypeModel().getVarianceOverrides());
         gen.out(")");
     }
 
@@ -303,9 +304,10 @@ public class BmeGenerator {
                 List<Type> targs = that.getTypeArguments() == null ? null :
                     that.getTypeArguments().getTypeModels();
                 TypeUtils.printTypeArguments(that, 
+                        gen, false, 
                         TypeUtils.matchTypeParametersWithArguments(
                                 d.getTypeParameters(), targs), 
-                        gen, false, null);
+                        null);
                 gen.out(");}");
             }
         }

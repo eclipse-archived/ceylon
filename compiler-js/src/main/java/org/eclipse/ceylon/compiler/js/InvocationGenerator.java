@@ -335,7 +335,7 @@ public class InvocationGenerator {
                 }
             }
             if (targs != null && !targs.isEmpty()) {
-                TypeUtils.printTypeArguments(primary, targs, gen, false, null);
+                TypeUtils.printTypeArguments(primary, gen, false, targs, null);
             }
         }
         gen.out(")");
@@ -366,8 +366,7 @@ public class InvocationGenerator {
                 TypeUtils.encodeParameterListForRuntime(true, arg, marg.getParameterLists().get(0).getModel(), gen);
                 gen.out(",");
                 Type margType = marg.getDeclarationModel().getType().getFullType();
-                TypeUtils.printTypeArguments(arg, margType.getTypeArguments(), gen, false,
-                        margType.getVarianceOverrides());
+                TypeUtils.printTypeArguments(arg, margType, gen, false);
                 gen.boxUnboxEnd(4);
             } else {
                 arg.visit(gen);
@@ -417,7 +416,7 @@ public class InvocationGenerator {
             if (!first){
                 gen.out(",");
             }
-            TypeUtils.printTypeArguments(argList, targs, gen, false, null);
+            TypeUtils.printTypeArguments(argList, gen, false, targs, null);
         }
         gen.out(")");
     }
@@ -526,8 +525,8 @@ public class InvocationGenerator {
                             targs = ((Tree.MemberOrTypeExpression)argTerm).getTarget().getTypeArguments();
                         }
                     }
-                    TypeUtils.printTypeArguments(arg, targs, gen, false,
-                            argType.getVarianceOverrides());
+                    TypeUtils.printTypeArguments(arg, gen, false,
+                    		targs, argType.getVarianceOverrides());
                 }
                 gen.boxUnboxEnd(boxType);
             } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
@@ -594,7 +593,7 @@ public class InvocationGenerator {
                         Function cdec = (Function)iterableDec.getMember("chain", null, false);
                         _targs = TypeUtils.matchTypeParametersWithArguments(cdec.getTypeParameters(), Arrays.asList(_tlist));
                     }
-                    TypeUtils.printTypeArguments(that, _targs, gen, false, _vo);
+                    TypeUtils.printTypeArguments(that, gen, false, _targs, _vo);
                     gen.out(")");
                     if (chained) {
                         gen.out(".sequence()");
@@ -628,10 +627,7 @@ public class InvocationGenerator {
             gen.out(",");
             describeMethodParameters(expr.getTerm());
             gen.out(",");
-            TypeUtils.printTypeArguments(arg, 
-            		argType.getTypeArguments(), 
-            		gen, false,
-                    argType.getVarianceOverrides());
+            TypeUtils.printTypeArguments(arg, argType, gen, false);
         } else if (pd == null) {
             final Declaration primDec = 
             		primary instanceof Tree.MemberOrTypeExpression ? 

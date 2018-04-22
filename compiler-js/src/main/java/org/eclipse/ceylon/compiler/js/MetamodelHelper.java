@@ -178,12 +178,10 @@ public class MetamodelHelper {
                 TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             }
             gen.out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
-                    that.getTypeModel().getVarianceOverrides());
+            TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
             if (targs != null && !targs.isEmpty()) {
                 gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, targs, gen, false,
-                        ltype.getVarianceOverrides());
+                TypeUtils.printTypeArguments(that, ltype, gen, false);
             }
             gen.out(")");
         } else if (isConstructor) {
@@ -196,12 +194,10 @@ public class MetamodelHelper {
             }
             TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
-                    that.getTypeModel().getVarianceOverrides());
+            TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
             if (targs != null && !targs.isEmpty()) {
                 gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, targs, gen, false,
-                        ltype.getVarianceOverrides());
+                TypeUtils.printTypeArguments(that, ltype, gen, false);
             }
             gen.out(")");
         } else if (ltype.isNothing()) {
@@ -236,12 +232,12 @@ public class MetamodelHelper {
             gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(cd), ",");
         }
         final Type mtype = meta.getTypeModel().resolveAliases();
-        TypeUtils.printTypeArguments(meta, mtype.getTypeArguments(), gen, false,
-                mtype.getVarianceOverrides());
-        if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
+        TypeUtils.printTypeArguments(meta, mtype, gen, false);
+        if (ltype != null 
+        		&& ltype.getTypeArguments() != null 
+        		&& !ltype.getTypeArguments().isEmpty()) {
             gen.out(",undefined,");
-            TypeUtils.printTypeArguments(meta, ltype.getTypeArguments(), gen, false,
-                    ltype.getVarianceOverrides());
+            TypeUtils.printTypeArguments(meta, ltype, gen, false);
         }
         gen.out(")");
     }
@@ -305,15 +301,14 @@ public class MetamodelHelper {
                 } else {
                     gen.out("undefined,");
                 }
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
-                        that.getTypeModel().getVarianceOverrides());
+                TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
             } else {
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
-                        that.getTypeModel().getVarianceOverrides());
+                TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
                 if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
                     gen.out(",undefined,");
-                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), gen, false,
-                            ref.getType().getVarianceOverrides());
+                    TypeUtils.printTypeArguments(that, gen, false,
+                    		ref.getTypeArguments(), 
+                    		ref.getType().getVarianceOverrides());
                 }
             }
             gen.out(")");
@@ -340,8 +335,7 @@ public class MetamodelHelper {
                 gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
             gen.out(gen.getNames().getter(vd, true),",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
-                    that.getTypeModel().getVarianceOverrides());
+            TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
             gen.out(")");
         } else {
             gen.out(gen.getClAlias(), "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
@@ -354,10 +348,11 @@ public class MetamodelHelper {
                 gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
             gen.out(gen.getNames().name(d));
-            if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
+            if (ltype != null 
+            		&& ltype.getTypeArguments() != null 
+            		&& !ltype.getTypeArguments().isEmpty()) {
                 gen.out(",a:");
-                TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), gen, false,
-                        ltype.getVarianceOverrides());
+                TypeUtils.printTypeArguments(that, ltype, gen, false);
             }
             gen.out("}})");
         }

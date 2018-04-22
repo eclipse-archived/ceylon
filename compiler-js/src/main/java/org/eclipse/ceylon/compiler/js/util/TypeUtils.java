@@ -9,6 +9,10 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js.util;
 
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingDeclaration;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.unionType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.ceylon.common.Backend;
+import org.eclipse.ceylon.compiler.js.AttributeGenerator;
+import org.eclipse.ceylon.compiler.js.GenerateJsVisitor;
+import org.eclipse.ceylon.compiler.js.loader.MetamodelGenerator;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.util.NativeUtil;
@@ -47,55 +54,68 @@ import org.eclipse.ceylon.model.typechecker.model.Unit;
 import org.eclipse.ceylon.model.typechecker.model.UnknownType;
 import org.eclipse.ceylon.model.typechecker.model.Value;
 
-import org.eclipse.ceylon.compiler.js.AttributeGenerator;
-import org.eclipse.ceylon.compiler.js.GenerateJsVisitor;
-import org.eclipse.ceylon.compiler.js.loader.MetamodelGenerator;
-
 /** A convenience class to help with the handling of certain type declarations. */
 public class TypeUtils {
 
     /** Prints the type arguments, usually for their reification. */
-    public static void printTypeArguments(final Node node, final Map<TypeParameter,Type> targs,
-            final GenerateJsVisitor gen, final boolean skipSelfDecl,
-            final Map<TypeParameter, SiteVariance> overrides) {
-        if (targs==null) return;
+    public static void printTypeArguments(final Node node, 
+    		final Type type,
+            final GenerateJsVisitor gen, 
+            final boolean skipSelfDecl) {
+    	printTypeArguments(node, gen, skipSelfDecl, 
+    			type.getTypeArguments(), 
+    			type.getVarianceOverrides());
+    }
+
+	public static void printTypeArguments(final Node node, 
+			final GenerateJsVisitor gen, 
+			final boolean skipSelfDecl,
+			final Map<TypeParameter, Type> targs, 
+			final Map<TypeParameter, SiteVariance> overrides) {
+		if (targs==null) return;
         gen.out("{");
         boolean first = true;
         for (Map.Entry<TypeParameter,Type> e : targs.entrySet()) {
+        	TypeParameter typeParam = e.getKey();
+			Type typeArg = e.getValue();
+			if (typeParam.isTypeConstructor()
+        			&& typeArg.getDeclaration().isAnonymous()) {
+        		//don't reify anonymous type constructors
+        		continue;
+        	}
             if (first) {
                 first = false;
             } else {
                 gen.out(",");
             }
-            gen.out(gen.getNames().typeParameterName(e.getKey()), ":");
-            final Type pt = e.getValue() == null ? null : e.getValue().resolveAliases();
+            gen.out(gen.getNames().typeParameterName(typeParam), ":");
+            final Type pt = typeArg == null ? null : typeArg.resolveAliases();
             if (pt == null) {
-                gen.out("'", e.getKey().getName(), "'");
+                gen.out("'", typeParam.getName(), "'");
             } else if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
-                boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
+                boolean hasParams = 
+                		pt.getTypeArgumentList() != null 
+                		&& !pt.getTypeArgumentList().isEmpty();
                 boolean closeBracket = false;
                 final TypeDeclaration d = pt.getDeclaration();
                 if (pt.isTypeParameter()) {
                     resolveTypeParameter(node, (TypeParameter)d, gen, skipSelfDecl);
-//                    if (((TypeParameter)d).isInvariant() &&
-//                            (e.getKey().isCovariant() || e.getKey().isContravariant())) {
-//                        gen.out("/*Warning:",d.getQualifiedNameString()," inv but ",
-//                                e.getKey().getQualifiedNameString(),
-//                                e.getKey().isCovariant()?" out":" in", "*/");
-//                    }
                 } else {
                     closeBracket = !pt.isTypeAlias();
                     if (closeBracket)gen.out("{t:");
                     outputQualifiedTypename(node,
-                            node != null && gen.isImported(node.getUnit().getPackage(), pt.getDeclaration()),
+                            node != null 
+                            && gen.isImported(node.getUnit().getPackage(), 
+                            		pt.getDeclaration()),
                             pt, gen, skipSelfDecl);
                 }
                 if (hasParams) {
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl,
-                            pt.getVarianceOverrides());
+                    printTypeArguments(node, pt, gen, skipSelfDecl);
                 }
-                SiteVariance siteVariance = overrides == null ? null : overrides.get(e.getKey());
+                SiteVariance siteVariance = 
+                		overrides == null ? null : 
+                			overrides.get(typeParam);
                 printSiteVariance(siteVariance, gen);
                 if (closeBracket) {
                     gen.out("}");
@@ -103,9 +123,10 @@ public class TypeUtils {
             }
         }
         gen.out("}");
-    }
+	}
 
-    public static void outputQualifiedTypename(final Node node, final boolean imported, final Type pt,
+    public static void outputQualifiedTypename(final Node node, 
+    		final boolean imported, final Type pt,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
         if (t instanceof NothingType) {
@@ -130,16 +151,17 @@ public class TypeUtils {
             boolean isAnonCallable = t.isAnonymous() 
                     && t.getExtendedType() != null 
                     && t.getExtendedType().isCallable();
-            boolean _init = !imported && pt.getDeclaration().isDynamic() || t.isAnonymous();
-            if (_init && !pt.getDeclaration().isToplevel()) {
-                Declaration dynintc = ModelUtil.getContainingClassOrInterface(node.getScope());
+            boolean init = !imported && pt.getDeclaration().isDynamic() 
+            			|| t.isAnonymous();
+            if (init && !pt.getDeclaration().isToplevel()) {
+                Declaration dynintc = getContainingClassOrInterface(node.getScope());
                 if (dynintc == null 
                         || !(dynintc instanceof Scope) 
                         || !ModelUtil.contains((Scope)dynintc, pt.getDeclaration())) {
-                    _init=false;
+                    init=false;
                 }
             }
-            if (_init && !isAnonCallable) {
+            if (init && !isAnonCallable) {
                 gen.out("$i$");
             }
 
@@ -155,22 +177,25 @@ public class TypeUtils {
                     gen.out(gen.getNames().name(t));
                 }
             }
-            if (_init && !(t.isAnonymous() && t.isToplevel())) {
+            if (init && !(t.isAnonymous() && t.isToplevel())) {
                 gen.out("()");
             }
         }
     }
 
-    static String qualifiedTypeContainer(final Node node, final boolean imported, final TypeDeclaration t,
-            final GenerateJsVisitor gen) {
-        final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
+    static String qualifiedTypeContainer(final Node node, final boolean imported, 
+    		final TypeDeclaration t, final GenerateJsVisitor gen) {
+        final String modAlias = imported ? 
+        		gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : 
+    			null;
         final StringBuilder sb = new StringBuilder();
         if (modAlias != null && !modAlias.isEmpty()) {
             sb.append(modAlias).append('.');
         }
         if (t.getContainer() instanceof ClassOrInterface) {
-            final Scope scope = node == null ? null : ModelUtil.getContainingClassOrInterface(node.getScope());
-            ClassOrInterface parent = (ClassOrInterface)t.getContainer();
+            final Scope scope = node == null ? null : 
+            	getContainingClassOrInterface(node.getScope());
+            ClassOrInterface parent = (ClassOrInterface) t.getContainer();
             final List<ClassOrInterface> parents = new ArrayList<>(3);
             parents.add(0, parent);
             while (parent != scope && parent.isClassOrInterfaceMember()) {
@@ -218,47 +243,54 @@ public class TypeUtils {
         if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
             if (pt.isTypeParameter()) {
                 resolveTypeParameter(node, (TypeParameter)type, gen, skipSelfDecl);
-            } else if (pt.isTypeAlias()) {
-                outputQualifiedTypename(node, node != null && gen.isImported(node.getUnit().getPackage(), type),
-                        pt, gen, skipSelfDecl);
             } else {
-                gen.out("{t:");
-                outputQualifiedTypename(node, node != null && gen.isImported(node.getUnit().getPackage(), type),
-                        pt, gen, skipSelfDecl);
-                if (!pt.getTypeArgumentList().isEmpty()) {
-                    final Map<TypeParameter,Type> targs;
-                    if (pt.getDeclaration().isToplevel()) {
-                        targs = pt.getTypeArguments();
-                    } else {
-                        //Gather all type parameters from containers
-                        Scope scope = node.getScope();
-                        final HashSet<TypeParameter> parenttp = new HashSet<>();
-                        while (scope != null) {
-                            if (scope instanceof Generic) {
-                                Generic g = (Generic) scope;
-                                for (TypeParameter tp : g.getTypeParameters()) {
-                                    parenttp.add(tp);
-                                }
-                            }
-                            scope = scope.getScope();
-                        }
-                        targs = new HashMap<>();
-                        targs.putAll(pt.getTypeArguments());
-                        Declaration cd = ModelUtil.getContainingDeclaration(pt.getDeclaration());
-                        while (cd != null) {
-                            for (TypeParameter tp : cd.getTypeParameters()) {
-                                if (parenttp.contains(tp)) {
-                                    targs.put(tp, tp.getType());
-                                }
-                            }
-                            cd = ModelUtil.getContainingDeclaration(cd);
-                        }
-                    }
-                    gen.out(",a:");
-                    printTypeArguments(node, targs, gen, skipSelfDecl, pt.getVarianceOverrides());
-                }
-                gen.out("}");
-            }
+				boolean imported = node != null 
+					&& gen.isImported(node.getUnit().getPackage(), type);
+				if (pt.isTypeAlias()) {
+				    outputQualifiedTypename(node, 
+				    		imported,
+				            pt, gen, skipSelfDecl);
+				} else {
+				    gen.out("{t:");
+				    outputQualifiedTypename(node, 
+				    		imported,
+				            pt, gen, skipSelfDecl);
+				    if (!pt.getTypeArgumentList().isEmpty()) {
+				        final Map<TypeParameter,Type> targs;
+				        if (pt.getDeclaration().isToplevel()) {
+				            targs = pt.getTypeArguments();
+				        } else {
+				            //Gather all type parameters from containers
+				            Scope scope = node.getScope();
+				            final HashSet<TypeParameter> parenttp = new HashSet<>();
+				            while (scope != null) {
+				                if (scope instanceof Generic) {
+				                    Generic g = (Generic) scope;
+				                    for (TypeParameter tp : g.getTypeParameters()) {
+				                        parenttp.add(tp);
+				                    }
+				                }
+				                scope = scope.getScope();
+				            }
+				            targs = new HashMap<>();
+				            targs.putAll(pt.getTypeArguments());
+				            Declaration cd = getContainingDeclaration(pt.getDeclaration());
+				            while (cd != null) {
+				                for (TypeParameter tp : cd.getTypeParameters()) {
+				                    if (parenttp.contains(tp)) {
+				                        targs.put(tp, tp.getType());
+				                    }
+				                }
+				                cd = getContainingDeclaration(cd);
+				            }
+				        }
+				        gen.out(",a:");
+				        printTypeArguments(node, gen, skipSelfDecl, 
+				        		targs, pt.getVarianceOverrides());
+				    }
+				    gen.out("}");
+				}
+			}
         }
     }
 
@@ -281,7 +313,7 @@ public class TypeUtils {
             if (pt.involvesTypeParameters() && !d.getUnit().isHomogeneousTuple(pt)) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
-                printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                printTypeArguments(node, pt, gen, skipSelfDecl);
                 gen.out("}");
                 return true;
             }
@@ -296,7 +328,7 @@ public class TypeUtils {
             }
             if (seq > 0) {
                 //Non-empty, non-tuple tail; union it with its type parameter
-                Type utail = ModelUtil.unionType(lastType.getTypeArgumentList().get(0), lastType, d.getUnit());
+                Type utail = unionType(lastType.getTypeArgumentList().get(0), lastType, d.getUnit());
                 subs.remove(subs.size()-1);
                 subs.add(utail);
             }
@@ -307,7 +339,7 @@ public class TypeUtils {
                     limit--;
                 }
                 for (int i = tupleMinLength; i < limit; i++) {
-                    subs.set(i, ModelUtil.unionType(d.getUnit().getEmptyType(), subs.get(i), node.getUnit()));
+                    subs.set(i, unionType(d.getUnit().getEmptyType(), subs.get(i), node.getUnit()));
                 }
             }
         } else {
@@ -334,22 +366,28 @@ public class TypeUtils {
     }
 
     /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
-    static void resolveTypeParameter(final Node node, final TypeParameter tp,
-            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        Scope parent = ModelUtil.getRealScope(node.getScope());
+    static void resolveTypeParameter(final Node node, 
+    		final TypeParameter tp,
+            final GenerateJsVisitor gen, 
+            final boolean skipSelfDecl) {
+        final Scope container = tp.getContainer();
         int outers = 0;
-        while (parent != null && parent != tp.getContainer()) {
-            if (parent instanceof TypeDeclaration &&
-                    !(parent instanceof Constructor || ((TypeDeclaration) parent).isAnonymous())) {
+    	Scope parent = ModelUtil.getRealScope(node.getScope());
+		while (parent != null && parent != container) {
+            if (parent instanceof TypeDeclaration 
+            		&& !(parent instanceof Constructor 
+                    		|| ((TypeDeclaration) parent).isAnonymous())) {
                 outers++;
             }
             parent = parent.getScope();
         }
-        if (tp.getContainer() instanceof ClassOrInterface) {
-            if (parent == tp.getContainer()) {
+        if (container instanceof ClassOrInterface) {
+            if (parent == container) {
                 if (!skipSelfDecl) {
-                    TypeDeclaration ontoy = ModelUtil.getContainingClassOrInterface(node.getScope());
-                    while (ontoy.isAnonymous())ontoy=ModelUtil.getContainingClassOrInterface(ontoy.getScope());
+                    TypeDeclaration ontoy = getContainingClassOrInterface(node.getScope());
+                    while (ontoy.isAnonymous()) {
+                    	ontoy=getContainingClassOrInterface(ontoy.getScope());
+                    }
                     gen.out(gen.getNames().self(ontoy));
                     if (ontoy == parent)outers--;
                     for (int i = 0; i < outers; i++) {
@@ -362,8 +400,8 @@ public class TypeUtils {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT*/t:", gen.getClAlias(), "Anything}");
             }
-        } else if (tp.getContainer() instanceof TypeAlias) {
-            if (parent == tp.getContainer()) {
+        } else if (container instanceof TypeAlias) {
+            if (parent == container) {
                 gen.out("'", gen.getNames().typeParameterName(tp), "'");
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
@@ -374,7 +412,8 @@ public class TypeUtils {
             //We need to find the index of the parameter where the argument occurs
             //...and it could be null...
             Type type = null;
-            for (Iterator<ParameterList> iter0 = ((Function)tp.getContainer()).getParameterLists().iterator();
+            Function fun = (Function)container;
+			for (Iterator<ParameterList> iter0 = fun.getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
                         iter1.hasNext();) {
@@ -385,13 +424,14 @@ public class TypeUtils {
             //A type parameter in the method, in which case we just use the argument's type (may be null)
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
-            if (tp.getContainer() == parent) {
-                gen.out(gen.getNames().typeArgsParamName((Function)tp.getContainer()), ".",
+            if (container == parent) {
+                gen.out(gen.getNames().typeArgsParamName(fun), ".",
                         gen.getNames().typeParameterName(tp));
             } else {
                 if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
-                    if (tp.getContainer() == ((Tree.StaticMemberOrTypeExpression)node).getDeclaration()) {
-                        type = ((Tree.StaticMemberOrTypeExpression)node).getTarget().getTypeArguments().get(tp);
+                    Tree.StaticMemberOrTypeExpression smte = (Tree.StaticMemberOrTypeExpression)node;
+					if (container == smte.getDeclaration()) {
+                        type = smte.getTarget().getTypeArguments().get(tp);
                         typeNameOrList(node, type, gen, skipSelfDecl);
                         return;
                     }
@@ -437,7 +477,8 @@ public class TypeUtils {
         if (pt.getDeclaration().equals(d)) {
             return pt;
         }
-        List<Type> list = pt.getSupertypes() == null ? pt.getCaseTypes() : pt.getSupertypes();
+        List<Type> list = pt.getSupertypes() == null ? 
+        		pt.getCaseTypes() : pt.getSupertypes();
         for (Type t : list) {
             if (t.getDeclaration().equals(d)) {
                 return t;
@@ -513,7 +554,8 @@ public class TypeUtils {
                         return st;
                     }
                 }
-            } else if (t.getDeclaration() != null && t.getDeclaration().isDynamic()) {
+            } else if (t.getDeclaration() != null 
+            		&& t.getDeclaration().isDynamic()) {
                 return t;
             }
         }
@@ -1200,7 +1242,7 @@ public class TypeUtils {
         } else if (pt.isTuple()) {
             if (pt.involvesTypeParameters() && resolveTargs) {
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
-                printTypeArguments(node, pt.getTypeArguments(), gen, false, pt.getVarianceOverrides());
+                printTypeArguments(node, pt, gen, false);
             } else {
                 gen.out("{t:'T',l:");
                 encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);

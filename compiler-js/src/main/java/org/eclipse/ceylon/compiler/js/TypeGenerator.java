@@ -454,9 +454,11 @@ public class TypeGenerator {
                     if (ModelUtil.contains(d, typeDecl)) {
                         gen.out("$a$,");
                     } else {
-                        TypeUtils.printTypeArguments(that,
-                                extendedType.getTypeModel().getQualifyingType().getTypeArguments(),
-                                gen, false, null);
+                        TypeUtils.printTypeArguments(that,gen, false, 
+                                extendedType.getTypeModel()
+                                	.getQualifyingType()
+                                	.getTypeArguments(),
+                                null);
                         gen.out(",");
                     }
                 }
@@ -468,9 +470,9 @@ public class TypeGenerator {
                 if (extendedType.getTypeArgumentList() != null) {
                     typeArgs = extendedType.getTypeArgumentList().getTypeModels();
                 }
-                TypeUtils.printTypeArguments(that,
+                TypeUtils.printTypeArguments(that, gen, false, 
                         TypeUtils.matchTypeParametersWithArguments(typeParams, typeArgs),
-                        gen, false, null);
+                        null);
                 gen.out(",");
             }
             gen.out(gen.getNames().self(d), ")");
@@ -520,7 +522,8 @@ public class TypeGenerator {
                                 gen.getNames().self(ModelUtil.getContainingClassOrInterface(d.getContainer())), ",");
                     }
                     if (typeDecl.isParameterized()) {
-                        TypeUtils.printTypeArguments(that, st.getTypeArguments(), gen, d.isToplevel(), null);
+                        TypeUtils.printTypeArguments(that, gen, d.isToplevel(), 
+                        		st.getTypeArguments(), null);
                         gen.out(",");
                     }
                     gen.out(gen.getNames().self(d), ")");

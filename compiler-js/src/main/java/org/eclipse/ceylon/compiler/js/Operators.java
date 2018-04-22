@@ -73,7 +73,7 @@ public class Operators {
 		gen.box(term1, true, true);
         if (targs != null) {
             gen.out(",");
-            TypeUtils.printTypeArguments(exp, targs, gen, false, overrides);
+            TypeUtils.printTypeArguments(exp, gen, false, targs, overrides);
         }
         gen.out(")");
     }

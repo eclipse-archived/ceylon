@@ -69,8 +69,9 @@ class ComprehensionGenerator {
         gen.out(tail);
         gen.endBlock(); // end one more block - this one is for the function
         gen.out(",");
-        TypeUtils.printTypeArguments(that,
-                TypeUtils.wrapAsIterableArguments(that.getTypeModel()), gen, false, null);
+        TypeUtils.printTypeArguments(that,gen, false, 
+        		TypeUtils.wrapAsIterableArguments(that.getTypeModel()), 
+        		null);
         gen.out(")");
     }
 
@@ -319,8 +320,9 @@ class ComprehensionGenerator {
         }
         gen.endBlock();
         gen.out(",");
-        TypeUtils.printTypeArguments(that, TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
-                gen, false, null);
+        TypeUtils.printTypeArguments(that, gen, false, 
+        		TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
+        		null);
         gen.out(")");
     }
 
@@ -365,7 +367,8 @@ class ComprehensionGenerator {
             treeVars = new HashSet<>(expdecs.size());
             for (List<ConditionGenerator.VarHolder> lvh : conditionVars) {
                 for (ConditionGenerator.VarHolder vh : lvh) {
-                    if (vh.var != null && expdecs.contains(vh.var)) {
+                    if (vh.var != null 
+                    		&& expdecs.contains(vh.var.getDeclarationModel())) {
                         treeVars.add(vh);
                     }
                     if (vh.captured != null) {

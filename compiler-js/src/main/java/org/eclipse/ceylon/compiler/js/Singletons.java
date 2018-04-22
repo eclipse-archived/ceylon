@@ -136,7 +136,7 @@ public class Singletons {
             if (AttributeGenerator.defineAsProperty(d)) {
                 gen.out("=", className, "(");
                 if (!targs.isEmpty()) {
-                    TypeUtils.printTypeArguments(that, targs, gen, false, null);
+                    TypeUtils.printTypeArguments(that, gen, false, targs, null);
                 }
                 gen.out(")");
             }
@@ -174,7 +174,7 @@ public class Singletons {
             }
             gen.out("(");
             if (!targs.isEmpty()) {
-                TypeUtils.printTypeArguments(that, targs, gen, false, null);
+                TypeUtils.printTypeArguments(that, gen, false, targs, null);
             }
             gen.out(");", objvar, ".$m$=", objectGetterName, ".$m$;}");
             gen.endLine();
@@ -253,8 +253,7 @@ public class Singletons {
                 gen.out(",");
             }
             if (!dc.getType().getTypeModel().getTypeArguments().isEmpty()) {
-                TypeUtils.printTypeArguments(dc, dc.getType().getTypeModel().getTypeArguments(), gen, false,
-                        dc.getType().getTypeModel().getVarianceOverrides());
+                TypeUtils.printTypeArguments(dc, dc.getType().getTypeModel(), gen, false);
                 gen.out(",");
             }
             gen.out(nested?selfvar:objvar, ")");

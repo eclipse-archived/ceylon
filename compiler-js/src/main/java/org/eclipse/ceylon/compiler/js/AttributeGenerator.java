@@ -215,8 +215,7 @@ public class AttributeGenerator {
 		                type, gen);
 		    }
 		    gen.out(",");
-		    TypeUtils.printTypeArguments(expr, type.getTypeArguments(), gen, false,
-		            type.getVarianceOverrides());
+		    TypeUtils.printTypeArguments(expr, type, gen, false);
 		}
 		gen.boxUnboxEnd(boxType);
 	}
