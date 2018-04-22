@@ -1202,4 +1202,12 @@ void checkFormatFloat() {
     check(Float.sum([0.1,0.1,0.1,0.1])==0.4, "Float sum 3");
     
     check(3/2*2==2, "Integer division");
+    
+    value int1 = ~#FF00;
+    value int2 = int1|#FF00;
+    value int3 = ~(int2&$1010101010101010);
+    check(int1&#FFFF==#FF, "bitwise complement");
+    check(int2&#FFFF==#FFFF, "bitwise or");
+    check(int3&#FFFF==$0101010101010101, "bitwise and");
+
 }
