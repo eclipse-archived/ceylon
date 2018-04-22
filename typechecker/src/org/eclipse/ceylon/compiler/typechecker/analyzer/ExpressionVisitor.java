@@ -10792,7 +10792,8 @@ public class ExpressionVisitor extends Visitor {
         if (tas instanceof Tree.TypeArgumentList) {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
-            return tal.getTypes().get(i);
+            return tal.getTypes().isEmpty() ?
+            		parent : tal.getTypes().get(i);
         }
         else {
             return parent;
