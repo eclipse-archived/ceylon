@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.ceylon.common.Versions;
+import org.eclipse.ceylon.compiler.js.JsCompiler;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.ClassOrInterface;
 import org.eclipse.ceylon.model.typechecker.model.Constructor;
@@ -30,8 +31,6 @@ import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
-
-import org.eclipse.ceylon.compiler.js.JsCompiler;
 
 /**
  * Manages the identifier names in the JavaScript code generated for a Ceylon
@@ -338,8 +337,10 @@ public class JsIdentifierNames {
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
-            } else if ((!forGetterSetter && !ModelUtil.isConstructor(decl) && reservedWords.contains(name))
-                || isJsGlobal(decl)) {
+            } else if ((!forGetterSetter 
+	            		&& !ModelUtil.isConstructor(decl) 
+	            		&& reservedWords.contains(name))
+	                || isJsGlobal(decl)) {
                 // JavaScript keyword or global declaration
                 name = "$_" + name;
             }
@@ -418,9 +419,14 @@ public class JsIdentifierNames {
     }
 
     public String typeParameterName(TypeParameter tp) {
-        final String cname;
+        String cname;
         if (tp.getDeclaration().isAnonymous()) {
             cname = name(tp.getDeclaration());
+            //hack to trim parens off keys 
+            //for type params of aliases
+            if (cname.endsWith("()")) {
+            	cname=cname.substring(0, cname.length()-2);
+            }
         } else {
             cname = tp.getDeclaration().getName();
         }
