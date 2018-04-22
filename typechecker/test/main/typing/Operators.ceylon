@@ -402,7 +402,14 @@ class Operators() {
     $error value iterFirst = Iterable<Integer>*.first;
     
     $error value arrayOfSize = Array?.ofSize(10, 0);
+    
+    $type:"Byte" value byt1 = ~#FF.byte;
+    $type:"Byte" value byt2 = byt1|#FF00.byte;
+    $type:"Byte" value byt3 = ~(byt2&$10101010.byte);
 
+    $type:"Integer" value int1 = ~#FF;
+    $type:"Integer" value int2 = int1|#FF00;
+    $type:"Integer" value int3 = ~(int2&$10101010);
 }
 
 class Sc() satisfies Scalable<Float,Sc> {
