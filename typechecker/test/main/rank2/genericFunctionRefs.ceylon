@@ -238,3 +238,11 @@ void testRefToMethodOfGenericInitRef() {
     @error:"could not infer type argument" 
     Bar<String> bar = (Bar.bar)("");
 }
+
+void testAnonFuncArgParamInf() {
+    value ref = <T>(T(T) f) => "hello";
+    $type:"String" value x 
+            = ref<Integer>((i) => i.predecessor);
+    $type:"String" value y 
+            = ref(Integer.predecessor);
+}

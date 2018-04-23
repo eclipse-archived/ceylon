@@ -1742,10 +1742,13 @@ public class Type extends Reference {
     public Type getTypeMember(
             TypeDeclaration member, 
             List<Type> typeArguments) {
-        TypeDeclaration type = 
-                (TypeDeclaration) 
-                    member.getContainer();
-        Type declaringType = getSupertype(type);
+        Scope container = member.getContainer();
+        Type declaringType = 
+                container instanceof TypeDeclaration ?
+                        getSupertype((TypeDeclaration) 
+                                container) : 
+                        //could be a type constructor:
+                        null;
         return member.appliedType(declaringType, 
                 typeArguments);
     }

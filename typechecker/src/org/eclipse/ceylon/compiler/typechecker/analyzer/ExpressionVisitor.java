@@ -3727,8 +3727,20 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (dec instanceof Value) {
                 Value value = (Value) dec;
-                return inferParameterTypesIndirectly(pal, 
-                        value.getType(), error);
+                Type valueType = value.getType();
+                if (valueType!=null) {
+	                if (valueType.isTypeConstructor()) {
+                		return inferParameterTypesIndirectly(pal,
+                				getInvokedProducedReference(
+                						valueType.getDeclaration(), 
+                						mte)
+                					.getType(), error);
+	                }
+	                else {
+		                return inferParameterTypesIndirectly(pal,
+		                		valueType, error);
+	                }
+                }
             }
         }
         else {
@@ -3825,7 +3837,9 @@ public class ExpressionVisitor extends Visitor {
                 pal.getPositionalArguments();
         int argCount = args.size();
         boolean[] delayed = new boolean[argCount];
-        if (unit.isCallableType(type)) {
+        if (type!=null 
+        		&& !type.isTypeConstructor()
+        		&& unit.isCallableType(type)) {
             List<Type> paramTypes = 
                     unit.getCallableArgumentTypes(type);
             int paramsSize = paramTypes.size();
@@ -4072,7 +4086,7 @@ public class ExpressionVisitor extends Visitor {
             tas = null;
         }
         List<TypeParameter> tps = dec.getTypeParameters();
-        if (isPackageQualified(mte)) {
+        if (isReallyQualified(mte)) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
                     (Tree.QualifiedMemberOrTypeExpression) 
                         mte;
@@ -4095,7 +4109,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static boolean isPackageQualified(
+    private static boolean isReallyQualified(
             Tree.MemberOrTypeExpression mte) {
         if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
