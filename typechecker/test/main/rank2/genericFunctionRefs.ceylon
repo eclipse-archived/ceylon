@@ -246,3 +246,40 @@ void testAnonFuncArgParamInf() {
     $type:"String" value y 
             = ref(Integer.predecessor);
 }
+
+<T> => F<G<T>>(T) compose1<F,G>
+        (F<X> f<X>(X x), G<Y> g<Y>(Y y))
+        given F<X> given G<Y>
+        => <U>(U u) => f(g(u));
+
+<T> => F<G<T>>(T) compose2<F,G>
+        (<X>=>F<X>(X) f, <Y>=>G<Y>(Y) g)
+        given F<X> given G<Y>
+        => <U>(U u) => f(g(u));
+
+void testTypeConstructorInferenceFromGenericFunctionArgs() {
+    X<String> accept<X>(<T>=>X<T>(T) x) given X<T> { throw; }
+    
+    Singleton<S> sun<S>(S t) 
+            => Singleton<S>(t);
+    value s = sun;
+    $type:"Singleton<String>" accept(sun);
+    $type:"Singleton<String>" accept(s);
+    
+    Singleton<S>(Integer) fun<S>(S t) 
+            => (Integer i)=>Singleton<S>(t);
+    value f = fun;
+    $type:"Singleton<String>(Integer)" accept(fun);
+    $type:"Singleton<String>(Integer)" accept(f);
+    
+    T() lazy<T>(T t) => () => t;
+    [T] singleton<T>(T t) => [t];
+    
+    value lazySingleton1 = compose1(lazy, singleton);
+    [Integer]() int1 = lazySingleton1(4);
+    [String]() str1 = lazySingleton1("hello");
+    
+    value lazySingleton2 = compose2(lazy, singleton);
+    [Integer]() int2 = lazySingleton2(4);
+    [String]() str2 = lazySingleton2("hello");
+}
