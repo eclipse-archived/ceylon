@@ -66,12 +66,14 @@ void testHigherOrderGenericMethodReferences() {
     
     T() lazy<T>(T t) => () => t;
     [T] singleton<T>(T t) => [t];
-    value lazySingleton1 = compose1<<T>=>T(),<T>=>[T]>(lazy, singleton);
+    value lazySingleton1 = compose1(lazy, singleton);
+    value ls1 = compose1<<T>=>T(),<T>=>[T]>(lazy, singleton);
     [Integer]() int1 = lazySingleton1(4);
     [String]() str1 = lazySingleton1("hello");
     check(int1()==[4], "generic function ref 3");
     check(str1()==["hello"], "generic function ref 4");
-    value lazySingleton2 = compose2<<T>=>T(),<T>=>[T]>(lazy, singleton);
+    value lazySingleton2 = compose2(lazy, singleton);
+    value ls2 = compose2<<T>=>T(),<T>=>[T]>(lazy, singleton);
     [Integer]() int2 = lazySingleton2(4);
     [String]() str2 = lazySingleton2("hello");
     check(int2()==[4], "generic function ref 3");
