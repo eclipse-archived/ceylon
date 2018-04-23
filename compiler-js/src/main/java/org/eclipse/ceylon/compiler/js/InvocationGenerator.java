@@ -23,6 +23,7 @@ import org.eclipse.ceylon.compiler.js.util.RetainedVars;
 import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
@@ -60,50 +61,72 @@ public class InvocationGenerator {
         }
     }
 
-    private Map<TypeParameter,Type> getTypeArguments(Tree.Primary p) {
-        if (p instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression)p;
+    private Map<TypeParameter,Type> getTypeArguments(Tree.Primary prim) {
+    	Tree.Term term = TreeUtil.unwrapExpressionUntilTerm(prim);
+        if (term instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression smote = 
+            		(Tree.StaticMemberOrTypeExpression) term;
             final Declaration dec = smote.getDeclaration();
-            if (dec==null) return null;
-            Reference target = smote.getTarget();
-			TypeArguments typeArgs = smote.getTypeArguments();
-			if (ModelUtil.isConstructor(dec) || dec.isStatic()) {
-			    Type qtype = target.getQualifyingType();
-				if (qtype.getDeclaration().isParameterized()) {
-			        //if the member is static AND has type arguments 
-			    	//of its own, we need to merge them
-			        Map<TypeParameter, Type> targs = new HashMap<>();
-			        targs.putAll(target.getTypeArguments());
-			        targs.putAll(qtype.getTypeArguments());
-			        return targs;
-			    }
-			    return target.getTypeArguments();
-			} else if (dec instanceof Functional) {
-				//function or class
-			    Map<TypeParameter,Type> targs = 
-			            TypeUtils.matchTypeParametersWithArguments(
-			                dec.getTypeParameters(),
-			                typeArgs == null ? null :
-			                	typeArgs.getTypeModels());
-			    if (targs == null) {
-			        gen.out("/*TARGS != TPARAMS!!!!*/");
-			    }
-			    return targs;
-			} else if (dec instanceof Value) {
-				Type type = ((Value) dec).getType();
-				if (type!=null && type.isTypeConstructor()) {
-					//a generic function ref
-					return TypeUtils.matchTypeParametersWithArguments(
-							type.getDeclaration().getTypeParameters(),
-							typeArgs == null ? null :
-								typeArgs.getTypeModels());
+            if (dec!=null) {
+	            Reference target = smote.getTarget();
+				TypeArguments typeArgs = smote.getTypeArguments();
+				if (ModelUtil.isConstructor(dec) || dec.isStatic()) {
+					//constructor or static method
+				    Type qtype = target.getQualifyingType();
+					if (qtype.getDeclaration().isParameterized()) {
+				        //if the member is static AND has type arguments 
+				    	//of its own, we need to merge them
+				        Map<TypeParameter, Type> targs = new HashMap<>();
+				        targs.putAll(target.getTypeArguments());
+				        targs.putAll(qtype.getTypeArguments());
+				        return targs;
+				    }
+				    return target.getTypeArguments();
+				} else if (dec instanceof Functional) {
+					//function or class
+				    Map<TypeParameter,Type> targs = 
+				            TypeUtils.matchTypeParametersWithArguments(
+				                dec.getTypeParameters(),
+				                typeArgs == null ? null :
+				                	typeArgs.getTypeModels());
+				    if (targs == null) {
+				        gen.out("/*TARGS != TPARAMS!!!!*/");
+				    }
+				    return targs;
+				} else if (dec instanceof Value) {
+					Type type = ((Value) dec).getType();
+					if (type!=null && type.isTypeConstructor()) {
+						//a generic function ref
+						return TypeUtils.matchTypeParametersWithArguments(
+								type.getDeclaration()
+									.getTypeParameters(),
+								typeArgs == null ? null :
+									typeArgs.getTypeModels());
+					}
 				}
-			}
-        } else if (p instanceof Tree.ExtendedTypeExpression) {
-            Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)p;
+            }
+            return null;
+        } else if (term instanceof Tree.ExtendedTypeExpression) {
+            Tree.ExtendedTypeExpression ete = 
+            		(Tree.ExtendedTypeExpression) term;
             return ete.getTarget().getTypeArguments();
         }
-        return null;
+        else if (term instanceof Tree.InvocationExpression) {
+        	//a generic function ref returned by a function
+        	Type type = term.getTypeModel();
+        	if (type.getDeclaration().isAnonymous()) {
+        		//TODO: this is wrong if the return
+        		//      type of the function is an
+        		//      alias of the type constructor
+				return type.getTypeArguments();
+        	}   
+        	else {
+        		return null;
+        	}
+        }
+        else {
+        	return null;
+        }
     }
 
     private void namedInvocation(final Tree.InvocationExpression that) {
