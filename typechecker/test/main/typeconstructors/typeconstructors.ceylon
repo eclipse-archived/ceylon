@@ -208,3 +208,14 @@ void testClazz() {
     $type:"<T>=>T(T)" value ref1 = Generic<Object>.generic;
     $type:"<H>=>Object(Object)" value ref2 = Generic.notgeneric;
 }
+
+void defaultTypeConstructorArgs() {
+    class Foo<T=List>() given T<U> {
+        print(`T<String>`);
+    }
+    $type: "Foo<List>" Foo<List>();
+    $type: "Foo<Iterable>" Foo<Iterable>();
+    $error $type: "Foo<Set>" Foo<Set>();
+    $error $type: "Foo<String>" Foo<String>();
+    $type: "Foo<List>" Foo<>();
+}

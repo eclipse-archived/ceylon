@@ -12,7 +12,7 @@ class Person(shared String name)
 
 alias IntegerOrFloat => Integer|Float;
 
-void funrefs<T>(T t) given T satisfies Category {
+void funrefs<T>(T t) given T satisfies Category<> {
     value person = Person("Gavin");
     String(Person) nameFun = Person.name;
     $type:"String" value name = Person.name(person);

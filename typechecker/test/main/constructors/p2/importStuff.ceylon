@@ -19,5 +19,5 @@ void testImported() {
     $type:"Generic<String>" value gen1 = Generic.broken("");
     $type:"Generic<String>" value gen2 = broken("");
     //$error Broken gen3;
-    $error Generic gen4;
+    $error Generic<> gen4;
 }

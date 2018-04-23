@@ -329,30 +329,30 @@ class Generics() {
 
     void method<X>() {}
 
-    $error Producer<Holder>();
-    $error Producer<Holder> hp = Producer<Holder>();
-    $error Producer<Holder>? ohp = null;
-    $error Generics.Producer<Holder>();
-    $error Generics.Producer<Holder> ghp = Generics.Producer<Holder>();
-    $error Generics.Producer<Holder>? gohp = null;
+    $error Producer<Holder<>>();
+    $error Producer<Holder<>> hp = Producer<Holder<>>();
+    $error Producer<Holder<>>? ohp = null;
+    $error Generics.Producer<Holder<>>();
+    $error Generics.Producer<Holder<>> ghp = Generics.Producer<Holder<>>();
+    $error Generics.Producer<Holder<>>? gohp = null;
     
-    $error object wc satisfies WithInvariant {}
-    $error object wch satisfies WithInvariant<Holder> {}
-    $error object gwc satisfies Generics.WithInvariant {}
-    $error object gwch satisfies Generics.WithInvariant<Holder> {}
+    $error object wc satisfies WithInvariant<> {}
+    $error object wch satisfies WithInvariant<Holder<>> {}
+    $error object gwc satisfies Generics.WithInvariant<> {}
+    $error object gwch satisfies Generics.WithInvariant<Holder<>> {}
     
-    object wco satisfies WithCovariant {}
-    $error object wcho satisfies WithCovariant<Holder> {}
-    object gwco satisfies Generics.WithCovariant {}
-    $error object gwcho satisfies Generics.WithCovariant<Holder> {}
+    object wco satisfies WithCovariant<> {}
+    $error object wcho satisfies WithCovariant<Holder<>> {}
+    object gwco satisfies Generics.WithCovariant<> {}
+    $error object gwcho satisfies Generics.WithCovariant<Holder<>> {}
     
-    object wci satisfies WithContravariant {}
-    $error object wchi satisfies WithContravariant<Holder> {}
-    object gwci satisfies Generics.WithContravariant {}
-    $error object gwchi satisfies Generics.WithContravariant<Holder> {}
+    object wci satisfies WithContravariant<> {}
+    $error object wchi satisfies WithContravariant<Holder<>> {}
+    object gwci satisfies Generics.WithContravariant<> {}
+    $error object gwchi satisfies Generics.WithContravariant<Holder<>> {}
     
-    $error method<Holder>();
-    $error this.method<Holder>();
+    $error method<Holder<>>();
+    $error this.method<Holder<>>();
     
     $error Producer<Holder<String,String>>();
     $error Producer<Holder<String,String>> hpss = Producer<Holder<String,String>>();
@@ -378,8 +378,8 @@ class Generics() {
     $error method<String<String,String>>();
     $error this.method<String<String,String>>();
     
-    $error Producer<Holder<Holder>>();
-    $error method<Holder<Holder>>();
+    $error Producer<Holder<Holder<>>>();
+    $error method<Holder<Holder<>>>();
     
     $error Holder<String>.X wrong;
     

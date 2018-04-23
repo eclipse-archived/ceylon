@@ -46,7 +46,7 @@ void testAdvancedStuff() {
 }
 
 void moreConstraints() {
-    Category cat = "hello world";
+    Category<> cat = "hello world";
     class Foo<T>(T[] ts) satisfies Category<> {
         contains = ts.contains;
     }
@@ -69,7 +69,7 @@ void moreConstraints() {
 }
 
 void moreConstraintsBroken() {
-    Category cat = "hello world";
+    Category<> cat = "hello world";
     
     void accept<E,C>(C<E> c, E e) 
             given E satisfies Object

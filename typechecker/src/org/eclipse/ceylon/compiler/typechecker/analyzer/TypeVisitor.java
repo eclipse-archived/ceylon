@@ -555,19 +555,7 @@ public class TypeVisitor extends Visitor {
         Type pt = dec.appliedType(ot, typeArgs);
         if (tal==null) {
             if (!params.isEmpty()) {
-                //For now the only type constructors allowed
-                //as the type of a value are type constructors
-                //that alias Callable (in future relax this)
-                //and interpret *every* type with a missing
-                //type argument list as a type constructor
-                Interface cd = unit.getCallableDeclaration();
-                boolean functionTypeConstructor = 
-                        dec.isAlias() ?
-                                dec.inherits(cd) :
-                                dec.equals(cd);
-                if (functionTypeConstructor) {
-                    pt.setTypeConstructor(true);
-                }
+                pt.setTypeConstructor(true);
             }
         }
         else {
@@ -1201,7 +1189,12 @@ public class TypeVisitor extends Visitor {
                             etd = etd.getExtendedType()
                                     .getDeclaration();
                         }
-                        if (etd==td) {
+                        if (type.isTypeConstructor()) {
+                        	et.addError("missing type arguments of generic type: '" + 
+                        			etd.getName(unit) +
+                        			"' has type parameters (add missing type argument list)");
+                        }
+                        else if (etd==td) {
                             //unnecessary, handled by SupertypeVisitor
 //                          et.addError("directly extends itself: '" + 
 //                                  td.getName() + "'");
@@ -1257,7 +1250,12 @@ public class TypeVisitor extends Visitor {
             Type type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
-                if (std!=null && 
+                if (type.isTypeConstructor()) {
+                	st.addError("missing type arguments of generic type: '" + 
+                			std.getName(unit) +
+                			"' has type parameters (add missing type argument list)");
+                }
+                else if (std!=null && 
                         !(std instanceof UnknownType)) {
                     if (std==td) {
                         //unnecessary, handled by SupertypeVisitor
@@ -1269,7 +1267,7 @@ public class TypeVisitor extends Visitor {
                     }
                     else if (std instanceof TypeAlias) {
                         st.addError("satisfies a type alias: '" + 
-                                type.getDeclaration().getName(unit) + 
+                                std.getName(unit) + 
                                 "'");
                     }
                     else if (std instanceof Constructor) {

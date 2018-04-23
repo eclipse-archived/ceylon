@@ -4,7 +4,7 @@ interface Inv<T> {}
 interface I1 => Iterable<String>;
 interface I2<S> => Iterable<S>;
 interface I3 => Iterable;
-$error interface I4 => Inv;
+$error interface I4 => Inv<>;
 class E1(String name, Integer i) => Entry<String,Integer>(name,i);
 class E2<T>(String name, T t) given T satisfies Object => Entry<String,T>(name,t);
 class E3<T>(T t, String s) given T satisfies Object => Entry<T,String>(t,s);

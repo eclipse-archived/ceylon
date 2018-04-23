@@ -9151,12 +9151,18 @@ public class ExpressionVisitor extends Visitor {
                 checkTypeArguments(type, null, 
                         typeArgs, tal, that);
             }
-            if (pt.isTypeConstructor() 
-                    && !that.getMetamodel()) {
-                checkNotJvm(that, 
-                        "type functions are not supported on the JVM: '" + 
-                        type.getName(unit) + 
-                        "' is generic (specify explicit type arguments)");
+            if (pt.isTypeConstructor()) {
+            	if (modelLiteral) {
+                	that.addError("missing type arguments of generic type: '" + 
+                			type.getName(unit) +
+                			"' has type parameters (add missing type argument list)");
+                }
+            	else if (!declarationLiteral) {
+            		checkNotJvm(that, 
+            				"type functions are not supported on the JVM: '" + 
+    						type.getName(unit) + 
+            				"' is generic (specify explicit type arguments)");
+            	}
             }
         }
     }
@@ -10639,7 +10645,8 @@ public class ExpressionVisitor extends Visitor {
                         if (explicit) {
                             Tree.TypeArgumentList tl = 
                                     (Tree.TypeArgumentList) tas;
-                            argNode = tl.getTypes().get(i);
+                            argNode = i<tl.getTypes().size() ?
+                            		tl.getTypes().get(i) : parent;
                         }
                         else {
                             argNode = parent;
@@ -11271,11 +11278,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeLiteral that) {
-        if (that instanceof Tree.InterfaceLiteral||
-            that instanceof Tree.ClassLiteral||
-            that instanceof Tree.NewLiteral||
-            that instanceof Tree.AliasLiteral||
-            that instanceof Tree.TypeParameterLiteral) {
+        boolean isDeclaration = 
+        		that instanceof Tree.InterfaceLiteral
+        		|| that instanceof Tree.ClassLiteral
+        		|| that instanceof Tree.NewLiteral
+        		|| that instanceof Tree.AliasLiteral
+        		|| that instanceof Tree.TypeParameterLiteral;
+		if (isDeclaration) {
             declarationLiteral = true;
         }
         else {

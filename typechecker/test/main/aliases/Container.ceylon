@@ -10,7 +10,7 @@ see (`interface Category`)
 by ("Gavin")
 deprecated ("Will be removed in Ceylon 1.0.")
 shared interface Container<out Element, out Absent=Null>
-        satisfies Category
+        satisfies Category<>
         given Absent satisfies Null {
     
     "Determine if the container is empty, that is, if

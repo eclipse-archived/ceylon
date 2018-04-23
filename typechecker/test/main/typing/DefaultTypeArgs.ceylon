@@ -3,8 +3,8 @@ class DefaultTypeArgs() {
     class WithDefaultTypeArgs<X=Float,Y=Float>(X x, Y y) {}
     WithDefaultTypeArgs<Float,Float> wdta0 = WithDefaultTypeArgs(1.0,2.0);
     WithDefaultTypeArgs<Float> wdta1 = wdta0;
-    WithDefaultTypeArgs wdta2 = wdta1;
-    WithDefaultTypeArgs wdta3 = wdta0;
+    WithDefaultTypeArgs<> wdta2 = wdta1;
+    WithDefaultTypeArgs<> wdta3 = wdta0;
     WithDefaultTypeArgs<Float,Float> wdta4=wdta2;
     WithDefaultTypeArgs<Float,Float> wdta5=wdta1;
     
@@ -23,7 +23,7 @@ class DefaultTypeArgs() {
         shared class New<W,Z=T|W>() {}
     }
     
-    X<String>.Y xy1 = X("hello").Y(["goodbye"]);
+    X<String>.Y<> xy1 = X("hello").Y(["goodbye"]);
     X<String>.Y<[Integer]> xy2 = X("hello").Y([1]);
     $type:"DefaultTypeArgs.X<Integer>.Y<Integer|Float>" X(1).nuevo<Float>();
     $type:"DefaultTypeArgs.X<Integer>.New<Float,Integer|Float>" X(1).New<Float>();
@@ -47,13 +47,13 @@ class DefaultTypeArgs() {
     $type:"DefaultTypeArgs.Wraps<Anything>" Wraps<>(1.0);
     
     $type:"Category<Object>" Category<> cat1 = [1,2];
-    $type:"Category<Object>" Category cat2 = ["",""];
+    $error Category cat2 = ["",""];
     $type:"List<Anything>" List<> list1 = [1,2];
-    $type:"List<Anything>" List list2 = ["",""];
+    $error List list2 = ["",""];
     $error $type:"Comparable<unknown>" Comparable<> comp1 = 1;
-    $error $type:"Comparable<unknown>" Comparable comp2 = 1;
+    $error Comparable comp2 = 1;
     $type:"Set<Object>" Set<> set1 = nothing;
-    $type:"Set<Object>" Set set2 = nothing;
+    $error Set set2 = emptySet;
     
     shared void run() { // keep this method
         class FooBar<Bar=String>() { 

@@ -119,7 +119,7 @@ class Operators() {
     
     $type:"Boolean" value x33 = "hello" in "hello world";
     
-    object cat satisfies Category {
+    object cat satisfies Category<> {
         shared actual Boolean contains(Object element) {
             return true;
         }

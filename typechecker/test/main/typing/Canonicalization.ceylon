@@ -22,7 +22,7 @@ class Canicalization() {
     $type:"Iterable<Nothing,Null>" value v5 = xias.get;
     X<Y&String> xyas_1 = nothing;
     $type:"Iterable<Nothing,Null>" value v6_1 = xyas_1.get;
-    X<Y&Category> xyas_2 = nothing;
+    X<Y&Category<>> xyas_2 = nothing;
     $type:"Iterable<Canicalization.Y&List<Object>,Null>" value v6_2 = xyas_2.get;
     X<Y&{Object*}> xyas_3 = nothing;
     $type:"Iterable<Canicalization.Y&List<Object>,Null>" value v6_3 = xyas_3.get;

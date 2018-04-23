@@ -9,10 +9,10 @@ interface Crrspnd => Correspondence<Integer,Object>;
 class Inty() {} class Floaty() {}
 alias Number => Inty|Floaty;
 alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>|Arr<T>;
-alias CC => Container<Anything>&Category;
-alias EE => Cntnr&Category;
-alias C => Correspondence<Integer,Object>&Category;
-alias E => Crrspnd&Category;
+alias CC => Container<Anything>&Category<>;
+alias EE => Cntnr&Category<>;
+alias C => Correspondence<Integer,Object>&Category<>;
+alias E => Crrspnd&Category<>;
 
 Number n = Inty();
 Number x = Floaty();
@@ -34,9 +34,9 @@ void local() {
 }
 
 class Outer() {
-    shared alias Cs => List<Correspondence<Integer,Object>&Category>;
+    shared alias Cs => List<Correspondence<Integer,Object>&Category<>>;
     shared Cs cs = [ c, c ];
-    shared alias CCs => List<Container<Anything>&Category>;
+    shared alias CCs => List<Container<Anything>&Category<>>;
     shared CCs ccs = [ cc, cc, cc ];
 }
 

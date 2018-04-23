@@ -61,5 +61,5 @@ native shared void nativeMethodMismatch6<T>() given T satisfies Usable;
 $error native("jvm") shared void nativeMethodMismatch6<T>() {
 }
 
-$error native("js") shared void nativeMethodMismatch6<T>() given T satisfies Category {
+$error native("js") shared void nativeMethodMismatch6<T>() given T satisfies Category<> {
 }

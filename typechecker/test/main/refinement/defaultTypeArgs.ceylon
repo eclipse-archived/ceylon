@@ -1,14 +1,14 @@
 
 abstract class Keys1()
-        satisfies Cat {}
+        satisfies Cat<> {}
 
 class Keys2()
-        satisfies Cat {
+        satisfies Cat<> {
     shared actual Boolean contains($error Object element) => true;
 }
 
 class Keys3()
-        satisfies Cat {
+        satisfies Cat<> {
     shared actual Boolean contains(String element) => true;
 }
 
@@ -43,14 +43,14 @@ class MyFoo<T=String>(T t) {
 }
 
 
-class CC() satisfies II&JJ {
+class CC() satisfies II<>&JJ {
     shared actual class Inner()
             extends super.Inner() {
         shared actual Nothing get() => nothing;
     }
 }
 
-interface JJ satisfies II {}
+interface JJ satisfies II<> {}
 
 interface KK satisfies II<Integer> {
     shared actual class Inner()

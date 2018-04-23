@@ -1,7 +1,7 @@
 class Aliases() {
     
     class C(String s) => Class<String>(s);
-    $error class C1(String s) => Class(s);
+    $error class C1(String s) => Class<>(s);
     $error class C2(String s) => Class<String>;
     $type:"Aliases.C" C("hello");
     $type:"Aliases.C" C{s="hello";};

@@ -222,11 +222,11 @@ class Union() {
     case (is X) {}
     case (is Hello) {}
     
-    Sized|Category sc = "hello";
+    Sized|Category<> sc = "hello";
     $error:"case is not disjoint"
     switch (sc)
     case (is Sized) {}
-    case (is Category) {}
+    case (is Category<>) {}
     
     String? maybe = null;
     switch (maybe)

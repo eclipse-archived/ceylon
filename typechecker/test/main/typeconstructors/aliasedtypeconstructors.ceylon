@@ -40,7 +40,7 @@ void badAliasedTypeArgs(
 Map<String,String> theMap = nothing;
 alias YourMapFunction => Map;
 YourMapFunction<String,String> yourMap = theMap;
-alias MyMapFunction => <U,V> => Map;
+alias MyMapFunction => <U,V> => Map<>;
 MyMapFunction<String,String> myMap = theMap;
 
 alias CurriedMapTypeFunction

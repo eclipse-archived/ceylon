@@ -359,7 +359,7 @@ void meta() {
     $type:"Type<List<Character>>"
     value it3 = `List<Character>&{Character*}`; 
     $type:"IntersectionType<Category<Object>&Foo<Object>>" 
-    value it4 = `Category&Foo<Object>`; 
+    value it4 = `Category<>&Foo<Object>`; 
     $type:"InterfaceDeclaration" 
     value id1 = `interface List`;
     $type:"FunctionDeclaration" 

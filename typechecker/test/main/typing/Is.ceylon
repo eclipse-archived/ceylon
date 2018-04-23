@@ -23,9 +23,9 @@ class Is() {
     if (is Seq2<String> strings) {
         String s = strings.first;
     }
-    $error if (is Seq2 strings) {}
+    $error if (is Seq2<> strings) {}
     if (is SimpleContainer<String> strings) {}
-    $error if (is Is.SimpleContainer strings) {}
+    $error if (is Is.SimpleContainer<> strings) {}
     if (is Is.SimpleContainer<String> strings) {}
     $error if (is Is.SimpleContainer<String,Integer> strings) {}
 
@@ -33,11 +33,11 @@ class Is() {
         $error String s = strings.first;
     }
     $error 
-    if (strings is Seq2) {}
+    if (strings is Seq2<>) {}
     //$error 
     if (strings is SimpleContainer<String>) {}
     $error 
-    if (strings is Is.SimpleContainer) {}
+    if (strings is Is.SimpleContainer<>) {}
     //$error 
     if (strings is Is.SimpleContainer<String>) {}
     $error 
@@ -82,7 +82,7 @@ class Is() {
         //$error for (String str in d) {}
         $type:"Correspondence<Integer,String>&Emptyish&Container<String,Null>" value dd = d;
     }
-    if (is Sized&Category d) {
+    if (is Sized&Category<> d) {
         String? s = d[0];
         $error Integer size = e.size;
         $error Boolean empty = e.empty;
@@ -102,7 +102,7 @@ class Is() {
         for (String str in e) {}
         $type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
-    if (is Sized&Category e) {
+    if (is Sized&Category<> e) {
         String? s = e[0];
         Integer elementCount = e.elementCount;
         Boolean isEmpty = e.isEmpty;

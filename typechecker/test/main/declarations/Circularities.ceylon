@@ -54,8 +54,8 @@ $error class Circ satisfies Circ {
 
 alias Stt<T> => Sett<T>;
 
-$error interface Sett<T> satisfies List&Stt&Sett {}
+$error interface Sett<T> satisfies List<>&Stt<>&Sett<> {}
 
 void withSet(Sett<Object> set) {
-    List list = set;
+    List<> list = set;
 }
