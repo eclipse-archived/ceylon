@@ -617,7 +617,7 @@ class Locals_MapTest<Key, Item>(<Key->Item>* entry)
 }
 
 shared interface Locals_MyIterable<out Element, out Absent=Null>
-        satisfies Category
+        satisfies Category<>
         given Absent satisfies Null {
 
     shared default {<Integer->Element&Object>*} indexed {

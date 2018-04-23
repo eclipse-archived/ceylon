@@ -9,11 +9,11 @@ void literals<T>() {
     Class<Integer,[Integer]> integerType = `Integer`;
     check(integerType(1) == 1, "Use Class as constructor");
     Interface<Number<Integer>> numberType = `Number<Integer>`;
-    Type parameterType = `T`;
-    Type nothingType = `String&Number<Integer>`;
-    UnionType unionType = `Number<Integer>|Destroyable`;
+    Type<> parameterType = `T`;
+    Type<> nothingType = `String&Number<Integer>`;
+    UnionType<> unionType = `Number<Integer>|Destroyable`;
     check(unionType.caseTypes.size == 2, "UnionType case types ``unionType.caseTypes.size``, expected 2");
-    IntersectionType intersectionType = `Number<Integer>&Destroyable`;
+    IntersectionType<> intersectionType = `Number<Integer>&Destroyable`;
     check(intersectionType.satisfiedTypes.size == 2, "IntersectionType satisfied types ``intersectionType.satisfiedTypes.size``, expected 2");
     Function<Boolean,[{Boolean*}]> ftype = `any`;
     check(any{false,false,true}, "simple metamodel function");

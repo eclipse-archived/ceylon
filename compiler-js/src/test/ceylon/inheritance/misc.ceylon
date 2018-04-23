@@ -1,7 +1,7 @@
 import check {...}
 
 //Miscellaneous inheritance tests (for very simple interfaces)
-class TestCategory() satisfies Category {
+class TestCategory() satisfies Category<> {
   shared actual Boolean contains(Object x) {
     if (is Integer x) {
       return x > 0 && x<=10;

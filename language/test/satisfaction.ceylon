@@ -1,5 +1,5 @@
 //Simple implementation of single interfaces to verify correct compilation and behavior
-class MyCategory() satisfies Category {
+class MyCategory() satisfies Category<> {
     shared actual Boolean contains(Object e) {
         if (is Integer e) {
             return e>0 && e<11;
@@ -23,7 +23,7 @@ see (`interface Category`)
 by ("Gavin")
 deprecated ("Will be removed in Ceylon 1.0.")
 shared interface Container<out Element, out Absent=Null>
-        satisfies Category
+        satisfies Category<>
         given Absent satisfies Null {
     shared formal Boolean empty;
     shared formal Absent|Element first;
