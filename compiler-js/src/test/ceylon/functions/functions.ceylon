@@ -245,6 +245,7 @@ shared void test() {
     testLazyExpressions();
     testStaticMethodReferences();
     testGenericMethodReferences();
+    testHigherOrderGenericMethodReferences();
     issues();
     results();
 }
