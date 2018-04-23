@@ -17,7 +17,6 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
 import org.eclipse.ceylon.model.typechecker.model.Type;
-import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 
@@ -232,46 +231,6 @@ public class TypeArgumentVisitor extends Visitor {
                     + "' occurs at a " + loc 
                     + " location in type: '" + typename 
                     + "'");
-        }
-    }
-
-    @Override
-    public void visit(Tree.SimpleType that) {
-        super.visit(that);
-        if (that.getTypeArgumentList()==null) {
-            TypeDeclaration dec = that.getDeclarationModel();
-            Type type = that.getTypeModel();
-            if (dec!=null && type!=null 
-                    && dec.isParameterized() 
-                    && !type.isTypeConstructor() 
-                    && !that.getMetamodel() 
-                    && !(that.getStaticTypePrimary() 
-                            && dec.isJava())) {
-                String name = dec.getName(that.getUnit());
-                List<TypeParameter> params = 
-                        dec.getTypeParameters();
-                if (!params.get(0).isDefaulted()) {
-                    StringBuilder paramList = 
-                            new StringBuilder();
-                    for (TypeParameter tp: 
-                            dec.getTypeParameters()) {
-                        if (paramList.length()>0) {
-                            paramList.append(", ");
-                        }
-                        paramList.append("'")
-                            .append(tp.getName())
-                            .append("'");
-                    }
-                    that.addError("missing type arguments to generic type: '" + 
-                            name + "' declares type parameters " + 
-                            paramList);
-                }
-                else {
-                    that.addUsageWarning(Warning.syntaxDeprecation,
-                            "implicit use of default type arguments is deprecated (change to '" + 
-                            name + "<>')");
-                }
-            }
         }
     }
     
