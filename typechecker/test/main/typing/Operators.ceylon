@@ -406,10 +406,16 @@ class Operators() {
     $type:"Byte" value byt1 = ~#FF.byte;
     $type:"Byte" value byt2 = byt1|#FF00.byte;
     $type:"Byte" value byt3 = ~(byt2&$10101010.byte);
+    variable value bytv = ~$101.byte;
+    bytv|=$10.byte;
+    bytv&=$11.byte;
 
     $type:"Integer" value int1 = ~#FF;
     $type:"Integer" value int2 = int1|#FF00;
     $type:"Integer" value int3 = ~(int2&$10101010);
+    variable value intv = ~$101;
+    intv|=$10;
+    intv&=$11;
 }
 
 class Sc() satisfies Scalable<Float,Sc> {

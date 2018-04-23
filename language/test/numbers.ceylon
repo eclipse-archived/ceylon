@@ -1209,5 +1209,11 @@ void checkFormatFloat() {
     check(int1&#FFFF==#FF, "bitwise complement");
     check(int2&#FFFF==#FFFF, "bitwise or");
     check(int3&#FFFF==$0101010101010101, "bitwise and");
+    
+    variable value intv = $101;
+    intv |= $10;
+    intv &= $11;
+    check(intv==$11, "bitwise assignment");
+
 
 }

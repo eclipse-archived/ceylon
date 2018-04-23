@@ -78,5 +78,9 @@ shared void bytes() {
   check(byt1==#F.byte, "bitwise complement");
   check(byt2==#FF.byte, "bitwise or");
   check(byt3==$01010101.byte, "bitwise and");
-
+  
+  variable value bytv = $101.byte;
+  bytv |= $10.byte;
+  bytv &= $11.byte;
+  check(bytv==$11.byte, "bitwise assignment");
 }
