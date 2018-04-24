@@ -39,6 +39,7 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isSt
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
+import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeParametersString;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static org.eclipse.ceylon.compiler.typechecker.parser.CeylonLexer.LIDENTIFIER;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
@@ -9174,7 +9175,9 @@ public class ExpressionVisitor extends Visitor {
                 if (modelLiteral) {
                     that.addError("missing type arguments of generic type: '" + 
                             type.getName(unit) +
-                            "' has type parameters (add missing type argument list)");
+                            "' has type parameters " +
+                            typeParametersString(type) +
+                            " (add missing type argument list)");
                 }
                 else if (!declarationLiteral) {
                     checkNotJvm(that, 

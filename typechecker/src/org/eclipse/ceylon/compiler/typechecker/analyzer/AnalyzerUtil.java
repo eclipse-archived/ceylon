@@ -1258,6 +1258,21 @@ public class AnalyzerUtil {
         }
     }
     
+    static String typeParametersString(Declaration dec) {
+        StringBuilder paramList = 
+                new StringBuilder();
+        for (TypeParameter tp: 
+                dec.getTypeParameters()) {
+            if (paramList.length()>0) {
+                paramList.append(", ");
+            }
+            paramList.append("'")
+                .append(tp.getName())
+                .append("'");
+        }
+        return paramList.toString();
+    }
+    
     static String parameterTypes(List<Type> signature, 
             boolean variadic, Unit unit) {
         if (signature!=null) {

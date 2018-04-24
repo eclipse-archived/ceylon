@@ -19,6 +19,7 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getT
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
+import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeParametersString;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -1130,7 +1131,9 @@ public class TypeVisitor extends Visitor {
                         if (type.isTypeConstructor()) {
                             et.addError("missing type arguments of generic type: '" + 
                                     etd.getName(unit) +
-                                    "' has type parameters (add missing type argument list)");
+                                    "' has type parameters " +
+                                    typeParametersString(etd) +
+                                    " (add missing type argument list)");
                         }
                         else if (etd==td) {
                             //unnecessary, handled by SupertypeVisitor
@@ -1191,7 +1194,9 @@ public class TypeVisitor extends Visitor {
                 if (type.isTypeConstructor()) {
                     st.addError("missing type arguments of generic type: '" + 
                             std.getName(unit) +
-                            "' has type parameters (add missing type argument list)");
+                            "' has type parameters " +
+                            typeParametersString(std) +
+                            " (add missing type argument list)");
                 }
                 else if (std!=null && 
                         !(std instanceof UnknownType)) {
