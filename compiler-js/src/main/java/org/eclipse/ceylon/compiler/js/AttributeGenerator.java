@@ -191,7 +191,7 @@ public class AttributeGenerator {
             final GenerateJsVisitor gen) {
         int boxType = gen.boxUnboxStart(expr.getTerm(), false, 
                 decl.isShared() || notFloat(that.getType()), 
-                true);
+                false);
         Type type = expr.getTypeModel();
         if (gen.isInDynamicBlock() 
                 && ModelUtil.isTypeUnknown(type)

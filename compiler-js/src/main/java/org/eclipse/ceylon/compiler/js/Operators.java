@@ -94,7 +94,7 @@ public class Operators {
             }
         } else {
             final Term fromTerm = term;
-            final int boxTypeLeft = gen.boxUnboxStart(fromTerm, false, true, true);
+            final int boxTypeLeft = gen.boxUnboxStart(fromTerm, false, true, after.startsWith("."));
             if (term instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen, !existsOp);
             } else {
@@ -233,7 +233,7 @@ public class Operators {
     static void withinOp(final Tree.WithinOp that, GenerateJsVisitor gen) {
         final String ttmp = gen.getNames().createTempVariable();
         gen.out("(", ttmp, "=");
-        gen.box(that.getTerm(), true, true);
+        gen.box(that.getTerm(), true, false);
         gen.out(",");
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel())) {
             final String tmpl = gen.getNames().createTempVariable();
@@ -356,9 +356,9 @@ public class Operators {
     static void builtInBinaryOp(final Tree.BinaryOperatorExpression that, final String builtInOp,
             final GenerateJsVisitor gen) {
         gen.out(gen.getClAlias(), builtInOp, "(");
-        gen.box(that.getLeftTerm(), true, true);
+        gen.box(that.getLeftTerm(), true, false);
         gen.out(",");
-        gen.box(that.getRightTerm(), true, true);
+        gen.box(that.getRightTerm(), true, false);
         gen.out(")");
     }
 
@@ -368,9 +368,9 @@ public class Operators {
         String ltmp = gen.getNames().createTempVariable();
         String rtmp = gen.getNames().createTempVariable();
         gen.out("(", ltmp, "=");
-        gen.box(that.getLeftTerm(), true, true);
+        gen.box(that.getLeftTerm(), true, false);
         gen.out(",", rtmp, "=");
-        gen.box(that.getRightTerm(), true, true);
+        gen.box(that.getRightTerm(), true, false);
         gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".", method, "&&",
                 ltmp, ".", method, "(", rtmp, ")");
         if (post != null) {

@@ -542,7 +542,7 @@ public class InvocationGenerator {
                     gen.out(argvar, "=");
                 }
                 final int boxType = pd==null ? 0 :
-                    gen.boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(pd.getModel()), true, true);
+                    gen.boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(pd.getModel()), true, false);
                 Map<TypeParameter,Type> targs = null;
                 if (dyncheck) {
                     if (primary instanceof Tree.MemberOrTypeExpression) {

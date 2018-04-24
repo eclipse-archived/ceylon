@@ -526,7 +526,7 @@ public class GenerateJsVisitor extends Visitor {
         List<String> oldRetainedVars = retainedVars.reset(null);
         final int boxType = boxUnboxStart(that.getTerm(), false, 
                 //notFloat(declaredTypeAssignedTo), 
-                true, true);
+                true, false);
         that.getTerm().visit(this);
         if (boxType == 4) out("/*TODO: callable targs 3*/");
         boxUnboxEnd(boxType);
@@ -1389,8 +1389,11 @@ public class GenerateJsVisitor extends Visitor {
             out("(");
             jsout.outputFile(f);
             out(")");
-            TypeGenerator.generateParameters(coi.getTypeParameterList(), coi instanceof Tree.ClassDefinition ?
-                    ((Tree.ClassDefinition)coi).getParameterList() : null, coi.getDeclarationModel(), this);
+            TypeGenerator.generateParameters(coi.getTypeParameterList(), 
+                    coi instanceof Tree.ClassDefinition ?
+                            ((Tree.ClassDefinition)coi).getParameterList() : 
+                            null, 
+                    coi.getDeclarationModel(), this);
             endLine(true);
         }
         return false;
@@ -1399,10 +1402,10 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that)) return;
         final Function d = that.getDeclarationModel();
-        if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) ||
-                TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule())) {
+        if (!(opts.isOptimize() && d.isClassOrInterfaceMember()
+                || TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule())) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), that);
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
@@ -1944,9 +1947,11 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 final Expression expr = exprs.get(i);
                 final Type t = expr.getTypeModel();
-                box(expr, true, true);
+                box(expr, true, false);
                 if (t == null || t.isUnknown()) {
                     out(".toString()");
+                } else if (t.isInteger() || t.isString()) {
+                    //nothing to do
                 } else if (!t.isString()) {
                     out(".string");
                 }
@@ -2083,25 +2088,37 @@ public class GenerateJsVisitor extends Visitor {
         //Big TODO: make sure the member is actually
         //          refined by the current class!
         final Declaration d = that.getDeclaration();
-        if (that.getMemberOperator() instanceof Tree.SafeMemberOp) {
+        Tree.MemberOperator op = that.getMemberOperator();
+        Tree.Primary primary = that.getPrimary();
+
+        if (op instanceof Tree.SafeMemberOp) {
             Operators.generateSafeOp(that, this);
-        } else if (that.getMemberOperator() instanceof Tree.SpreadOp) {
+        } else if (op instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, this);
-        } else if (d instanceof Function && that.getSignature() == null) {
-            //TODO right now this causes that all method invocations are done this way
-            //we need to filter somehow to only use this pattern when the result is supposed to be a callable
-            //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
+        } else if (d instanceof Function 
+                && that.getSignature() == null) {
+            //TODO right now this causes that all method invocations 
+            //are done this way we need to filter somehow to only use 
+            //this pattern when the result is supposed to be a callable
+            //looks like checking for signature is a good way (not THE 
+            //way though; named arg calls don't have signature)
             FunctionHelper.generateCallable(that, null, this);
         } else if (that.getStaticMethodReference() && d!=null) {
-            if (d instanceof Value && ModelUtil.isConstructor(d)) {
-                Constructor cnst = (Constructor)((Value)d).getTypeDeclaration();
-                if (cnst.getTypescriptEnum() != null && cnst.getTypescriptEnum().matches("[0-9.-]+")) {
-                    out(cnst.getTypescriptEnum());
+            if (d instanceof Value 
+                    && ModelUtil.isConstructor(d)) {
+                Constructor cnst = (Constructor)
+                        ((Value)d).getTypeDeclaration();
+                String tse = cnst.getTypescriptEnum();
+                if (tse != null && tse.matches("[0-9.-]+")) {
+                    out(tse);
                 } else {
                     //TODO this won't work anymore I think
                     boolean wrap = false;
-                    if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
-                        Tree.QualifiedMemberOrTypeExpression prim = (Tree.QualifiedMemberOrTypeExpression)that.getPrimary();
+                    Scope container = d.getContainer();
+                    if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
+                        Tree.QualifiedMemberOrTypeExpression prim = 
+                                (Tree.QualifiedMemberOrTypeExpression)
+                                    primary;
                         if (prim.getStaticMethodReference()) {
                             wrap=true;
                             out("function(_$){return _$");
@@ -2110,16 +2127,18 @@ public class GenerateJsVisitor extends Visitor {
                         }
                         out(".");
                     } else {
-                        if (d.getContainer() instanceof Declaration) {
-                            qualify(that.getPrimary(), (Declaration)d.getContainer());
-                        } else if (d.getContainer() instanceof Package) {
-                            out(names.moduleAlias(((Package)d.getContainer()).getModule()));
+                        if (container instanceof Declaration) {
+                            qualify(primary, (Declaration)container);
+                        } else if (container instanceof Package) {
+                            Module module = ((Package)container).getModule();
+                            out(names.moduleAlias(module));
                         }
                     }
-                    if (cnst.getTypescriptEnum() != null) {
-                        out(names.name((TypeDeclaration)d.getContainer()), ".", cnst.getTypescriptEnum());
+                    if (tse != null) {
+                        out(names.name((TypeDeclaration)container), ".", tse);
                     } else {
-                        out(names.name((TypeDeclaration)d.getContainer()), names.constructorSeparator(d),
+                        out(names.name((TypeDeclaration)container), 
+                            names.constructorSeparator(d),
                             names.name(d), "()");
                     }
                     if (wrap) {
@@ -2128,15 +2147,18 @@ public class GenerateJsVisitor extends Visitor {
                 }
             } else if (d instanceof Function) {
                 Function fd = (Function)d;
-                if (fd.getTypeDeclaration() instanceof Constructor) {
-                    that.getPrimary().visit(this);
-                    out(names.constructorSeparator(fd), names.name(fd.getTypeDeclaration()));
+                TypeDeclaration typeDec = fd.getTypeDeclaration();
+                if (typeDec instanceof Constructor) {
+                    primary.visit(this);
+                    out(names.constructorSeparator(fd), 
+                        names.name(typeDec));
                 } else if (fd.isStatic()) {
                     BmeGenerator.generateStaticReference(that, fd, this);
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
-                        BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(d));
+                        BmeGenerator.printGenericMethodReference(this, that, 
+                                "$O$", "$O$."+names.name(d));
                     } else {
                         out(getClAlias(), "f3$($O$,$O$.", names.name(d), ")");
                     }
@@ -2150,7 +2172,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }
         } else {
-            final boolean isDynamic = that.getPrimary() instanceof Tree.Dynamic;
+            final boolean isDynamic = primary instanceof Tree.Dynamic;
             String lhs = generateToString(new GenerateCallback() {
                 @Override public void generateValue() {
                     if (isDynamic) {
@@ -2179,7 +2201,8 @@ public class GenerateJsVisitor extends Visitor {
         Scope scope = null;
         if (node instanceof Tree.QualifiedMemberOrTypeExpression) {
             // Check for "super.member"
-            Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression) node;
+            Tree.QualifiedMemberOrTypeExpression qmte = 
+                    (Tree.QualifiedMemberOrTypeExpression) node;
             final Term primary = eliminateParensAndWidening(qmte.getPrimary());
             if (primary instanceof Tree.Super) {
                 scope = qmte.getDeclaration().getContainer();
@@ -2201,9 +2224,11 @@ public class GenerateJsVisitor extends Visitor {
             sb.append(lhs);
         }
         else if (node instanceof Tree.BaseMemberOrTypeExpression) {
-            Tree.BaseMemberOrTypeExpression bmte = (Tree.BaseMemberOrTypeExpression) node;
+            Tree.BaseMemberOrTypeExpression bmte = 
+                    (Tree.BaseMemberOrTypeExpression) node;
             Declaration bmd = bmte.getDeclaration();
-            if (bmd.isParameter() && bmd.getContainer() instanceof ClassAlias) {
+            if (bmd.isParameter() 
+                    && bmd.getContainer() instanceof ClassAlias) {
                 return names.name(bmd);
             }
             String path = qualifiedPath(node, bmd);
@@ -2221,7 +2246,8 @@ public class GenerateJsVisitor extends Visitor {
         if (sb.length() > 0) {
             if (node instanceof Tree.BaseMemberOrTypeExpression) {
                 Declaration bmd = ((Tree.BaseMemberOrTypeExpression)node).getDeclaration();
-                if (bmd.isParameter() && bmd.getContainer() instanceof ClassAlias) {
+                if (bmd.isParameter() 
+                        && bmd.getContainer() instanceof ClassAlias) {
                     return sb.toString();
                 }
             }
@@ -2240,10 +2266,13 @@ public class GenerateJsVisitor extends Visitor {
             sb.append(".$$.prototype.");
             metaGetter = true;
         }
-        final String member = accessThroughGetter(decl) && !accessDirectly(decl)
-                ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) : names.name(decl);
+        final String member = 
+                accessThroughGetter(decl) && !accessDirectly(decl)
+                        ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) 
+                        : names.name(decl);
         if (!isConstructor && ModelUtil.isConstructor(decl)) {
-            sb.append(names.name((Declaration)decl.getContainer())).append(names.constructorSeparator(decl));
+            sb.append(names.name((Declaration)decl.getContainer()))
+              .append(names.constructorSeparator(decl));
         }
         sb.append(member);
         if (!opts.isOptimize() && (scope != null)) {
@@ -2272,11 +2301,15 @@ public class GenerateJsVisitor extends Visitor {
             plainName = decl.getName();
         }
         if (plainName != null) {
-            return ((lhs != null) && (lhs.length() > 0))
-                    ? (lhs + "." + plainName) : plainName;
+            return lhs != null && !lhs.isEmpty()
+                    ? lhs + "." + plainName 
+                    : plainName;
         }
-        boolean protoCall = opts.isOptimize() && (getSuperMemberScope(expr) != null);
-        if (accessDirectly(decl) && !(protoCall && AttributeGenerator.defineAsProperty(decl))) {
+        boolean protoCall = 
+                opts.isOptimize() 
+                && getSuperMemberScope(expr) != null;
+        if (accessDirectly(decl) 
+                && !(protoCall && AttributeGenerator.defineAsProperty(decl))) {
             // direct access, without getter
             return memberAccessBase(expr, decl, false, lhs);
         }
@@ -2332,7 +2365,8 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     int boxUnboxStart(final Tree.Term fromTerm, 
-            boolean toNative, boolean wrapFloat, boolean checkInt) {
+            boolean toNative, boolean wrapFloat, 
+            boolean parenthesizeInt) {
         // Box the value
         final Type fromType = fromTerm.getTypeModel();
         if (fromType == null) {
@@ -2348,7 +2382,7 @@ public class GenerateJsVisitor extends Visitor {
                 return 0;
             }
         }
-        if (checkInt && fromType.isInteger()) {
+        if (parenthesizeInt && fromType.isInteger()) {
             if (isIntegerLiteral(fromTerm)) {
                 //we can't write 123.method
                 out("(");
@@ -2593,7 +2627,7 @@ public class GenerateJsVisitor extends Visitor {
                     // simple assignment to a variable attribute
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
-                            int boxType = boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(moval), true, true);
+                            int boxType = boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(moval), true, false);
                             if (isInDynamicBlock() 
                                     && !ModelUtil.isTypeUnknown(moval.getType())
                                     && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
@@ -2801,7 +2835,7 @@ public class GenerateJsVisitor extends Visitor {
         BmeGenerator.generateMemberAccess(lhsExpr, new GenerateCallback() {
             @Override public void generateValue() {
                 //if (!isNaturalLiteral(that.getRightTerm())) {
-                    int boxType = boxUnboxStart(that.getRightTerm(), TypeUtils.isNativeJs(that.getLeftTerm()), true, true);
+                    int boxType = boxUnboxStart(that.getRightTerm(), TypeUtils.isNativeJs(that.getLeftTerm()), true, false);
                     that.getRightTerm().visit(GenerateJsVisitor.this);
                     if (boxType == 4) out("/*TODO: callable targs 7*/");
                     boxUnboxEnd(boxType);
@@ -3010,7 +3044,6 @@ public class GenerateJsVisitor extends Visitor {
             } else {
                 out("return;");
             }
-            endLine();
             return;
         }
         out("return ");
@@ -3046,9 +3079,8 @@ public class GenerateJsVisitor extends Visitor {
                 return;
             }
         }
-        box(ex.getTerm(), true, true);
+        box(ex.getTerm(), true, false);
         out(";");
-        endLine();
 //        if (isNaturalLiteral(that.getExpression().getTerm())) {
 //            out(";");
 //        } else {
@@ -3268,7 +3300,7 @@ public class GenerateJsVisitor extends Visitor {
                     lhsQME.getPrimary().visit(this);
                     out(",", tmp, ".", dec, "=");
                     final Term fromTerm = lhsQME;
-                    int boxType = boxUnboxStart(fromTerm, false, true, true);
+                    int boxType = boxUnboxStart(fromTerm, false, true, false);
                     out(tmp, ".", dec);
                     if (boxType == 4) out("/*TODO: callable targs 8*/");
                     boxUnboxEnd(boxType);
@@ -3351,7 +3383,7 @@ public class GenerateJsVisitor extends Visitor {
                 lhsQME.getPrimary().visit(this);
                 out(",", tmp, ".", dec, "=");
                 final Term fromTerm = lhsQME;
-                int boxType = boxUnboxStart(fromTerm, false, true, true);
+                int boxType = boxUnboxStart(fromTerm, false, true, false);
                 out(tmp, ".", dec);
                 if (boxType == 4) out("/*TODO: callable targs 8*/");
                 boxUnboxEnd(boxType);
@@ -3485,9 +3517,9 @@ public class GenerateJsVisitor extends Visitor {
    @Override public void visit(final Tree.DefaultOp that) {
        String lhsVar = createRetainedTempVar();
        out("(", lhsVar, "=");
-       box(that.getLeftTerm(), true, true);
+       box(that.getLeftTerm(), true, false);
        out(",", getClAlias(), "nn$(", lhsVar, ")?", lhsVar, ":");
-       box(that.getRightTerm(), true, true);
+       box(that.getRightTerm(), true, false);
        out(")");
    }
 
@@ -3580,7 +3612,7 @@ public class GenerateJsVisitor extends Visitor {
    }
 
    @Override public void visit(final Tree.BooleanCondition that) {
-       int boxType = boxUnboxStart(that.getExpression().getTerm(), false, true, true);
+       int boxType = boxUnboxStart(that.getExpression().getTerm(), false, true, false);
        super.visit(that);
        if (boxType == 4) out("/*TODO: callable targs 10*/");
        boxUnboxEnd(boxType);
@@ -3708,10 +3740,10 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.InOp that) {
         out(getClAlias(), "$cnt$2(");
 //        if (!isNaturalLiteral(that.getLeftTerm())) {
-            box(that.getLeftTerm(), true, true);
+            box(that.getLeftTerm(), true, false);
 //        }
         out(",");
-        box(that.getRightTerm(), true, true);
+        box(that.getRightTerm(), true, false);
         out(")");
     }
 
@@ -3769,7 +3801,7 @@ public class GenerateJsVisitor extends Visitor {
         int _box=0;
         final Tree.SpecifierExpression expr = that.getSpecifierExpression();
         if (that.getParameter() != null && expr != null) {
-            _box = boxUnboxStart(expr.getExpression().getTerm(), TypeUtils.isNativeJs(that.getParameter().getModel()), true, true);
+            _box = boxUnboxStart(expr.getExpression().getTerm(), TypeUtils.isNativeJs(that.getParameter().getModel()), true, false);
         }
         expr.visit(this);
         if (_box == 4) {
