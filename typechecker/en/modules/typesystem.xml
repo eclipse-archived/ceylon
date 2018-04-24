@@ -2468,12 +2468,12 @@ interface NumberLiteral
             <literal>B</literal> in <literal>Z</literal>:</para>
             
             <itemizedlist>
-	            <listitem>
-		            <para><literal>A</literal> is exactly the same type as <literal>B</literal>, 
-		            and the variance of <literal>A</literal> is the same as <literal>B</literal>,
-		            </para>
-		        </listitem>
-		        <listitem>
+                <listitem>
+                    <para><literal>A</literal> is exactly the same type as <literal>B</literal>, 
+                    and the variance of <literal>A</literal> is the same as <literal>B</literal>,
+                    </para>
+                </listitem>
+                <listitem>
                     <para><literal>A</literal> and <literal>B</literal> are both covariant type
                     arguments, and both types are supertypes of <literal>P</literal>,</para>
                 </listitem>

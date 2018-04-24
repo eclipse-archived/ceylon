@@ -181,7 +181,7 @@
 /bin/]]></echo>     
     </target>
         
-	<target name="ide-quick-internal" depends="module-loader.classes">
+    <target name="ide-quick-internal" depends="module-loader.classes">
         <antcall target="bundle-proxy">
             <param name="archivePath" value="${ceylon.module-loader.lib}"/>
         </antcall>

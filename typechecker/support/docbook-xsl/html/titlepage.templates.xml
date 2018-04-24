@@ -1,5 +1,5 @@
 <t:templates xmlns:t="http://nwalsh.com/docbook/xsl/template/1.0"
-	     xmlns:param="http://nwalsh.com/docbook/xsl/template/1.0/param"
+         xmlns:param="http://nwalsh.com/docbook/xsl/template/1.0/param"
              xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- ==================================================================== -->
@@ -202,8 +202,8 @@
   <t:titlepage-content t:side="recto">
 <!-- uncomment this if you want refentry titlepages
     <title t:force="1"
-	   t:named-template="refentry.title"
-	   param:node="ancestor-or-self::refentry[1]"/>
+       t:named-template="refentry.title"
+       param:node="ancestor-or-self::refentry[1]"/>
 -->
   </t:titlepage-content>
 
@@ -224,9 +224,9 @@
   <t:titlepage t:element="dedication" t:wrapper="div" class="titlepage">
     <t:titlepage-content t:side="recto">
     <title
-	   t:force="1"
-	   t:named-template="component.title"
-	   param:node="ancestor-or-self::dedication[1]"/>
+       t:force="1"
+       t:named-template="component.title"
+       param:node="ancestor-or-self::dedication[1]"/>
     <subtitle/>
     </t:titlepage-content>
 
@@ -563,9 +563,9 @@
 <t:titlepage t:element="bibliography" t:wrapper="div" class="titlepage">
   <t:titlepage-content t:side="recto">
     <title
-	   t:force="1"
-	   t:named-template="component.title"
-	   param:node="ancestor-or-self::bibliography[1]"/>
+       t:force="1"
+       t:named-template="component.title"
+       param:node="ancestor-or-self::bibliography[1]"/>
     <subtitle/>
   </t:titlepage-content>
 
@@ -587,9 +587,9 @@
 <t:titlepage t:element="glossary" t:wrapper="div" class="titlepage">
   <t:titlepage-content t:side="recto">
     <title
-	   t:force="1"
-	   t:named-template="component.title"
-	   param:node="ancestor-or-self::glossary[1]"/>
+       t:force="1"
+       t:named-template="component.title"
+       param:node="ancestor-or-self::glossary[1]"/>
     <subtitle/>
   </t:titlepage-content>
 
@@ -611,9 +611,9 @@
 <t:titlepage t:element="index" t:wrapper="div" class="titlepage">
   <t:titlepage-content t:side="recto">
     <title
-	   t:force="1"
-	   t:named-template="component.title"
-	   param:node="ancestor-or-self::index[1]"/>
+       t:force="1"
+       t:named-template="component.title"
+       param:node="ancestor-or-self::index[1]"/>
     <subtitle/>
   </t:titlepage-content>
 
@@ -635,9 +635,9 @@
 <t:titlepage t:element="setindex" t:wrapper="div" class="titlepage">
   <t:titlepage-content t:side="recto">
     <title
-	   t:force="1"
-	   t:named-template="component.title"
-	   param:node="ancestor-or-self::setindex[1]"/>
+       t:force="1"
+       t:named-template="component.title"
+       param:node="ancestor-or-self::setindex[1]"/>
     <subtitle/>
   </t:titlepage-content>
 

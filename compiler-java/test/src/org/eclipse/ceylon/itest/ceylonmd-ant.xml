@@ -10,25 +10,25 @@
     <taskdef name="ceylonc" classname="org.eclipse.ceylon.ant.Ceylonc" />
     <taskdef name="ceylond" classname="org.eclipse.ceylon.ant.Ceylond" />
     <taskdef name="ceylon" classname="org.eclipse.ceylon.ant.Ceylon" />
-  	<taskdef name="ceylonmd" classname="org.eclipse.ceylon.ant.CeylonModuleDescriptorTask" />
+    <taskdef name="ceylonmd" classname="org.eclipse.ceylon.ant.CeylonModuleDescriptorTask" />
   </target>
       
   <target name="foo" depends="ant-tasks">
     <ceylonmd module="com.example.foo" src="${arg.src}"
-  	    versionProperty="module.version"
-    	nameProperty="module.name"/>
-  	<echo message="RESULT version: ${module.version}"/>
-  	<echo message="RESULT name: ${module.name}"/>
+        versionProperty="module.version"
+        nameProperty="module.name"/>
+    <echo message="RESULT version: ${module.version}"/>
+    <echo message="RESULT name: ${module.name}"/>
   </target>
-	
+    
   <target name="bar" depends="ant-tasks">
-	<ceylonmd module="com.example.bar" src="${arg.src}"
+    <ceylonmd module="com.example.bar" src="${arg.src}"
           versionProperty="module.version"
           nameProperty="module.name"/>
     <echo message="RESULT version: ${module.version}"/>
     <echo message="RESULT name: ${module.name}"/>
   </target>
-	
+    
   <target name="bad" depends="ant-tasks">
     <ceylonmd module="com.example.bad" src="${arg.src}"
           versionProperty="module.version"
@@ -36,13 +36,13 @@
     <echo message="RESULT version: ${module.version}"/>
     <echo message="RESULT name: ${module.name}"/>
   </target>
-	
+    
   <target name="sdk-test" depends="ant-tasks">
     <ceylonmd module="org.eclipse.ceylon.sdk.test" src="../../ceylon-sdk/sdk-test/source"
           versionProperty="module.version"
           nameProperty="module.name"/>
     <echo message="RESULT version: ${module.version}"/>
     <echo message="RESULT name: ${module.name}"/>
-  </target>	
+  </target> 
 
 </project>

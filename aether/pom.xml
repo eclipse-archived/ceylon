@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-aether-provider</artifactId>
-			<version>3.3.9</version>
-		</dependency>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-aether-provider</artifactId>
+            <version>3.3.9</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-settings</artifactId>
             <version>3.3.9</version>
         </dependency>
         <dependency>
-    	    <groupId>org.apache.maven</groupId>
-	        <artifactId>maven-settings-builder</artifactId>
-	        <version>3.3.9</version>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-settings-builder</artifactId>
+            <version>3.3.9</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.aether</groupId>
@@ -101,14 +101,14 @@
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.7.5</version>
         </dependency>
-	</dependencies>
-	<groupId>org.ceylon-lang</groupId>
-	<artifactId>aether-all</artifactId>
-	<version>3.3.9</version>
-	
-	<packaging>jar</packaging>
+    </dependencies>
+    <groupId>org.ceylon-lang</groupId>
+    <artifactId>aether-all</artifactId>
+    <version>3.3.9</version>
+    
+    <packaging>jar</packaging>
  
-	<build>
+    <build>
     <finalName>org.eclipse.ceylon.aether-3.3.9</finalName>
     <plugins>
       <plugin>

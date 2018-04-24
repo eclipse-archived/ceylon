@@ -809,14 +809,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <itemizedlist>
                 <listitem>
-		            <para><literal>X(T)</literal> for an attribute whose realization is of 
-		            type <literal>X</literal>, and with qualifying type <literal>T</literal>,
-		            or</para>
+                    <para><literal>X(T)</literal> for an attribute whose realization is of 
+                    type <literal>X</literal>, and with qualifying type <literal>T</literal>,
+                    or</para>
                 </listitem>
                 <listitem>
-		            <para><literal>T.X(T)</literal> for a member class value constructor whose 
-		            realization is of type <literal>T.X</literal>, and with qualifying type 
-		            <literal>T.X</literal>.</para>
+                    <para><literal>T.X(T)</literal> for a member class value constructor whose 
+                    realization is of type <literal>T.X</literal>, and with qualifying type 
+                    <literal>T.X</literal>.</para>
                 </listitem>
             </itemizedlist>
             

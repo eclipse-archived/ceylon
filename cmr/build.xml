@@ -136,7 +136,7 @@
 /.gitignore
 /bin/]]></echo>     
     </target>
-    	
+        
     <target name="ide-quick-internal">
         <antcall target="bundle-proxy">
             <param name="archivePath" value="${ceylon.module-resolver.lib}"/>

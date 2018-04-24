@@ -58,7 +58,7 @@
         <mkdir dir="${build.dist.repo}/${ceylon.model.dir}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
-        </tstamp>    	
+        </tstamp>       
         <jar destfile="${build.dist.repo}/${ceylon.model.jar}">
             <fileset dir="${build.classes}">
             </fileset>

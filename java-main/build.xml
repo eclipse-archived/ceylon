@@ -194,7 +194,7 @@
 /bin/]]></echo>     
     </target>
     
-	<target name="ide-quick-internal" depends="java.main.classes">
+    <target name="ide-quick-internal" depends="java.main.classes">
         <antcall target="bundle-proxy">
             <param name="archivePath" value="${ceylon.java.main.lib}"/>
         </antcall>

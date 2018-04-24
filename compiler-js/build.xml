@@ -123,9 +123,9 @@
         </antcall>
     </target>
     
-	<target name="publish-jar" depends="ceylon.js.jar,publish-internal"
-		  description="Publish Ceylon JS compiler jar (no language module) to default repo"/>
-	
+    <target name="publish-jar" depends="ceylon.js.jar,publish-internal"
+          description="Publish Ceylon JS compiler jar (no language module) to default repo"/>
+    
     <target name="build" depends="ceylon.js.jar,build-js-language-module">
         <mkdir dir="${build.bin}" />
         <copy todir="${build.bin}">

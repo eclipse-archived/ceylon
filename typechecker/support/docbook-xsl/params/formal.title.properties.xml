@@ -7,7 +7,7 @@
 <refsynopsisdiv>
 <src:fragment id='formal.title.properties.frag'>
 <xsl:attribute-set name="formal.title.properties"
-	           use-attribute-sets="normal.para.spacing">
+               use-attribute-sets="normal.para.spacing">
   <xsl:attribute name="font-weight">bold</xsl:attribute>
   <xsl:attribute name="font-size">
     <xsl:value-of select="$body.font.master * 1.2"/>

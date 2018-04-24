@@ -813,9 +813,9 @@ Use this when NOT doing a release!">
                                         </then>
                                     </if>
                                     <if> 
-                                    	<and>
+                                        <and>
                                             <contains string="@{moduleName}" substring="ceylon"/>
-                                    	    <not><equals arg1="@{moduleName}" arg2="org.eclipse.ceylon.aether"/></not>
+                                            <not><equals arg1="@{moduleName}" arg2="org.eclipse.ceylon.aether"/></not>
                                         </and>
                                         <then>
                                             <ceylon-osgi-version propertyName="depOsgiVersion" ceylonVersion="@{moduleSlot}" addTimeStamp="false"/>

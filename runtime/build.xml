@@ -218,7 +218,7 @@
 /bin/]]></echo>     
     </target>
         
-	<target name="ide-quick-internal">
+    <target name="ide-quick-internal">
         <antcall target="bundle-proxy">
             <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.runtime.jar}"/>
         </antcall>

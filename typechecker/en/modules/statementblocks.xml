@@ -1971,7 +1971,7 @@ else {
             </itemizedlist>
             
             <comment><para>Note: the compiler produces a warning if either <literal>T&amp;X</literal>
-	        or <literal>T~X</literal> is <literal>Nothing</literal>.</para></comment>
+            or <literal>T~X</literal> is <literal>Nothing</literal>.</para></comment>
             
             <para>If you prefer, you can think of the following:</para>
             
@@ -2230,15 +2230,15 @@ if (is Usable tx) { ... }</programlisting>
                 <listitem>
                     <para>a value reference, as defined in <xref linkend="valuereferences"/>,
                     to either</para>
-		            <itemizedlist>
-		                <listitem>
-		                    <para>a toplevel anonymous class, or</para>
-		                </listitem>
-		                <listitem>
-		                    <para>a value constructor of a toplevel class that is a subtype of 
-		                    <literal>Identifiable</literal>,</para>
-		                </listitem>
-		            </itemizedlist>
+                    <itemizedlist>
+                        <listitem>
+                            <para>a toplevel anonymous class, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>a value constructor of a toplevel class that is a subtype of 
+                            <literal>Identifiable</literal>,</para>
+                        </listitem>
+                    </itemizedlist>
                 </listitem>
                 <listitem>
                     <para>a string literal, character literal, integer literal, or negated 

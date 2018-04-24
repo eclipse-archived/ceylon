@@ -58,8 +58,8 @@
 
     <path id="test.run.classpath">
         <path refid="test.compile.classpath" />
-    	<pathelement path="${ceylon.module-resolver-webdav.lib}" />
-    	<pathelement path="${ceylon.module-resolver-aether.lib}" />
+        <pathelement path="${ceylon.module-resolver-webdav.lib}" />
+        <pathelement path="${ceylon.module-resolver-aether.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon-tests.car}" />
@@ -323,10 +323,10 @@
                     <include name="org/eclipse/ceylon/compiler/java/test/ConcurrentTests.java" />
                 </fileset>
             </batchtest>
-        	<!--
+            <!--
             <test fork="yes" todir="${test.reports}"
-            	name="org.eclipse.ceylon.compiler.java.test.model.ModelLoaderTests"
-            	methods="loadJavaKeywords">
+                name="org.eclipse.ceylon.compiler.java.test.model.ModelLoaderTests"
+                methods="loadJavaKeywords">
             </test>
             -->
 
@@ -381,7 +381,7 @@
             <locationURI>PARENT-3-PROJECT_LOC/ceylon/compiler-java</locationURI>
         </link>
     </linkedResources>
-</projectDescription>]]></echo> 	
+</projectDescription>]]></echo>     
         <echo file="${proxy-project}/.classpath"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -395,14 +395,14 @@
 /.project
 /.gitignore
 /bin/]]></echo>     
-	</target>
-	
-	<target name="ide-quick-internal" depends="test.classes">
-		<antcall target="bundle-proxy">
-			<param name="archivePath" value="${ceylon.compiler.lib}"/>
-		</antcall>
-	    
-		<delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
+    </target>
+    
+    <target name="ide-quick-internal" depends="test.classes">
+        <antcall target="bundle-proxy">
+            <param name="archivePath" value="${ceylon.compiler.lib}"/>
+        </antcall>
+        
+        <delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
         <jar destfile="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/lib/compiler-tests-${module.org.eclipse.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="org/eclipse/ceylon/compiler/java/test/**" />
@@ -417,5 +417,5 @@
             <filterset beginToken=" " endToken=";"><filter token="org.eclipse.ceylon.compiler.java.test.model" value=" declarations;" /></filterset>
         </copy>
     </target>
-	
+    
 </project>

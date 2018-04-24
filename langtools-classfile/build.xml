@@ -180,16 +180,16 @@
 /bin/]]></echo>     
     </target>
     
-	<target name="ide-quick-internal" depends="classfile.classes">
+    <target name="ide-quick-internal" depends="classfile.classes">
         <antcall target="bundle-proxy">
             <param name="archivePath" value="${ceylon.classfile.lib}"/>
         </antcall>
     </target>
-	
+    
     <target name="test">
         <echo>No tests available (yet)</echo>
     </target>
-	
+    
     <target name="test-quick">
         <echo>No tests available (yet)</echo>
     </target>

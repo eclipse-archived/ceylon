@@ -69,7 +69,7 @@
   </target>
 
   <target name="linkset" depends="ant-tasks">
-  	<linkset id="links">
+    <linkset id="links">
       <link url="file://${arg.out}"/>
     </linkset>
     <ceylon-doc

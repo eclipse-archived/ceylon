@@ -78,7 +78,7 @@
         <mkdir dir="${build.bin}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
-        </tstamp>    	
+        </tstamp>       
         <jar destfile="${build.dist.repo}/${ceylon.cli.jar}">
             <fileset dir="${build.classes}">
             </fileset>

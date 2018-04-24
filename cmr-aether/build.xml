@@ -70,7 +70,7 @@
         <mkdir dir="${build.dist.repo}/${ceylon.module-resolver-aether.dir}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
-        </tstamp>    	
+        </tstamp>       
         <jar destfile="${build.dist.repo}/${ceylon.module-resolver-aether.jar}">
             <fileset dir="${build.classes}">
             </fileset>

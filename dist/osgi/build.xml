@@ -68,7 +68,7 @@
 
     <taskdef name="bindex" classname="org.osgi.impl.bundle.bindex.ant.BindexTask"
           classpath="${base.path}/org.osgi.impl.bundle.bindex-2.2.0.jar"/>
-	
+    
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
             <pathelement location="${base.path}/ant-contrib-1.0b3.jar"/>
@@ -111,7 +111,7 @@
             </filterset>
         </copy>
 
-    	<copy todir="${build.classes}" >
+        <copy todir="${build.classes}" >
             <fileset dir="${basedir}">
                 <include name="META-INF/**" />
             </fileset>
@@ -129,7 +129,7 @@
                 <filter token="ceylon-version" value="${ceylon.osgi.version}"/>
             </filterset>
         </copy>
-    	<copy todir="${build.repo}" >
+        <copy todir="${build.repo}" >
             <fileset dir="${repoDir}">
                 <include name="META-INF/**" />
             </fileset>
@@ -251,7 +251,7 @@
         org.eclipse.ceylon.module-resolver
     </property>
 
-	<target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
+    <target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
         <mkdir dir="${build.dist.plugins}" />
         <foreach target="copyModuleArchiveForOSGI" param="currentFile">
             <path>
@@ -329,9 +329,9 @@
         <touch file="${build}/bundles.info"/>
         <makeurl property="bundlesInfoUrl" file="${build}/bundles.info"/>
         <ceylon-p2 
-        	sysRep="${repoDir}/repo"
+            sysRep="${repoDir}/repo"
             out="${build.dist}"
-        	repositoryName="Ceylon Distribution Bundles"
+            repositoryName="Ceylon Distribution Bundles"
             categoryPrefix="org.eclipse.ceylon.dist"
             categories="${p2}/category.xml"
             fork="true">
@@ -346,7 +346,7 @@
             <module name="org.eclipse.ceylon.java.main" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
             <module name="org.eclipse.ceylon.tools" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
         </ceylon-p2>
-    	<!--
+        <!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
             <arg value="-noSplash"/>
             <arg value="-clean"/>
@@ -386,7 +386,7 @@
             <arg value="-categoryQualifier"/>
             <arg value="org.eclipse.ceylon.dist"/>
             <arg value="-vmargs"/>
-        	<arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
+            <arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
             <arg value="-Dosgi.bundles=${bundlesToStart}"/>
         </exec>
         -->

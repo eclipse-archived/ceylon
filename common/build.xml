@@ -99,7 +99,7 @@
         <mkdir dir="${build.dist.repo}/${ceylon.common.dir}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
-        </tstamp>    	
+        </tstamp>       
         <jar destfile="${build.dist.repo}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
             </fileset>

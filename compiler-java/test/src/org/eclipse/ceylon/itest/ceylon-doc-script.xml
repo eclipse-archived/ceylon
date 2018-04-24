@@ -7,8 +7,8 @@
   </target>
   
   <target name="version" depends="-init">
-  	<exec executable="${script.ceylon}" failonerror="true">
-  	  <arg value="doc"/>
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
       <arg value="-version"/>
     </exec>
   </target>    
@@ -62,7 +62,7 @@
       <arg value="com.example.foo"/>
     </exec>
   </target>
-	  
+      
   <target name="default-module" depends="-init">
     <exec executable="${script.ceylon}" failonerror="true">
       <arg value="doc"/>

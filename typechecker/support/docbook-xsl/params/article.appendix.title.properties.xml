@@ -12,7 +12,7 @@
 <src:fragment id='article.appendix.title.properties.frag'>
 <xsl:attribute-set name="article.appendix.title.properties"
                    use-attribute-sets="section.title.properties
-		                       section.title.level1.properties">
+                               section.title.level1.properties">
   <xsl:attribute name="margin-left">
     <xsl:value-of select="$title.margin.left"/>
   </xsl:attribute>
