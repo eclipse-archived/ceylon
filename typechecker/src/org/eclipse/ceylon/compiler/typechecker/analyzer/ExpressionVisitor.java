@@ -10629,30 +10629,32 @@ public class ExpressionVisitor extends Visitor {
                             }
                         }
                     }
-                    if (!argType.isTypeConstructor() && 
-                            param.isTypeConstructor()) {
-                        typeArgNode(tas, i, parent)
-                            .addError("type argument must be a type constructor: parameter '" 
-                            		+  param.getName() 
-                                    + "' of declaration '" 
-                                    + dec.getName(unit)
-                            		+ "' is a type constructor parameter but '" 
-                            		+ argType.asString(unit) 
-                            		+ "' is a regular type");
-                    }
-                    else if (param.isTypeConstructor()) {
-                        Node argNode;
-                        if (explicit) {
-                            Tree.TypeArgumentList tl = 
-                                    (Tree.TypeArgumentList) tas;
-                            argNode = i<tl.getTypes().size() ?
-                            		tl.getTypes().get(i) : parent;
-                        }
-                        else {
-                            argNode = parent;
-                        }
-                        checkTypeConstructorParam(param, 
-                                argType, argNode);
+                    if (param.isTypeConstructor()) {
+	                    if (!argType.resolveAliases()
+	                    			.isTypeConstructor()) {
+	                        typeArgNode(tas, i, parent)
+	                            .addError("type argument must be a type constructor: parameter '" 
+	                            		+  param.getName() 
+	                                    + "' of declaration '" 
+	                                    + dec.getName(unit)
+	                            		+ "' is a type constructor parameter but '" 
+	                            		+ argType.asString(unit) 
+	                            		+ "' is a regular type");
+	                    }
+	                    else {
+	                        Node argNode;
+	                        if (explicit) {
+	                            Tree.TypeArgumentList tl = 
+	                                    (Tree.TypeArgumentList) tas;
+	                            argNode = i<tl.getTypes().size() ?
+	                            		tl.getTypes().get(i) : parent;
+	                        }
+	                        else {
+	                            argNode = parent;
+	                        }
+	                        checkTypeConstructorParam(param, 
+	                                argType, argNode);
+	                    }
                     }
                 }
                 List<Type> sts = param.getSatisfiedTypes();
@@ -10954,10 +10956,14 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkTypeConstructorParam(TypeParameter param, 
             Type argType, Node argNode) {
-        
+        argType = argType.resolveAliases();
+    	
         if (!argType.isTypeConstructor()) {
-            argNode.addError("not a type constructor: '" +
-                    argType.asString(unit) + "'");
+            argNode.addError("not a type constructor: '" 
+            		+ argType.asString(unit) 
+            		+ "' is a regular type but '" 
+            		+ param.getName(unit) 
+            		+ "' expects a type constructor");
         }
         else {
             argType = unwrapAliasedTypeConstructor(argType);
@@ -10993,12 +10999,17 @@ public class ExpressionVisitor extends Visitor {
                         param.getTypeParameters();
                 int size = paramTypeParams.size();
                 if (allowed<size || required>size) {
-                    argNode.addError("argument type constructor has wrong number of type parameters: argument '" +
-                            argTypeDec.getName(unit) + "' has " + 
-                            allowed + " type parameters " +
-                            "but parameter '" + 
-                            param.getName(unit) + "' has " + 
-                            size + " type parameters");
+                    argNode.addError(
+                    		"argument type constructor has wrong number of type parameters: argument '" 
+            				+ argTypeDec.getName(unit) 
+            				+ "' has " 
+            				+ allowed 
+            				+ " type parameters " 
+            				+ "but parameter '" 
+            				+ param.getName(unit) 
+            				+ "' has " 
+            				+ size 
+            				+ " type parameters");
                 }
                 for (int j=0; j<size && j<allowed; j++) {
                     TypeParameter paramParam = 
@@ -11007,43 +11018,55 @@ public class ExpressionVisitor extends Visitor {
                             argTypeParams.get(j);
                     if (paramParam.isCovariant() &&
                             !argParam.isCovariant()) {
-                        argNode.addError("argument type constructor is not covariant: '" +
-                                argParam.getName() + "' of '" + 
-                                argTypeDec.getName(unit) + 
-                                "' must have the same variance as '" +
-                                paramParam.getName() + "' of '" + 
-                                param.getName(unit) + 
-                                "'");
+                        argNode.addError(
+                        		"argument type constructor is not covariant: '" 
+                				+ argParam.getName() 
+                				+ "' of '" 
+                				+ argTypeDec.getName(unit) 
+                				+ "' must have the same variance as '" 
+                				+ paramParam.getName() 
+                				+ "' of '" 
+                				+ param.getName(unit) 
+                				+ "'");
                     }
                     else if (paramParam.isContravariant() &&
                             !argParam.isContravariant()) {
-                        argNode.addError("argument type constructor is not contravariant: '" +
-                                argParam.getName() + "' of '" + 
-                                argTypeDec.getName(unit) + 
-                                "' must have the same variance as '" +
-                                paramParam.getName() + "' of '" + 
-                                param.getName(unit) + 
-                                "'");
+                        argNode.addError(
+                        		"argument type constructor is not contravariant: '" 
+            					+ argParam.getName() 
+            					+ "' of '" 
+            					+ argTypeDec.getName(unit) 
+            					+ "' must have the same variance as '" 
+            					+ paramParam.getName() 
+            					+ "' of '" 
+            					+ param.getName(unit) 
+            					+ "'");
                     }
                     if (!intersectionOfSupertypes(paramParam)
                             .isSubtypeOf(intersectionOfSupertypes(argParam))) {
-                        argNode.addError("upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" + 
-                                argParam.getName() + "' of '" + 
-                                argTypeDec.getName(unit) + 
-                                "' does accept all type arguments accepted by '" + 
-                                paramParam.getName() + "' of '" + 
-                                param.getName(unit) + 
-                                "'");
+                        argNode.addError(
+                        		"upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" 
+                				+ argParam.getName() 
+                				+ "' of '" 
+                				+ argTypeDec.getName(unit) 
+                				+ "' does accept all type arguments accepted by '" 
+                				+ paramParam.getName() 
+                				+ "' of '" 
+                				+ param.getName(unit) 
+                				+ "'");
                     }
                     if (!unionOfCaseTypes(paramParam)
                             .isSubtypeOf(unionOfCaseTypes(argParam))) {
-                        argNode.addError("enumerated bound on type parameter of argument type constructor is not a supertype of enumerated bound on corresponding type parameter of parameter: '" + 
-                                argParam.getName() + "' of '" + 
-                                argTypeDec.getName(unit) + 
-                                "' does accept all type arguments accepted by '" + 
-                                paramParam.getName() + "' of '" + 
-                                param.getName(unit) + 
-                                "'");
+                        argNode.addError(
+                        		"enumerated bound on type parameter of argument type constructor is not a supertype of enumerated bound on corresponding type parameter of parameter: '" 
+                				+ argParam.getName() 
+                				+ "' of '" 
+                				+ argTypeDec.getName(unit) 
+                				+ "' does accept all type arguments accepted by '" 
+                				+ paramParam.getName() 
+                				+ "' of '" 
+                				+ param.getName(unit) 
+                				+ "'");
                     }
                 }
             }

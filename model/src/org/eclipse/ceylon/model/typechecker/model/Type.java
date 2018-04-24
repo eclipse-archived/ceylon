@@ -194,6 +194,17 @@ public class Type extends Reference {
         return typeConstructor;
     }
     
+    /**
+     * Does this type occurs as the argument of a type
+     * constructor parameter? There are slightly different
+     * subtyping rules for type constructors in this case.
+     * 
+     * @return true if this type occurs as an argument to
+     *              a type constructor parameter
+     *              
+     * @see Type#isSubtypeOfTypeConstructor
+     * @see Type#isExactlyTypeConstructor
+     */
     public TypeParameter getTypeConstructorParameter() {
         return typeConstructorParameter;
     }
@@ -1252,6 +1263,7 @@ public class Type extends Reference {
             Type qualifyingType = getQualifyingType();
             Type otherQualifyingType = type.getQualifyingType();
             if (typeConstructorParam==null) {
+                //occurs as the type of something
                 List<Type> paramsAsArgs =
                         typeParametersAsArgList(otherDec);
                 Type appliedType =
@@ -1267,6 +1279,8 @@ public class Type extends Reference {
                                 paramsAsArgs);
             }
             else {
+                // occurs as a type argument to a type 
+                // constructor parameter
                 List<Type> paramsAsArgs = 
                         typeParametersAsArgList(
                                 typeConstructorParam);

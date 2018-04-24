@@ -32,7 +32,7 @@ void testAdvancedStuff() {
     $type:"Sequence<String>" value result3 = h.fmap(Object.string);
     Functor<Float|Integer, out <T>=>List<T>&Sequence<T>> hh = h;
     
-    Functor<Integer, Nothing> funny = 
+    $error Functor<Integer, Nothing> funny = 
             object satisfies Functor<Integer, Nothing> {
         shared actual Nothing fmap<Result>(Result(Integer) fun)
                 => nothing;

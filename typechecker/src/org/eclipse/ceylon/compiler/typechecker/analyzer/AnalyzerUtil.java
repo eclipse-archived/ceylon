@@ -486,7 +486,7 @@ public class AnalyzerUtil {
                         TypeParameter tp = 
                                 typeParameters.get(i);
                         if (tp.isTypeConstructor()) {
-                            setTypeConstructor(type, tp);
+                        	t.setTypeConstructorParameter(tp);
                         }
                         typeArgs.put(tp, t);
                         if (type instanceof Tree.StaticType) {
@@ -1473,51 +1473,7 @@ public class AnalyzerUtil {
             return et;
         }
     }
-
-    static boolean setTypeConstructor(Tree.Type t,
-            TypeParameter typeParam) {
-        Type pt = t.getTypeModel();
-        if (pt == null) {
-            return false;
-        }
-        else {
-            /*if (t instanceof Tree.IntersectionType) {
-                Tree.IntersectionType it = 
-                        (Tree.IntersectionType) t;
-                for (Tree.StaticType st: it.getStaticTypes()) {
-                    if (setTypeConstructor(st,typeParam)) {
-                        pt.setTypeConstructor(true);
-                        pt.setTypeConstructorParameter(typeParam);
-                    }
-                }
-            }
-            else if (t instanceof Tree.UnionType) {
-                Tree.UnionType it = 
-                        (Tree.UnionType) t;
-                for (Tree.StaticType st: it.getStaticTypes()) {
-                    if (setTypeConstructor(st,typeParam)) {
-                        pt.setTypeConstructor(true);
-                        pt.setTypeConstructorParameter(typeParam);
-                    }
-                }
-            }
-            else*/ 
-            if (t instanceof Tree.SimpleType) {
-                Tree.SimpleType s = 
-                        (Tree.SimpleType) t;
-                if (s.getTypeArgumentList()==null) {
-                    TypeDeclaration std = s.getDeclarationModel();
-                    if (std!=null && std.isParameterized() 
-                            || typeParam!=null) {
-                        pt.setTypeConstructor(true);
-                        pt.setTypeConstructorParameter(typeParam);
-                    }
-                }
-            }
-            return pt.isTypeConstructor();
-        }
-    }
-
+    
     static boolean checkCasesDisjoint(Type later, Type earlier,
             Node node, String hint) {
         if (!isTypeUnknown(later) && !isTypeUnknown(earlier)) {

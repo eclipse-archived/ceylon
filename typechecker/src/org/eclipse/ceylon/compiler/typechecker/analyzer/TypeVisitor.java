@@ -19,7 +19,6 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getT
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
-import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -417,23 +416,23 @@ public class TypeVisitor extends Visitor {
     
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
-            Scope scope = that.getScope();
-            ClassOrInterface ci = 
-                    getContainingClassOrInterface(scope);
-            if (ci!=null) {
-                if (scope instanceof Constructor) {
-                    that.setTypeModel(intersectionOfSupertypes(ci));
-                }
-                else if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = 
-                            (ClassOrInterface) 
-                                ci.getContainer();
-                    that.setTypeModel(intersectionOfSupertypes(oci));
-                }
-                else {
-                    that.addError("super appears in extends for non-member class");
-                }
-            }
+    	Scope scope = that.getScope();
+    	ClassOrInterface ci = 
+    			getContainingClassOrInterface(scope);
+    	if (ci!=null) {
+    		if (scope instanceof Constructor) {
+    			that.setTypeModel(intersectionOfSupertypes(ci));
+    		}
+    		else if (ci.isClassOrInterfaceMember()) {
+    			ClassOrInterface oci = 
+    					(ClassOrInterface) 
+    					ci.getContainer();
+    			that.setTypeModel(intersectionOfSupertypes(oci));
+    		}
+    		else {
+    			that.addError("super appears in extends for non-member class");
+    		}
+    	}
         //}
     }
     
@@ -470,9 +469,6 @@ public class TypeVisitor extends Visitor {
         Tree.StaticType ot = that.getOuterType();        
         Type pt = ot.getTypeModel();
         if (pt!=null) {
-//            if (pt.isTypeConstructor()) {
-//                ot.addError("qualifying type may not be a type constructor");
-//            }
             Tree.TypeArgumentList tal = 
                     that.getTypeArgumentList();
             if (that.getMetamodel() && 
@@ -662,9 +658,6 @@ public class TypeVisitor extends Visitor {
                 that.addError("parameter may not be annotated late");
             }
         }
-//        if (type.getTypeModel().isTypeConstructor()) {
-//            type.addError("type constructor may not occur as the type of a declaration");
-//        }
     }
 
     @Override 
@@ -673,13 +666,7 @@ public class TypeVisitor extends Visitor {
         setType(that, that.getType(), 
                 that.getDeclarationModel());
     }
-        
-    /*@Override 
-    public void visit(Tree.FunctionArgument that) {
-        super.visit(that);
-        setType(that, that.getType(), that.getDeclarationModel());
-    }*/
-        
+    
     private void setType(Node that, Tree.Type type, 
             TypedDeclaration td) {
         if (type==null) {
@@ -781,39 +768,8 @@ public class TypeVisitor extends Visitor {
                             1001);
                 }
             }
-            /*else {
-                // Check if the class has at least one shared constructor
-                boolean found = hasSharedConstructors(cd);
-                // If not found check if the declaration is a native implementation
-                if (!found && 
-                        cd.isNative() && 
-                        !cd.isNativeHeader()) {
-                    Declaration hdr = getNativeHeader(cd);
-                    // And check that it has a native header
-                    if (hdr instanceof Class) {
-                        Class hcd = (Class) hdr;
-                        // In that case we try again with the header
-                        found = hasSharedConstructors(hcd);
-                    }
-                }
-                if (!found) {
-                    that.addError("class with constructors must declare at least one shared constructor: class '" + 
-                            cd.getName() + 
-                            "' has no shared constructor");
-                }
-            }*/
         }
     }
-
-   /* private boolean hasSharedConstructors(Class cd) {
-        for (Declaration m: cd.getMembers()) {
-            if (m instanceof Constructor &&
-                    m.isShared()) {
-                return true;
-            }
-        }
-        return false;
-    }*/
     
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
@@ -854,11 +810,6 @@ public class TypeVisitor extends Visitor {
                             "'");
                     dta = null;
                 }
-                /*else if (dta.containsTypeParameters()) {
-                    type.addError("default type argument involves type parameters: " + 
-                            dta.asString(unit));
-                    dta = null;
-                }*/
                 p.setDefaultTypeArgument(dta);
             }
         }
@@ -1031,11 +982,7 @@ public class TypeVisitor extends Visitor {
                 that.addError("malformed aliased type");
             }
             else {
-                Type type = et.getTypeModel();
-                if (type!=null) {
-                    setTypeConstructor(et, null);
-                    ta.setExtendedType(type);
-                }
+                ta.setExtendedType(et.getTypeModel());
             }
         }
     }
@@ -1059,11 +1006,6 @@ public class TypeVisitor extends Visitor {
                         dec.getName() + "'");
             }
         }
-        //unnecessary, let definite assignment checking handle it!
-//        if (sie==null && isNativeImplementation(dec)) {
-//            that.addError("missing body for native function: '" + 
-//                    dec.getName() + "' must have a body");
-//        }
     }
     
     @Override
@@ -1097,11 +1039,6 @@ public class TypeVisitor extends Visitor {
                         dec.getName() + "'");
             }
         }
-        //unnecessary, let definite assignment checking handle it!
-//        if (sie==null && isNativeImplementation(dec)) {
-//            that.addError("missing body for native value: '" + 
-//                    dec.getName() + "' must have a body");
-//        }
     }
     
     @Override
@@ -1328,22 +1265,6 @@ public class TypeVisitor extends Visitor {
         td.setSatisfiedTypes(list);
     }
     
-    /*@Override 
-    public void visit(Tree.TypeConstraint that) {
-        super.visit(that);
-        if (that.getSelfType()!=null) {
-            TypeDeclaration td = (TypeDeclaration) that.getSelfType().getScope();
-            TypeParameter tp = that.getDeclarationModel();
-            td.setSelfType(tp.getType());
-            if (tp.isSelfType()) {
-                that.addError("type parameter may not act as self type for two different types");
-            }
-            else {
-                tp.setSelfTypedDeclaration(td);
-            }
-        }
-    }*/
-
     @Override 
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
@@ -1525,10 +1446,7 @@ public class TypeVisitor extends Visitor {
                 p.setModel(mov);
             }
         }
-        /*if (isGeneric(a)) {
-            that.addError("parameter declaration is generic: '" + 
-                    name + "' may not declare type parameters");
-        }*/
+        
         if (p.isDefaulted()) {
             checkDefaultArg(that.getSpecifierExpression(), p);
         }
