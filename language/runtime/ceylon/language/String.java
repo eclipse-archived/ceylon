@@ -864,7 +864,7 @@ public final class String
     
     @Ignore
     public static Integer lastInclusion(java.lang.String value, 
-    		List<? extends Character> sublist) {
+            List<? extends Character> sublist) {
         return lastInclusion(value, sublist, 0);
     }
     
@@ -1768,7 +1768,7 @@ public final class String
         if (times<=0 || len==0) return "";
         if (times==1) return value;
         java.lang.StringBuilder builder = 
-        		new java.lang.StringBuilder(Util.toInt(len*times));
+                new java.lang.StringBuilder(Util.toInt(len*times));
         for (int i=0; i<times; i++) {
             builder.append(value);
         }
@@ -3011,7 +3011,7 @@ public final class String
     @Ignore
     public static Iterable<? extends Sequence<? extends Character>,? extends java.lang.Object> 
     partition(java.lang.String value, long length) {
-    	return instance(value).partition(length);
+        return instance(value).partition(length);
     }
     
     @Ignore

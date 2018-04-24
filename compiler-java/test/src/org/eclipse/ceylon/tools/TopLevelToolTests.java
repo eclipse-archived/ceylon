@@ -265,7 +265,7 @@ public class TopLevelToolTests {
 "    example\n"+
 "\n"+
 "Run 'ceylon help' for more help", 
-		out.getErr().trim().replace("\r", ""));
+        out.getErr().trim().replace("\r", ""));
             Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
         }
     }

@@ -39,24 +39,24 @@ public abstract class TypeDeclaration extends Declaration
     private Type selfType;
     private List<Type> brokenSupertypes = null; // delayed allocation
     private boolean inconsistentType;
-	private boolean sealed;
+    private boolean sealed;
     private List<TypedDeclaration> caseValues;
     private String samName;
 
-	/** 
-	 * true if the type arguments of this type are not 
-	 * available at runtime 
-	 */
-	public boolean isErasedTypeArguments() {
-	    return false;
-	}
-	
-	public boolean isSealed() {
-	    return sealed;
+    /** 
+     * true if the type arguments of this type are not 
+     * available at runtime 
+     */
+    public boolean isErasedTypeArguments() {
+        return false;
     }
-	
-	public void setSealed(boolean sealed) {
-	    this.sealed = sealed;
+    
+    public boolean isSealed() {
+        return sealed;
+    }
+    
+    public void setSealed(boolean sealed) {
+        this.sealed = sealed;
     }
     
     public boolean isInconsistentType() {
@@ -87,11 +87,11 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public boolean isSelfType() {
-    	return false;
+        return false;
     }
     
     public boolean isFinal() {
-    	return false;
+        return false;
     }
     
     public boolean isObjectClass() {
@@ -178,18 +178,18 @@ public abstract class TypeDeclaration extends Declaration
     public Type appliedType(
             Type qualifyingType,
             List<Type> typeArguments) {
-    	if (qualifyingType!=null && 
+        if (qualifyingType!=null && 
                 qualifyingType.isNothing()) {
-        	return qualifyingType;
+            return qualifyingType;
         }
-    	else {
+        else {
             Type pt = new Type();
             pt.setDeclaration(this);
             pt.setQualifyingType(qualifyingType);
             pt.setTypeArguments(getTypeArgumentMap(this, 
                     qualifyingType, typeArguments));
             return pt;
-    	}
+        }
     }
     
     /**
@@ -714,7 +714,7 @@ public abstract class TypeDeclaration extends Declaration
             }
             @Override
             public boolean isMemberLookup() {
-            	return false;
+                return false;
             }
         };
         Type supertype = 
@@ -777,7 +777,7 @@ public abstract class TypeDeclaration extends Declaration
             }
             @Override
             public boolean isMemberLookup() {
-            	return true;
+                return true;
             }
         };
         class LooseCriteria implements Type.Criteria {

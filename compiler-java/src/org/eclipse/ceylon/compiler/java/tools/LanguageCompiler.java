@@ -136,7 +136,7 @@ public class LanguageCompiler extends JavaCompiler {
     private final org.eclipse.ceylon.compiler.typechecker.context.Context ceylonContext;
     private final VFS vfs;
 
-	private AbstractModelLoader modelLoader;
+    private AbstractModelLoader modelLoader;
 
     private CeylonEnter ceylonEnter;
 
@@ -714,9 +714,9 @@ public class LanguageCompiler extends JavaCompiler {
     private String getPackage(JavaFileObject file) throws IOException{
         Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
 
-    	// Figure out the package name by stripping the "-src" prefix and
-    	// extracting
-    	// the package part of the fullname.
+        // Figure out the package name by stripping the "-src" prefix and
+        // extracting
+        // the package part of the fullname.
         
         String filePath = file.toUri().getPath();
         // go absolute
@@ -728,7 +728,7 @@ public class LanguageCompiler extends JavaCompiler {
             if (filePath.startsWith(prefix) && prefix.length() > srcDirLength) {
                 srcDirLength = prefix.length();
             }
-    	}
+        }
         
         if (srcDirLength > 0) {
             String fullname = filePath.substring(srcDirLength);
@@ -741,7 +741,7 @@ public class LanguageCompiler extends JavaCompiler {
             if (!packageName.equals(""))
                 return packageName;
         }
-    	return null;
+        return null;
     }
     
     private void printError(RecognitionError le, String message, String key, LineMap map) {

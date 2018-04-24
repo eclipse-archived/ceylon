@@ -188,7 +188,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     @Description("The depth of the dependency tree to show, or `all` for the full tree. " +
-    		"(Allowed values: any positive integer or `all`, default: `1`)")
+            "(Allowed values: any positive integer or `all`, default: `1`)")
     @OptionArgument(argumentName="depth")
     public void setDependencyDepth(String depth) {
         if ("all".equals(depth)) {
@@ -295,7 +295,7 @@ public class CeylonInfoTool extends RepoUsingTool {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
                 Collection<ModuleDetails> modules = getModules(getRepositoryManager(), module.getNamespace(), name, queryType, 
-                		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                        jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (modules.isEmpty()) {
                     String err;
                     if (name.startsWith("*") || name.endsWith("*")) {
@@ -311,8 +311,8 @@ public class CeylonInfoTool extends RepoUsingTool {
             } else {
                 Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(),
                         module.getNamespace(), module.getName(),
-                		module.getVersion(), false, queryType,
-                		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                        module.getVersion(), false, queryType,
+                        jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (versions.isEmpty()) {
                     // try from source
                     ModuleVersionDetails fromSource = getModuleVersionDetailsFromSource(name);
@@ -325,7 +325,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
                             versions = getModuleVersions(getRepositoryManager(), module.getNamespace(), module.getName(), module.getVersion(), false,
-                            		queryType, null, null, null, null);
+                                    queryType, null, null, null, null);
                         }
                         if (versions.isEmpty()) {
                             String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion(), msgkey);
@@ -345,8 +345,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String namespace, String name, ModuleQuery.Type type, 
-    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
-    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor) {
         String queryString = name;
         if (queryString.startsWith("*")) {
             queryString = queryString.substring(1);
@@ -356,8 +356,8 @@ public class CeylonInfoTool extends RepoUsingTool {
         }
         
         ModuleVersionQuery query = getModuleVersionQuery(namespace, queryString, null, type, 
-        		jvmBinaryMajor, jvmBinaryMinor,
-        		jsBinaryMajor, jsBinaryMinor);
+                jvmBinaryMajor, jvmBinaryMinor,
+                jsBinaryMajor, jsBinaryMinor);
         
         ModuleSearchResult result;
         if (!name.startsWith("*") || name.equals("*")) {
@@ -370,10 +370,10 @@ public class CeylonInfoTool extends RepoUsingTool {
 
     @Override
     protected ModuleVersionQuery getModuleVersionQuery(String namespace, String name, String version, ModuleQuery.Type type, 
-    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
-    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor) {
         ModuleVersionQuery query = super.getModuleVersionQuery(namespace, name, version, type, jvmBinaryMajor, jvmBinaryMinor,
-        		jsBinaryMajor, jsBinaryMinor);
+                jsBinaryMajor, jsBinaryMinor);
         if (findMember != null) {
             query.setMemberName(findMember);
         }
@@ -537,7 +537,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         msg("module.name").append(module.getName()).newline();
         msg("module.version").append(version.getVersion()).newline();
         if (version.getLabel() != null) {
-        	msg("module.label").append(version.getLabel()).newline();
+            msg("module.label").append(version.getLabel()).newline();
         }
         outputArtifacts(version.getArtifactTypes());
         msg("module.available").msg((version.isRemote() ? "available.remote" : "available.local")).newline();
@@ -780,7 +780,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         
         if (recurse && !"ceylon.language".equals(dep.getName())) {
             Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getNamespace(), dep.getName(), dep.getVersion(), true, queryType, 
-            		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                    jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), names, depth + 1);
             }

@@ -238,10 +238,10 @@ public class Activator implements BundleActivator {
             return ModuleScope.COMPILE;
         }
 
-		@Override
-		public List<Exclusion> getExclusions() {
-			return null;
-		}
+        @Override
+        public List<Exclusion> getExclusions() {
+            return null;
+        }
     }
 
     

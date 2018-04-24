@@ -191,7 +191,7 @@ public class FunctionHelper {
         gen.out("(");
         if (that.getBlock() == null) {
             singleExprFunction(that.getParameterLists(), 
-            		that.getSpecifierExpression().getExpression(),
+                    that.getSpecifierExpression().getExpression(),
                     that.getScope(), false, true, gen, that.getType());
         } else {
             multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
@@ -203,8 +203,8 @@ public class FunctionHelper {
         gen.out("(");
         if (that.getBlock() == null) {
             singleExprFunction(that.getParameterLists(), 
-            		that.getExpression(), that.getScope(), 
-            		false, true, gen, that.getType());
+                    that.getExpression(), that.getScope(), 
+                    false, true, gen, that.getType());
         } else {
             multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
         }
@@ -391,12 +391,12 @@ public class FunctionHelper {
         boolean first=true;
         HashSet<Declaration> decs2 = new HashSet<>();
         Tree.LetClause letClause = that.getLetClause();
-		for (Tree.Statement st : letClause.getVariables()) {
+        for (Tree.Statement st : letClause.getVariables()) {
             if (!first)gen.out(",");
             if (st instanceof Tree.Variable) {
                 final Tree.Variable var = (Tree.Variable)st;
                 Value value = var.getDeclarationModel();
-				gen.out(gen.getNames().name(value), "=");
+                gen.out(gen.getNames().name(value), "=");
                 var.getSpecifierExpression().getExpression().visit(gen);
                 directs.add(value);
                 decs2.add(value);

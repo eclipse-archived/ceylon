@@ -195,7 +195,7 @@ public class ModuleCopycat {
                 return;
             }
             Collection<ModuleVersionDetails> versions = getModuleVersions(srcRepoman, context.getName(), context.getVersion(), 
-            		ModuleQuery.Type.ALL, null, null, null, null);
+                    ModuleQuery.Type.ALL, null, null, null, null);
             if (!versions.isEmpty()) {
                 ArtifactContext depContext = context.copy();
                 ModuleVersionDetails ver = versions.iterator().next();
@@ -281,9 +281,9 @@ public class ModuleCopycat {
     }
 
     private Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, 
-    		ModuleQuery.Type type, 
-    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
-    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
+            ModuleQuery.Type type, 
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor) {
         ModuleVersionQuery query = new ModuleVersionQuery(null, name, version, type);
         if (jvmBinaryMajor != null) {
             query.setJvmBinaryMajor(jvmBinaryMajor);

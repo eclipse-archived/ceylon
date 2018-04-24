@@ -707,10 +707,10 @@ public class ModelLoaderTests extends CompilerTests {
             return true;
         }
     }// class ModelComparison
-	@Test
-	public void loadClass(){
-		verifyCompilerClassLoading("Klass.ceylon");
-	}
+    @Test
+    public void loadClass(){
+        verifyCompilerClassLoading("Klass.ceylon");
+    }
 
     @Test
     public void loadClassWithMethods(){

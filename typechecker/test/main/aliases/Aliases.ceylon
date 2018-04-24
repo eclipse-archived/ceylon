@@ -252,29 +252,29 @@ void foo2(String|Float|Integer|{String|Float|Integer*} bar) {
 alias Value => Float|Integer;
 
 class Array() satisfies List<Value> {
-	
-	shared actual List<Value> clone() => nothing;
-	
-	shared actual Value? getFromFirst(Integer index) => nothing;
-	
-	shared actual Integer? lastIndex => nothing;
-	
-	shared actual Boolean equals(Object that) {
-		if (is Array that) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	shared actual Integer hash {
-		variable value hash = 1;
-		return hash;
-	}
-	
-	shared actual String string => super.string;
-	
+    
+    shared actual List<Value> clone() => nothing;
+    
+    shared actual Value? getFromFirst(Integer index) => nothing;
+    
+    shared actual Integer? lastIndex => nothing;
+    
+    shared actual Boolean equals(Object that) {
+        if (is Array that) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    shared actual Integer hash {
+        variable value hash = 1;
+        return hash;
+    }
+    
+    shared actual String string => super.string;
+    
 }
 
 abstract class Enum() of CaseAlias {}

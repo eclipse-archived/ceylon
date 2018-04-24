@@ -184,14 +184,14 @@ class ControlStructures() {
     try ($error Transaction trx) {}
     
     try (f = FileHandle()) {
-    	//do something
-    	f.tell();
+        //do something
+        f.tell();
     }
     catch (Exception e) {
-    	$error t.rollbackOnly();
+        $error t.rollbackOnly();
     }
     finally {
-    	$error t.rollbackOnly();
+        $error t.rollbackOnly();
     }
     
     Transaction tt = Transaction();

@@ -72,11 +72,11 @@ public class DocVisitor extends Visitor {
     @Override
     public void visit(AnyAttribute that) {
         //local vars
-    	Type t = that.getDeclarationModel().getType();
-    	if (t != null && t.getDeclaration() != null) {
-    		retrieveDocs(t.getDeclaration().getAnnotations(), 
-    				that.getType().getLocation());
-    	}
+        Type t = that.getDeclarationModel().getType();
+        if (t != null && t.getDeclaration() != null) {
+            retrieveDocs(t.getDeclaration().getAnnotations(), 
+                    that.getType().getLocation());
+        }
         super.visit(that);
     }
 
@@ -92,8 +92,8 @@ public class DocVisitor extends Visitor {
         else {
             Type t = that.getDeclarationModel().getType();
             if (t != null && t.getDeclaration() != null) {
-            	retrieveDocs(t.getDeclaration().getAnnotations(), 
-            			that.getType().getLocation());
+                retrieveDocs(t.getDeclaration().getAnnotations(), 
+                        that.getType().getLocation());
             }
         }
         super.visit(that);
@@ -102,7 +102,7 @@ public class DocVisitor extends Visitor {
     public void visit(SimpleType that) {
         TypeDeclaration d = that.getDeclarationModel();
         if (d!=null) {
-        	retrieveDocs(d.getAnnotations(), that.getLocation());
+            retrieveDocs(d.getAnnotations(), that.getLocation());
         }
         super.visit(that);
     }

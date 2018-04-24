@@ -718,7 +718,7 @@ public class LinkRenderer {
         }
         linkBuilder.append(" href='").append(url).append("'");
         if (toolTip != null) {
-        	linkBuilder.append(" title='").append(toolTip).append("'");
+            linkBuilder.append(" title='").append(toolTip).append("'");
         }
         linkBuilder.append(">");
         if (customText==null && withinText) {

@@ -47,7 +47,7 @@ public class DocBookVisitor implements Visitor {
 //        ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         if (!omitDoctype) {
             docbook.doctype(
-            		"refentry PUBLIC \"-//OASIS//DTD DocBook XML V4.1.2//EN\"\n"+
+                    "refentry PUBLIC \"-//OASIS//DTD DocBook XML V4.1.2//EN\"\n"+
                     "\"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd\"").text("\n");
         }
         

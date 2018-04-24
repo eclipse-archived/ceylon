@@ -11,14 +11,14 @@ $error abstract class WidgetBucket<in X>()
 }
 
 class Better<out T>() satisfies Pile<Bucket<T>> {
-	shared Pile<Bucket<T>> ok() {
-		Pile<Bucket<T>> w = this;
-		return w;
-	}
+    shared Pile<Bucket<T>> ok() {
+        Pile<Bucket<T>> w = this;
+        return w;
+    }
 }
 $error class Worse<out T>() extends Widget<Bucket<T>>() {
-	Widget<Bucket<T>> notok() {
-		Widget<Bucket<T>> w = this;
-		return w;
-	}
+    Widget<Bucket<T>> notok() {
+        Widget<Bucket<T>> w = this;
+        return w;
+    }
 }

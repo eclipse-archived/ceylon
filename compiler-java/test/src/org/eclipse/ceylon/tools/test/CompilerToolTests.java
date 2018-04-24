@@ -71,9 +71,9 @@ public class CompilerToolTests extends AbstractToolTests {
     public void testIssueGH2117_suppress_warning_BindingRaisingIllegalArgumentEx()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-		pluginFactory.bindArguments(model, getMainTool(), toolOptions(
-				"--src=test/src", "org.eclipse.ceylon.tools.test.ceylon",
-				"--suppress-warning"));
+        pluginFactory.bindArguments(model, getMainTool(), toolOptions(
+                "--src=test/src", "org.eclipse.ceylon.tools.test.ceylon",
+                "--suppress-warning"));
     }
 
     @Test
@@ -451,7 +451,7 @@ public class CompilerToolTests extends AbstractToolTests {
                     toolOptions("--suppress-warning=blah"));
             Assert.fail("Tool should have thrown an exception");
         } catch (OptionArgumentException e) {
-        	Assert.assertEquals("Invalid value 'blah' given for option 'suppress-warning' to command 'compile'", e.getMessage());
+            Assert.assertEquals("Invalid value 'blah' given for option 'suppress-warning' to command 'compile'", e.getMessage());
             // We expect this, not a FatalToolError
         }
         

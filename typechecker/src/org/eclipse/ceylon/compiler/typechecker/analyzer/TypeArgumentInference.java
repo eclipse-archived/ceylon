@@ -58,7 +58,7 @@ import org.eclipse.ceylon.model.typechecker.model.Value;
 public class TypeArgumentInference {
     
     private Unit unit;
-	private int fid = 0;
+    private int fid = 0;
     
     public TypeArgumentInference(Unit unit) {
         this.unit = unit;
@@ -622,35 +622,35 @@ public class TypeArgumentInference {
                         break;
                     }
                     else {
-                		Type parameterType = 
-                		        parameterType(receiverType,
-                		                parameter, invoked);
-                		Type argType = arg.getTypeModel();
-                    	if (tp.isTypeConstructor()) {
-                    		//use a special approach to type
-                    		//arg inference, just especially
-                    		//designed for generic function
-                    		//args to generic function params
+                        Type parameterType = 
+                                parameterType(receiverType,
+                                        parameter, invoked);
+                        Type argType = arg.getTypeModel();
+                        if (tp.isTypeConstructor()) {
+                            //use a special approach to type
+                            //arg inference, just especially
+                            //designed for generic function
+                            //args to generic function params
                             Type inferred =
-                            		inferTypeConstructor(tp, 
-                            				parameterType,
-                            				argType);
-                			if (inferred!=null) {
-                				return inferred;
-                			}
-                    	}
-                    	//if the above special approach fails,
-                    	//always do it the usual way, even if 
-                    	//it is a type constructor, since we
-                    	//might not have any useful generic
-                    	//function params
-                    	addToUnionOrIntersection(
-                    			findingUpperBounds, 
-                    			inferredTypes,
-                    			inferTypeArg(tp, 
-                    					parameterType, argType,
-                    					findingUpperBounds, 
-                    					pal));
+                                    inferTypeConstructor(tp, 
+                                            parameterType,
+                                            argType);
+                            if (inferred!=null) {
+                                return inferred;
+                            }
+                        }
+                        //if the above special approach fails,
+                        //always do it the usual way, even if 
+                        //it is a type constructor, since we
+                        //might not have any useful generic
+                        //function params
+                        addToUnionOrIntersection(
+                                findingUpperBounds, 
+                                inferredTypes,
+                                inferTypeArg(tp, 
+                                        parameterType, argType,
+                                        findingUpperBounds, 
+                                        pal));
                     }
                 }
             }
@@ -659,53 +659,53 @@ public class TypeArgumentInference {
                 inferredTypes);
     }
 
-	private Type inferTypeConstructor(TypeParameter tp, 
-			Type parameterType, Type argType) {
-		TypeDeclaration paramDec = 
-				parameterType.getDeclaration();
-		TypeDeclaration argDec = 
-				argType.getDeclaration();
-		List<TypeParameter> argTypeParams = 
-				argDec.getTypeParameters();
-		List<TypeParameter> paramTypeParams = 
-				paramDec.getTypeParameters();
-		if (parameterType.isTypeConstructor()
-				&& argType.isTypeConstructor()
-				&& paramTypeParams.size()
-					== argTypeParams.size()) {
-			//eliminate the type aliases:
-			Type pt = paramDec.getExtendedType();
-			Type at = argDec.getExtendedType();
-			//search for a type which could be 
-			//used as a constructor to make the
-			//two types equal
-			return searchForMatch(tp, at, at, 
-						pt.substitute(
-							getTypeArgumentMap(paramDec, null,
-								typeParametersAsArgList(argDec)), 
-							null),
-						argTypeParams);
-		}
-		else {
-			return null;
-		}
-	}
+    private Type inferTypeConstructor(TypeParameter tp, 
+            Type parameterType, Type argType) {
+        TypeDeclaration paramDec = 
+                parameterType.getDeclaration();
+        TypeDeclaration argDec = 
+                argType.getDeclaration();
+        List<TypeParameter> argTypeParams = 
+                argDec.getTypeParameters();
+        List<TypeParameter> paramTypeParams = 
+                paramDec.getTypeParameters();
+        if (parameterType.isTypeConstructor()
+                && argType.isTypeConstructor()
+                && paramTypeParams.size()
+                    == argTypeParams.size()) {
+            //eliminate the type aliases:
+            Type pt = paramDec.getExtendedType();
+            Type at = argDec.getExtendedType();
+            //search for a type which could be 
+            //used as a constructor to make the
+            //two types equal
+            return searchForMatch(tp, at, at, 
+                        pt.substitute(
+                            getTypeArgumentMap(paramDec, null,
+                                typeParametersAsArgList(argDec)), 
+                            null),
+                        argTypeParams);
+        }
+        else {
+            return null;
+        }
+    }
 
-	private Type createTypeConstructor(Type type, 
-			List<TypeParameter> params) {
-		TypeAlias ta = new TypeAlias();
-		ta.setUnit(unit);
-		ta.setShared(true);
-		ta.setName("Inferred#"+fid++);
-		ta.setAnonymous(true);
-		ta.setExtendedType(type);
-		ta.setTypeParameters(params);
-		ta.setContainer(unit.getPackage());
-		ta.setScope(unit.getPackage());
-		Type result = ta.getType();
-		result.setTypeConstructor(true);
-		return result;
-	}
+    private Type createTypeConstructor(Type type, 
+            List<TypeParameter> params) {
+        TypeAlias ta = new TypeAlias();
+        ta.setUnit(unit);
+        ta.setShared(true);
+        ta.setName("Inferred#"+fid++);
+        ta.setAnonymous(true);
+        ta.setExtendedType(type);
+        ta.setTypeParameters(params);
+        ta.setContainer(unit.getPackage());
+        ta.setScope(unit.getPackage());
+        Type result = ta.getType();
+        result.setTypeConstructor(true);
+        return result;
+    }
 
     private void inferTypeArgFromSpreadArg(
             TypeParameter tp, 
@@ -794,14 +794,14 @@ public class TypeArgumentInference {
                 //TODO: check getStaticMethodReference()
                 unit.isCallableType(receiverType)) {
             Type fullType = 
-            		parameter.getModel()
-	            		.getReference()
-	            		.getFullType();
+                    parameter.getModel()
+                        .getReference()
+                        .getFullType();
             if (parameter.getModel().isParameterized()) {
-            	return createTypeConstructor(fullType, 
-            			parameter.getModel().getTypeParameters());
+                return createTypeConstructor(fullType, 
+                        parameter.getModel().getTypeParameters());
             }
-			return fullType;
+            return fullType;
         }
         else {
             //this is sorta rubbish: we use the type that 
@@ -1129,29 +1129,29 @@ public class TypeArgumentInference {
     }
 
     private Type searchForMatch(TypeParameter tp, 
-    		Type t, Type at, Type pt, 
-    		List<TypeParameter> typeParams) {
-    	Type tc = createTypeConstructor(t, typeParams);
-		if (pt.substitute(singletonMap(tp, tc), null)
-				.isSupertypeOf(at)) {
-			return tc;
-		}
-		if (t.isTuple()) {
-			for (Type te: unit.getTupleElementTypes(t)) {
-				Type r = searchForMatch(tp, te, at, pt, typeParams);
-				if (r!=null) return r;
-			}
-		}
-		else {
-			for (Type ta: t.getTypeArgumentList()) {
-				Type r = searchForMatch(tp, ta, at, pt, typeParams);
-				if (r!=null) return r;
-			}
-		}
-		return null;
-	}
+            Type t, Type at, Type pt, 
+            List<TypeParameter> typeParams) {
+        Type tc = createTypeConstructor(t, typeParams);
+        if (pt.substitute(singletonMap(tp, tc), null)
+                .isSupertypeOf(at)) {
+            return tc;
+        }
+        if (t.isTuple()) {
+            for (Type te: unit.getTupleElementTypes(t)) {
+                Type r = searchForMatch(tp, te, at, pt, typeParams);
+                if (r!=null) return r;
+            }
+        }
+        else {
+            for (Type ta: t.getTypeArgumentList()) {
+                Type r = searchForMatch(tp, ta, at, pt, typeParams);
+                if (r!=null) return r;
+            }
+        }
+        return null;
+    }
 
-	/**
+    /**
      * Infer type arguments for a direct function 
      * ref (i.e. not a value ref with a type 
      * constructor type) that occurs as an argument 

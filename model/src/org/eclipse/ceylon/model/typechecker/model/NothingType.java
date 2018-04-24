@@ -64,7 +64,7 @@ public class NothingType extends TypeDeclaration {
     
     @Override
     public Scope getContainer() {
-    	return unit.getAnythingDeclaration().getContainer();
+        return unit.getAnythingDeclaration().getContainer();
     }
     
     @Override
@@ -114,7 +114,7 @@ public class NothingType extends TypeDeclaration {
     
     @Override
     public boolean equals(Object object) {
-    	return object instanceof NothingType;
+        return object instanceof NothingType;
     }
 
     @Override

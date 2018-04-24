@@ -26,7 +26,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class NativeTests extends CompilerTests {
-	
+    
     private void testNative(String test) {
         testNative("simple", test);
     }

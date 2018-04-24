@@ -120,11 +120,11 @@ public class AetherResolverImpl implements AetherResolver {
         
         // read it
         SettingsBuildingResult settingsBuildingResult;
-		try {
-			settingsBuildingResult = builder.build(settingsBuilderRequest);
-		} catch (SettingsBuildingException e) {
-			throw new RuntimeException(e);
-		}
+        try {
+            settingsBuildingResult = builder.build(settingsBuilderRequest);
+        } catch (SettingsBuildingException e) {
+            throw new RuntimeException(e);
+        }
         Settings set = settingsBuildingResult.getEffectiveSettings();
         
         // configure the local repo
@@ -132,7 +132,7 @@ public class AetherResolverImpl implements AetherResolver {
         if(localRepository == null)
             localRepository = set.getLocalRepository();
         if(localRepository == null)
-        	    localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
+                localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
         else if (! new File(localRepository).isAbsolute() && currentDirectory != null)
             localRepository = new File(new File(currentDirectory), localRepository).getAbsolutePath();
         LocalRepository localRepo = new LocalRepository( localRepository );
@@ -140,41 +140,41 @@ public class AetherResolverImpl implements AetherResolver {
         // set up authentication
         DefaultAuthenticationSelector authenticationSelector = new DefaultAuthenticationSelector();
         for(Server server : set.getServers()){
-        		AuthenticationBuilder auth = new AuthenticationBuilder();
-        		if(server.getUsername() != null)
-        			auth.addUsername(server.getUsername());
-        		if(server.getPassword() != null)
-        			auth.addPassword(server.getPassword());
-        		if(server.getPrivateKey() != null)
-        			auth.addPrivateKey(server.getPrivateKey(), server.getPassphrase());
-            	authenticationSelector.add(server.getId(), auth.build());
+                AuthenticationBuilder auth = new AuthenticationBuilder();
+                if(server.getUsername() != null)
+                    auth.addUsername(server.getUsername());
+                if(server.getPassword() != null)
+                    auth.addPassword(server.getPassword());
+                if(server.getPrivateKey() != null)
+                    auth.addPrivateKey(server.getPrivateKey(), server.getPassphrase());
+                authenticationSelector.add(server.getId(), auth.build());
         }
-		session.setAuthenticationSelector(authenticationSelector );
+        session.setAuthenticationSelector(authenticationSelector );
         
         // set up mirrors
         DefaultMirrorSelector mirrorSelector = new DefaultMirrorSelector();
         for(Mirror mirror : set.getMirrors()){
-        	mirrorSelector.add(mirror.getId(), mirror.getUrl(), mirror.getLayout(), false, mirror.getMirrorOf(), mirror.getMirrorOfLayouts());
+            mirrorSelector.add(mirror.getId(), mirror.getUrl(), mirror.getLayout(), false, mirror.getMirrorOf(), mirror.getMirrorOfLayouts());
         }
         session.setMirrorSelector(mirrorSelector);
 
         // set up proxies
         DefaultProxySelector proxySelector = new DefaultProxySelector();
         for(Proxy proxy : set.getProxies()){
-            	if(proxy.isActive()){
-            		AuthenticationBuilder auth = new AuthenticationBuilder();
-            		if(proxy.getUsername() != null)
-            			auth.addUsername(proxy.getUsername());
-            		if(proxy.getPassword() != null)
-            			auth.addPassword(proxy.getPassword());
-    				proxySelector.add(
-    				        new org.eclipse.ceylon.aether.eclipse.aether.repository.Proxy(
-    				                proxy.getProtocol(), proxy.getHost(), proxy.getPort(), 
-    				                auth.build() ), 
-    				        proxy.getNonProxyHosts());
-            	}
+                if(proxy.isActive()){
+                    AuthenticationBuilder auth = new AuthenticationBuilder();
+                    if(proxy.getUsername() != null)
+                        auth.addUsername(proxy.getUsername());
+                    if(proxy.getPassword() != null)
+                        auth.addPassword(proxy.getPassword());
+                    proxySelector.add(
+                            new org.eclipse.ceylon.aether.eclipse.aether.repository.Proxy(
+                                    proxy.getProtocol(), proxy.getHost(), proxy.getPort(), 
+                                    auth.build() ), 
+                            proxy.getNonProxyHosts());
+                }
         }
-		session.setProxySelector(proxySelector);
+        session.setProxySelector(proxySelector);
         
         // set up remote repos
         List<RemoteRepository> repos = new ArrayList<>();
@@ -241,15 +241,15 @@ public class AetherResolverImpl implements AetherResolver {
 
     private static final DependencySelector NoChildSelector = new DependencySelector(){
 
-		@Override
-		public DependencySelector deriveChildSelector(DependencyCollectionContext arg0) {
-			return this;
-		}
+        @Override
+        public DependencySelector deriveChildSelector(DependencyCollectionContext arg0) {
+            return this;
+        }
 
-		@Override
-		public boolean selectDependency(Dependency arg0) {
-			return false;
-		}
+        @Override
+        public boolean selectDependency(Dependency arg0) {
+            return false;
+        }
     };
     
 
@@ -263,9 +263,9 @@ public class AetherResolverImpl implements AetherResolver {
 
     @Override
     public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) 
-    		throws AetherException{
+            throws AetherException{
         // null extension means auto-detect based on pom
-    	return getDependencies(groupId, artifactId, version, null, null, fetchSingleArtifact);
+        return getDependencies(groupId, artifactId, version, null, null, fetchSingleArtifact);
     }
     
     public File getLocalRepositoryBaseDir() {
@@ -277,9 +277,9 @@ public class AetherResolverImpl implements AetherResolver {
     
     @Override
     public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, 
-    		String classifier, String extension, boolean fetchSingleArtifact) 
-    				throws AetherException{
-    	
+            String classifier, String extension, boolean fetchSingleArtifact) 
+                    throws AetherException{
+        
         RepositorySystem repoSystem = newRepositorySystem();
         DefaultRepositorySystemSession session = newSession( repoSystem );
         List<RemoteRepository> repos = configureSession(repoSystem, session);
@@ -357,16 +357,16 @@ public class AetherResolverImpl implements AetherResolver {
             }
         }else{
 
-        	Artifact resultArtifact;
-			try {
-			    resultArtifact = resolveSingleArtifact(repoSystem, session, repos, artifact);
-			} catch (ArtifactResolutionException e) {
-			    if(!isTimeout(e) && pomResultArtifact == null)
-			        throw new AetherException(e);
-			    else // go with a jar-less module
-			        resultArtifact = pomResultArtifact;
-			}
-        	ret = new DefaultDependencyNode(resultArtifact);
+            Artifact resultArtifact;
+            try {
+                resultArtifact = resolveSingleArtifact(repoSystem, session, repos, artifact);
+            } catch (ArtifactResolutionException e) {
+                if(!isTimeout(e) && pomResultArtifact == null)
+                    throw new AetherException(e);
+                else // go with a jar-less module
+                    resultArtifact = pomResultArtifact;
+            }
+            ret = new DefaultDependencyNode(resultArtifact);
         }
         
         return ret == null ? null : new DependencyNodeDependencyDescriptor(this, ret);
@@ -487,38 +487,38 @@ public class AetherResolverImpl implements AetherResolver {
         rangeRequest.setRepositories(repos);
 
         VersionRangeResult rangeResult;
-		try {
-			rangeResult = repoSystem.resolveVersionRange( session, rangeRequest );
-		} catch (VersionRangeResolutionException e) {
-			throw new AetherException(e);
-		}
+        try {
+            rangeResult = repoSystem.resolveVersionRange( session, rangeRequest );
+        } catch (VersionRangeResolutionException e) {
+            throw new AetherException(e);
+        }
         List<String> ret = new ArrayList<>(rangeResult.getVersions().size());
         for(Version version : rangeResult.getVersions())
-        	ret.add(version.toString());
+            ret.add(version.toString());
         return ret;
     }
 
     @Override
     public DependencyDescriptor getDependencies(File pomXml, String name, String version) throws IOException {
-    	MavenXpp3Reader reader = new MavenXpp3Reader();
-    	Model model;
-    	try(FileReader fileReader = new FileReader(pomXml)){
-    		model = reader.read(fileReader);
-    	} catch (XmlPullParserException e) {
-    		throw new IOException(e);
-		}
-    	return new ModelDependencyDescriptor(model);
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model;
+        try(FileReader fileReader = new FileReader(pomXml)){
+            model = reader.read(fileReader);
+        } catch (XmlPullParserException e) {
+            throw new IOException(e);
+        }
+        return new ModelDependencyDescriptor(model);
     }
 
     @Override
     public DependencyDescriptor getDependencies(InputStream pomXml, String name, String version) throws IOException {
-    	MavenXpp3Reader reader = new MavenXpp3Reader();
-    	Model model;
-		try {
-			model = reader.read(pomXml);
-		} catch (XmlPullParserException e) {
-			throw new IOException(e);
-		}
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model;
+        try {
+            model = reader.read(pomXml);
+        } catch (XmlPullParserException e) {
+            throw new IOException(e);
+        }
         return new ModelDependencyDescriptor(model);
     }
 }

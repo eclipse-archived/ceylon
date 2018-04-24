@@ -81,8 +81,8 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private boolean showSuggestions;
     private boolean allowCars;
     private boolean ignoreAnnotations;
-	private List<String> missingDependenciesPackages;
-	private Map<String, List<String>> parsedMissingDependenciesPackages;
+    private List<String> missingDependenciesPackages;
+    private Map<String, List<String>> parsedMissingDependenciesPackages;
     
     public CeylonImportJarTool() {
         super(ImportJarMessages.RESOURCE_BUNDLE);
@@ -91,7 +91,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     @OptionArgument(longName="missing-dependency-packages")
     @Description("Specifies which packages a missing dependency contains. Can be specified multiple times. " +
             "Format: `module-name/module-version=package-wildcard(,package-wildcard)*`, where "+
-    		"`package-wildcard` supports `*`, `**` and `?` wildcards.")
+            "`package-wildcard` supports `*`, `**` and `?` wildcards.")
     public void setMissingDependencyPackages(List<String> missingDependencyPackages) {
         this.missingDependenciesPackages = missingDependencyPackages;
     }
@@ -199,25 +199,25 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                 throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
         }
         if(missingDependenciesPackages != null){
-        	parsedMissingDependenciesPackages = new HashMap<>();
-        	for(String spec : missingDependenciesPackages){
-        		int moduleSeparator = spec.indexOf('=');
-        		if(moduleSeparator == -1)
-        			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
-        		String moduleSpec = spec.substring(0, moduleSeparator);
-        		String packagesSpec = spec.substring(moduleSeparator+1);
-        		if(moduleSpec.isEmpty() || packagesSpec.isEmpty())
-        			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
-        		List<String> packages = new LinkedList<>();
-        		for(String pkg : packagesSpec.split(",")){
-            		if(pkg.isEmpty())
-            			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
-            		packages.add(pkg);
-        		}
-        		if(packages.isEmpty())
-        			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
-        		parsedMissingDependenciesPackages.put(moduleSpec, packages);
-        	}
+            parsedMissingDependenciesPackages = new HashMap<>();
+            for(String spec : missingDependenciesPackages){
+                int moduleSeparator = spec.indexOf('=');
+                if(moduleSeparator == -1)
+                    throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+                String moduleSpec = spec.substring(0, moduleSeparator);
+                String packagesSpec = spec.substring(moduleSeparator+1);
+                if(moduleSpec.isEmpty() || packagesSpec.isEmpty())
+                    throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+                List<String> packages = new LinkedList<>();
+                for(String pkg : packagesSpec.split(",")){
+                    if(pkg.isEmpty())
+                        throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+                    packages.add(pkg);
+                }
+                if(packages.isEmpty())
+                    throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+                parsedMissingDependenciesPackages.put(moduleSpec, packages);
+            }
         }
     }
     
@@ -229,7 +229,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         // allow: jar OK, car OK, other OK
         // !allow: jar OK, car, other
         if (! fileName.endsWith(".jar")
-        		 && !(allowCars && fileName.endsWith(".car"))) {
+                 && !(allowCars && fileName.endsWith(".car"))) {
             throw new ImportJarException(errorResource2, 
                                          new Object[] { aJarFile.toString() }, 
                                          null);
@@ -289,7 +289,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                 case DEP_JDK:
                     append("    ").append(dep.getName());
                     if(dep.isExport())
-                    	append(" ... [shared]");
+                        append(" ... [shared]");
                     newline();
                     break;
                 default:
@@ -340,7 +340,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             public void packageName(String pkg, boolean shared) throws IOException {
                 append("    ").append(pkg);
                 if(shared)
-                	append(" ... [shared]");
+                    append(" ... [shared]");
                 newline();
             }
 
@@ -357,7 +357,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             public void className(String cls, boolean shared) throws IOException {
                 append("    ").append(cls);
                 if(shared)
-                	append(" ... [shared]");
+                    append(" ... [shared]");
                 newline();
             }
 
@@ -394,8 +394,8 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     @Override
     public void run() throws Exception {
         LegacyImporter importer = createImporter()
-        		.moduleDescriptor(applyCwd(descriptor))
-        		.missingDependenciesPackages(parsedMissingDependenciesPackages);
+                .moduleDescriptor(applyCwd(descriptor))
+                .missingDependenciesPackages(parsedMissingDependenciesPackages);
         importer.setIgnoreAnnotations(ignoreAnnotations);
         if (!force || updateDescriptor) {
             try {

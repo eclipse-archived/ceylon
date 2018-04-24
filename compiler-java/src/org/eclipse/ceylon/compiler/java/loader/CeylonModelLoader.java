@@ -110,7 +110,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     protected final Map<String,Boolean> packageExistence = new HashMap<String,Boolean>();
     private AnnotationLoader annotationLoader;
     private ModuleSourceMapper moduleSourceMapper;
-	private String jdkProviderSpec;
+    private String jdkProviderSpec;
     private Boolean hasJavaAndCeylonSources;
     
     public static AbstractModelLoader instance(Context context) {
@@ -803,7 +803,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     
     @Override
     protected String getAlternateJdkModuleSpec() {
-    	return jdkProviderSpec;
+        return jdkProviderSpec;
     }
     
     @Override

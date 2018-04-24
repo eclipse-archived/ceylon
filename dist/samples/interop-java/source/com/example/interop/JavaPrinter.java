@@ -25,13 +25,13 @@ package com.example.interop;
  * limitations under the License.
  */
 public class JavaPrinter {
-	private String name;
-	
-	public JavaPrinter(String name){
-		this.name = name;
-	}
-	
-	public void print(String str){
-		System.out.println(str + name + "!");
-	}
+    private String name;
+    
+    public JavaPrinter(String name){
+        this.name = name;
+    }
+    
+    public void print(String str){
+        System.out.println(str + name + "!");
+    }
 }

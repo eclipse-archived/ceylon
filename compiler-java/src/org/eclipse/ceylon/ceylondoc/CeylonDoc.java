@@ -129,7 +129,7 @@ public abstract class CeylonDoc extends Markup {
         around("span class='module-label'", "module");
         around("span class='module-name'", module.getNameAsString());
         around("span class='module-version'", module.getVersion() + 
-        		(module.isNative() ? " (" + module.getNativeBackends().names() + ")" : ""));
+                (module.isNative() ? " (" + module.getNativeBackends().names() + ")" : ""));
         close("a");
 
         open("ul class='nav pull-right'");

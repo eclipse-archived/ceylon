@@ -15,26 +15,26 @@ import org.eclipse.ceylon.aether.github.sardine.DavResource;
 
 public class WebDAVResource {
 
-	private DavResource res;
+    private DavResource res;
 
-	WebDAVResource(DavResource res) {
-		this.res = res;
-	}
+    WebDAVResource(DavResource res) {
+        this.res = res;
+    }
 
-	public String getName() {
-		return res.getName();
-	}
+    public String getName() {
+        return res.getName();
+    }
 
-	public boolean isDirectory() {
-		return res.isDirectory();
-	}
+    public boolean isDirectory() {
+        return res.isDirectory();
+    }
 
-	public Long getContentLength() {
-		return res.getContentLength();
-	}
+    public Long getContentLength() {
+        return res.getContentLength();
+    }
 
-	public Date getModified() {
-		return res.getModified();
-	}
+    public Date getModified() {
+        return res.getModified();
+    }
 
 }

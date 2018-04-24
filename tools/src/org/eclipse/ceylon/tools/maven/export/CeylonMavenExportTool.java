@@ -96,7 +96,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
 
     private final Comparator<? super ArtifactResult> ImportComparator = new ImportComparator();
     private List<ModuleSpec> modules;
-	private File out;
+    private File out;
     private final List<String> excludedModules = new ArrayList<>();
     private boolean forImport;
     private boolean forSdkImport;

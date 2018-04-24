@@ -101,29 +101,29 @@ public final class CeylonInterpolatingLexer implements TokenSource {
 
     private int findOpeningParen(String text, int from) {
         for (int i=from, s=text.length()-1; i<s; i++) {
-        	char ch = text.charAt(i);
+            char ch = text.charAt(i);
             if (ch=='\\' && text.length()>i+2) {
                 char nx = text.charAt(i+1);
                 if (nx=='{') {
-                	char fc = text.charAt(i+2);
-                	if (fc!='#') {
-                    	if (fc <'A' || fc>'Z') {
-                    		return i;
-                    	}
-                		for (int j=i+2;j<text.length();j++) {
-                			char nc = text.charAt(j);
-                			if (nc=='}') {
-                				break;
-                			}
-                			else if ((nc <'A' || nc>'Z')
-                					&& (nc <'0' || nc>'9') 
-                					&& nc!='-' 
-                					&& nc!=' '
-                					&& nc!='(' && nc!=')') {
-                        		return i;
-                			}
-                		}
-                	}
+                    char fc = text.charAt(i+2);
+                    if (fc!='#') {
+                        if (fc <'A' || fc>'Z') {
+                            return i;
+                        }
+                        for (int j=i+2;j<text.length();j++) {
+                            char nc = text.charAt(j);
+                            if (nc=='}') {
+                                break;
+                            }
+                            else if ((nc <'A' || nc>'Z')
+                                    && (nc <'0' || nc>'9') 
+                                    && nc!='-' 
+                                    && nc!=' '
+                                    && nc!='(' && nc!=')') {
+                                return i;
+                            }
+                        }
+                    }
                 }
                 i++; //else skip the escaped char
             }

@@ -109,7 +109,7 @@ public class MetamodelGenerator {
             List<String> args = a.getPositionalArguments();
             if (args != null && !args.isEmpty() 
                     && a.getName().equals("label")) {
-            	model.put("$mod-label", args.get(0));
+                model.put("$mod-label", args.get(0));
             }
         }
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);

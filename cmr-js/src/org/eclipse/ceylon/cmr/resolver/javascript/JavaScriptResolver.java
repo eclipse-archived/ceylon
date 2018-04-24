@@ -19,19 +19,19 @@ import net.minidev.json.JSONValue;
 
 public class JavaScriptResolver {
 
-	// trick to ensure JSONValue is loaded when this class is instantiated, for optional deps to work
-	public JavaScriptResolver(){
-		JSONValue.escape("foo");
-	}
-	
-	public Map<String,Object> readModel(File jsFile) throws IOException {
-		return readJsonModel(jsFile);
-	}
-	
+    // trick to ensure JSONValue is loaded when this class is instantiated, for optional deps to work
+    public JavaScriptResolver(){
+        JSONValue.escape("foo");
+    }
+    
+    public Map<String,Object> readModel(File jsFile) throws IOException {
+        return readJsonModel(jsFile);
+    }
+    
     /** Find the metamodel declaration in a js file, parse it as a Map and return it. 
      * @throws IOException */
     public static Map<String,Object> readJsonModel(File jsFile) throws IOException {
-    	
+        
         // IMPORTANT
         // This method NEEDS to be able to return the meta model of any previous file formats!!!
         // It MUST stay backward compatible

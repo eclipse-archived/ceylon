@@ -61,7 +61,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     public void loadStandardModules() {
         // set up the type factory and that's it: do not try to load the language module package before it's set up
         // by Metamodel.loadModule
-    	jdkProvider = new JdkProvider();
+        jdkProvider = new JdkProvider();
         Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
         addModuleToClassPath(languageModule, (ArtifactResult)null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
@@ -146,11 +146,11 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         jars.addJar(artifact, module);
         if(module instanceof LazyModule){
             ((LazyModule) module).setPackagePathsProvider(new LazyModule.PackagePathsProvider() {
-				@Override
-				public Set<String> getPackagePaths() {
-					return jars.getPackagePaths(module);
-				}
-			});
+                @Override
+                public Set<String> getPackagePaths() {
+                    return jars.getPackagePaths(module);
+                }
+            });
         }
     }
 

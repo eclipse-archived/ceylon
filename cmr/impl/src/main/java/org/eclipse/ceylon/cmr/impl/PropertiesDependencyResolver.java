@@ -58,7 +58,7 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
                 infos.add(new ModuleDependencyInfo(namespace, modName, version, optional, shared, Backends.JAVA));
             }
             ModuleInfo ret = new ModuleInfo(null, 
-            		moduleName, moduleVersion,
+                    moduleName, moduleVersion,
                     // FIXME: store this
                     ModuleUtil.getMavenGroupIdIfMavenModule(moduleName),
                     ModuleUtil.getMavenArtifactIdIfMavenModule(moduleName),

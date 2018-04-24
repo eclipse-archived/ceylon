@@ -188,8 +188,8 @@ public final class Tuple<Element, First extends Element,
         if (rest instanceof Tuple) {
             @SuppressWarnings("unchecked")
             Tuple<? extends Element,? extends Element,? extends Sequential<? extends Element>> other = 
-            		(Tuple<? extends Element,? extends Element,? extends Sequential<? extends Element>>) rest;
-			return other.rest;
+                    (Tuple<? extends Element,? extends Element,? extends Sequential<? extends Element>>) rest;
+            return other.rest;
         }
         return rest;
     }
@@ -199,7 +199,7 @@ public final class Tuple<Element, First extends Element,
     public Tuple(TypeDescriptor $reifiedElement, 
             java.lang.Object[] elements) {
         this($reifiedElement, elements, 
-        		(Sequential<? extends Element>) empty_.get_(), false);
+                (Sequential<? extends Element>) empty_.get_(), false);
     }
     
 
@@ -267,11 +267,11 @@ public final class Tuple<Element, First extends Element,
         }
         else {
             TypeDescriptor typeArg = ((TypeDescriptor.Class)
-            		((TypeDescriptor.Class)$getType$()).getTupleRest())
-            		.getSequenceElement();
-			java.lang.Object[] copy = 
-					Arrays.copyOfRange(this.array, 1, this.array.length);
-			return (Rest) new Tuple(typeArg, copy, rest, false);
+                    ((TypeDescriptor.Class)$getType$()).getTupleRest())
+                    .getSequenceElement();
+            java.lang.Object[] copy = 
+                    Arrays.copyOfRange(this.array, 1, this.array.length);
+            return (Rest) new Tuple(typeArg, copy, rest, false);
         }
     }
 
@@ -377,7 +377,7 @@ public final class Tuple<Element, First extends Element,
                     this.array : Arrays.copyOfRange(this.array, 
                             toInt(fromIndex), toInt(fromIndex+l));
             return new Tuple<Element,Element,Sequential<? extends Element>>
-                    ($reifiedElement, copy, getEmptyTuple(), false);	
+                    ($reifiedElement, copy, getEmptyTuple(), false);    
         } else if (fromIndex >= array.length) {
             // chop the rest
             return rest.measure(Integer.instance(fromIndex-array.length), l);
@@ -471,8 +471,8 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Sequential<Element>")
     public final ceylon.language.Sequential<? extends Element> 
     spanTo(@Name("to") final ceylon.language.Integer to) {
-		return to.longValue() < 0 ? 
-				getEmptyTuple() : 
+        return to.longValue() < 0 ? 
+                getEmptyTuple() : 
                 span(Integer.instance(0), to);
     }
 

@@ -20,14 +20,14 @@ import java.util.Comparator;
  */
 public class CeylonVersionComparator implements Comparator<String>{
 
-	public static final CeylonVersionComparator INSTANCE = new CeylonVersionComparator();
+    public static final CeylonVersionComparator INSTANCE = new CeylonVersionComparator();
 
     @Override
-	public int compare(String a, String b) {
-		return compareVersions(a, b);
-	}
+    public int compare(String a, String b) {
+        return compareVersions(a, b);
+    }
 
-	public static int compareVersions(String versionAString, String versionBString){
+    public static int compareVersions(String versionAString, String versionBString){
         char[] versionA = versionAString.toCharArray();
         char[] versionB = versionBString.toCharArray();
         int aStart = 0, aEnd = 0;

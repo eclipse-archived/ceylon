@@ -123,7 +123,7 @@ public abstract class TypedDeclaration
     
     @Override
     public final Reference getReference() {
-    	return getTypedReference();
+        return getTypedReference();
     }
 
     @Override
@@ -136,7 +136,7 @@ public abstract class TypedDeclaration
     }
     
     public boolean isLate() {
-    	return false;
+        return false;
     }
     
     public TypedDeclaration getOriginalDeclaration() {

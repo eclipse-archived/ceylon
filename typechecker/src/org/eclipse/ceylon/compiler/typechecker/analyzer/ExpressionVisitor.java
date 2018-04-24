@@ -3729,17 +3729,17 @@ public class ExpressionVisitor extends Visitor {
                 Value value = (Value) dec;
                 Type valueType = value.getType();
                 if (valueType!=null) {
-	                if (valueType.isTypeConstructor()) {
-                		return inferParameterTypesIndirectly(pal,
-                				getInvokedProducedReference(
-                						valueType.getDeclaration(), 
-                						mte)
-                					.getType(), error);
-	                }
-	                else {
-		                return inferParameterTypesIndirectly(pal,
-		                		valueType, error);
-	                }
+                    if (valueType.isTypeConstructor()) {
+                        return inferParameterTypesIndirectly(pal,
+                                getInvokedProducedReference(
+                                        valueType.getDeclaration(), 
+                                        mte)
+                                    .getType(), error);
+                    }
+                    else {
+                        return inferParameterTypesIndirectly(pal,
+                                valueType, error);
+                    }
                 }
             }
         }
@@ -3838,8 +3838,8 @@ public class ExpressionVisitor extends Visitor {
         int argCount = args.size();
         boolean[] delayed = new boolean[argCount];
         if (type!=null 
-        		&& !type.isTypeConstructor()
-        		&& unit.isCallableType(type)) {
+                && !type.isTypeConstructor()
+                && unit.isCallableType(type)) {
             List<Type> paramTypes = 
                     unit.getCallableArgumentTypes(type);
             int paramsSize = paramTypes.size();
@@ -7259,21 +7259,21 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
         if (interpretAsSetOperator(that.getLeftTerm())) {
-			visitSetOperator(that);
+            visitSetOperator(that);
         }
-		else {
-			that.setBinary(true);
-        	visitArithmeticOperator(that, 
-        			unit.getBinaryDeclaration());
-		}
+        else {
+            that.setBinary(true);
+            visitArithmeticOperator(that, 
+                    unit.getBinaryDeclaration());
+        }
     }
 
-	private boolean interpretAsSetOperator(Tree.Term term) {
-		Type lhst = term.getTypeModel();
-		return lhst==null 
-			|| lhst.resolveAliases().getDeclaration()
-				.inherits(unit.getSetDeclaration());
-	}
+    private boolean interpretAsSetOperator(Tree.Term term) {
+        Type lhst = term.getTypeModel();
+        return lhst==null 
+            || lhst.resolveAliases().getDeclaration()
+                .inherits(unit.getSetDeclaration());
+    }
 
     @Override public void visit(Tree.ScaleOp that) {
         super.visit(that);
@@ -7390,15 +7390,15 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         Tree.Term leftTerm = that.getLeftTerm();
-		assign(leftTerm);
+        assign(leftTerm);
         super.visit(that);
         if (interpretAsSetOperator(leftTerm)) {
-        	visitSetAssignmentOperator(that);
+            visitSetAssignmentOperator(that);
         }
-		else {
-			that.setBinary(true);
-        	visitArithmeticAssignOperator(that, 
-        			unit.getBinaryDeclaration());
+        else {
+            that.setBinary(true);
+            visitArithmeticAssignOperator(that, 
+                    unit.getBinaryDeclaration());
         }
         checkAssignability(leftTerm, that);
     }
@@ -8158,12 +8158,12 @@ public class ExpressionVisitor extends Visitor {
                         isSelfReference(primary);
                 if (!selfReference && 
                         !member.isShared()) {
-                	if (that.getAssigned()) {
-                		member.setOtherInstanceWriteAccess(true);
-                	}
-                	else {
-                		member.setOtherInstanceReadAccess(true);
-                	}
+                    if (that.getAssigned()) {
+                        member.setOtherInstanceWriteAccess(true);
+                    }
+                    else {
+                        member.setOtherInstanceReadAccess(true);
+                    }
                 }
                 if (error) {
                     if (checkConcreteConstructor(member, that)) {
@@ -8429,8 +8429,8 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
             Type receivingType) {
-    	checkTypeArguments(member, null, 
-    			typeArgs, tal, that);
+        checkTypeArguments(member, null, 
+                typeArgs, tal, that);
         Scope scope = that.getScope();
         Type outerType = scope.getDeclaringType(member);
         if (outerType==null) {
@@ -8977,12 +8977,12 @@ public class ExpressionVisitor extends Visitor {
                 resetSuperReference(that);
                 if (!isSelfReference(primary) && 
                         !type.isShared()) {
-                	if (that.getAssigned()) {
-                		type.setOtherInstanceWriteAccess(true);
-                	}
-                	else {
-                		type.setOtherInstanceReadAccess(true);
-                	}
+                    if (that.getAssigned()) {
+                        type.setOtherInstanceWriteAccess(true);
+                    }
+                    else {
+                        type.setOtherInstanceReadAccess(true);
+                    }
                 }
                 if (error) {
                     if (checkConcreteClass(type, that)) {
@@ -9152,17 +9152,17 @@ public class ExpressionVisitor extends Visitor {
                         typeArgs, tal, that);
             }
             if (pt.isTypeConstructor()) {
-            	if (modelLiteral) {
-                	that.addError("missing type arguments of generic type: '" + 
-                			type.getName(unit) +
-                			"' has type parameters (add missing type argument list)");
+                if (modelLiteral) {
+                    that.addError("missing type arguments of generic type: '" + 
+                            type.getName(unit) +
+                            "' has type parameters (add missing type argument list)");
                 }
-            	else if (!declarationLiteral) {
-            		checkNotJvm(that, 
-            				"type functions are not supported on the JVM: '" + 
-    						type.getName(unit) + 
-            				"' is generic (specify explicit type arguments)");
-            	}
+                else if (!declarationLiteral) {
+                    checkNotJvm(that, 
+                            "type functions are not supported on the JVM: '" + 
+                            type.getName(unit) + 
+                            "' is generic (specify explicit type arguments)");
+                }
             }
         }
     }
@@ -9227,8 +9227,8 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
             Type receivingType) {
-    	checkTypeArguments(baseType, null, 
-    			typeArgs, tal, that);
+        checkTypeArguments(baseType, null, 
+                typeArgs, tal, that);
         Type outerType = 
                 that.getScope()
                     .getDeclaringType(baseType);
@@ -10513,19 +10513,19 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArguments, 
             Tree.TypeArguments tas, 
             Node parent) {
-    	
+        
         if (typeArguments!=null && dec!=null) {
             checkVarianceAnnotations(tas, parent);
             
-	        if (dec.isParameterized()) {
+            if (dec.isParameterized()) {
                 checkTypeArgumentsOfDeclaration(
                         receiverType, dec, typeArguments, 
                         tas, parent);
                 return;
-	        }
-	        else if (dec instanceof Value
-	        		&& !typeArguments.isEmpty()) {
-	        	//special case for generic function ref
+            }
+            else if (dec instanceof Value
+                    && !typeArguments.isEmpty()) {
+                //special case for generic function ref
                 Value val = (Value) dec;
                 Type type = val.getType();
                 if (type!=null) {
@@ -10537,15 +10537,15 @@ public class ExpressionVisitor extends Visitor {
                         return;
                     }
                 }
-	        }
-	        
-	        if (tas instanceof Tree.TypeArgumentList) {
-	        	//explicit type argument list to something
-	        	//that cannot possibly accept type arguments
-	            tas.addError("does not accept type arguments: '" + 
-	                    dec.getName(unit) + 
-	                    "' is not a generic declaration");
-	        }
+            }
+            
+            if (tas instanceof Tree.TypeArgumentList) {
+                //explicit type argument list to something
+                //that cannot possibly accept type arguments
+                tas.addError("does not accept type arguments: '" + 
+                        dec.getName(unit) + 
+                        "' is not a generic declaration");
+            }
         }
     }
 
@@ -10573,7 +10573,7 @@ public class ExpressionVisitor extends Visitor {
             Type receiver, Declaration dec, 
             List<Type> typeArguments,
             Tree.TypeArguments tas, Node parent) {
-    	
+        
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         
@@ -10611,9 +10611,9 @@ public class ExpressionVisitor extends Visitor {
                             if (explicit) {
                                 typeArgNode(tas, i, parent)
                                     .addError("type parameter '" 
-                                    		+ param.getName() 
+                                            + param.getName() 
                                             + "' of declaration '" 
-                                    		+ dec.getName(unit)
+                                            + dec.getName(unit)
                                             + "' has argument '" 
                                             + tp.getName()
                                             + "' which is not a reified type");
@@ -10630,31 +10630,31 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (param.isTypeConstructor()) {
-	                    if (!argType.resolveAliases()
-	                    			.isTypeConstructor()) {
-	                        typeArgNode(tas, i, parent)
-	                            .addError("type argument must be a type constructor: parameter '" 
-	                            		+  param.getName() 
-	                                    + "' of declaration '" 
-	                                    + dec.getName(unit)
-	                            		+ "' is a type constructor parameter but '" 
-	                            		+ argType.asString(unit) 
-	                            		+ "' is a regular type");
-	                    }
-	                    else {
-	                        Node argNode;
-	                        if (explicit) {
-	                            Tree.TypeArgumentList tl = 
-	                                    (Tree.TypeArgumentList) tas;
-	                            argNode = i<tl.getTypes().size() ?
-	                            		tl.getTypes().get(i) : parent;
-	                        }
-	                        else {
-	                            argNode = parent;
-	                        }
-	                        checkTypeConstructorParam(param, 
-	                                argType, argNode);
-	                    }
+                        if (!argType.resolveAliases()
+                                    .isTypeConstructor()) {
+                            typeArgNode(tas, i, parent)
+                                .addError("type argument must be a type constructor: parameter '" 
+                                        +  param.getName() 
+                                        + "' of declaration '" 
+                                        + dec.getName(unit)
+                                        + "' is a type constructor parameter but '" 
+                                        + argType.asString(unit) 
+                                        + "' is a regular type");
+                        }
+                        else {
+                            Node argNode;
+                            if (explicit) {
+                                Tree.TypeArgumentList tl = 
+                                        (Tree.TypeArgumentList) tas;
+                                argNode = i<tl.getTypes().size() ?
+                                        tl.getTypes().get(i) : parent;
+                            }
+                            else {
+                                argNode = parent;
+                            }
+                            checkTypeConstructorParam(param, 
+                                    argType, argNode);
+                        }
                     }
                 }
                 List<Type> sts = param.getSatisfiedTypes();
@@ -10677,9 +10677,9 @@ public class ExpressionVisitor extends Visitor {
                                 if (explicit) {
                                     typeArgNode(tas, i, parent)
                                         .addError("type parameter '" 
-                                        		+ param.getName() 
+                                                + param.getName() 
                                                 + "' of declaration '" 
-                                        		+ dec.getName(unit)
+                                                + dec.getName(unit)
                                                 + "' has argument '" 
                                                 + assignedType.asString(unit) 
                                                 + "' which is not assignable to upper bound '" 
@@ -10712,9 +10712,9 @@ public class ExpressionVisitor extends Visitor {
                             if (explicit) {
                                 typeArgNode(tas, i, parent)
                                     .addError("type parameter '" 
-                                    		+ param.getName() 
+                                            + param.getName() 
                                             + "' of declaration '" 
-                                    		+ dec.getName(unit)
+                                            + dec.getName(unit)
                                             + "' has argument '" 
                                             + assignedType.asString(unit) 
                                             + "' which is not one of the enumerated cases of '" 
@@ -10755,9 +10755,9 @@ public class ExpressionVisitor extends Visitor {
                     help = "";
                 }
                 tas.addError("wrong number of type arguments: '" 
-                		+ dec.getName(unit) 
-                		+ "'" 
-                		+ help);
+                        + dec.getName(unit) 
+                        + "'" 
+                        + help);
             }
             else {
                 //Now handled in TypeArgumentVisitor
@@ -10770,17 +10770,17 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	private boolean enforceTypeConstraints(Node parent) {
-		//Note: class metamodel expressions return 
-		//      instantiable references, so enforce type
-		//      constraints and disallow use-site variance
-		//TODO: we could stop enforcing type constraints
-		//      in metamodel expressions, and have them
-		//      produce types, not classes
-		return modelLiteral 
-			|| !(parent instanceof Tree.SimpleType) 
-			|| ((Tree.SimpleType) parent).getInherited();
-	}
+    private boolean enforceTypeConstraints(Node parent) {
+        //Note: class metamodel expressions return 
+        //      instantiable references, so enforce type
+        //      constraints and disallow use-site variance
+        //TODO: we could stop enforcing type constraints
+        //      in metamodel expressions, and have them
+        //      produce types, not classes
+        return modelLiteral 
+            || !(parent instanceof Tree.SimpleType) 
+            || ((Tree.SimpleType) parent).getInherited();
+    }
 
     private static Type argumentTypeForBoundsCheck(
             TypeParameter param, Type argType) {
@@ -10816,7 +10816,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
             return tal.getTypes().isEmpty() ?
-            		parent : tal.getTypes().get(i);
+                    parent : tal.getTypes().get(i);
         }
         else {
             return parent;
@@ -10827,7 +10827,7 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArguments,
             Tree.TypeArguments tas, Type type,
             Node parent) {
-    	
+        
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         
@@ -10836,22 +10836,22 @@ public class ExpressionVisitor extends Visitor {
                 tcd.getTypeParameters();
         int size = typeParameters.size();
         if (size != typeArguments.size()) {
-        	String msg = 
-        			size==1 ? 
-    					"1 type argument" : 
-        				size + " type arguments";
-        	if (explicit) {
-        		tas.addError("wrong number of type arguments: type constructor '" 
-	            		+ type.asString(unit) 
-	            		+ "' requires " 
-	            		+ msg);
-        	}
-        	else {
-        		parent.addError("missing type arguments: type constructor '"
-        				+ type.asString(unit) 
-		        		+ "' requires " 
-		        		+ msg);
-        	}
+            String msg = 
+                    size==1 ? 
+                        "1 type argument" : 
+                        size + " type arguments";
+            if (explicit) {
+                tas.addError("wrong number of type arguments: type constructor '" 
+                        + type.asString(unit) 
+                        + "' requires " 
+                        + msg);
+            }
+            else {
+                parent.addError("missing type arguments: type constructor '"
+                        + type.asString(unit) 
+                        + "' requires " 
+                        + msg);
+            }
         }
         else {
             Map<TypeParameter, Type> args = 
@@ -10873,15 +10873,15 @@ public class ExpressionVisitor extends Visitor {
                                 !arg.isSubtypeOf(bound)) {
                             String message = 
                                     "type argument '" 
-                            		+ arg.asString(unit) 
-                            		+ "' is not assignable to upper bound '" 
-                            		+ bound.asString(unit) 
-                            		+ "' of type parameter '" 
-                            		+ param.getName() 
-                            		+ "' of '" 
-                            		+ param.getDeclaration()
-                            			.getName(unit) 
-                        			+ "'";
+                                    + arg.asString(unit) 
+                                    + "' is not assignable to upper bound '" 
+                                    + bound.asString(unit) 
+                                    + "' of type parameter '" 
+                                    + param.getName() 
+                                    + "' of '" 
+                                    + param.getDeclaration()
+                                        .getName(unit) 
+                                    + "'";
                             if (explicit) {
                                 typeArgNode(tas, i, parent)
                                     .addError(message);
@@ -10897,11 +10897,11 @@ public class ExpressionVisitor extends Visitor {
                         arg, args, variances)) {
                     String message = 
                             "type argument '" 
-                    		+ arg.asString(unit) 
-                    		+ "' is not one of the enumerated cases of the type parameter '" 
-                    		+ param.getName() 
-                    		+ "' of '" 
-                    		+ param.getDeclaration()
+                            + arg.asString(unit) 
+                            + "' is not one of the enumerated cases of the type parameter '" 
+                            + param.getName() 
+                            + "' of '" 
+                            + param.getDeclaration()
                                 .getName(unit) 
                             + "'";
                     if (explicit) {
@@ -10957,13 +10957,13 @@ public class ExpressionVisitor extends Visitor {
     private void checkTypeConstructorParam(TypeParameter param, 
             Type argType, Node argNode) {
         argType = argType.resolveAliases();
-    	
+        
         if (!argType.isTypeConstructor()) {
             argNode.addError("not a type constructor: '" 
-            		+ argType.asString(unit) 
-            		+ "' is a regular type but '" 
-            		+ param.getName(unit) 
-            		+ "' expects a type constructor");
+                    + argType.asString(unit) 
+                    + "' is a regular type but '" 
+                    + param.getName(unit) 
+                    + "' expects a type constructor");
         }
         else {
             argType = unwrapAliasedTypeConstructor(argType);
@@ -11000,16 +11000,16 @@ public class ExpressionVisitor extends Visitor {
                 int size = paramTypeParams.size();
                 if (allowed<size || required>size) {
                     argNode.addError(
-                    		"argument type constructor has wrong number of type parameters: argument '" 
-            				+ argTypeDec.getName(unit) 
-            				+ "' has " 
-            				+ allowed 
-            				+ " type parameters " 
-            				+ "but parameter '" 
-            				+ param.getName(unit) 
-            				+ "' has " 
-            				+ size 
-            				+ " type parameters");
+                            "argument type constructor has wrong number of type parameters: argument '" 
+                            + argTypeDec.getName(unit) 
+                            + "' has " 
+                            + allowed 
+                            + " type parameters " 
+                            + "but parameter '" 
+                            + param.getName(unit) 
+                            + "' has " 
+                            + size 
+                            + " type parameters");
                 }
                 for (int j=0; j<size && j<allowed; j++) {
                     TypeParameter paramParam = 
@@ -11019,54 +11019,54 @@ public class ExpressionVisitor extends Visitor {
                     if (paramParam.isCovariant() &&
                             !argParam.isCovariant()) {
                         argNode.addError(
-                        		"argument type constructor is not covariant: '" 
-                				+ argParam.getName() 
-                				+ "' of '" 
-                				+ argTypeDec.getName(unit) 
-                				+ "' must have the same variance as '" 
-                				+ paramParam.getName() 
-                				+ "' of '" 
-                				+ param.getName(unit) 
-                				+ "'");
+                                "argument type constructor is not covariant: '" 
+                                + argParam.getName() 
+                                + "' of '" 
+                                + argTypeDec.getName(unit) 
+                                + "' must have the same variance as '" 
+                                + paramParam.getName() 
+                                + "' of '" 
+                                + param.getName(unit) 
+                                + "'");
                     }
                     else if (paramParam.isContravariant() &&
                             !argParam.isContravariant()) {
                         argNode.addError(
-                        		"argument type constructor is not contravariant: '" 
-            					+ argParam.getName() 
-            					+ "' of '" 
-            					+ argTypeDec.getName(unit) 
-            					+ "' must have the same variance as '" 
-            					+ paramParam.getName() 
-            					+ "' of '" 
-            					+ param.getName(unit) 
-            					+ "'");
+                                "argument type constructor is not contravariant: '" 
+                                + argParam.getName() 
+                                + "' of '" 
+                                + argTypeDec.getName(unit) 
+                                + "' must have the same variance as '" 
+                                + paramParam.getName() 
+                                + "' of '" 
+                                + param.getName(unit) 
+                                + "'");
                     }
                     if (!intersectionOfSupertypes(paramParam)
                             .isSubtypeOf(intersectionOfSupertypes(argParam))) {
                         argNode.addError(
-                        		"upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" 
-                				+ argParam.getName() 
-                				+ "' of '" 
-                				+ argTypeDec.getName(unit) 
-                				+ "' does accept all type arguments accepted by '" 
-                				+ paramParam.getName() 
-                				+ "' of '" 
-                				+ param.getName(unit) 
-                				+ "'");
+                                "upper bound on type parameter of argument type constructor is not a supertype of upper bound on corresponding type parameter of parameter: '" 
+                                + argParam.getName() 
+                                + "' of '" 
+                                + argTypeDec.getName(unit) 
+                                + "' does accept all type arguments accepted by '" 
+                                + paramParam.getName() 
+                                + "' of '" 
+                                + param.getName(unit) 
+                                + "'");
                     }
                     if (!unionOfCaseTypes(paramParam)
                             .isSubtypeOf(unionOfCaseTypes(argParam))) {
                         argNode.addError(
-                        		"enumerated bound on type parameter of argument type constructor is not a supertype of enumerated bound on corresponding type parameter of parameter: '" 
-                				+ argParam.getName() 
-                				+ "' of '" 
-                				+ argTypeDec.getName(unit) 
-                				+ "' does accept all type arguments accepted by '" 
-                				+ paramParam.getName() 
-                				+ "' of '" 
-                				+ param.getName(unit) 
-                				+ "'");
+                                "enumerated bound on type parameter of argument type constructor is not a supertype of enumerated bound on corresponding type parameter of parameter: '" 
+                                + argParam.getName() 
+                                + "' of '" 
+                                + argTypeDec.getName(unit) 
+                                + "' does accept all type arguments accepted by '" 
+                                + paramParam.getName() 
+                                + "' of '" 
+                                + param.getName(unit) 
+                                + "'");
                     }
                 }
             }
@@ -11302,12 +11302,12 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeLiteral that) {
         boolean isDeclaration = 
-        		that instanceof Tree.InterfaceLiteral
-        		|| that instanceof Tree.ClassLiteral
-        		|| that instanceof Tree.NewLiteral
-        		|| that instanceof Tree.AliasLiteral
-        		|| that instanceof Tree.TypeParameterLiteral;
-		if (isDeclaration) {
+                that instanceof Tree.InterfaceLiteral
+                || that instanceof Tree.ClassLiteral
+                || that instanceof Tree.NewLiteral
+                || that instanceof Tree.AliasLiteral
+                || that instanceof Tree.TypeParameterLiteral;
+        if (isDeclaration) {
             declarationLiteral = true;
         }
         else {
@@ -11609,7 +11609,7 @@ public class ExpressionVisitor extends Visitor {
                         tal.setTypeModels(typeArgs);
                     }
                     checkTypeArguments(method, outerType, 
-                    		typeArgs, tal, that);
+                            typeArgs, tal, that);
                     TypedReference pr = outerType==null ? 
                             method.appliedTypedReference(null, typeArgs) : 
                             outerType.getTypedMember(method, typeArgs);

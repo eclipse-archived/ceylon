@@ -153,7 +153,7 @@ public class AbstractTest {
             Integer jvmBinaryMajor, Integer jvmBinaryMinor,
             Integer jsBinaryMajor, Integer jsBinaryMinor) {
         testComplete(query, expected, manager, type, ModuleQuery.Retrieval.ANY, 
-        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
@@ -161,8 +161,8 @@ public class AbstractTest {
                                 Integer jvmBinaryMajor, Integer jvmBinaryMinor,
                                 Integer jsBinaryMajor, Integer jsBinaryMinor) {
         testComplete(query, expected, manager, type, retrieval, 
-        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor,
-        		null);
+                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor,
+                null);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
@@ -195,18 +195,18 @@ public class AbstractTest {
                                     Integer jvmBinaryMajor, Integer jvmBinaryMinor,
                                     Integer jsBinaryMajor, Integer jsBinaryMinor) throws Exception {
         testListVersions(query, versionQuery, expected, manager, 
-        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, 
-        		null);
+                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, 
+                null);
     }
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
-    		RepositoryManager manager, 
-    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
-    		Integer jsBinaryMajor, Integer jsBinaryMinor,
-    		String memberSearch) throws Exception {
-    	testListVersions(query, versionQuery, expected, manager, 
-    			jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, 
-    			memberSearch, ModuleQuery.Type.JVM, ModuleQuery.Retrieval.ANY);
+            RepositoryManager manager, 
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor,
+            String memberSearch) throws Exception {
+        testListVersions(query, versionQuery, expected, manager, 
+                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, 
+                memberSearch, ModuleQuery.Type.JVM, ModuleQuery.Retrieval.ANY);
     }
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
@@ -250,7 +250,7 @@ public class AbstractTest {
     protected ModuleSearchResult testSearchResults(String q, Type type, Retrieval retrieval, ModuleDetails[] expected) throws Exception {
         RepositoryManager manager = getRepositoryManager();
         return testSearchResults(q, type, retrieval, expected, null, null, manager, 
-        		null, null, null, null, null);
+                null, null, null, null, null);
     }
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, RepositoryManager manager) throws Exception {
@@ -270,7 +270,7 @@ public class AbstractTest {
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
                                                    Long start, Long count, RepositoryManager manager, long[] pagingInfo) throws Exception {
         return testSearchResults(q, type, expected, start, count, manager, pagingInfo, 
-        		null, null, null, null);
+                null, null, null, null);
     }
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
@@ -278,7 +278,7 @@ public class AbstractTest {
             Integer jvmBinaryMajor, Integer jvmBinaryMinor,
             Integer jsBinaryMajor, Integer jsBinaryMinor) throws Exception {
         return testSearchResults(q, type, Retrieval.ANY, expected, start, count, manager, pagingInfo, 
-        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
     }
     
     protected ModuleSearchResult testSearchResults(String q, Type type, Retrieval retrieval, ModuleDetails[] expected,

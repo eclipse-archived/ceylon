@@ -43,7 +43,7 @@ public class PackageIssuesTests extends CompilerTests {
     protected String getPackagePath() {
         return super.getPackagePath() + testDir + File.separator;
     }
-	
+    
     @Override
     protected String transformDestDir(String name) {
         return name + "-package-issues";
@@ -63,7 +63,7 @@ public class PackageIssuesTests extends CompilerTests {
         compile("bug187/Main.ceylon");
         compareWithJavaSource("bug187/Bug187");
     }
-	
+    
     @Test
     public void testBug214(){
         testDir = "bug02xx";

@@ -53,8 +53,8 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     private final Integer jsBinaryMinor;
 
     public AbstractTestTool(ResourceBundle bundle, ModuleQuery.Type type, 
-    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
-    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor) {
         super(bundle);
         this.type = type;
         this.jvmBinaryMajor = jvmBinaryMajor;
@@ -254,7 +254,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     private String findTestVersionInDependecies(ModuleDependencyInfo module, Queue<ModuleDependencyInfo> queue) {
         Collection<ModuleVersionDetails> moduleDetailsCollection = getModuleVersions(
                 module.getNamespace(), module.getName(), module.getVersion(), false,
-        		type, jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                type, jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
         Iterator<ModuleVersionDetails> moduleDetailsIterator = moduleDetailsCollection.iterator();
         if( moduleDetailsIterator.hasNext() ) {
             ModuleVersionDetails moduleDetails = moduleDetailsIterator.next();

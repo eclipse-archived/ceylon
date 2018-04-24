@@ -33,7 +33,7 @@ import org.eclipse.ceylon.model.typechecker.model.Module;
 class ModulesClassLoader extends ClassLoader {
 
     private CachedTOCJars jars = new CachedTOCJars();
-	private JdkProvider jdkProvider;
+    private JdkProvider jdkProvider;
     
     public ModulesClassLoader(ClassLoader parent, JdkProvider jdkProvider) {
         super(parent);
@@ -70,12 +70,12 @@ class ModulesClassLoader extends ClassLoader {
     }
 
     private List<String> getJDKPackageList(String name) {
-    	List<String> ret = new LinkedList<String>();
-    	String prefix = name+".";
-    	for(String pkg : jdkProvider.getJDKPackageList()){
-    		if(pkg.equals(name) || pkg.startsWith(prefix))
-    			ret.add(pkg);
-    	}
-    	return ret;
+        List<String> ret = new LinkedList<String>();
+        String prefix = name+".";
+        for(String pkg : jdkProvider.getJDKPackageList()){
+            if(pkg.equals(name) || pkg.startsWith(prefix))
+                ret.add(pkg);
+        }
+        return ret;
     }
 }

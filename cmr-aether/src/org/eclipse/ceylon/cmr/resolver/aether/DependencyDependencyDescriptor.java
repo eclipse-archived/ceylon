@@ -18,50 +18,50 @@ import org.eclipse.ceylon.aether.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyDependencyDescriptor implements DependencyDescriptor {
 
-	private Dependency model;
+    private Dependency model;
     private List<ExclusionDescriptor> exclusions;
 
-	DependencyDependencyDescriptor(Dependency model) {
-		this.model = model;
-		for(Exclusion x : model.getExclusions()){
-		    exclusions.add(new ExclusionExclusionDescriptor(x));
-		}
-	}
+    DependencyDependencyDescriptor(Dependency model) {
+        this.model = model;
+        for(Exclusion x : model.getExclusions()){
+            exclusions.add(new ExclusionExclusionDescriptor(x));
+        }
+    }
 
-	@Override
-	public File getFile() {
-		return null;
-	}
+    @Override
+    public File getFile() {
+        return null;
+    }
 
-	@Override
-	public List<DependencyDescriptor> getDependencies() {
-		return null;
-	}
+    @Override
+    public List<DependencyDescriptor> getDependencies() {
+        return null;
+    }
 
-	@Override
-	public String getGroupId() {
-		return model.getGroupId();
-	}
+    @Override
+    public String getGroupId() {
+        return model.getGroupId();
+    }
 
-	@Override
-	public String getArtifactId() {
-		return model.getArtifactId();
-	}
-	
-	@Override
-	public String getClassifier() {
-	    return model.getClassifier();
-	}
+    @Override
+    public String getArtifactId() {
+        return model.getArtifactId();
+    }
+    
+    @Override
+    public String getClassifier() {
+        return model.getClassifier();
+    }
 
-	@Override
-	public String getVersion() {
-		return model.getVersion();
-	}
+    @Override
+    public String getVersion() {
+        return model.getVersion();
+    }
 
-	@Override
-	public boolean isOptional() {
-		return model.isOptional();
-	}
+    @Override
+    public boolean isOptional() {
+        return model.isOptional();
+    }
 
     @Override
     public boolean isProvidedScope() {

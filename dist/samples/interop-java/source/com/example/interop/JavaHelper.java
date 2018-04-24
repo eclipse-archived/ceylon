@@ -25,7 +25,7 @@ package com.example.interop;
  * limitations under the License.
  */
 public class JavaHelper {
-	public static void javaPrint(String str){
-		System.out.println(str);
-	}
+    public static void javaPrint(String str){
+        System.out.println(str);
+    }
 }

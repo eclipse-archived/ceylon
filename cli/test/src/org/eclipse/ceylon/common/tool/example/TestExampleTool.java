@@ -26,9 +26,9 @@ import org.eclipse.ceylon.common.tools.CeylonTool;
  */
 @Summary("An example tool which demonstrates how to write a Tool.")
 @Description("A tool must implement the `Plugin` interface, and it has annotated " +
-	  "setters for each option/argument it recieves from the command line arguments." +
-	  "The name of the tool is derived from the name of the class, which must " +
-	  "begin with `Ceylon` and end with `Tool`")
+      "setters for each option/argument it recieves from the command line arguments." +
+      "The name of the tool is derived from the name of the class, which must " +
+      "begin with `Ceylon` and end with `Tool`")
 public class TestExampleTool implements Tool {
 
     private boolean longName;
@@ -82,20 +82,20 @@ public class TestExampleTool implements Tool {
     }
     @Option(longName="long-name", shortName='F')
     @Description("An example of a plain option. " +
-    		"Options are setters annotated with `@Option`. " +
-    		"If no name is given then a name is derived from the name of the setter. " +
-    		"If no `@Option.shortName` is given the option has no short name. " +
-    		"The type of a pure option must be boolean (it will be called " +
-    		"with a true argument if the option is present on the command line)")
+            "Options are setters annotated with `@Option`. " +
+            "If no name is given then a name is derived from the name of the setter. " +
+            "If no `@Option.shortName` is given the option has no short name. " +
+            "The type of a pure option must be boolean (it will be called " +
+            "with a true argument if the option is present on the command line)")
     public void setLongName(boolean foo) {
         this.longName = foo;
     }
     
     @OptionArgument(shortName='b')
     @Description("An example of a single-valued option argument. " +
-		  "Single-valued option arguments are setters annotated with `@OptionArgument` " +
-		  "which take a 'simple' argument." +
-		  "The type of an option argument is implied by the type of the setter parameter." +
+          "Single-valued option arguments are setters annotated with `@OptionArgument` " +
+          "which take a 'simple' argument." +
+          "The type of an option argument is implied by the type of the setter parameter." +
           "If no name is given then a name is derived from the name of the setter. " +
           "If no `@Option.shortName` is given the option has no short name. " +
           "An error will be generated when parsing the command line if the " +

@@ -39,31 +39,31 @@ extends BaseMap<Key, Item> {
 
     private final class MapIterator extends
             BaseIterator<Entry<? extends Key, ? extends Item>> {
-    	
-	    private final 
-	    java.util.Iterator<? extends java.util.Map.Entry<? extends Key, ? extends Item>> 
-	    inner = map.entrySet().iterator();
+        
+        private final 
+        java.util.Iterator<? extends java.util.Map.Entry<? extends Key, ? extends Item>> 
+        inner = map.entrySet().iterator();
 
-	    private MapIterator(TypeDescriptor $reifiedElement) {
-		    super($reifiedElement);
-	    }
+        private MapIterator(TypeDescriptor $reifiedElement) {
+            super($reifiedElement);
+        }
 
-	    @Override
-	    @Annotations(@Annotation("formal"))
-	    @TypeInfo(value="ceylon.language::Entry<Key,Item>|ceylon.language::Finished", 
-	             erased=true)
-	    public Object next() {
-	        if (inner.hasNext()) {
-	            java.util.Map.Entry<? extends Key, ? extends Item> 
-	            entry = inner.next();
-	            return new Entry<Key, Item>($reifiedKey, $reifiedItem, 
-	            		entry.getKey(), entry.getValue());
-	        }
-	        return finished_.get_();
-	    }
+        @Override
+        @Annotations(@Annotation("formal"))
+        @TypeInfo(value="ceylon.language::Entry<Key,Item>|ceylon.language::Finished", 
+                 erased=true)
+        public Object next() {
+            if (inner.hasNext()) {
+                java.util.Map.Entry<? extends Key, ? extends Item> 
+                entry = inner.next();
+                return new Entry<Key, Item>($reifiedKey, $reifiedItem, 
+                        entry.getKey(), entry.getValue());
+            }
+            return finished_.get_();
+        }
     }
 
-	private final java.util.Map<? extends Key, ? extends Item> map;
+    private final java.util.Map<? extends Key, ? extends Item> map;
     
     @Ignore
     private TypeDescriptor $reifiedItem;
@@ -72,8 +72,8 @@ extends BaseMap<Key, Item> {
     private TypeDescriptor $reifiedKey;
 
     public InternalMap(
-    		@Ignore TypeDescriptor $reifiedKey, 
-    		@Ignore TypeDescriptor $reifiedItem,
+            @Ignore TypeDescriptor $reifiedKey, 
+            @Ignore TypeDescriptor $reifiedItem,
             final java.util.Map<? extends Key, ? extends Item> map) {
         super($reifiedKey, $reifiedItem);
         this.map = map;
@@ -106,7 +106,7 @@ extends BaseMap<Key, Item> {
     public Iterator<? extends Entry<? extends Key, ? extends Item>> 
     iterator() {
         return new MapIterator(TypeDescriptor.klass(Entry.class, 
-        		$reifiedKey, $reifiedItem));
+                $reifiedKey, $reifiedItem));
     }
 
     @Override
@@ -120,14 +120,14 @@ extends BaseMap<Key, Item> {
     public InternalMap<? extends Key, ? extends Item> $clone() {
         return new InternalMap<Key,Item>(
                 $reifiedKey, $reifiedItem, 
-        		new HashMap<Key,Item>(map));
+                new HashMap<Key,Item>(map));
     }
 
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(InternalMap.class,
-        		$reifiedKey, $reifiedItem);
+                $reifiedKey, $reifiedItem);
     }
     
 }

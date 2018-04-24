@@ -42,7 +42,7 @@ public class TypeParameter extends TypeDeclaration {
     }
     
     public boolean isInvariant() {
-    	return !covariant && !contravariant;
+        return !covariant && !contravariant;
     }
     
     public boolean isCovariant() {
@@ -79,7 +79,7 @@ public class TypeParameter extends TypeDeclaration {
     
     @Override
     public boolean isOverloaded() {
-    	return false;
+        return false;
     }
     
     @Override
@@ -110,7 +110,7 @@ public class TypeParameter extends TypeDeclaration {
     
     @Override
     public String getQualifiedNameString() {
-    	return getName();
+        return getName();
     }
     
     @Override
@@ -137,28 +137,28 @@ public class TypeParameter extends TypeDeclaration {
     }
     
     public Type getDefaultTypeArgument() {
-		return defaultTypeArgument;
-	}
+        return defaultTypeArgument;
+    }
     
     public void setDefaultTypeArgument(Type defaultTypeArgument) {
-		this.defaultTypeArgument = defaultTypeArgument;
-	}
+        this.defaultTypeArgument = defaultTypeArgument;
+    }
     
     public boolean isDefaulted() {
-		return defaulted;
-	}
+        return defaulted;
+    }
     
     public void setDefaulted(boolean defaulted) {
-		this.defaulted = defaulted;
-	}
+        this.defaulted = defaulted;
+    }
     
     public boolean isConstrained() {
-		return constrained;
-	}
+        return constrained;
+    }
     
     public void setConstrained(boolean constrained) {
-		this.constrained = constrained;
-	}
+        this.constrained = constrained;
+    }
 
     public Boolean hasNonErasedBounds() {
         return hasNonErasedBounds;

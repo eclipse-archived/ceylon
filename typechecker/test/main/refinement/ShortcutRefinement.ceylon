@@ -98,7 +98,7 @@ class OtherBadlyUsed() extends OtherAbstract() {
 }
 
 class OtherBadlyDuped() extends OtherAbstract() {
-	sqr = sq;
+    sqr = sq;
     $error sqr = sq;
 }
 
@@ -143,10 +143,10 @@ class W() extends X<String>() {
 }
 
 void testxy() {
-	$type:"String" value b = Y().bar;
-	Y().foo("hello");
-	Y().fum();
-	Y().fo("x", "y", "z");
+    $type:"String" value b = Y().bar;
+    Y().foo("hello");
+    Y().fum();
+    Y().fo("x", "y", "z");
 }
 
 class FatArrowRefinement(name) 

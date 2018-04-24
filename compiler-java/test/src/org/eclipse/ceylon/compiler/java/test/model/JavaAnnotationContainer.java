@@ -21,10 +21,10 @@
 package org.eclipse.ceylon.compiler.java.test.model;
 
 public @interface JavaAnnotationContainer {
-	
-	Outcome method();
-	
+    
+    Outcome method();
+    
     public enum Outcome {
-    	Foo, Bar;
+        Foo, Bar;
     }
 }

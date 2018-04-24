@@ -198,7 +198,7 @@ public class ComprehensionTests extends CompilerTests {
     
     @Test
     public void testIfExists() {
-    	compareWithJavaSource("if_exists");
+        compareWithJavaSource("if_exists");
     }
     
     @Test

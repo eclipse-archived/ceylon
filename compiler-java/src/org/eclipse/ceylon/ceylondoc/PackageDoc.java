@@ -56,12 +56,12 @@ public class PackageDoc extends ClassOrPackageDoc {
     private final SortedMap<String,Class> annotationTypes = new TreeMap<String,Class>();
     private final SortedMap<String,Function> annotationConstructors = new TreeMap<String,Function>();
 
-	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
-		super(pkg.getModule(), tool, writer);
-		this.pkg = pkg;
-		this.sharingPageWithModule = tool.isRootPackage(module, pkg);
-		loadMembers();
-	}
+    public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
+        super(pkg.getModule(), tool, writer);
+        this.pkg = pkg;
+        this.sharingPageWithModule = tool.isRootPackage(module, pkg);
+        loadMembers();
+    }
 
     private void loadMembers() {
         for (Declaration m : pkg.getMembers()) {

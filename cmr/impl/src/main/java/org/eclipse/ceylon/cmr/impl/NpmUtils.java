@@ -176,8 +176,8 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
     private static final Set<ModuleDependencyInfo> NO_DEPS = Collections.<ModuleDependencyInfo>emptySet();
     
     private ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
-		if (obj == null) {
-			return new ModuleInfo(NpmRepository.NAMESPACE, moduleName, version, null, null, null, null, NO_DEPS);
+        if (obj == null) {
+            return new ModuleInfo(NpmRepository.NAMESPACE, moduleName, version, null, null, null, null, NO_DEPS);
         }
         if (!(obj instanceof Map)) {
             throw new RuntimeException("Expected an Object");

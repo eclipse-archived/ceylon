@@ -71,10 +71,10 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource("Constructors");
     }
 
-	@Test
-	public void testIopImport(){
-		compareWithJavaSource("Import");
-	}
+    @Test
+    public void testIopImport(){
+        compareWithJavaSource("Import");
+    }
 
     @Test
     public void testIopMethods(){
@@ -662,35 +662,35 @@ public class InteropTests extends CompilerTests {
     public void testJava9Module() throws Throwable{
         Assume.assumeTrue("Runs on JDK9", JDKUtils.jdk == JDKUtils.JDK.JDK9);
         assertErrors(new String[]{"java9/user/runError.ceylon", "java9/user/package.ceylon"}, 
-        		Arrays.asList("-out", destDir, "-rep", "test/java9/modules"), null, 
-        		new CompilerError(1, "imported package is not shared: 'com.ceylon.java9.internal'"));
+                Arrays.asList("-out", destDir, "-rep", "test/java9/modules"), null, 
+                new CompilerError(1, "imported package is not shared: 'com.ceylon.java9.internal'"));
 
         ErrorCollector c = new ErrorCollector();
         assertCompilesOk(c, getCompilerTask(Arrays.asList("-out", destDir, "-rep", "test/java9/modules"), c,
-        		"java9/user/run.ceylon", "java9/user/package.ceylon").call2());
+                "java9/user/run.ceylon", "java9/user/package.ceylon").call2());
         // check that we do not have a module-info.class
         File archive = getModuleArchive("org.eclipse.ceylon.compiler.java.test.interop.java9.user", "1");
         try(ZipFile zf = new ZipFile(archive)){
-        	ZipEntry entry = zf.getEntry("module-info.class");
-        	assertNull(entry);
-        }	
+            ZipEntry entry = zf.getEntry("module-info.class");
+            assertNull(entry);
+        }   
 
         c = new ErrorCollector();
         assertCompilesOk(c, getCompilerTask(Arrays.asList("-out", destDir, "-rep", "test/java9/modules", "-module-info"), c,
-        		"java9/user/run.ceylon", "java9/user/package.ceylon").call2());
+                "java9/user/run.ceylon", "java9/user/package.ceylon").call2());
         // check that we do have a module-info.class
         try(ZipFile zf = new ZipFile(archive)){
-        	ZipEntry entry = zf.getEntry("module-info.class");
-        	assertNotNull(entry);
-        }	
+            ZipEntry entry = zf.getEntry("module-info.class");
+            assertNotNull(entry);
+        }   
 
         run("org.eclipse.ceylon.compiler.java.test.interop.java9.user.run", 
                 new ModuleWithArtifact("org.eclipse.ceylon.compiler.java.test.interop.java9.user", "1"),
                 new ModuleWithArtifact("com.ceylon.java9", "123", "test/java9/modules", "jar"));
 
         assertEquals(0, runInJava9(new String[]{destDir, "test/java9/modules", "../dist/dist/repo"}, 
-        		new ModuleSpec(null, "org.eclipse.ceylon.compiler.java.test.interop.java9.user", "1"), 
-        		Collections.<String>emptyList()));
+                new ModuleSpec(null, "org.eclipse.ceylon.compiler.java.test.interop.java9.user", "1"), 
+                Collections.<String>emptyList()));
     }
     
     @Test

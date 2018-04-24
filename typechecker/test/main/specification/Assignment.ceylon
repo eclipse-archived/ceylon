@@ -60,8 +60,8 @@ void testAssignmentInIf2() {
     $error print(b); //not really necessary in this special case!
 }
 void testAssignmentInIf3() {
-	interface I {}
-	Object hello="hello";
+    interface I {}
+    Object hello="hello";
     variable Object o="hello";
     if (is String s = (o=hello)) {}
     print(o);
@@ -90,15 +90,15 @@ void testAssignmentInWhile1() {
     $error print(b);
 }
 void testAssignmentInWhile2() {
-	interface I {}
-	class J(Boolean b) {}
+    interface I {}
+    class J(Boolean b) {}
     variable Boolean b;
     while (is I i = J(b=true)) {}
     $error print(b); //not really necessary in this special case!
 }
 void testAssignmentInWhile3() {
-	interface I {}
-	Object hello="hello";
+    interface I {}
+    Object hello="hello";
     variable Object o="hello";
     if (is String s = (o=hello)) {}
     print(o);

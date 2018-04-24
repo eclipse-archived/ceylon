@@ -638,9 +638,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     // use to test and debug:
 //    public static void main(String[] args) throws Exception{
-//    	CeylonRunJsTool tool = new CeylonRunJsTool();
-//    	tool.setCwd(new File("../ceylon-js-tests"));
-//    	tool.setModuleVersion("default");
-//    	tool.run();
+//      CeylonRunJsTool tool = new CeylonRunJsTool();
+//      tool.setCwd(new File("../ceylon-js-tests"));
+//      tool.setModuleVersion("default");
+//      tool.run();
 //    }
 }

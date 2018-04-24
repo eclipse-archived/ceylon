@@ -22,12 +22,12 @@ package com.ceylon.java8;
 import com.ceylon.java8.Interface;
 
 public interface Interface {
-	public static void staticMethod(){}
-	public default void defaultMethod() {
-	}
-	public interface InnerInterface{
-	    public static void staticMethod(){}
-	}
+    public static void staticMethod(){}
+    public default void defaultMethod() {
+    }
+    public interface InnerInterface{
+        public static void staticMethod(){}
+    }
     public static class InnerClass{
         public static void staticMethod(){}
     }

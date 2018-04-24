@@ -298,11 +298,11 @@ public abstract class TypeDescriptor
         @Override
         public int hashCode() {
             if (memoizedHash == 0) {
-            	memoizedHash = 17;
-            	memoizedHash = 37 * memoizedHash + "class".hashCode();
-            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
-            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(useSiteVariance);
-            	memoizedHash = 37 * memoizedHash + klass.hashCode();
+                memoizedHash = 17;
+                memoizedHash = 37 * memoizedHash + "class".hashCode();
+                memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
+                memoizedHash = 37 * memoizedHash + Arrays.hashCode(useSiteVariance);
+                memoizedHash = 37 * memoizedHash + klass.hashCode();
             }
             return memoizedHash;
         }
@@ -352,7 +352,7 @@ public abstract class TypeDescriptor
                 return java.lang.Throwable.class;
             }
             if (klass==ceylon.language.Exception.class) {
-            	return java.lang.Exception.class;
+                return java.lang.Exception.class;
             }
             if (klass==ceylon.language.Annotation.class
                     || klass==ceylon.language.ConstrainedAnnotation.class){
@@ -497,12 +497,12 @@ public abstract class TypeDescriptor
         @Override
         public int hashCode() {
             if (memoizedHash == 0) {
-            	memoizedHash = 17;
-            	memoizedHash = 37 * memoizedHash + "tuple".hashCode();
-            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(elements);
-            	memoizedHash = 37 * memoizedHash + (variadic ? 1 : 0);
-            	memoizedHash = 37 * memoizedHash + (atLeastOne ? 1 : 0);
-            	memoizedHash = 37 * memoizedHash + firstDefaulted;
+                memoizedHash = 17;
+                memoizedHash = 37 * memoizedHash + "tuple".hashCode();
+                memoizedHash = 37 * memoizedHash + Arrays.hashCode(elements);
+                memoizedHash = 37 * memoizedHash + (variadic ? 1 : 0);
+                memoizedHash = 37 * memoizedHash + (atLeastOne ? 1 : 0);
+                memoizedHash = 37 * memoizedHash + firstDefaulted;
             }
             return  memoizedHash;
         }
@@ -724,11 +724,11 @@ public abstract class TypeDescriptor
         @Override
         public int hashCode() {
             if (memoizedHash == 0) {
-            	memoizedHash = 17;
-            	memoizedHash = 37 * memoizedHash + "functionorvalue".hashCode();
-            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
-            	memoizedHash = 37 * memoizedHash + (klass != null ? klass.hashCode() : 0);
-            	memoizedHash = 37 * memoizedHash + (name != null ? name.hashCode() : 0);
+                memoizedHash = 17;
+                memoizedHash = 37 * memoizedHash + "functionorvalue".hashCode();
+                memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
+                memoizedHash = 37 * memoizedHash + (klass != null ? klass.hashCode() : 0);
+                memoizedHash = 37 * memoizedHash + (name != null ? name.hashCode() : 0);
             }
             return  memoizedHash;
         }

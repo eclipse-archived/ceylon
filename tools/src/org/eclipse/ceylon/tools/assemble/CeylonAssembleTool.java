@@ -65,7 +65,7 @@ import org.eclipse.ceylon.tools.moduleloading.ModuleLoadingTool;
 public class CeylonAssembleTool extends ModuleLoadingTool {
     private List<ModuleSpec> modules;
     private boolean force;
-	private File out;
+    private File out;
     private final List<String> excludedModules = new ArrayList<>();
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;

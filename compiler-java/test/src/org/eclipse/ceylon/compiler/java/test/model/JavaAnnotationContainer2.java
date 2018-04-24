@@ -22,5 +22,5 @@ package org.eclipse.ceylon.compiler.java.test.model;
 
 public class JavaAnnotationContainer2 {
 
-	public void method(JavaAnnotationContainer.Outcome i){}
+    public void method(JavaAnnotationContainer.Outcome i){}
 }

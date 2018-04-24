@@ -22,11 +22,11 @@ import org.eclipse.ceylon.model.typechecker.model.Module;
  */
 public class Main2 {
 
-	/**
-	 * Same as Main except takes its main class as optional parameter.
-	 */
-	public static void main(String[] args) {
-		// WARNING: keep in sync with Main
+    /**
+     * Same as Main except takes its main class as optional parameter.
+     */
+    public static void main(String[] args) {
+        // WARNING: keep in sync with Main
         int idx = 0;
         boolean allowMissingModules = false;
         String overrides = null;
@@ -67,10 +67,10 @@ public class Main2 {
             .allowMissingModules(allowMissingModules)
             .overrides(overrides)
             .run(moduleSpec.getName(), version, runSpecToJavaClass(moduleSpec.getName(), runClassOrMethod), moduleArgs);
-	}
+    }
 
-	private static String runSpecToJavaClass(String module, String runClassOrMethod){
-		String javaClass;
+    private static String runSpecToJavaClass(String module, String runClassOrMethod){
+        String javaClass;
         if (runClassOrMethod == null || runClassOrMethod.isEmpty()) {
             // "default" is not a package name
             if (module.equals(Module.DEFAULT_MODULE_NAME)) {
@@ -94,15 +94,15 @@ public class Main2 {
         // if we have no package part, we don't need quoting
         // we add _ to run class
         if(Character.isLowerCase(firstChar))
-        	javaClass += "_";
+            javaClass += "_";
         return javaClass;
-	}
-	
-	private static void usage() {
+    }
+    
+    private static void usage() {
         System.err.println("Invalid arguments.");
         System.err.println("Usage: \n");
         System.err.println(Main2.class.getName()+" [--allow-missing-modules] [--overrides overridesFile.xml] [--run runClassOrMethod] moduleSpec args*");
         System.exit(1);
-	}
+    }
 
 }

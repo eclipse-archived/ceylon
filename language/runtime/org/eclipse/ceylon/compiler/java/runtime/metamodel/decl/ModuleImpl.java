@@ -145,7 +145,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
                 sb.add(new ImportImpl(this, moduleImport));
             }
             ImportImpl[] array = sb.toArray(new ImportImpl[0]);
-    		this.dependencies = new ObjectArrayIterable<ImportImpl>(Import.$TypeDescriptor$, array).sequence();
+            this.dependencies = new ObjectArrayIterable<ImportImpl>(Import.$TypeDescriptor$, array).sequence();
         }
         return this.dependencies;
     }

@@ -416,23 +416,23 @@ public class TypeVisitor extends Visitor {
     
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
-    	Scope scope = that.getScope();
-    	ClassOrInterface ci = 
-    			getContainingClassOrInterface(scope);
-    	if (ci!=null) {
-    		if (scope instanceof Constructor) {
-    			that.setTypeModel(intersectionOfSupertypes(ci));
-    		}
-    		else if (ci.isClassOrInterfaceMember()) {
-    			ClassOrInterface oci = 
-    					(ClassOrInterface) 
-    					ci.getContainer();
-    			that.setTypeModel(intersectionOfSupertypes(oci));
-    		}
-    		else {
-    			that.addError("super appears in extends for non-member class");
-    		}
-    	}
+        Scope scope = that.getScope();
+        ClassOrInterface ci = 
+                getContainingClassOrInterface(scope);
+        if (ci!=null) {
+            if (scope instanceof Constructor) {
+                that.setTypeModel(intersectionOfSupertypes(ci));
+            }
+            else if (ci.isClassOrInterfaceMember()) {
+                ClassOrInterface oci = 
+                        (ClassOrInterface) 
+                        ci.getContainer();
+                that.setTypeModel(intersectionOfSupertypes(oci));
+            }
+            else {
+                that.addError("super appears in extends for non-member class");
+            }
+        }
         //}
     }
     
@@ -1127,9 +1127,9 @@ public class TypeVisitor extends Visitor {
                                     .getDeclaration();
                         }
                         if (type.isTypeConstructor()) {
-                        	et.addError("missing type arguments of generic type: '" + 
-                        			etd.getName(unit) +
-                        			"' has type parameters (add missing type argument list)");
+                            et.addError("missing type arguments of generic type: '" + 
+                                    etd.getName(unit) +
+                                    "' has type parameters (add missing type argument list)");
                         }
                         else if (etd==td) {
                             //unnecessary, handled by SupertypeVisitor
@@ -1188,9 +1188,9 @@ public class TypeVisitor extends Visitor {
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
                 if (type.isTypeConstructor()) {
-                	st.addError("missing type arguments of generic type: '" + 
-                			std.getName(unit) +
-                			"' has type parameters (add missing type argument list)");
+                    st.addError("missing type arguments of generic type: '" + 
+                            std.getName(unit) +
+                            "' has type parameters (add missing type argument list)");
                 }
                 else if (std!=null && 
                         !(std instanceof UnknownType)) {

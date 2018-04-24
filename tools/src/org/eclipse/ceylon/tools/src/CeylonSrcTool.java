@@ -31,21 +31,21 @@ import org.eclipse.ceylon.model.cmr.ArtifactResult;
 @Summary("Fetches source archives from a repository and extracts their contents into a source directory")
 @Description("Fetches any sources, resources, documentation and scripts " +
         "that can be found for given `module` from the " +
-		"first configured repository to contain the module and extracts " +
-		"the them into their respective output directories. Multiple modules " +
-		"can be given.\n" +
-		"\n" +
-		"This tool is especially useful for working with example projects.")
+        "first configured repository to contain the module and extracts " +
+        "the them into their respective output directories. Multiple modules " +
+        "can be given.\n" +
+        "\n" +
+        "This tool is especially useful for working with example projects.")
 @RemainingSections("## Examples\n" +
-		"\n" +
-		"A typical workflow might be:\n" +
-		"\n" +
-		"    mkdir my-project\n" +
-		"    cd my-project\n" +
-		"    ceylon src org.example.foo\n" +
-		"    ceylon compile org.example.foo\n" +
-		"    ceylon run org.example.foo\n" +
-		"")
+        "\n" +
+        "A typical workflow might be:\n" +
+        "\n" +
+        "    mkdir my-project\n" +
+        "    cd my-project\n" +
+        "    ceylon src org.example.foo\n" +
+        "    ceylon compile org.example.foo\n" +
+        "    ceylon run org.example.foo\n" +
+        "")
 public class CeylonSrcTool extends RepoUsingTool {
     
     private File src = DefaultToolOptions.getCompilerSourceDirs().get(0);
@@ -123,7 +123,7 @@ public class CeylonSrcTool extends RepoUsingTool {
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 if (checkModuleVersionsOrShowSuggestions(module.getName(), null, 
-                		ModuleQuery.Type.SRC, null, null, null, null) == null) {
+                        ModuleQuery.Type.SRC, null, null, null, null) == null) {
                     return;
                 }
             }
@@ -133,7 +133,7 @@ public class CeylonSrcTool extends RepoUsingTool {
             String version = module.getVersion();
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 version = checkModuleVersionsOrShowSuggestions(module.getName(), null, 
-                		ModuleQuery.Type.SRC, null, null, null, null);
+                        ModuleQuery.Type.SRC, null, null, null, null);
             }
             msg("retrieving.module", module).newline();
             ArtifactContext allArtifacts = new ArtifactContext(null, module.getName(), version, ArtifactContext.SRC, ArtifactContext.RESOURCES, ArtifactContext.DOCS, ArtifactContext.SCRIPTS_ZIPPED);

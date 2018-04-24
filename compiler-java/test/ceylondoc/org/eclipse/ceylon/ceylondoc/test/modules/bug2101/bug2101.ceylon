@@ -1,12 +1,12 @@
 import ceylon.language {
-	d=doc
+    d=doc
 }
 import ceylon.language.meta.declaration {
-	FunctionDeclaration
+    FunctionDeclaration
 }
 
 shared annotation final class Doc(shared actual String string)
-		satisfies OptionalAnnotation<Doc,FunctionDeclaration> {}
+        satisfies OptionalAnnotation<Doc,FunctionDeclaration> {}
 
 shared annotation Doc doc(String doc) => Doc(doc);
 

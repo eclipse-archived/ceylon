@@ -93,7 +93,7 @@ public class Constructor extends TypeDeclaration implements Functional {
     
     @Override
     public boolean isOverloaded() {
-    	return (flags&OVERLOADED)!=0;
+        return (flags&OVERLOADED)!=0;
     }
     
     public void setOverloaded(boolean overloaded) {
@@ -103,7 +103,7 @@ public class Constructor extends TypeDeclaration implements Functional {
         else {
             flags&=(~OVERLOADED);
         }
-	}
+    }
     
     public void setAbstraction(boolean abstraction) {
         if (abstraction) {

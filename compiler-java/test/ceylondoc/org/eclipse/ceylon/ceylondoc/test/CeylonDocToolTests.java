@@ -230,13 +230,13 @@ public class CeylonDocToolTests {
         tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
         tool.setHeader("<div class='navbar-inverse navbar-static-top'>" +
-        		           "<div class='navbar-inner' style='color:white; font-style: italic; text-align: center'>" +
-        		               "documentation under construction" +
-        		           "</div>" +
-        		       "</div>");
+                           "<div class='navbar-inner' style='color:white; font-style: italic; text-align: center'>" +
+                               "documentation under construction" +
+                           "</div>" +
+                       "</div>");
         tool.setFooter("<p style='text-align: right;'>" +
-        		       "Copyright © 2010-2013, Red Hat, Inc. or third-party contributors" +
-        		       "</p>");
+                       "Copyright © 2010-2013, Red Hat, Inc. or third-party contributors" +
+                       "</p>");
         tool.run();
         
         File destDir = getOutputDir(tool, moduleName, "3.1.4");
@@ -925,8 +925,8 @@ public class CeylonDocToolTests {
     }
 
     private void assertParametersDocumentation(File destDir) throws Exception {
-    	assertMatchInFile(destDir, "index.html", 
-    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><code><span class='parameter' id='stubTopLevelMethod-numbers'>numbers</span></code><div class='doc section'><p>Sequenced parameters <code>numbers</code></p>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><code><span class='parameter' id='stubTopLevelMethod-numbers'>numbers</span></code><div class='doc section'><p>Sequenced parameters <code>numbers</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='parameters section'><span class='title'>Parameters:"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -937,27 +937,27 @@ public class CeylonDocToolTests {
                 Pattern.compile("<li><code><span class='parameter' id='methodWithParametersDocumentation-a'>a</span></code><div class='doc section'><p>Method parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<li><code><span class='parameter' id='methodWithParametersDocumentation-b'>b</span></code><div class='doc section'><p>Method parameter <code>b</code></p>"));
-	}
+    }
     
     private void assertParametersAssertions(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<li><code><span class='parameter' id='stubFunctionWithAssertion2-n'>n</span></code><div class='assertions' title='Parameter assertions'>" +
-                		"<ul>" +
-                		"<li><i class='icon-assertion'></i><code>exists n</code></li><li><i class='icon-assertion'></i><code>n \\&gt;= 0 \\&amp;\\&amp; n \\&lt;=255</code></li>" +
-                		"<li><i class='icon-assertion'></i><code>s.size \\&lt; n</code></li>" +
-                		"</ul>" +
-                		"</div></li><li><code><span class='parameter' id='stubFunctionWithAssertion2-s'>s</span></code><div class='assertions' title='Parameter assertions'>" +
-                		"<ul>" +
-                		"<li><i class='icon-assertion'></i><code>exists s</code></li><li><i class='icon-assertion'></i><code>s.size != 0</code></li>" +
-                		"<li><i class='icon-assertion'></i><code>s.size \\&lt; n</code></li>" +
-                		"</ul></div></li></ul>"));
+                        "<ul>" +
+                        "<li><i class='icon-assertion'></i><code>exists n</code></li><li><i class='icon-assertion'></i><code>n \\&gt;= 0 \\&amp;\\&amp; n \\&lt;=255</code></li>" +
+                        "<li><i class='icon-assertion'></i><code>s.size \\&lt; n</code></li>" +
+                        "</ul>" +
+                        "</div></li><li><code><span class='parameter' id='stubFunctionWithAssertion2-s'>s</span></code><div class='assertions' title='Parameter assertions'>" +
+                        "<ul>" +
+                        "<li><i class='icon-assertion'></i><code>exists s</code></li><li><i class='icon-assertion'></i><code>s.size != 0</code></li>" +
+                        "<li><i class='icon-assertion'></i><code>s.size \\&lt; n</code></li>" +
+                        "</ul></div></li></ul>"));
         
         assertMatchInFile(destDir, "StubClassWithAssertions.type.html",
                 Pattern.compile("<li><code><span class='parameter' id='StubClassWithAssertions-n'>n</span></code><div class='assertions' title='Parameter assertions'>" +
-                		"<ul>" +
-                		"<li><i class='icon-assertion'></i><code>exists n</code></li>" +
-                		"<li><i class='icon-assertion'></i><code>0 \\&lt; n \\&lt; 123k</code></li>" +
-                		"</ul>"));
+                        "<ul>" +
+                        "<li><i class='icon-assertion'></i><code>exists n</code></li>" +
+                        "<li><i class='icon-assertion'></i><code>0 \\&lt; n \\&lt; 123k</code></li>" +
+                        "</ul>"));
         
         assertMatchInFile(destDir, "StubClassWithAssertions.type.html",
                 Pattern.compile("<code><span class='parameter' id='StubClassWithAssertions-s'>s</span></code><div class='assertions' title='Parameter assertions'>" +
@@ -969,15 +969,15 @@ public class CeylonDocToolTests {
     private void assertParametersLinks(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<span class='parameter' id='methodWithLinksToParametersOfParameterMethod-fce1'>fce1</span>" +
-                		"<a id='methodWithLinksToParametersOfParameterMethod-fce1-fce2'></a>" +
-                		"<a id='methodWithLinksToParametersOfParameterMethod-fce1-fce2-s'></a>"));
+                        "<a id='methodWithLinksToParametersOfParameterMethod-fce1-fce2'></a>" +
+                        "<a id='methodWithLinksToParametersOfParameterMethod-fce1-fce2-s'></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='doc section'><p>" +
-                		"<a class='link' href='StubClass.type.html#methodWithLinksToParametersOfParameterMethod-fce1-fce2' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksToParametersOfParameterMethod.fce1.fce2'><code><span class='identifier'>fce2\\(\\)</span></code></a>, " +
-                		"<a class='link' href='StubClass.type.html#methodWithLinksToParametersOfParameterMethod-fce1-fce2-s' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksToParametersOfParameterMethod.fce1.fce2.s'><code><span class='identifier'>s</span></code></a></p>"));
+                        "<a class='link' href='StubClass.type.html#methodWithLinksToParametersOfParameterMethod-fce1-fce2' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksToParametersOfParameterMethod.fce1.fce2'><code><span class='identifier'>fce2\\(\\)</span></code></a>, " +
+                        "<a class='link' href='StubClass.type.html#methodWithLinksToParametersOfParameterMethod-fce1-fce2-s' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksToParametersOfParameterMethod.fce1.fce2.s'><code><span class='identifier'>s</span></code></a></p>"));
     }
 
-	private void assertThrows(File destDir) throws Exception {
+    private void assertThrows(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='throws section'><span class='title'>Throws </span><ul><li>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -1104,10 +1104,10 @@ public class CeylonDocToolTests {
                 Pattern.compile("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"));
     }
     
-	private void assertSequencedParameter(File destDir) throws Exception {
+    private void assertSequencedParameter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<span class='void'>void</span> <span class='identifier'>methodWithSequencedParameter</span>\\(<span title='ceylon.language::Integer'><span class='type-identifier'>Integer</span></span>\\* <span class='parameter'>numbers</span>\\)"));
-	}
+    }
     
     private void assertCallableParameter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -1419,29 +1419,29 @@ public class CeylonDocToolTests {
         
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("<div class='doc section'><p>The stub annotated function.</p>\n</div>" +
-                		        "<div class='annotations section'><span class='title'>Annotations: </span><ul>")));
+                                "<div class='annotations section'><span class='title'>Annotations: </span><ul>")));
         
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationFoo' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationFoo'><span class='identifier'>stubAnnotationFoo</span></a>" +
-                		"(" +
-                		"<span class='literal'>&quot;abc&quot;</span>, " +
-                		"<span class='literal'>'a'</span>, " +
-                		"<span class='literal'>123</span>, " +
-                		"<span class='literal'>987.654</span>, " +
-                		"true, " +
-                		"`<span class='keyword'>class </span><a class='link' href='StubClass.type.html' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a>`, " +
-                		"`<span class='keyword'>package</span> ceylon.language.meta`, " +
-                		"[], " +
-                		"[<span class='literal'>0</span>, <span class='literal'>1</span>], " +
-                		"{}, " +
-                		"{<span class='literal'>0.0</span>, <span class='literal'>1.1</span>}" +
-                		")</li>")));
+                        "(" +
+                        "<span class='literal'>&quot;abc&quot;</span>, " +
+                        "<span class='literal'>'a'</span>, " +
+                        "<span class='literal'>123</span>, " +
+                        "<span class='literal'>987.654</span>, " +
+                        "true, " +
+                        "`<span class='keyword'>class </span><a class='link' href='StubClass.type.html' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a>`, " +
+                        "`<span class='keyword'>package</span> ceylon.language.meta`, " +
+                        "[], " +
+                        "[<span class='literal'>0</span>, <span class='literal'>1</span>], " +
+                        "{}, " +
+                        "{<span class='literal'>0.0</span>, <span class='literal'>1.1</span>}" +
+                        ")</li>")));
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'><span class='identifier'>stubAnnotationBar</span></a>" +
-                		"(<a class='link' href='index.html#stubAnnotationBaz' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz</span></a>(<span class='literal'>&quot;baz&quot;</span>))</li>")));
+                        "(<a class='link' href='index.html#stubAnnotationBaz' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz</span></a>(<span class='literal'>&quot;baz&quot;</span>))</li>")));
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'><span class='identifier'>stubAnnotationBar</span></a>" +
-                		"{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz</span></a>{s=<span class='literal'>&quot;baz&quot;</span>;};}</li>")));
+                        "{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'><span class='identifier'>stubAnnotationBaz</span></a>{s=<span class='literal'>&quot;baz&quot;</span>;};}</li>")));
     }
     
     private void assertAbstractClassModifier(File destDir) throws Exception {
@@ -1488,10 +1488,10 @@ public class CeylonDocToolTests {
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws Exception {
-    	assertMatchInFile(destDir, "StubClass.type.html",
-    			Pattern.compile(Pattern.quote("Inherited Methods")));
-    	assertMatchInFile(destDir, "StubClass.type.html",
-    			Pattern.compile(Pattern.quote("<td>Methods inherited from: <i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><code><a class='link' href='StubInterface.type.html' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubInterface'><span class='type-identifier'>StubInterface</span></a></code><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'><code><span class='identifier'>defaultDeprecatedMethodFromStubInterface()</span></code></a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'><code><span class='identifier'>formalMethodFromStubInterface()</span></code></a>")));
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("Inherited Methods")));
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("<td>Methods inherited from: <i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><code><a class='link' href='StubInterface.type.html' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubInterface'><span class='type-identifier'>StubInterface</span></a></code><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'><code><span class='identifier'>defaultDeprecatedMethodFromStubInterface()</span></code></a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to org.eclipse.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'><code><span class='identifier'>formalMethodFromStubInterface()</span></code></a>")));
     }
 
     private void assertBug691AbbreviatedOptionalType(File destDir) throws Exception {

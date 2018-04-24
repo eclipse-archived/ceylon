@@ -34,22 +34,22 @@ public static final org.eclipse.ceylon.compiler.java.runtime.model.TypeDescripto
 // Method descriptor #13 (Ljava/lang/String;)V
 // Stack: 1, Locals: 2
 public NativeClass(
-	@org.eclipse.ceylon.compiler.java.metadata.Name("s")
-	@org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-	java.lang.String s) {
-	System.out.println(s);
+    @org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    java.lang.String s) {
+    System.out.println(s);
 }
 
 // Method descriptor #27 ()Lorg/eclipse/ceylon/compiler/java/runtime/model/TypeDescriptor;
 // Stack: 1, Locals: 1
 @org.eclipse.ceylon.compiler.java.metadata.Ignore
 public org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-	return $TypeDescriptor$;
+    return $TypeDescriptor$;
 }
 
 // Method descriptor #29 ()V
 // Stack: 2, Locals: 0
 static {
-	$TypeDescriptor$ = TypeDescriptor.klass(NativeClass.class);
+    $TypeDescriptor$ = TypeDescriptor.klass(NativeClass.class);
 }
 }

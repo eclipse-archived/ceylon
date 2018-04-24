@@ -385,7 +385,7 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(BitwiseOp that) {
         super.visit(that);
         if(that.getBinary() 
-        		&& (that.getLeftTerm().getUnboxed()
+                && (that.getLeftTerm().getUnboxed()
                 || that.getRightTerm().getUnboxed()
                 || BooleanUtil.isFalse(preferredExpressionBoxing)))
             CodegenUtil.markUnBoxed(that);
@@ -406,7 +406,7 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(BitwiseAssignmentOp that) {
         super.visit(that);
         if(that.getBinary() 
-        		&& (that.getLeftTerm().getUnboxed()
+                && (that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed()))
             CodegenUtil.markUnBoxed(that);
     }

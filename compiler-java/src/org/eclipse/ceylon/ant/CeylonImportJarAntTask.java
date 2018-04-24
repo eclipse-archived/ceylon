@@ -86,10 +86,10 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
     private String sourceJar;
     private String descriptor;
     private boolean force;
-	private List<MissingDependencyPackages> missingDependenciesPackages = new LinkedList<MissingDependencyPackages>();
+    private List<MissingDependencyPackages> missingDependenciesPackages = new LinkedList<MissingDependencyPackages>();
 
     /** Adds an list of packages to be considered as part of the specified module if it's missing */
-	@OptionEquivalent
+    @OptionEquivalent
     public void addConfiguredMissingDependencyPackages(MissingDependencyPackages missingDependencyPackages) {
         this.missingDependenciesPackages .add(missingDependencyPackages);
     }
@@ -158,14 +158,14 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         }
         
         for(MissingDependencyPackages missingDependencyPackages : missingDependenciesPackages){
-        	StringBuffer packages = new StringBuffer();
-        	for(Package pkg : missingDependencyPackages.packages){
-        		if(packages.length() > 0){
-        			packages.append(",");
-        		}
-        		packages.append(pkg);
-        	}
-        	appendOptionArgument(cmd, "--missing-dependency-packages", missingDependencyPackages.module + "=" + packages.toString());
+            StringBuffer packages = new StringBuffer();
+            for(Package pkg : missingDependencyPackages.packages){
+                if(packages.length() > 0){
+                    packages.append(",");
+                }
+                packages.append(pkg);
+            }
+            appendOptionArgument(cmd, "--missing-dependency-packages", missingDependencyPackages.module + "=" + packages.toString());
         }
         
         if (jar != null) {

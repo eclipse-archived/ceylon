@@ -59,30 +59,30 @@ public class TypeUtils {
 
     /** Prints the type arguments, usually for their reification. */
     public static void printTypeArguments(final Node node, 
-    		final Type type,
+            final Type type,
             final GenerateJsVisitor gen, 
             final boolean skipSelfDecl) {
-    	printTypeArguments(node, gen, skipSelfDecl, 
-    			type.getTypeArguments(), 
-    			type.getVarianceOverrides());
+        printTypeArguments(node, gen, skipSelfDecl, 
+                type.getTypeArguments(), 
+                type.getVarianceOverrides());
     }
 
-	public static void printTypeArguments(final Node node, 
-			final GenerateJsVisitor gen, 
-			final boolean skipSelfDecl,
-			final Map<TypeParameter, Type> targs, 
-			final Map<TypeParameter, SiteVariance> overrides) {
-		if (targs==null) return;
+    public static void printTypeArguments(final Node node, 
+            final GenerateJsVisitor gen, 
+            final boolean skipSelfDecl,
+            final Map<TypeParameter, Type> targs, 
+            final Map<TypeParameter, SiteVariance> overrides) {
+        if (targs==null) return;
         gen.out("{");
         boolean first = true;
         for (Map.Entry<TypeParameter,Type> e : targs.entrySet()) {
-        	TypeParameter typeParam = e.getKey();
-			Type typeArg = e.getValue();
-			if (typeParam.isTypeConstructor()
-        			&& typeArg.getDeclaration().isAnonymous()) {
-        		//don't reify anonymous type constructors
-        		continue;
-        	}
+            TypeParameter typeParam = e.getKey();
+            Type typeArg = e.getValue();
+            if (typeParam.isTypeConstructor()
+                    && typeArg.getDeclaration().isAnonymous()) {
+                //don't reify anonymous type constructors
+                continue;
+            }
             if (first) {
                 first = false;
             } else {
@@ -94,8 +94,8 @@ public class TypeUtils {
                 gen.out("'", typeParam.getName(), "'");
             } else if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
                 boolean hasParams = 
-                		pt.getTypeArgumentList() != null 
-                		&& !pt.getTypeArgumentList().isEmpty();
+                        pt.getTypeArgumentList() != null 
+                        && !pt.getTypeArgumentList().isEmpty();
                 boolean closeBracket = false;
                 final TypeDeclaration d = pt.getDeclaration();
                 if (pt.isTypeParameter()) {
@@ -106,7 +106,7 @@ public class TypeUtils {
                     outputQualifiedTypename(node,
                             node != null 
                             && gen.isImported(node.getUnit().getPackage(), 
-                            		pt.getDeclaration()),
+                                    pt.getDeclaration()),
                             pt, gen, skipSelfDecl);
                 }
                 if (hasParams) {
@@ -114,8 +114,8 @@ public class TypeUtils {
                     printTypeArguments(node, pt, gen, skipSelfDecl);
                 }
                 SiteVariance siteVariance = 
-                		overrides == null ? null : 
-                			overrides.get(typeParam);
+                        overrides == null ? null : 
+                            overrides.get(typeParam);
                 printSiteVariance(siteVariance, gen);
                 if (closeBracket) {
                     gen.out("}");
@@ -123,10 +123,10 @@ public class TypeUtils {
             }
         }
         gen.out("}");
-	}
+    }
 
     public static void outputQualifiedTypename(final Node node, 
-    		final boolean imported, final Type pt,
+            final boolean imported, final Type pt,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
         if (t instanceof NothingType) {
@@ -152,7 +152,7 @@ public class TypeUtils {
                     && t.getExtendedType() != null 
                     && t.getExtendedType().isCallable();
             boolean init = !imported && pt.getDeclaration().isDynamic() 
-            			|| t.isAnonymous();
+                        || t.isAnonymous();
             if (init && !pt.getDeclaration().isToplevel()) {
                 Declaration dynintc = getContainingClassOrInterface(node.getScope());
                 if (dynintc == null 
@@ -184,17 +184,17 @@ public class TypeUtils {
     }
 
     static String qualifiedTypeContainer(final Node node, final boolean imported, 
-    		final TypeDeclaration t, final GenerateJsVisitor gen) {
+            final TypeDeclaration t, final GenerateJsVisitor gen) {
         final String modAlias = imported ? 
-        		gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : 
-    			null;
+                gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : 
+                null;
         final StringBuilder sb = new StringBuilder();
         if (modAlias != null && !modAlias.isEmpty()) {
             sb.append(modAlias).append('.');
         }
         if (t.getContainer() instanceof ClassOrInterface) {
             final Scope scope = node == null ? null : 
-            	getContainingClassOrInterface(node.getScope());
+                getContainingClassOrInterface(node.getScope());
             ClassOrInterface parent = (ClassOrInterface) t.getContainer();
             final List<ClassOrInterface> parents = new ArrayList<>(3);
             parents.add(0, parent);
@@ -244,53 +244,53 @@ public class TypeUtils {
             if (pt.isTypeParameter()) {
                 resolveTypeParameter(node, (TypeParameter)type, gen, skipSelfDecl);
             } else {
-				boolean imported = node != null 
-					&& gen.isImported(node.getUnit().getPackage(), type);
-				if (pt.isTypeAlias()) {
-				    outputQualifiedTypename(node, 
-				    		imported,
-				            pt, gen, skipSelfDecl);
-				} else {
-				    gen.out("{t:");
-				    outputQualifiedTypename(node, 
-				    		imported,
-				            pt, gen, skipSelfDecl);
-				    if (!pt.getTypeArgumentList().isEmpty()) {
-				        final Map<TypeParameter,Type> targs;
-				        if (pt.getDeclaration().isToplevel()) {
-				            targs = pt.getTypeArguments();
-				        } else {
-				            //Gather all type parameters from containers
-				            Scope scope = node.getScope();
-				            final HashSet<TypeParameter> parenttp = new HashSet<>();
-				            while (scope != null) {
-				                if (scope instanceof Generic) {
-				                    Generic g = (Generic) scope;
-				                    for (TypeParameter tp : g.getTypeParameters()) {
-				                        parenttp.add(tp);
-				                    }
-				                }
-				                scope = scope.getScope();
-				            }
-				            targs = new HashMap<>();
-				            targs.putAll(pt.getTypeArguments());
-				            Declaration cd = getContainingDeclaration(pt.getDeclaration());
-				            while (cd != null) {
-				                for (TypeParameter tp : cd.getTypeParameters()) {
-				                    if (parenttp.contains(tp)) {
-				                        targs.put(tp, tp.getType());
-				                    }
-				                }
-				                cd = getContainingDeclaration(cd);
-				            }
-				        }
-				        gen.out(",a:");
-				        printTypeArguments(node, gen, skipSelfDecl, 
-				        		targs, pt.getVarianceOverrides());
-				    }
-				    gen.out("}");
-				}
-			}
+                boolean imported = node != null 
+                    && gen.isImported(node.getUnit().getPackage(), type);
+                if (pt.isTypeAlias()) {
+                    outputQualifiedTypename(node, 
+                            imported,
+                            pt, gen, skipSelfDecl);
+                } else {
+                    gen.out("{t:");
+                    outputQualifiedTypename(node, 
+                            imported,
+                            pt, gen, skipSelfDecl);
+                    if (!pt.getTypeArgumentList().isEmpty()) {
+                        final Map<TypeParameter,Type> targs;
+                        if (pt.getDeclaration().isToplevel()) {
+                            targs = pt.getTypeArguments();
+                        } else {
+                            //Gather all type parameters from containers
+                            Scope scope = node.getScope();
+                            final HashSet<TypeParameter> parenttp = new HashSet<>();
+                            while (scope != null) {
+                                if (scope instanceof Generic) {
+                                    Generic g = (Generic) scope;
+                                    for (TypeParameter tp : g.getTypeParameters()) {
+                                        parenttp.add(tp);
+                                    }
+                                }
+                                scope = scope.getScope();
+                            }
+                            targs = new HashMap<>();
+                            targs.putAll(pt.getTypeArguments());
+                            Declaration cd = getContainingDeclaration(pt.getDeclaration());
+                            while (cd != null) {
+                                for (TypeParameter tp : cd.getTypeParameters()) {
+                                    if (parenttp.contains(tp)) {
+                                        targs.put(tp, tp.getType());
+                                    }
+                                }
+                                cd = getContainingDeclaration(cd);
+                            }
+                        }
+                        gen.out(",a:");
+                        printTypeArguments(node, gen, skipSelfDecl, 
+                                targs, pt.getVarianceOverrides());
+                    }
+                    gen.out("}");
+                }
+            }
         }
     }
 
@@ -367,16 +367,16 @@ public class TypeUtils {
 
     /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
     static void resolveTypeParameter(final Node node, 
-    		final TypeParameter tp,
+            final TypeParameter tp,
             final GenerateJsVisitor gen, 
             final boolean skipSelfDecl) {
         final Scope container = tp.getContainer();
         int outers = 0;
-    	Scope parent = ModelUtil.getRealScope(node.getScope());
-		while (parent != null && parent != container) {
+        Scope parent = ModelUtil.getRealScope(node.getScope());
+        while (parent != null && parent != container) {
             if (parent instanceof TypeDeclaration 
-            		&& !(parent instanceof Constructor 
-                    		|| ((TypeDeclaration) parent).isAnonymous())) {
+                    && !(parent instanceof Constructor 
+                            || ((TypeDeclaration) parent).isAnonymous())) {
                 outers++;
             }
             parent = parent.getScope();
@@ -386,7 +386,7 @@ public class TypeUtils {
                 if (!skipSelfDecl) {
                     TypeDeclaration ontoy = getContainingClassOrInterface(node.getScope());
                     while (ontoy.isAnonymous()) {
-                    	ontoy=getContainingClassOrInterface(ontoy.getScope());
+                        ontoy=getContainingClassOrInterface(ontoy.getScope());
                     }
                     gen.out(gen.getNames().self(ontoy));
                     if (ontoy == parent)outers--;
@@ -413,7 +413,7 @@ public class TypeUtils {
             //...and it could be null...
             Type type = null;
             Function fun = (Function)container;
-			for (Iterator<ParameterList> iter0 = fun.getParameterLists().iterator();
+            for (Iterator<ParameterList> iter0 = fun.getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
                         iter1.hasNext();) {
@@ -430,7 +430,7 @@ public class TypeUtils {
             } else {
                 if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
                     Tree.StaticMemberOrTypeExpression smte = (Tree.StaticMemberOrTypeExpression)node;
-					if (container == smte.getDeclaration()) {
+                    if (container == smte.getDeclaration()) {
                         type = smte.getTarget().getTypeArguments().get(tp);
                         typeNameOrList(node, type, gen, skipSelfDecl);
                         return;
@@ -478,7 +478,7 @@ public class TypeUtils {
             return pt;
         }
         List<Type> list = pt.getSupertypes() == null ? 
-        		pt.getCaseTypes() : pt.getSupertypes();
+                pt.getCaseTypes() : pt.getSupertypes();
         for (Type t : list) {
             if (t.getDeclaration().equals(d)) {
                 return t;
@@ -507,7 +507,7 @@ public class TypeUtils {
             }
             if (params.size() == targs.size()) {
                 HashMap<TypeParameter, Type> r = 
-                		new HashMap<TypeParameter, Type>();
+                        new HashMap<TypeParameter, Type>();
                 for (int i = 0; i < targs.size(); i++) {
                     r.put(params.get(i), targs.get(i));
                 }
@@ -556,7 +556,7 @@ public class TypeUtils {
                     }
                 }
             } else if (t.getDeclaration() != null 
-            		&& t.getDeclaration().isDynamic()) {
+                    && t.getDeclaration().isDynamic()) {
                 return t;
             }
         }
@@ -1638,7 +1638,7 @@ public class TypeUtils {
     /** Returns true if the declaration is annotated "nativejs" */
     public static boolean isNativeJs(Declaration d) {
         return hasAnnotationByName(TypeUtils.getToplevel(d), "nativejs") 
-    		|| TypeUtils.isUnknown(d);
+            || TypeUtils.isUnknown(d);
     }
 
     private static boolean hasAnnotationByName(Declaration d, String name){
@@ -1664,16 +1664,16 @@ public class TypeUtils {
 
     public static boolean intsOrFloats(Type t1, Type t2) {
         return t1 != null && t2 != null 
-    		&& (t1.isInteger() || t1.isFloat()) 
-    		&& (t2.isInteger() || t2.isFloat());
+            && (t1.isInteger() || t1.isFloat()) 
+            && (t2.isInteger() || t2.isFloat());
     }
 
     public static boolean bothInts(Type t1, Type t2) {
         return t1 != null && t2 != null 
-    		&& t1.isInteger() && t2.isInteger();
+            && t1.isInteger() && t2.isInteger();
     }
     public static boolean bothFloats(Type t1, Type t2) {
         return t1 != null && t2 != null 
-    		&& t1.isFloat() && t2.isFloat();
+            && t1.isFloat() && t2.isFloat();
     }
 }

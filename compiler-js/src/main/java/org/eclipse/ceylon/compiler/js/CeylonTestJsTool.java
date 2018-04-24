@@ -60,10 +60,10 @@ public class CeylonTestJsTool extends AbstractTestTool {
     
     public CeylonTestJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE, 
-        		ModuleQuery.Type.JS,
-        		// JVM binary but don't care since JS
-        		null, null,
-        		Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION);
+                ModuleQuery.Type.JS,
+                // JVM binary but don't care since JS
+                null, null,
+                Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION);
     }
 
     @OptionArgument(argumentName = "node-exe")

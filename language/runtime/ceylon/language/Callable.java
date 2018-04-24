@@ -17,8 +17,8 @@ import org.eclipse.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 8)
 @TypeParameters({
-	@TypeParameter(value="Return", variance=Variance.OUT),
-	@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)
+    @TypeParameter(value="Return", variance=Variance.OUT),
+    @TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)
 })
 @SharedAnnotation$annotation$
 @NativeAnnotation$annotation$(backends={})

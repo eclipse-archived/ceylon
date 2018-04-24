@@ -52,8 +52,8 @@ public class CeylonBrowseTool extends RepoUsingTool {
     public void run() throws Exception {
         for (ModuleSpec module : modules) {
             List<ModuleVersionDetails> versions = new ArrayList<ModuleVersionDetails>(
-            		getModuleVersions(getRepositoryManager(), module.getNamespace(), module.getName(), module.getVersion(), false,
-            				ModuleQuery.Type.ALL, null, null, null, null));
+                    getModuleVersions(getRepositoryManager(), module.getNamespace(), module.getName(), module.getVersion(), false,
+                            ModuleQuery.Type.ALL, null, null, null, null));
             Collections.sort(versions);
 
             if (versions.isEmpty()) {

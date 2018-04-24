@@ -2827,12 +2827,12 @@ public class Type extends Reference {
                     //variables require special handling for
                     //other instance access (we distinguish
                     //read from write access)
-                	if (!member.getOtherInstanceWriteAccess()) {
+                    if (!member.getOtherInstanceWriteAccess()) {
                         covariant = true;
-                	}
-                	if (!member.getOtherInstanceReadAccess()) {
+                    }
+                    if (!member.getOtherInstanceReadAccess()) {
                         contravariant = true;
-                	}
+                    }
                 }
                 if (//a covariant type parameter appears in a 
                     //contravariant location

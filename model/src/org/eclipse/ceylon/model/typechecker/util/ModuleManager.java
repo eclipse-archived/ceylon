@@ -97,11 +97,11 @@ public class ModuleManager {
     }
 
     protected Module createModule(List<String> moduleName, String version) {
-		Module module = new Module();
-		module.setName(moduleName);
-		module.setVersion(version);
-		return module;
-	}
+        Module module = new Module();
+        module.setName(moduleName);
+        module.setVersion(version);
+        return module;
+    }
 
     /**
      * Get or create a module.

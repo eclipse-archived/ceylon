@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NamedArgumentList extends Element implements Scope {
-	
+    
     private ParameterList parameterList;
     private List<String> argumentNames = new ArrayList<String>();
     private int id;
@@ -48,7 +48,7 @@ public class NamedArgumentList extends Element implements Scope {
         if (getParameterList()!=null) {
             for (Parameter p: getParameterList().getParameters()) {
                 if (p.getName().startsWith(startingWith) && 
-                		!getArgumentNames().contains(p.getName())) {
+                        !getArgumentNames().contains(p.getName())) {
                     result.put(p.getName(), new DeclarationWithProximity(p, this));
                 }
             }

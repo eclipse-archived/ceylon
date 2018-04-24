@@ -24,7 +24,7 @@ public abstract class AbstractIterator<Element>
 extends BaseIterator<Element> {
     
     public AbstractIterator(@Ignore TypeDescriptor $reifiedElement) {
-    	super($reifiedElement);
+        super($reifiedElement);
     }
     
 }

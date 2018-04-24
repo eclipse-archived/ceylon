@@ -38,31 +38,31 @@ import org.eclipse.ceylon.model.typechecker.util.ModuleManager;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public abstract class ReflectionModelLoader extends AbstractModelLoader {
-	protected Logger log;
-	
-	static {
-	    try{
-	        // FIXME: when Android supports JDK9, revisit this
-	        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-	            Object mod = Java9ModuleUtil.getModule(ReflectionModelLoader.class);
-	            
-	            // make sure we're running as a module, not from the classpath
-	            if(Java9ModuleUtil.isNamedModule(mod)){
-	                // add a read to the language module since that's where the metadata annotations are
-	                Object otherModule = Java9ModuleUtil.findModule(mod, LANGUAGE_MODULE_NAME);
-	                if(otherModule != null){
-	                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
-	                    // also add a read to it
-	                    Method addReads = moduleClass.getMethod("addReads", moduleClass);
-	                    addReads.invoke(mod, otherModule);
-	                }
-	            }
-	        }
-	    }catch(Throwable t){
-	        throw new RuntimeException("Failed to add read from model to language module in Java 9", t);
-	    }
-	}
-	
+    protected Logger log;
+    
+    static {
+        try{
+            // FIXME: when Android supports JDK9, revisit this
+            if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+                Object mod = Java9ModuleUtil.getModule(ReflectionModelLoader.class);
+                
+                // make sure we're running as a module, not from the classpath
+                if(Java9ModuleUtil.isNamedModule(mod)){
+                    // add a read to the language module since that's where the metadata annotations are
+                    Object otherModule = Java9ModuleUtil.findModule(mod, LANGUAGE_MODULE_NAME);
+                    if(otherModule != null){
+                        Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
+                        // also add a read to it
+                        Method addReads = moduleClass.getMethod("addReads", moduleClass);
+                        addReads.invoke(mod, otherModule);
+                    }
+                }
+            }
+        }catch(Throwable t){
+            throw new RuntimeException("Failed to add read from model to language module in Java 9", t);
+        }
+    }
+    
     public ReflectionModelLoader(ModuleManager moduleManager, Modules modules, Logger log){
         initModuleManager(moduleManager);
         this.modules = modules;

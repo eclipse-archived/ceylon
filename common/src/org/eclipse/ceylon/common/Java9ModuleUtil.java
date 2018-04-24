@@ -26,58 +26,58 @@ import java.util.NoSuchElementException;
  */
 public class Java9ModuleUtil {
 
-	public static Object getModule(Class<?> klass) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		Method getModule = Class.class.getMethod("getModule");
-		return getModule.invoke(klass);
-	}
-	
-	public static Object findModule(Object fromModule, String name) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public static Object getModule(Class<?> klass) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        Method getModule = Class.class.getMethod("getModule");
+        return getModule.invoke(klass);
+    }
+    
+    public static Object findModule(Object fromModule, String name) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
-		Method getLayer = moduleClass.getMethod("getLayer");
-		Object layer = getLayer.invoke(fromModule);
-		return findModuleFromLayer(layer, name);
-	}
-	
-	private static Object findModuleFromLayer(Object layer, String name) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
+        Method getLayer = moduleClass.getMethod("getLayer");
+        Object layer = getLayer.invoke(fromModule);
+        return findModuleFromLayer(layer, name);
+    }
+    
+    private static Object findModuleFromLayer(Object layer, String name) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
         Class<?> layerClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.ModuleLayer");
         Method findModule = layerClass.getMethod("findModule", String.class);
         Object optionalModule = findModule.invoke(layer, name);
         Class<?> optionalClass = ClassLoader.getSystemClassLoader().loadClass("java.util.Optional");
         Method get = optionalClass.getMethod("get");
         try{
-        	return get.invoke(optionalModule);
+            return get.invoke(optionalModule);
         }catch(InvocationTargetException x){
-        	if(x.getTargetException() instanceof NoSuchElementException)
-        		return null;
-        	throw x;
+            if(x.getTargetException() instanceof NoSuchElementException)
+                return null;
+            throw x;
         }
-	}
+    }
 
-	public static ClassLoader getClassLoader(Object module) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
+    public static ClassLoader getClassLoader(Object module) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
         Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
         Method getClassLoader = moduleClass.getMethod("getClassLoader");
         Object classLoader = getClassLoader.invoke(module);
         return (ClassLoader) classLoader;
-	}
+    }
 
-	public static boolean isNamedModule(Object module) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
+    public static boolean isNamedModule(Object module) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
         Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
         Method isNamed = moduleClass.getMethod("isNamed");
         Boolean ret = (Boolean) isNamed.invoke(module);
         return ret.booleanValue();
-	}
+    }
 
-	public static Object loadModuleDynamically(String module) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
+    public static Object loadModuleDynamically(String module) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
         String modulePath = System.getProperty("jdk.module.path");
         String[] modulePathEntries = modulePath.split(File.pathSeparator);
         return loadModulesDynamically(modulePathEntries, module);
-	}
-	
-	public static Object loadModulesDynamically(String[] modulePath, String... modules) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
+    }
+    
+    public static Object loadModulesDynamically(String[] modulePath, String... modules) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
         Path[] paths = new Path[modulePath.length];
         int i=0;
         for(String moduleFolder : modulePath){
-        	paths[i++] = Paths.get(moduleFolder);
+            paths[i++] = Paths.get(moduleFolder);
         }
 
         // ModuleFinder finder = ModuleFinder.of(paths);
@@ -110,5 +110,5 @@ public class Java9ModuleUtil {
         
         Object newLayer = createMethod.invoke(bootLayer, configuration, ClassLoader.getSystemClassLoader());
         return findModuleFromLayer(newLayer, modules[0]);
-	}
+    }
 }

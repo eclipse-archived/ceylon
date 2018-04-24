@@ -338,9 +338,9 @@ public class JsIdentifierNames {
                 // nested type
                 name += suffix;
             } else if ((!forGetterSetter 
-	            		&& !ModelUtil.isConstructor(decl) 
-	            		&& reservedWords.contains(name))
-	                || isJsGlobal(decl)) {
+                        && !ModelUtil.isConstructor(decl) 
+                        && reservedWords.contains(name))
+                    || isJsGlobal(decl)) {
                 // JavaScript keyword or global declaration
                 name = "$_" + name;
             }
@@ -425,7 +425,7 @@ public class JsIdentifierNames {
             //hack to trim parens off keys 
             //for type params of aliases
             if (cname.endsWith("()")) {
-            	cname=cname.substring(0, cname.length()-2);
+                cname=cname.substring(0, cname.length()-2);
             }
         } else {
             cname = tp.getDeclaration().getName();

@@ -17,5 +17,5 @@ package org.eclipse.ceylon.model.typechecker.model;
  *
  */
 public interface Referenceable extends Sourced {
-	public String getNameAsString();
+    public String getNameAsString();
 }

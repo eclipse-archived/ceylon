@@ -35,14 +35,14 @@ import ceylon.language.meta.model {
    
    <a name="member-sample"></a>
    ### Usage sample for attributes
-	
+    
    For attributes it is a bit longer, because attributes need to be applied the containing type, so you should 
    use [[memberApply]] and start by giving the containing closed type:
    
        class Outer(){
            shared String foo => "Hello";
        }
-	
+    
        void test(){
            // Apply the containing closed type `Outer` to the attribute declaration `Outer.foo`
            Attribute<Outer,String> valueModel = `value Outer.foo`.memberApply<Outer,String>(`Outer`);

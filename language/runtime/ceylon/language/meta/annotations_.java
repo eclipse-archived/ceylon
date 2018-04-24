@@ -60,8 +60,8 @@ public final class annotations_ {
         Sequential<? extends Annotation> results = 
                 Metamodel.annotations($reified$Value, programElement);
         boolean optional = OptionalAnnotation.class
-        		.isAssignableFrom(getReflectedAnnotationClass(annotationType));
-		if (optional) {
+                .isAssignableFrom(getReflectedAnnotationClass(annotationType));
+        if (optional) {
             if (results.getSize() > 1L) {
                 throw new AssertionError("optional annotation occurs more than once");
             }

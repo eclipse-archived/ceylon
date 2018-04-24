@@ -41,10 +41,10 @@ import org.eclipse.ceylon.tools.war.CeylonWarMessages;
 
 @Summary("Copies modules from one Ceylon module repository to another")
 @Description("Copies a module or a set of modules from one repository " +
-		"to another. If set for recursive copying it will also copy " +
-		"all the module's dependencies and their dependencies until the " +
-		"entire module tree has been copied. NB: This tool will only copy " +
-		"between Ceylon repositories.")
+        "to another. If set for recursive copying it will also copy " +
+        "all the module's dependencies and their dependencies until the " +
+        "entire module tree has been copied. NB: This tool will only copy " +
+        "between Ceylon repositories.")
 @RemainingSections(OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonCopyTool extends OutputRepoUsingTool {
     
@@ -247,7 +247,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 String version = checkModuleVersionsOrShowSuggestions(module.getName(), null, 
-                		ModuleQuery.Type.ALL, null, null, null, null);
+                        ModuleQuery.Type.ALL, null, null, null, null);
                 module = new ModuleSpec(module.getNamespace(), module.getName(), version);
             }
             ArtifactContext ac = new ArtifactContext(null, module.getName(), module.getVersion(), artifactsArray);

@@ -65,30 +65,30 @@ public class TypeAlias extends TypeDeclaration {
         members.add(declaration);
     }
     
-	@Override
-	public DeclarationKind getDeclarationKind() {
-		return DeclarationKind.TYPE;
-	}
-	
-	@Override
-	public boolean isAlias() {
-		return true;
-	}
-	
-	@Override
-	public boolean isAnonymous() {
-	    return anonymous;
-	}
-	
-	public void setAnonymous(boolean anonymous) {
+    @Override
+    public DeclarationKind getDeclarationKind() {
+        return DeclarationKind.TYPE;
+    }
+    
+    @Override
+    public boolean isAlias() {
+        return true;
+    }
+    
+    @Override
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+    
+    public void setAnonymous(boolean anonymous) {
         this.anonymous = anonymous;
     }
-	
-	@Override
-	public boolean isNamed() {
-	    return !anonymous;
-	}
-	
+    
+    @Override
+    public boolean isNamed() {
+        return !anonymous;
+    }
+    
     @Override
     public boolean isParameterized() {
         return !typeParameters.isEmpty();

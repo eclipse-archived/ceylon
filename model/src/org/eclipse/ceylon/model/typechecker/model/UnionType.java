@@ -41,7 +41,7 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public String getName(Unit unit) {
-    	return getType().asString(unit);
+        return getType().asString(unit);
     }
     
     @Override
@@ -82,27 +82,27 @@ public class UnionType extends TypeDeclaration {
     public Map<String, DeclarationWithProximity> 
     getMatchingMemberDeclarations(Unit unit, Scope scope, 
             String startingWith, int proximity, Cancellable canceller) {
-    	Map<String, DeclarationWithProximity> result = 
-    	        super.getMatchingMemberDeclarations(unit, 
-    	                scope, startingWith, proximity, canceller);
-		TypeDeclaration d = 
-		        getCaseTypes().get(0).getDeclaration();
-		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = 
-		        d.getMatchingMemberDeclarations(unit, scope, 
-		                startingWith, proximity, canceller)
-		                    .entrySet().iterator();
+        Map<String, DeclarationWithProximity> result = 
+                super.getMatchingMemberDeclarations(unit, 
+                        scope, startingWith, proximity, canceller);
+        TypeDeclaration d = 
+                getCaseTypes().get(0).getDeclaration();
+        Iterator<Map.Entry<String, DeclarationWithProximity>> iter = 
+                d.getMatchingMemberDeclarations(unit, scope, 
+                        startingWith, proximity, canceller)
+                            .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = 
                     iter.next();
-		    Declaration member = 
-		            getMember(e.getKey(), null, false);
+            Declaration member = 
+                    getMember(e.getKey(), null, false);
             if (member!=null) {
-		        result.put(e.getKey(), 
-		                new DeclarationWithProximity(member, 
-		                        e.getValue()));
-		    }
-		}
-    	return result;
+                result.put(e.getKey(), 
+                        new DeclarationWithProximity(member, 
+                                e.getValue()));
+            }
+        }
+        return result;
     }
 
     @Override

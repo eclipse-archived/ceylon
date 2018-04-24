@@ -20,23 +20,23 @@
 @noanno
 class Bug479() {
 
-	String baseString = "John Doe";
+    String baseString = "John Doe";
 
-	String _underscoredBaseString = "Jane Doe";
+    String _underscoredBaseString = "Jane Doe";
 
-	shared String simpleFoo {
-		return "simpleFoo" + baseString;
-	}
+    shared String simpleFoo {
+        return "simpleFoo" + baseString;
+    }
 
-	shared String _underscoredFoo {
-		return "underscoredFoo" + baseString;
-	}
+    shared String _underscoredFoo {
+        return "underscoredFoo" + baseString;
+    }
 
-	shared String simpleFooUnderscoredBaseString {
-		return "simpleFoo" + _underscoredBaseString;
-	}
+    shared String simpleFooUnderscoredBaseString {
+        return "simpleFoo" + _underscoredBaseString;
+    }
 
-	shared String _underscoredFooUnderscoredBaseString {
-		return "underscoredFoo" + _underscoredBaseString;
-	}
+    shared String _underscoredFooUnderscoredBaseString {
+        return "underscoredFoo" + _underscoredBaseString;
+    }
 }

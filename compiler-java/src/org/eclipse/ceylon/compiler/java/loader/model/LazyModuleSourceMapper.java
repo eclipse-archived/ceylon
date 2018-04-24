@@ -102,7 +102,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         boolean isLanguageModule = module == module.getLanguageModule();
         AbstractModelLoader modelLoader = moduleManager.getModelLoader();
         if(modelLoader.getJdkProviderModule() == module){
-        	modelLoader.setupAlternateJdk(module, artifact);
+            modelLoader.setupAlternateJdk(module, artifact);
         }
         
         // if this is for a module we're compiling, or for an indirectly imported module, we need to check because the
@@ -262,7 +262,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         if(version != null
                 && (JDKUtils.isJDKModule(nameAsString) || JDKUtils.isOracleJDKModule(nameAsString))){
             // Add a warning if we're using a lower JDK than the one we're running on
-        	// FIXME: this does not work for JDK9 or Android
+            // FIXME: this does not work for JDK9 or Android
             if(JDKUtils.jdk.isLowerVersion(version)){
                 definition.addUsageWarning(Warning.importsOtherJdk, "You import JDK7, which is provided by the JDK8 you are running on, but"+
                         " we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on"+
@@ -273,7 +273,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     
     @Override
     public Module getJdkModule() {
-    	return getModuleManager().getModelLoader().getJDKBaseModule();
+        return getModuleManager().getModelLoader().getJDKBaseModule();
     }
 
     @Override
@@ -283,7 +283,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
 
     @Override
     public JdkProvider getJdkProvider() {
-    	return getModuleManager().getModelLoader().getJdkProvider();
+        return getModuleManager().getModelLoader().getJdkProvider();
     }
     
     @Override

@@ -456,8 +456,8 @@ public class TypeGenerator {
                     } else {
                         TypeUtils.printTypeArguments(that,gen, false, 
                                 extendedType.getTypeModel()
-                                	.getQualifyingType()
-                                	.getTypeArguments(),
+                                    .getQualifyingType()
+                                    .getTypeArguments(),
                                 null);
                         gen.out(",");
                     }
@@ -523,7 +523,7 @@ public class TypeGenerator {
                     }
                     if (typeDecl.isParameterized()) {
                         TypeUtils.printTypeArguments(that, gen, d.isToplevel(), 
-                        		st.getTypeArguments(), null);
+                                st.getTypeArguments(), null);
                         gen.out(",");
                     }
                     gen.out(gen.getNames().self(d), ")");

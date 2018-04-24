@@ -126,7 +126,7 @@ public class CompatTests extends CompilerTests {
                 "--offline",
                 "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules", 
                 "--run", "compiled120::runOnLatest"),
-        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Test
@@ -137,7 +137,7 @@ public class CompatTests extends CompilerTests {
                 "--run", "compiled120::runOnLatest",
                 "--flat-classpath"),
                 Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER), null, null
-        		);
+                );
     }
     
     @Ignore("Removed until we can create compiled modules with alternate versions")
@@ -161,11 +161,11 @@ public class CompatTests extends CompilerTests {
         
         // with the default upgrade dist behaviour
         runInJBossModules("run", "depends120", 
-        		Arrays.asList("--rep", "modules", "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules"),
-        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+                Arrays.asList("--rep", "modules", "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules"),
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInJBossModules("run", "depends120", 
-        		Arrays.asList("--flat-classpath", "--rep", "modules", "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules"),
-        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+                Arrays.asList("--flat-classpath", "--rep", "modules", "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules"),
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInMainApi("test/src/org/eclipse/ceylon/compiler/java/test/compat/modules", 
                 new ModuleSpec(null, "depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
@@ -396,7 +396,7 @@ public class CompatTests extends CompilerTests {
                 "--offline",
                 "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules", 
                 "--run", "compiled121depends120::runOnLatest"),
-        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Test
@@ -406,7 +406,7 @@ public class CompatTests extends CompilerTests {
                 "--flat-classpath",
                 "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules", 
                 "--run", "compiled121depends120::runOnLatest"),
-        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Ignore("Removed until we can create compiled modules with alternate versions")
@@ -420,7 +420,7 @@ public class CompatTests extends CompilerTests {
                     "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules", 
                     "--run", "compiled1299depends120::runOn121"),
                     Arrays.<String>asList(),
-            		err, null);
+                    err, null);
             assertFileContainsLine(err, "ceylon run: Could not find module: ceylon.language/1.2.99");
         } finally {
             err.delete();
@@ -435,7 +435,7 @@ public class CompatTests extends CompilerTests {
                 "--link-with-current-distribution",
                 "--rep", "test/src/org/eclipse/ceylon/compiler/java/test/compat/modules", 
                 "--run", "compiled1299depends120::runOnLatest"),
-        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Ignore("Removed until we can create compiled modules with alternate versions")

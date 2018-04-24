@@ -47,7 +47,7 @@ public class TypeArgumentVisitor extends Visitor {
             if (sts!=null) {
                 for (Tree.Type type: sts.getTypes()) {
                     check(type, false, 
-                    		parameterizedDeclaration);
+                            parameterizedDeclaration);
                 }
             }
             Tree.CaseTypes cts = 
@@ -55,7 +55,7 @@ public class TypeArgumentVisitor extends Visitor {
             if (cts!=null) {
                 for (Tree.Type type: cts.getTypes()) {
                     check(type, false, 
-                    		parameterizedDeclaration);
+                            parameterizedDeclaration);
                 }
             }
             flip();

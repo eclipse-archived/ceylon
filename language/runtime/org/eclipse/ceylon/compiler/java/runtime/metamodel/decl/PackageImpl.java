@@ -160,9 +160,9 @@ public class PackageImpl implements ceylon.language.meta.declaration.Package,
             }
         }
         java.lang.Object[] array = members.toArray(new java.lang.Object[0]);
-		ObjectArrayIterable<Kind> iterable = 
-				new ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<Kind> iterable = 
+                new ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

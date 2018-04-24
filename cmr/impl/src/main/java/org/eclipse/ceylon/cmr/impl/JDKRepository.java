@@ -42,7 +42,7 @@ public class JDKRepository extends AbstractRepository {
 
     private static final String JAVA_ORIGIN = "Java Runtime";
 
-	private JdkProvider jdkProvider;
+    private JdkProvider jdkProvider;
 
     public JDKRepository() {
         super(new JDKRoot());
@@ -60,16 +60,16 @@ public class JDKRepository extends AbstractRepository {
         private static final long serialVersionUID = 3536040774400941766L;
         
         private JdkProvider jdkProvider;
-		private SortedSet<String> sortedModuleNames;
+        private SortedSet<String> sortedModuleNames;
 
         public JDKRoot() {
             addService(ContentFinderDelegate.class, this);
         }
 
         private void finishSetupYouDumbass(JdkProvider jdkProvider){
-        	this.jdkProvider = jdkProvider;
-        	sortedModuleNames = new TreeSet<>();
-        	sortedModuleNames.addAll(jdkProvider.getJDKModuleNames());
+            this.jdkProvider = jdkProvider;
+            sortedModuleNames = new TreeSet<>();
+            sortedModuleNames.addAll(jdkProvider.getJDKModuleNames());
         }
         
         @Override
@@ -179,8 +179,8 @@ public class JDKRepository extends AbstractRepository {
             if (query.getMemberName() != null) {
                 Set<String> jdkMembers = jdkProvider.getJDKPackages(module);
                 if (jdkMembers == null) {
-                	// Should not happen, but just in case
-                	return null;
+                    // Should not happen, but just in case
+                    return null;
                 }
                 Set<String> matchedMembers = matchNames(jdkMembers, query, true);
                 if (matchedMembers.isEmpty()) {

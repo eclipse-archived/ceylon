@@ -80,7 +80,7 @@ public class ModuleImport implements Annotated {
 
     public boolean override(ModuleImport moduleImportOverride) {
         if (overridenModuleImport == null
-        		&& moduleImportOverride != null) {
+                && moduleImportOverride != null) {
             this.overridenModuleImport = new ModuleImport(namespace, module, optional, export, nativeBackends);
             namespace = moduleImportOverride.getNamespace();
             module = moduleImportOverride.getModule();

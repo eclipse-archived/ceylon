@@ -72,15 +72,15 @@ public class MavenBackupDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-		try {
+        try {
             ModuleInfo ret = MavenUtils.getDependencies(file, name, version);
             if(overrides != null && ret != null)
                 ret = overrides.applyOverrides(name != null ? name : ret.getName(), 
                         version != null ? version : ret.getVersion(), ret);
             return ret;
-		} catch (IOException e) {
-			throw new RepositoryException("Failed to resolve pom", e);
-		}
+        } catch (IOException e) {
+            throw new RepositoryException("Failed to resolve pom", e);
+        }
     }
 
     public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
@@ -95,7 +95,7 @@ public class MavenBackupDependencyResolver extends AbstractDependencyResolver {
                         version != null ? version : ret.getVersion(), ret);
             return ret;
         } catch (IOException e) {
-        	throw new RepositoryException("Failed to resolve pom", e);
+            throw new RepositoryException("Failed to resolve pom", e);
         }
     }
 

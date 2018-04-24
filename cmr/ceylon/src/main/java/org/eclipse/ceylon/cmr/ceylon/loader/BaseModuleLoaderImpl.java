@@ -156,9 +156,9 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         }
 
         protected boolean loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
-        		throws IOException, ModuleNotFoundException  {
-        	if(isExcluded(name, version))
-        	    return false;
+                throws IOException, ModuleNotFoundException  {
+            if(isExcluded(name, version))
+                return false;
             ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, getArtifactSuffixes());
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){

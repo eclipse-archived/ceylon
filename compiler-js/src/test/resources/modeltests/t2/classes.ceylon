@@ -11,20 +11,20 @@ shared class Satisfy1() satisfies Comparable<Satisfy1> {
     shared actual Comparison compare(Satisfy1 other) { return equal; }
 }
 shared class Satisfy2() satisfies {Integer*} {
-	iterator() => {1}.iterator();
-	shared Satisfy2 clone { return this; }
+    iterator() => {1}.iterator();
+    shared Satisfy2 clone { return this; }
 }
 class ParmTypes1<Element>(Element x) {}
 class ParmTypes2<out Element>(Element* x)
-		given Element satisfies Object {
+        given Element satisfies Object {
 }
 class ParmTypes3<Type1,Type2>(Type1 a1, Type2 a2)
-		given Type1 satisfies Number<Integer>
-		given Type2 of String|Singleton<String> {
+        given Type1 satisfies Number<Integer>
+        given Type2 of String|Singleton<String> {
 }
 class ParmTypes4<out Element>(Element* elems) satisfies {Element*} {
-	shared Element? primero = elems.first;
-	iterator() => elems.iterator();
+    shared Element? primero = elems.first;
+    iterator() => elems.iterator();
 }
 shared class Nested1() {
   shared class Nested2() {

@@ -143,7 +143,7 @@ shared interface Empty of package.empty
     shared actual 
     [] flatMap<Result, OtherAbsent>
             (Iterable<Result,OtherAbsent> collecting(Nothing element))
-    		given OtherAbsent satisfies Null 
+            given OtherAbsent satisfies Null 
             => this;
     
     shared actual 
@@ -271,13 +271,13 @@ shared interface Empty of package.empty
 by ("Tako Schotanus")
 tagged("Sequences")
 shared object empty 
-		extends Object() 
-		satisfies [] {}
+        extends Object() 
+        satisfies [] {}
 
 "An iterator that returns no elements."
 tagged("Streams")
 shared object emptyIterator 
-		satisfies Iterator<Nothing> {
+        satisfies Iterator<Nothing> {
     next() => finished;
     string => "empty.iterator()";
 }

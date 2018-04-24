@@ -47,15 +47,15 @@ public class MiscTests extends CompilerTests {
         compile("defaultedmodel/UseDefaulted.ceylon");
     }
     
-	@Test
-	public void testHelloWorld(){
-		compareWithJavaSource("helloworld/helloworld");
-	}
-	
-	@Test
-	public void runHelloWorld() throws Exception{
-		compileAndRun("org.eclipse.ceylon.compiler.java.test.misc.helloworld.helloworld", "helloworld/helloworld.ceylon");
-	}
+    @Test
+    public void testHelloWorld(){
+        compareWithJavaSource("helloworld/helloworld");
+    }
+    
+    @Test
+    public void runHelloWorld() throws Exception{
+        compileAndRun("org.eclipse.ceylon.compiler.java.test.misc.helloworld.helloworld", "helloworld/helloworld.ceylon");
+    }
 
     @Test
     public void testCompileTwoDepdendantClasses() throws Exception{
@@ -116,7 +116,7 @@ public class MiscTests extends CompilerTests {
             }   
         };
         String[] extras = new String[]{
-        		"true", "false", "arrayToTuple"
+                "true", "false", "arrayToTuple"
         };
         String[] modelExtras = new String[]{
                 "classDeclaration", "annotations", "modules", "type", "typeLiteral"

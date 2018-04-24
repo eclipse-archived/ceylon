@@ -300,7 +300,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         String version = module.getVersion();
         if((version == null || version.isEmpty()) && !module.getName().equals(Module.DEFAULT_MODULE_NAME)){
             version = checkModuleVersionsOrShowSuggestions(module.getName(), null, 
-            		ModuleQuery.Type.ALL, null, null, null, null);
+                    ModuleQuery.Type.ALL, null, null, null, null);
             if(version == null)
                 return false;
         }

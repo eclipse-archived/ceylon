@@ -340,9 +340,9 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     @OptionArgument(longName="link", argumentName="dir-or-url")
     @Description("The URL or path of a module repository containing " +
             "documentation for external dependencies." +
-    		"\n\n" +
-    		"The URL must use one of the supported protocols " +
-    		"(http://, https:// or file://) or be a path to a directory. " +
+            "\n\n" +
+            "The URL must use one of the supported protocols " +
+            "(http://, https:// or file://) or be a path to a directory. " +
             "The argument can start with a module name prefix, " +
             "separated from the URL by a `=` character, so that only " +
             "those external modules " +

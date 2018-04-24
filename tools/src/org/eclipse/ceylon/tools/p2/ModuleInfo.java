@@ -35,10 +35,10 @@ class ModuleInfo {
         final File jar;
         Attributes osgiAttributes;
         String osgiVersion;
-		private CeylonP2Tool tool;
-		
-		public static class Dependency extends ModuleSpec {
-		    
+        private CeylonP2Tool tool;
+        
+        public static class Dependency extends ModuleSpec {
+            
             private boolean optional;
 
             public Dependency(String name, String version) {
@@ -53,10 +53,10 @@ class ModuleInfo {
             public boolean isOptional() {
                 return optional;
             }
-		}
+        }
 
         public ModuleInfo(CeylonP2Tool tool, String name, String version, File jar) throws IOException {
-        	this.tool = tool;
+            this.tool = tool;
             this.name = name;
             this.version = version;
             this.jar = jar;

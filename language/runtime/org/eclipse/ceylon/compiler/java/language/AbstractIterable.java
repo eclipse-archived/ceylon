@@ -35,17 +35,17 @@ extends BaseIterable<Element,Absent>  {
 //    private final Iterable<?,?>[] $iterables;
 
     public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, 
-    		@Ignore TypeDescriptor $reifiedAbsent) {
-    	super($reifiedElement, $reifiedAbsent);
+            @Ignore TypeDescriptor $reifiedAbsent) {
+        super($reifiedElement, $reifiedAbsent);
 //        this.$iterables = null;
     }
     
 //    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, 
-//    		@Ignore TypeDescriptor $reifiedAbsent, 
-//    		Iterable<?,?>... iterables) {
-//    	super($reifiedElement, $reifiedAbsent);
-//    	this.$reifiedElement = $reifiedElement;
-//    	this.$reifiedAbsent = $reifiedAbsent;
+//          @Ignore TypeDescriptor $reifiedAbsent, 
+//          Iterable<?,?>... iterables) {
+//      super($reifiedElement, $reifiedAbsent);
+//      this.$reifiedElement = $reifiedElement;
+//      this.$reifiedAbsent = $reifiedAbsent;
 //        this.$iterables = iterables;
 //    }
 //    
@@ -63,7 +63,7 @@ extends BaseIterable<Element,Absent>  {
 //    @Ignore
 //    public final TypeDescriptor $getType$() {
 //        return TypeDescriptor.klass(AbstractIterable.class, 
-//        		$reifiedElement, $reifiedAbsent);
+//              $reifiedElement, $reifiedAbsent);
 //    }
     
     protected Object writeReplace() {

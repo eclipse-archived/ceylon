@@ -4,7 +4,7 @@ class Assignability() {
             given Absent satisfies Null {
         return iterable.indexed;
     }
-	    
+        
     class X() {
         shared String hello = "Hello";
     }

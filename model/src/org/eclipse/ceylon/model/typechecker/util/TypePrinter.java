@@ -209,7 +209,7 @@ public class TypePrinter {
                     Type it = u.getIteratedType(pt);
                     Type nt = pt.getTypeArgumentList().get(1);
                     /*if (it.isNothing() && !nt.isNothing()) {
-                    	return "{}";
+                        return "{}";
                     }*/
                     String itn = print(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
@@ -696,18 +696,18 @@ public class TypePrinter {
             if (qt!=null && 
                     qt.getDeclaration()
                         .isNamed()) {
-				boolean isComplex = 
-				        qt.isIntersection() || 
-				        qt.isUnion();
+                boolean isComplex = 
+                        qt.isIntersection() || 
+                        qt.isUnion();
                 if (isComplex) {
-					ptn.append(lt());
-	            }
+                    ptn.append(lt());
+                }
                 ptn.append(print(qt, unit));
-    			if (isComplex) {
-					ptn.append(gt());
-	            }
-    			ptn.append(".");
-    			fullyQualified = false;
+                if (isComplex) {
+                    ptn.append(gt());
+                }
+                ptn.append(".");
+                fullyQualified = false;
             }
             else {
                 fullyQualified = printFullyQualified(ptd);

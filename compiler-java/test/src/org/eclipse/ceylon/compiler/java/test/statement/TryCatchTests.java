@@ -69,7 +69,7 @@ public class TryCatchTests extends CompilerTests {
     
     @Test
     public void testTryThrowNothing(){
-    	compareWithJavaSource("trycatch/ThrowNothing");
+        compareWithJavaSource("trycatch/ThrowNothing");
     }
 
     @Test

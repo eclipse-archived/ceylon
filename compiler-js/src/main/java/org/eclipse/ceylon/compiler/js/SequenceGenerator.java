@@ -40,13 +40,13 @@ public class SequenceGenerator {
             if (expr == seqarg) {
                 gen.out("}return ", gen.getClAlias(), "finished();},function(){return ");
                 if (gen.isInDynamicBlock() 
-                		&& expr instanceof Tree.SpreadArgument
+                        && expr instanceof Tree.SpreadArgument
                         && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                     TypeUtils.spreadArrayCheck(
-                    		((Tree.SpreadArgument)expr).getExpression(), 
-                    		gen);
+                            ((Tree.SpreadArgument)expr).getExpression(), 
+                            gen);
                 } else {
-                	boxArg(gen, expr);
+                    boxArg(gen, expr);
                 }
                 gen.out(";},");
             } else {
@@ -87,13 +87,13 @@ public class SequenceGenerator {
                     gen.out(",");
                 }
                 if (gen.isInDynamicBlock() 
-                		&& expr instanceof Tree.ListedArgument 
-                		&& ModelUtil.isTypeUnknown(expr.getTypeModel())
+                        && expr instanceof Tree.ListedArgument 
+                        && ModelUtil.isTypeUnknown(expr.getTypeModel())
                         && expr.getParameter() != null 
                         && !ModelUtil.isTypeUnknown(expr.getParameter().getType())) {
                     //TODO find out how to test this, if at all possible
                     TypeUtils.generateDynamicCheck(
-                    		((Tree.ListedArgument)expr).getExpression(),
+                            ((Tree.ListedArgument)expr).getExpression(),
                             expr.getParameter().getType(), 
                             gen, false, 
                             that.getTypeModel().getTypeArguments());
@@ -130,14 +130,14 @@ public class SequenceGenerator {
         //Determine if it's a method or attribute
         boolean isMethod = that.getDeclaration() instanceof Functional;
         Type type = that.getTypeModel();
-		if (isMethod) {
+        if (isMethod) {
             gen.out(gen.getClAlias(), "JsCallableList(");
             gen.supervisit(that);
             gen.out(",function(e,a){return ",
                     gen.memberAccess(that, "e"), ".apply(e,a);},");
             TypeArguments typeArgs = that.getTypeArguments();
-			if (typeArgs != null 
-					&& typeArgs.getTypeModels()!=null
+            if (typeArgs != null 
+                    && typeArgs.getTypeModels()!=null
                     && !typeArgs.getTypeModels().isEmpty()) {
                 TypeUtils.printTypeArguments(that, gen, true, 
                         TypeUtils.matchTypeParametersWithArguments(
@@ -165,14 +165,14 @@ public class SequenceGenerator {
 
     static boolean isSpread(List<Tree.PositionalArgument> args) {
         return !args.isEmpty() 
-    		&& !(args.get(args.size()-1) instanceof Tree.ListedArgument);
+            && !(args.get(args.size()-1) instanceof Tree.ListedArgument);
     }
 
     static boolean allLiterals(List<Tree.PositionalArgument> args) {
         for (Tree.PositionalArgument a : args) {
             if (a instanceof Tree.ListedArgument) {
                 if (!(((Tree.ListedArgument) a).getExpression().getTerm() 
-                		instanceof Tree.Literal)) {
+                        instanceof Tree.Literal)) {
                     return false;
                 }
             } else {
@@ -243,13 +243,13 @@ public class SequenceGenerator {
         }
     }
 
-	private static void boxArg(final GenerateJsVisitor gen, PositionalArgument arg) {
-		if (arg instanceof Tree.ListedArgument) {
-			gen.box(((Tree.ListedArgument) arg).getExpression(), true, true);
-		}
-		else {
-			arg.visit(gen);
-		}
-	}
+    private static void boxArg(final GenerateJsVisitor gen, PositionalArgument arg) {
+        if (arg instanceof Tree.ListedArgument) {
+            gen.box(((Tree.ListedArgument) arg).getExpression(), true, true);
+        }
+        else {
+            arg.visit(gen);
+        }
+    }
 
 }

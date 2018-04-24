@@ -234,8 +234,8 @@ public class MetamodelHelper {
         final Type mtype = meta.getTypeModel().resolveAliases();
         TypeUtils.printTypeArguments(meta, mtype, gen, false);
         if (ltype != null 
-        		&& ltype.getTypeArguments() != null 
-        		&& !ltype.getTypeArguments().isEmpty()) {
+                && ltype.getTypeArguments() != null 
+                && !ltype.getTypeArguments().isEmpty()) {
             gen.out(",undefined,");
             TypeUtils.printTypeArguments(meta, ltype, gen, false);
         }
@@ -307,8 +307,8 @@ public class MetamodelHelper {
                 if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
                     gen.out(",undefined,");
                     TypeUtils.printTypeArguments(that, gen, false,
-                    		ref.getTypeArguments(), 
-                    		ref.getType().getVarianceOverrides());
+                            ref.getTypeArguments(), 
+                            ref.getType().getVarianceOverrides());
                 }
             }
             gen.out(")");
@@ -349,8 +349,8 @@ public class MetamodelHelper {
             }
             gen.out(gen.getNames().name(d));
             if (ltype != null 
-            		&& ltype.getTypeArguments() != null 
-            		&& !ltype.getTypeArguments().isEmpty()) {
+                    && ltype.getTypeArguments() != null 
+                    && !ltype.getTypeArguments().isEmpty()) {
                 gen.out(",a:");
                 TypeUtils.printTypeArguments(that, ltype, gen, false);
             }

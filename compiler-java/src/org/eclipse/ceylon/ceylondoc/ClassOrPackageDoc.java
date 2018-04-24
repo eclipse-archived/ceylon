@@ -88,8 +88,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
-		super(module, tool, writer);
-	}
+        super(module, tool, writer);
+    }
     
     protected final void doc(String name, TypeAlias alias) throws IOException {
         boolean isAlias = Util.nullSafeCompare(name, alias.getName()) != 0;
@@ -311,7 +311,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         around("div class='doc section'", doc);
         if( d instanceof FunctionOrValue ) {
             writeAnnotations(d);
-        	writeParameters(d);
+            writeParameters(d);
             writeThrows(d);        
             writeBy(d);
             writeSee(d);
@@ -649,7 +649,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         close("li");
                     }
                 }
-            }    			
+            }               
             if (!first) {
                 close("ul");
                 close("div");
@@ -693,7 +693,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("div");
     }
 
-	protected final void writeThrows(Declaration decl) throws IOException {
+    protected final void writeThrows(Declaration decl) throws IOException {
         boolean first = true;
         for (Annotation annotation : decl.getAnnotations()) {
             if (annotation.getName().equals("throws")) {

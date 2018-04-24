@@ -828,7 +828,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
         if (!klass.getUnit().getPackage().isLanguagePackage()
-        	|| !classBuilder.getClassName().equals("RestrictedAnnotation")) { //ignore argument to restricted()
+            || !classBuilder.getClassName().equals("RestrictedAnnotation")) { //ignore argument to restricted()
             for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
                 at(parameter);
                 Parameter parameterModel = parameter.getParameterModel();

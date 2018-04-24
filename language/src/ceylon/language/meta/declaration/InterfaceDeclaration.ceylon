@@ -38,7 +38,7 @@ import ceylon.language.meta.model {
    
    <a name="member-sample"></a>
    ### Usage sample for member interfaces
-	
+    
    For member interfaces it is a bit longer, because member interfaces need to be applied not only their type arguments but also
    the containing type, so you should use [[memberInterfaceApply]] and start by giving the containing closed type:
    
@@ -46,7 +46,7 @@ import ceylon.language.meta.model {
            shared interface Inner<T> satisfies List<T> {
            }
        }
-	
+    
        void test(){
            // apply the containing closed type `Outer` to the member class declaration `Outer.Inner`
            MemberInterface<Outer,Outer.Inner<Integer>> memberInterfaceModel = `interface Outer.Inner`.memberInterfaceApply<Outer,Outer.Inner<Integer>>(`Outer`, `Integer`);

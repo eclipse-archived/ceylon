@@ -16,12 +16,12 @@ import java.util.List;
 
 public interface AetherResolver {
     
-	public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) 
-    		throws AetherException;
+    public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) 
+            throws AetherException;
     
     public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, 
-    		String classifier, String extension, boolean fetchSingleArtifact) 
-    				throws AetherException;
+            String classifier, String extension, boolean fetchSingleArtifact) 
+                    throws AetherException;
     
     public List<String> resolveVersionRange(String groupId, String artifactId, String versionRange) throws AetherException;
 

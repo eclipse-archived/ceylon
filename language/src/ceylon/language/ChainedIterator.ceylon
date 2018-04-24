@@ -13,7 +13,7 @@ see (function Iterable.chain)
 by ("Enrique Zamudio")
 tagged("Streams")
 class ChainedIterator<out Element,out Other>
-		        ({Element*} first, {Other*} second) 
+                ({Element*} first, {Other*} second) 
         satisfies Iterator<Element|Other> {
     
     variable Iterator<Element|Other> iter = first.iterator();

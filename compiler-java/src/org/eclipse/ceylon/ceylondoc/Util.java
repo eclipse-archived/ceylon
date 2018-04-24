@@ -89,8 +89,8 @@ public class Util {
     public static boolean isAbbreviatedType(Declaration decl) {
         return ABBREVIATED_TYPES.contains(decl.getQualifiedNameString());
     }
-	
-	public static String join(String separator, List<String> parts) {
+    
+    public static String join(String separator, List<String> parts) {
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<String> iterator = parts.iterator();
         while(iterator.hasNext()){

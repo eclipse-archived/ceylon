@@ -18,16 +18,16 @@
  * MA  02110-1301, USA.
  */
 shared class StubClassWithConstructors {
-	
-	aliased("defaultConstructorAlias")
-	shared new () {}
-	
-	"Lorem ipsum dolor sit amet, consectetur..."
-	aliased("ctor1Alias")
-	shared new ctor1() {}
-	
-	shared new ctor2(String s) {}
-	
-	new ctorInternal() {}
+    
+    aliased("defaultConstructorAlias")
+    shared new () {}
+    
+    "Lorem ipsum dolor sit amet, consectetur..."
+    aliased("ctor1Alias")
+    shared new ctor1() {}
+    
+    shared new ctor2(String s) {}
+    
+    new ctorInternal() {}
    
 }

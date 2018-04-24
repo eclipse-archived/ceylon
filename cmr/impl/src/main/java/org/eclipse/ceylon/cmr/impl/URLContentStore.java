@@ -58,7 +58,7 @@ import org.eclipse.ceylon.common.log.Logger;
  */
 public abstract class URLContentStore extends AbstractRemoteContentStore {
 
-	// Those are namespaces, they don't need to use https until Herd changes those namespaces too
+    // Those are namespaces, they don't need to use https until Herd changes those namespaces too
     public final static String HERD_COMPLETE_MODULES_REL = "http://modules.ceylon-lang.org/rel/complete-modules";
     public final static String HERD_COMPLETE_VERSIONS_REL = "http://modules.ceylon-lang.org/rel/complete-versions";
     public final static String HERD_SEARCH_MODULES_REL = "http://modules.ceylon-lang.org/rel/search-modules";
@@ -443,10 +443,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
                 }
                 if (herdVersion >= HERD_V5) {
-                	params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
-                	params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
-                	params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
-                	params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
+                    params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
+                    params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
+                    params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
+                    params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
                 }
                 WS.getXML(herdCompleteModulesURL, params, new XMLHandler(){
                     @Override
@@ -537,10 +537,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
                 }
                 if (herdVersion >= HERD_V5) {
-                	params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
-                	params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
-                	params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
-                	params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
+                    params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
+                    params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
+                    params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
+                    params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
                 }
                 WS.getXML(herdCompleteVersionsURL, params, new XMLHandler(){
                     @Override
@@ -609,10 +609,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 if(!authors.isEmpty())
                     newVersion.getAuthors().addAll(authors);
                 if(overrides != null) {
-					final ModuleInfo info = new ModuleInfo(null, module, version, 
+                    final ModuleInfo info = new ModuleInfo(null, module, version, 
                             groupId, artifactId, null, null, dependencies);
-					dependencies = overrides.applyOverrides(module, version, info).getDependencies();
-				}
+                    dependencies = overrides.applyOverrides(module, version, info).getDependencies();
+                }
                 if(!dependencies.isEmpty())
                     newVersion.getDependencies().addAll(dependencies);
                 if(!types.isEmpty())
@@ -711,10 +711,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
                 }
                 if (herdVersion >= HERD_V5) {
-                	params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
-                	params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
-                	params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
-                	params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
+                    params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
+                    params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
+                    params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
+                    params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
                 }
                 WS.getXML(herdSearchModulesURL, params, new XMLHandler(){
                     @Override

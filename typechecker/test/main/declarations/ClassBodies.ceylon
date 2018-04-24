@@ -689,19 +689,19 @@ class ClassBodies() {
     }
     
     abstract class BadClassWithFormal() {
-    	shared formal void noop();
-    	shared formal String greeting;
-    	$error noop();
-    	$error String hello = greeting;
-    	void method() {
-        	noop();
-        	String hello = greeting;
-    	}
+        shared formal void noop();
+        shared formal String greeting;
+        $error noop();
+        $error String hello = greeting;
+        void method() {
+            noop();
+            String hello = greeting;
+        }
     }
     
     class BadClassWithCallToSuper() {
-    	$error String s1 = string;
-    	$error String s2 = super.string;
+        $error String s1 = string;
+        $error String s2 = super.string;
         void method() {
             String s1 = string;
             String s2 = super.string;

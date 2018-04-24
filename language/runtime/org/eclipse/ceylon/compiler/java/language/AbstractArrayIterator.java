@@ -23,9 +23,9 @@ public abstract class AbstractArrayIterator<Element>
     private int i = 0;
 
     public AbstractArrayIterator(
-    		TypeDescriptor $reified$Element, 
-    		int start, int len, int step) {
-    	super($reified$Element);
+            TypeDescriptor $reified$Element, 
+            int start, int len, int step) {
+        super($reified$Element);
         this.len = len;
         this.step = step;
         this.start = start;

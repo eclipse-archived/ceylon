@@ -49,7 +49,7 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override
     public String getName(Unit unit) {
-    	return getType().asString(unit);
+        return getType().asString(unit);
     }
     
     @Override

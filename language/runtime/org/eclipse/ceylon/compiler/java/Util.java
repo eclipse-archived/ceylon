@@ -82,7 +82,7 @@ public class Util {
     }
 
     public static void loadModule(String name, String version, 
-    		ArtifactResult result, ClassLoader classLoader) {
+            ArtifactResult result, ClassLoader classLoader) {
         Metamodel.loadModule(name, version, result, classLoader);
     }
     
@@ -844,8 +844,8 @@ public class Util {
     }
 
     public static char[] 
-	toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
-	        int... initialElements) {
+    toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
+            int... initialElements) {
         // Note the List optimization doesn't work because 
         // the number of codepoints in the sequence
         // doesn't equal the size of the result array.
@@ -865,15 +865,15 @@ public class Util {
     }
 
     public static char[] 
-	toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
-	        int... initialElements) {
+    toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
+            int... initialElements) {
         return toCharArray((ceylon.language.Iterable<? extends ceylon.language.Character, ?>)sequence, initialElements);
     }
 
     @SuppressWarnings("unchecked")
     public static int[] 
-	toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
-	        int... initialElements) {
+    toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
+            int... initialElements) {
         if (sequence instanceof ceylon.language.List) {
             ceylon.language.List<? extends ceylon.language.Character> list = 
                     (ceylon.language.List<? extends ceylon.language.Character>)sequence;
@@ -1474,7 +1474,7 @@ public class Util {
      * a Tuple, although our type signature hides this.
      */
     public static Sequential<?> tuple_spanFrom(Ranged<?,?,?> tuple, 
-    		ceylon.language.Integer index) {
+            ceylon.language.Integer index) {
         Sequential<?> seq = (Sequential<?>)tuple;
         long i = index.longValue();
         while(i-- > 0) {
@@ -1640,8 +1640,8 @@ public class Util {
      * @return the function's return value
      */
     public static <Return> Return apply(Callable<? extends Return> function, 
-    		                            Sequential<? extends Object> arguments,
-    		                            TypeDescriptor variadicElementType) {
+                                        Sequential<? extends Object> arguments,
+                                        TypeDescriptor variadicElementType) {
         int variadicParameterIndex = function.$getVariadicParameterIndex$();
         switch (toInt(arguments.getSize())) {
         case 0:
@@ -1699,20 +1699,20 @@ public class Util {
             // no variadic param
             case -1:
                 java.lang.Object[] args = Util.toArray(arguments, 
-                		new java.lang.Object[toInt(arguments.getSize())]);
+                        new java.lang.Object[toInt(arguments.getSize())]);
                 return function.$call$(args);
             // we have a variadic param in there bothering us
             default:
                 // we stuff everything before the variadic into an array
                 int beforeVariadic = Math.min(toInt(arguments.getSize()), 
-                		variadicParameterIndex);
+                        variadicParameterIndex);
                 boolean needsVariadic = beforeVariadic < arguments.getSize();
                 args = new java.lang.Object[beforeVariadic + (needsVariadic ? 1 : 0)];
                 Iterator<?> iterator = arguments.iterator();
                 java.lang.Object it;
                 int i=0;
                 while(i < beforeVariadic && 
-                		(it = iterator.next()) != finished_.get_()) {
+                        (it = iterator.next()) != finished_.get_()) {
                     args[i++] = it;
                 }
                 // add the remainder as a variadic arg if required

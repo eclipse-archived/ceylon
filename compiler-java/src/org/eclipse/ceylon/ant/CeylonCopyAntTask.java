@@ -143,9 +143,9 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
             throw new BuildException("You must specify a <module> or <moduleset>");
         }
         for (Module module : moduleSet.getModules()) {
-        	if (module.getVersion() == null || module.getVersion().isEmpty()) {
+            if (module.getVersion() == null || module.getVersion().isEmpty()) {
                 throw new BuildException("You must specify a version for the module " + module.getName());
-        	}
+            }
         }
     }
 

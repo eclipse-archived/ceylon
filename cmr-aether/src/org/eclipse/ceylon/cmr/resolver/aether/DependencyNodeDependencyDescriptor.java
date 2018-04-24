@@ -24,77 +24,77 @@ import org.eclipse.ceylon.aether.eclipse.aether.graph.Exclusion;
 import org.eclipse.ceylon.aether.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyNodeDependencyDescriptor implements DependencyDescriptor {
-	private DependencyNode node;
-	private List<DependencyDescriptor> deps;
+    private DependencyNode node;
+    private List<DependencyDescriptor> deps;
     private List<ExclusionDescriptor> exclusions;
-	
-	DependencyNodeDependencyDescriptor(AetherResolverImpl resolver, DependencyNode node){
-	    this.node = node;
-	    deps = new ArrayList<>(node.getChildren().size());
-	    for(DependencyNode dep : node.getChildren()){
-	        deps.add(new DependencyNodeDependencyDescriptor(resolver, dep));
-	    }
-	    if(node.getDependency() != null){
-	        exclusions = new ArrayList<>(node.getDependency().getExclusions().size());
-	        for(Exclusion x : node.getDependency().getExclusions()){
-	            exclusions.add(new GraphExclusionExclusionDescriptor(x));
-	        }
-	    }
-	}
+    
+    DependencyNodeDependencyDescriptor(AetherResolverImpl resolver, DependencyNode node){
+        this.node = node;
+        deps = new ArrayList<>(node.getChildren().size());
+        for(DependencyNode dep : node.getChildren()){
+            deps.add(new DependencyNodeDependencyDescriptor(resolver, dep));
+        }
+        if(node.getDependency() != null){
+            exclusions = new ArrayList<>(node.getDependency().getExclusions().size());
+            for(Exclusion x : node.getDependency().getExclusions()){
+                exclusions.add(new GraphExclusionExclusionDescriptor(x));
+            }
+        }
+    }
 
-	@Override
-	public File getFile() {
-	    if(node.getArtifact().getExtension().equals("aar")){
-	        File repoFolder = node.getArtifact().getFile().getParentFile();
-	        File explodedFolder = new File(repoFolder, "exploded");
+    @Override
+    public File getFile() {
+        if(node.getArtifact().getExtension().equals("aar")){
+            File repoFolder = node.getArtifact().getFile().getParentFile();
+            File explodedFolder = new File(repoFolder, "exploded");
             File exploded = new File(explodedFolder, "classes.jar");
-	        if(exploded.exists())
-	            return exploded;
-	        try {
+            if(exploded.exists())
+                return exploded;
+            try {
                 unzip(node.getArtifact().getFile(), "classes.jar", explodedFolder);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to extract AAR file: "+node.getArtifact().getFile(), e);
             }
-	        return exploded;
-	    }
-		return node.getArtifact().getFile();
-	}
+            return exploded;
+        }
+        return node.getArtifact().getFile();
+    }
 
-	@Override
-	public List<DependencyDescriptor> getDependencies() {
-		return deps;
-	}
+    @Override
+    public List<DependencyDescriptor> getDependencies() {
+        return deps;
+    }
 
-	@Override
-	public String getGroupId() {
-		return node.getArtifact().getGroupId();
-	}
+    @Override
+    public String getGroupId() {
+        return node.getArtifact().getGroupId();
+    }
 
-	@Override
-	public String getArtifactId() {
-		return node.getArtifact().getArtifactId();
-	}
+    @Override
+    public String getArtifactId() {
+        return node.getArtifact().getArtifactId();
+    }
 
-	@Override
-	public String getClassifier() {
-	    return node.getArtifact().getClassifier();
-	}
+    @Override
+    public String getClassifier() {
+        return node.getArtifact().getClassifier();
+    }
 
-	@Override
-	public String getVersion() {
-		return node.getArtifact().getVersion();
-	}
+    @Override
+    public String getVersion() {
+        return node.getArtifact().getVersion();
+    }
 
-	@Override
-	public boolean isOptional() {
-		return node.getDependency().isOptional();
-	}
+    @Override
+    public boolean isOptional() {
+        return node.getDependency().isOptional();
+    }
 
-	@Override
-	public String toString() {
-	    return node.getArtifact().toString();
-	}
-	
+    @Override
+    public String toString() {
+        return node.getArtifact().toString();
+    }
+    
     public static void unzip(File archive, String entryPath, File destinationFolder) throws IOException {
         if (destinationFolder.exists()) {
             if (!destinationFolder.isDirectory()) {

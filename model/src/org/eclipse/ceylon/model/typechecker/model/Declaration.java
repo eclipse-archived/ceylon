@@ -36,16 +36,16 @@ public abstract class Declaration
         extends Element 
         implements Referenceable, Annotated, Named {
     
-	private String name;
-	/** See {@link DeclarationFlags} */
-	protected long flags;
-	private String qualifier;
+    private String name;
+    /** See {@link DeclarationFlags} */
+    protected long flags;
+    private String qualifier;
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private String qualifiedNameAsStringCache;
-	private Backends nativeBackends = Backends.ANY;
-	private boolean otherInstanceReadAccess;
-	private boolean otherInstanceWriteAccess;
+    private Backends nativeBackends = Backends.ANY;
+    private boolean otherInstanceReadAccess;
+    private boolean otherInstanceWriteAccess;
     protected DeclarationCompleter actualCompleter;
     private List<String> aliases;
     private List<String> restrictions;
@@ -86,8 +86,8 @@ public abstract class Declaration
     }
     
     public boolean isDeprecated() {
-		return (flags&DEPRECATED)!=0;
-	}
+        return (flags&DEPRECATED)!=0;
+    }
     
     public void setDeprecated(boolean deprecated) {
         if (deprecated) {
@@ -96,7 +96,7 @@ public abstract class Declaration
         else {
             flags&=(~DEPRECATED);
         }
-	}
+    }
     
     /**
      * Whether this declaration is dynamic, that is, outside of Ceylon's control
@@ -231,11 +231,11 @@ public abstract class Declaration
     }
     
     public Backends getNativeBackends() {
-    	return nativeBackends;
+        return nativeBackends;
     }
     
     public void setNativeBackends(Backends backends) {
-    	this.nativeBackends=backends;
+        this.nativeBackends=backends;
     }
     
     /** 
@@ -281,8 +281,8 @@ public abstract class Declaration
         if (actualCompleter != null) {
             completeActual();
         }
-		return refinedDeclaration;
-	}
+        return refinedDeclaration;
+    }
     
     protected void completeActual() {
         DeclarationCompleter completer = actualCompleter;
@@ -291,8 +291,8 @@ public abstract class Declaration
     }
 
     public void setRefinedDeclaration(Declaration refinedDeclaration) {
-		this.refinedDeclaration = refinedDeclaration;
-	}
+        this.refinedDeclaration = refinedDeclaration;
+    }
     
     /**
      * Determine if this declaration is visible in the 
@@ -414,7 +414,7 @@ public abstract class Declaration
      * @see Declaration#isClassOrInterfaceMember()
      */
     public boolean isMember() {
-    	    return false;
+            return false;
     }
     
     @Override
@@ -760,14 +760,14 @@ public abstract class Declaration
     
     @Override
     public String getNameAsString() {
-    	return getName();
+        return getName();
     }
     
     @Override
     public String getName(Unit unit) {
-    	return unit==null ? 
-    	        getName() : 
-    	        unit.getAliasedName(this);
+        return unit==null ? 
+                getName() : 
+                unit.getAliasedName(this);
     }
     
     public boolean getOtherInstanceAccess() {
@@ -790,10 +790,10 @@ public abstract class Declaration
     public void setOtherInstanceWriteAccess(boolean otherInstanceWriteAccess) {
         this.otherInstanceWriteAccess = otherInstanceWriteAccess;
     }
-	
-	public boolean isParameter() {
-	    return false;
-	}
+    
+    public boolean isParameter() {
+        return false;
+    }
 
     public boolean isSetter() {
         return false;

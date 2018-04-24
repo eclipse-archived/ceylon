@@ -47,10 +47,10 @@ public class JarEntryManifestFileObject implements JavaFileObject {
     private Module module;
     private String osgiProvidedBundles;
     private ByteArrayOutputStream baos;
-	private JdkProvider jdkProvider;
-	
+    private JdkProvider jdkProvider;
+    
     public JarEntryManifestFileObject(File jarTempFolder, String fileName, Module module, String osgiProvidedBundles,
-    		JdkProvider jdkProvider) {
+            JdkProvider jdkProvider) {
         super();
         this.jarTempFolder = jarTempFolder;
         this.fileName = fileName;

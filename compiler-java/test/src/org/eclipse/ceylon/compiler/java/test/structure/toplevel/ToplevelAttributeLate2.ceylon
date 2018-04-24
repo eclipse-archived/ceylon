@@ -6,7 +6,7 @@ shared class ToplevelAttributeLate2() {
     
 }
 
-shared void toplevelAttributeLate2() {	
+shared void toplevelAttributeLate2() {  
     toplevelAttributeLate2Obj = ToplevelAttributeLate2();
-    assert(toplevelAttributeLate2Obj.someStringProperty == "");	
+    assert(toplevelAttributeLate2Obj.someStringProperty == ""); 
 }

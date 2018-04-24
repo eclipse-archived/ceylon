@@ -290,19 +290,19 @@ public abstract class AbstractRepository implements CmrRepository {
     }
     
     private boolean checkBinaryVersion(String module, String version, Node node, ModuleQuery lookup, String suffix) {
-    	Integer binaryMajor = null, binaryMinor = null;
-    	switch(suffix){
-    	case ArtifactContext.CAR:
-    	case ArtifactContext.JAR:
-    		binaryMajor = lookup.getJvmBinaryMajor();
-    		binaryMinor = lookup.getJvmBinaryMinor();
-    		break;
-    	case ArtifactContext.JS:
-    	case ArtifactContext.JS_MODEL:
-    		binaryMajor = lookup.getJsBinaryMajor();
-    		binaryMinor = lookup.getJsBinaryMinor();
-    		break;
-    	}
+        Integer binaryMajor = null, binaryMinor = null;
+        switch(suffix){
+        case ArtifactContext.CAR:
+        case ArtifactContext.JAR:
+            binaryMajor = lookup.getJvmBinaryMajor();
+            binaryMinor = lookup.getJvmBinaryMinor();
+            break;
+        case ArtifactContext.JS:
+        case ArtifactContext.JS_MODEL:
+            binaryMajor = lookup.getJsBinaryMajor();
+            binaryMinor = lookup.getJsBinaryMinor();
+            break;
+        }
         if (binaryMajor == null && binaryMinor == null)
             return true;
         try {
@@ -339,7 +339,7 @@ public abstract class AbstractRepository implements CmrRepository {
 
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
-    	boolean retBool = false;
+        boolean retBool = false;
         for (Node versionNode : moduleNode.getChildren()) {
             String name = versionNode.getLabel();
             // Winner of the less aptly-named method
@@ -347,13 +347,13 @@ public abstract class AbstractRepository implements CmrRepository {
             if (isFolder
                     && !ArtifactContext.isDirectoryName(name)
                     && containsAnyArtifact(moduleNode, versionNode, query, ret)){
-            	retBool = true;
-            	// we found an artifact
-            	if(ret.foundRightType){
-            		// we're done
-            		return true;
-            	}
-            	// else try other versions before giving up on finding the right type
+                retBool = true;
+                // we found an artifact
+                if(ret.foundRightType){
+                    // we're done
+                    return true;
+                }
+                // else try other versions before giving up on finding the right type
             }
         }
         // done with versions

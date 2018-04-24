@@ -295,20 +295,20 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      * @param classpathReference
      */
     @AntDocIgnore
-	public void setClasspathref(Reference classpathReference) {
-		createClasspath().setRefid(classpathReference);
-	}
+    public void setClasspathref(Reference classpathReference) {
+        createClasspath().setRefid(classpathReference);
+    }
 
     @AntDoc("Modules to be compiled")
-	public void addConfiguredModuleSet(ModuleSet moduleset) {
+    public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.moduleSet.addConfiguredModuleSet(moduleset);
     }
     
-	/**
+    /**
      * Adds a module to compile
      * @param module the module name to compile
      */
-	@AntDoc("A module to be compiled")
+    @AntDoc("A module to be compiled")
     public void addConfiguredModule(Module module) {
         this.moduleSet.addConfiguredModule(module);
     }
@@ -584,7 +584,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         
         if(classpath != null){
             throw new RuntimeException("-classpath not longer supported");
-        	/*String path = classpath.toString();
+            /*String path = classpath.toString();
             cmd.createArgument().setValue("-classpath");
             cmd.createArgument().setValue(Util.quoteParameter(path));*/
         }

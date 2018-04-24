@@ -395,19 +395,19 @@ public class Operators {
     }
 
     public static OperatorTranslation getOperator(Tree.OperatorExpression operator) {
-    	if (operator instanceof Tree.BitwiseOp) {
-    		Tree.BitwiseOp bo = (Tree.BitwiseOp) operator;
-			if (operator instanceof Tree.UnionOp) {
-				return bo.getBinary() ? 
-						OperatorTranslation.BINARY_BITWISE_OR_OP : 
-						OperatorTranslation.BINARY_UNION;
-			}
-			if (operator instanceof Tree.IntersectionOp) {
-				return bo.getBinary() ? 
-						OperatorTranslation.BINARY_BITWISE_AND_OP : 
-						OperatorTranslation.BINARY_INTERSECTION;
-			}
-		}
+        if (operator instanceof Tree.BitwiseOp) {
+            Tree.BitwiseOp bo = (Tree.BitwiseOp) operator;
+            if (operator instanceof Tree.UnionOp) {
+                return bo.getBinary() ? 
+                        OperatorTranslation.BINARY_BITWISE_OR_OP : 
+                        OperatorTranslation.BINARY_UNION;
+            }
+            if (operator instanceof Tree.IntersectionOp) {
+                return bo.getBinary() ? 
+                        OperatorTranslation.BINARY_BITWISE_AND_OP : 
+                        OperatorTranslation.BINARY_INTERSECTION;
+            }
+        }
         return operators.get(operator.getClass());
     }
 
@@ -416,19 +416,19 @@ public class Operators {
     }
 
     public static AssignmentOperatorTranslation getAssignmentOperator(Tree.AssignmentOp operator) {
-    	if (operator instanceof Tree.BitwiseAssignmentOp) {
-    		Tree.BitwiseAssignmentOp bo = (Tree.BitwiseAssignmentOp) operator;
-			if (operator instanceof Tree.UnionAssignOp) {
-				return bo.getBinary() ? 
-						AssignmentOperatorTranslation.BINARY_BITWISE_OR : 
-						AssignmentOperatorTranslation.BINARY_UNION;
-			}
-			if (operator instanceof Tree.IntersectAssignOp) {
-				return bo.getBinary() ? 
-						AssignmentOperatorTranslation.BINARY_BITWISE_AND : 
-						AssignmentOperatorTranslation.BINARY_INTERSECTION;
-			}
-		}
+        if (operator instanceof Tree.BitwiseAssignmentOp) {
+            Tree.BitwiseAssignmentOp bo = (Tree.BitwiseAssignmentOp) operator;
+            if (operator instanceof Tree.UnionAssignOp) {
+                return bo.getBinary() ? 
+                        AssignmentOperatorTranslation.BINARY_BITWISE_OR : 
+                        AssignmentOperatorTranslation.BINARY_UNION;
+            }
+            if (operator instanceof Tree.IntersectAssignOp) {
+                return bo.getBinary() ? 
+                        AssignmentOperatorTranslation.BINARY_BITWISE_AND : 
+                        AssignmentOperatorTranslation.BINARY_INTERSECTION;
+            }
+        }
         return assignmentOperators.get(operator.getClass());
     }
     

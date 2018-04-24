@@ -191,7 +191,7 @@ public class Metamodel {
     }
     
     public static void resetModuleManager() {
-    	resetModuleManager(null);
+        resetModuleManager(null);
     }
     
     public static void resetModuleManager(RuntimeResolver runtimeResolver) {
@@ -1255,7 +1255,7 @@ public class Metamodel {
             addAnnotation(annotated, ceylonAnnotations, jAnnotation, predicate);
         }
         java.lang.annotation.Annotation[] array = ceylonAnnotations.toArray(new java.lang.annotation.Annotation[0]);
-		return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
+        return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
     }
 
     public static String getJavaMethodName(Functional method) {
@@ -1305,7 +1305,7 @@ public class Metamodel {
                 array[i++] = mod;
         }
         ObjectArrayIterable<ceylon.language.meta.declaration.Module> iterable = 
-        		new ObjectArrayIterable<ceylon.language.meta.declaration.Module>(ceylon.language.meta.declaration.Module.$TypeDescriptor$, array);
+                new ObjectArrayIterable<ceylon.language.meta.declaration.Module>(ceylon.language.meta.declaration.Module.$TypeDescriptor$, array);
         return iterable.take(i).sequence();
     }
 

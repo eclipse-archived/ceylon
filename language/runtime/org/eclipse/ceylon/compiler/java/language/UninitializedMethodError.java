@@ -29,7 +29,7 @@ public class UninitializedMethodError extends Error {
 
     private static final long serialVersionUID = 7063698116161174567L;
 
-	public UninitializedMethodError() {
+    public UninitializedMethodError() {
         super();
     }
 

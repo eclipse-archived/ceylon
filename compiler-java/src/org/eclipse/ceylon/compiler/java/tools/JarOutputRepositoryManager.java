@@ -181,13 +181,13 @@ public class JarOutputRepositoryManager {
         private MultiTaskListener taskListener;
         private JarEntryManifestFileObject manifest;
         private Log log;
-		private JdkProvider jdkProvider;
+        private JdkProvider jdkProvider;
         private Map<ClassOrInterface, Set<Class>> services;
         private boolean validModule;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, 
-        		Options options, CeyloncFileManager ceyloncFileManager, 
-        		MultiTaskListener taskListener, boolean aptRound) throws IOException{
+                Options options, CeyloncFileManager ceyloncFileManager, 
+                MultiTaskListener taskListener, boolean aptRound) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
@@ -277,9 +277,9 @@ public class JarOutputRepositoryManager {
                 if (writeOsgiManifest && manifest == null) {
                     // Copy the previous manifest
                     manifestObject = (module.isDefaultModule() 
-                    		? new OsgiUtil.DefaultModuleManifest() 
+                            ? new OsgiUtil.DefaultModuleManifest() 
                                     // using old compiler-generated manifest, so don't worry about conflicts: null logger 
-                    	    : new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, getPreviousManifest(), null)).build();
+                            : new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, getPreviousManifest(), null)).build();
                 } else if (manifest != null && !module.isDefaultModule()) {
                     // Use the added manifest
                     manifestObject = manifest.writeManifest(new JavacLogger(options, log));
@@ -412,7 +412,7 @@ public class JarOutputRepositoryManager {
         }
 
         private void writeJava9Module(File outputFolder, Module module) {
-        	Java9Util.writeModuleDescriptor(outputFolder, new Java9Util.Java9ModuleDescriptor(module));
+            Java9Util.writeModuleDescriptor(outputFolder, new Java9Util.Java9ModuleDescriptor(module));
         }
 
         /** 
@@ -590,7 +590,7 @@ public class JarOutputRepositoryManager {
                 if (OsgiUtil.CeylonManifest.isManifestFileName(entryName) && 
                         (module.isDefaultModule() || writeOsgiManifest)) {
                     manifest = new JarEntryManifestFileObject(outputJarTempFolder, entryName, 
-                    		module, osgiProvidedBundles, jdkProvider);
+                            module, osgiProvidedBundles, jdkProvider);
                     return manifest;
                 }
             }

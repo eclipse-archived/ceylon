@@ -355,7 +355,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
         
         @Description("Sets the password for `<alias>` in the keystore. " +
-        		"The program will issue a password prompt if `<password>` is omitted.")
+                "The program will issue a password prompt if `<password>` is omitted.")
         public class SetPassword implements Tool {
             
             private String alias;
@@ -384,7 +384,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
         
         @Description("Unsets the password for `<alias>` in the keystore, " +
-        		"removing the alias and its corresponding password.")
+                "removing the alias and its corresponding password.")
         public class UnsetPassword implements Tool {
             
             private String alias;

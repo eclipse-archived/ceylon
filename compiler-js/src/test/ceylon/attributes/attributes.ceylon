@@ -15,7 +15,7 @@ assign lastName {
 shared late variable Test6163 testObj;
 
 shared class Test6163() {
-	shared String someStringProperty = "";
+    shared String someStringProperty = "";
 }
 
 shared void test() {
@@ -31,8 +31,8 @@ shared void test() {
 
     testNewSyntax();
     check(forwardAttributeTest.first == 1, "forwardAttributeTest");
-	testObj = Test6163();
-	check(testObj.someStringProperty == "", "#6163");
+    testObj = Test6163();
+    check(testObj.someStringProperty == "", "#6163");
     testLazies();
     results();
 }

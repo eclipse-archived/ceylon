@@ -43,11 +43,11 @@ class Parameters() {
     void broken6(void param($error String paramOfParam="hello")) {}
     
     class Super() {
-    	shared default void greet(String greeting) {}
+        shared default void greet(String greeting) {}
     }
     
     class Sub() extends Super() {
-    	shared actual void greet($error String greeting="hello") {}
+        shared actual void greet($error String greeting="hello") {}
     }
     
     void method()($error String name="gavin")($error String* names) {}

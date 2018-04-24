@@ -1,17 +1,17 @@
 abstract class WithFormal() {
-	shared formal String hello;
+    shared formal String hello;
 }
 
 class WithActualDefault() extends WithFormal() {
-	shared actual default String hello = "hello";
+    shared actual default String hello = "hello";
 }
 
 abstract class WithActualFormal() extends WithActualDefault() {
-	shared actual formal String hello;
+    shared actual formal String hello;
 }
 
 class WithActual() extends WithActualFormal() {
-	shared actual String hello = "hi";
+    shared actual String hello = "hi";
 }
 
 $error class WithoutActual() extends WithActualFormal() {}
@@ -25,7 +25,7 @@ abstract class Super2() {
 }
 
 abstract class Super1() extends Super2() {
-	 // we make a default attr formal
+     // we make a default attr formal
     shared variable actual formal Integer defaultGetterSetter;
 }
 

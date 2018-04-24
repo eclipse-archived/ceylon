@@ -71,8 +71,8 @@ public class LegacyImporter {
     private boolean descriptorLoaded;
     private boolean hasProblems;
     private boolean hasErrors;
-	private ClassFileScanner scanner;
-	private boolean ignoreAnnotations;
+    private ClassFileScanner scanner;
+    private boolean ignoreAnnotations;
     
     public enum DependencyResults {
         DEP_OK, // The dependency is correct
@@ -216,7 +216,7 @@ public class LegacyImporter {
         this(moduleName, moduleVersion, jarFile, outputRepository, lookupRepository, null);
     }
     
-	/**
+    /**
      * Set up the object with the given output and lookup repositories and a callback
      * interface to receive feedback on progress and errors
      * @param moduleName The name for the published module
@@ -273,20 +273,20 @@ public class LegacyImporter {
     }
 
     public LegacyImporter missingDependenciesPackages(Map<String,List<String>> missingDependenciesPackages){
-    	if(missingDependenciesPackages == null)
-    		return this;
-    	this.missingDependenciesPackages = new HashMap<>();
-    	for(Map.Entry<String,List<String>> entry : missingDependenciesPackages.entrySet()){
-    		List<Pattern> patterns = new ArrayList<>(entry.getValue().size());
-    		for(String pkg : entry.getValue()){
-    			// match on the package regex plus whatever name of the class
-    			String regex = wildcardToRegex(pkg);
-    			Pattern pattern = Pattern.compile(regex);
-				patterns.add(pattern);
-    		}
-			this.missingDependenciesPackages.put(entry.getKey(), patterns );
-    	}
-    	return this;
+        if(missingDependenciesPackages == null)
+            return this;
+        this.missingDependenciesPackages = new HashMap<>();
+        for(Map.Entry<String,List<String>> entry : missingDependenciesPackages.entrySet()){
+            List<Pattern> patterns = new ArrayList<>(entry.getValue().size());
+            for(String pkg : entry.getValue()){
+                // match on the package regex plus whatever name of the class
+                String regex = wildcardToRegex(pkg);
+                Pattern pattern = Pattern.compile(regex);
+                patterns.add(pattern);
+            }
+            this.missingDependenciesPackages.put(entry.getKey(), patterns );
+        }
+        return this;
     }
     
     public LegacyImporter moduleDescriptor(File descriptorFile) {
@@ -306,20 +306,20 @@ public class LegacyImporter {
      */
     public LegacyImporter loadModuleDescriptor() throws Exception {
         if (descriptorFile != null && !descriptorLoaded) {
-        	ModuleInfo moduleInfo = null;
+            ModuleInfo moduleInfo = null;
             if (descriptorFile.exists()) {
                 if (descriptorFile.toString().toLowerCase().endsWith(".xml")) {
                     moduleInfo = XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile, moduleName, 
-                    		moduleVersion, lookupRepoman.getOverrides());
+                            moduleVersion, lookupRepoman.getOverrides());
                 } else if(descriptorFile.toString().toLowerCase().endsWith(".properties")) {
                     moduleInfo = PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile, moduleName, 
-                    		moduleVersion, lookupRepoman.getOverrides());
+                            moduleVersion, lookupRepoman.getOverrides());
                 }
                 descriptorLoaded = true;
             }
             gatherExternalClasses(moduleInfo);
             if(moduleInfo != null)
-            	checkModuleDescriptor(moduleInfo);
+                checkModuleDescriptor(moduleInfo);
         }
         return this;
     }
@@ -349,12 +349,12 @@ public class LegacyImporter {
                 Set<String> publicApiJdkModules = scanner.gatherJdkModules(publicApiExternalPackages);
                 // the java.base import is always implied, let's not complain about it, unless we need to share it
                 if(jdkModules.contains("java.base") && !publicApiJdkModules.contains("java.base"))
-                	jdkModules.remove("java.base");
+                    jdkModules.remove("java.base");
                 if (!jdkModules.isEmpty()) {
                     feedback.beforeJdkModules();
                     for (String mod : jdkModules) {
                         ModuleDependencyInfo dep = new ModuleDependencyInfo(null, mod, jdkProvider.getJDKVersion(), 
-                        		false, publicApiJdkModules.contains(mod), Backends.JAVA);
+                                false, publicApiJdkModules.contains(mod), Backends.JAVA);
                         feedback.dependency(DependencyResults.DEP_JDK, dep);
                         expectedDependencies.add(dep);
                     }
@@ -484,9 +484,9 @@ public class LegacyImporter {
             // then non-exported dependencies
             checkDependencies(sortedDeps, visited, false);
         }
-	}
+    }
 
-	private void checkDependencies(TreeSet<ModuleDependencyInfo> sortedDeps, Set<String> visited, boolean exported) throws Exception {
+    private void checkDependencies(TreeSet<ModuleDependencyInfo> sortedDeps, Set<String> visited, boolean exported) throws Exception {
         for (ModuleDependencyInfo dep : sortedDeps) {
             // only do exported, or non-exported
             if(exported != dep.isExport())
@@ -570,92 +570,92 @@ public class LegacyImporter {
     }
 
     private void addTransitiveDependenciesClasses(ArtifactResult result, Set<String> classes, Set<String> visited, ModuleDependencyInfo originalDependency) throws Exception {
-		log.info("Visiting transitive dependencies for "+result.name()+"/"+result.version());
-		try{
-		for(ArtifactResult dep : result.dependencies()){
-		    // Skip Test modules
-		    if(dep.moduleScope() == ModuleScope.TEST)
-		        continue;
-			// skip non-shared dependencies
-			if(dep.exported()){
-				// skip already-visited dependencies
-				if(!visited.add(dep.name()+"/"+dep.version()))
-					continue;
-				/* FIXME: this is just wrong:
-				 * - We should check for JDK
-				 * - We should report errors with transitive paths
-				 * - Finding a dep transitively puts it in the visited set and prevents toplevel imports from
-				 *   being checked
-				 */
-				// skip JDK checks
-				String name = dep.name();
-	            if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-	                // unalias jdk7-8 module names if we're running on jdk9+
-	                name = JDKUtils.getJava9ModuleName(name, dep.version());
-	            }
+        log.info("Visiting transitive dependencies for "+result.name()+"/"+result.version());
+        try{
+        for(ArtifactResult dep : result.dependencies()){
+            // Skip Test modules
+            if(dep.moduleScope() == ModuleScope.TEST)
+                continue;
+            // skip non-shared dependencies
+            if(dep.exported()){
+                // skip already-visited dependencies
+                if(!visited.add(dep.name()+"/"+dep.version()))
+                    continue;
+                /* FIXME: this is just wrong:
+                 * - We should check for JDK
+                 * - We should report errors with transitive paths
+                 * - Finding a dep transitively puts it in the visited set and prevents toplevel imports from
+                 *   being checked
+                 */
+                // skip JDK checks
+                String name = dep.name();
+                if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+                    // unalias jdk7-8 module names if we're running on jdk9+
+                    name = JDKUtils.getJava9ModuleName(name, dep.version());
+                }
                 if (jdkProvider.isJDKModule(name))
-                	continue;
-				log.info(" dep "+dep.name()+"/"+dep.version());
-				// look it up
-				ArtifactContext context = new ArtifactContext(dep.namespace(), dep.name(), dep.version(), ArtifactContext.CAR, ArtifactContext.JAR);
-				ArtifactResult depResult = lookupRepoman.getArtifactResult(context);
+                    continue;
+                log.info(" dep "+dep.name()+"/"+dep.version());
+                // look it up
+                ArtifactContext context = new ArtifactContext(dep.namespace(), dep.name(), dep.version(), ArtifactContext.CAR, ArtifactContext.JAR);
+                ArtifactResult depResult = lookupRepoman.getArtifactResult(context);
                 File artifact = depResult != null ? depResult.artifact() : null;
-        		log.info("Result: "+depResult);
+                log.info("Result: "+depResult);
                 if (artifact != null && artifact.exists()) {
                     try {
                         Set<String> importedClasses = JarUtils.gatherClassnamesFromJar(artifact);
                         classes.addAll(importedClasses);
                         addTransitiveDependenciesClasses(depResult, classes, visited, originalDependency);
                     }catch(IOException x){
-                    	feedback.dependency(DependencyResults.DEP_TRANSITIVE_ERROR, originalDependency);
-                    	hasErrors = true;
+                        feedback.dependency(DependencyResults.DEP_TRANSITIVE_ERROR, originalDependency);
+                        hasErrors = true;
                     }
                 }else{
-                	feedback.dependency(DependencyResults.DEP_TRANSITIVE_ERROR, originalDependency);
-                	hasErrors = true;
+                    feedback.dependency(DependencyResults.DEP_TRANSITIVE_ERROR, originalDependency);
+                    hasErrors = true;
                 }
-			}
-		}
-		}catch(Throwable t){
-			t.printStackTrace();
-		}
-	}
+            }
+        }
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
 
-	private static String wildcardToRegex(String wildcard){
-		// ? -> .
-		// * -> [^.]*
-		// ** -> .*
-    	StringBuffer strbuf = new StringBuffer(wildcard.length());
-    	char[] chars = wildcard.toCharArray();
-    	for (int i = 0; i < chars.length; i++) {
-    		char c = chars[i];
-    		if(c == '?'){
-    			strbuf.append('.');
-    			continue;
-    		}
-    		if(c == '*'){
-    			if(i+1 < chars.length){
-    				char next = chars[i+1];
-    				if(next == '*'){
-    	    			strbuf.append(".*");
-    	    			i++;
-    					continue;
-    				}
-    			}
-    			strbuf.append("[^.]*");
-    			continue;
-    		}
-    		// quote
-    		strbuf.append("\\Q").append(c).append("\\E");
-		}
-    	// special case if we end with .** we want to turn it into (\..*)? to make the last dot optional
-    	String ret = strbuf.toString();
-    	if(ret.endsWith("\\Q.\\E.*"))
-    		ret = ret.substring(0, ret.length()-7)+"(\\Q.\\E.*)?";
-    	return ret;
+    private static String wildcardToRegex(String wildcard){
+        // ? -> .
+        // * -> [^.]*
+        // ** -> .*
+        StringBuffer strbuf = new StringBuffer(wildcard.length());
+        char[] chars = wildcard.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if(c == '?'){
+                strbuf.append('.');
+                continue;
+            }
+            if(c == '*'){
+                if(i+1 < chars.length){
+                    char next = chars[i+1];
+                    if(next == '*'){
+                        strbuf.append(".*");
+                        i++;
+                        continue;
+                    }
+                }
+                strbuf.append("[^.]*");
+                continue;
+            }
+            // quote
+            strbuf.append("\\Q").append(c).append("\\E");
+        }
+        // special case if we end with .** we want to turn it into (\..*)? to make the last dot optional
+        String ret = strbuf.toString();
+        if(ret.endsWith("\\Q.\\E.*"))
+            ret = ret.substring(0, ret.length()-7)+"(\\Q.\\E.*)?";
+        return ret;
     }
     
-	// Create the set of class names for those types referenced by the
+    // Create the set of class names for those types referenced by the
     // public API of the classes in the JAR we're importing and that are
     // not part of the JAR itself
     private void gatherExternalClasses(ModuleInfo moduleInfo) throws MalformedURLException, IOException {
@@ -718,11 +718,11 @@ public class LegacyImporter {
         throw new RuntimeException("Updating of .xml module descriptors not supported");
     }
 
-	public boolean isIgnoreAnnotations() {
-		return ignoreAnnotations;
-	}
+    public boolean isIgnoreAnnotations() {
+        return ignoreAnnotations;
+    }
 
-	public void setIgnoreAnnotations(boolean ignoreAnnotations) {
-		this.ignoreAnnotations = ignoreAnnotations;
-	}
+    public void setIgnoreAnnotations(boolean ignoreAnnotations) {
+        this.ignoreAnnotations = ignoreAnnotations;
+    }
 }

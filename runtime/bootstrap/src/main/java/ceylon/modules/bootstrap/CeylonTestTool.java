@@ -57,9 +57,9 @@ public class CeylonTestTool extends AbstractTestTool {
     
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE, ModuleQuery.Type.JVM, 
-        		Versions.JVM_BINARY_MAJOR_VERSION, Versions.JVM_BINARY_MINOR_VERSION, 
-        		// JS binary but don't care since JVM
-        		null, null);
+                Versions.JVM_BINARY_MAJOR_VERSION, Versions.JVM_BINARY_MINOR_VERSION, 
+                // JS binary but don't care since JVM
+                null, null);
     }
 
     @Option(shortName='F', longName="flat-classpath")

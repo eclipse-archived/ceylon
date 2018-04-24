@@ -110,10 +110,10 @@ public class OptimizationTests extends CompilerTests {
         System.gc();
         
         ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
-        		getDestModuleWithArtifact("ignored"),
-        		new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
+                getDestModuleWithArtifact("ignored"),
+                new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
         };
-		long unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
+        long unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
         unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
         System.gc();
         long opt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBench", modules);
@@ -128,25 +128,25 @@ public class OptimizationTests extends CompilerTests {
     @Test
     @Ignore("For benchmarking only")
     public void testLopOptimArrayIterationBoxedStaticBench(){
-    	compile("loop/optim/ArrayIterationBoxedStaticBench.ceylon");
-    	long java = arrayIterationBoxedStaticJava();
-    	java = arrayIterationBoxedStaticJava();
-    	System.gc();
+        compile("loop/optim/ArrayIterationBoxedStaticBench.ceylon");
+        long java = arrayIterationBoxedStaticJava();
+        java = arrayIterationBoxedStaticJava();
+        System.gc();
 
-    	ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
-    			getDestModuleWithArtifact("ignored"),
-    			new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
-    	};
-    	long unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
-    	unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
-    	System.gc();
-    	long opt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBench", modules);
-    	opt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBench", modules);
-    	System.gc();
+        ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
+                getDestModuleWithArtifact("ignored"),
+                new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
+        };
+        long unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
+        unopt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
+        System.gc();
+        long opt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBench", modules);
+        opt = (Long)run("org.eclipse.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBench", modules);
+        System.gc();
 
-    	System.out.println("Optimized took " + opt/1_000_000 + "ms");
-    	System.out.println("Unoptimized took " + unopt/1_000_000 + "ms");
-    	System.out.println("Java took " + java/1_000_000 + "ms");
+        System.out.println("Optimized took " + opt/1_000_000 + "ms");
+        System.out.println("Unoptimized took " + unopt/1_000_000 + "ms");
+        System.out.println("Java took " + java/1_000_000 + "ms");
     }
 
     private long arrayIterationStaticJava() {

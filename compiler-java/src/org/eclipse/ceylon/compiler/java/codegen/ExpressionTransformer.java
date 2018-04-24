@@ -225,7 +225,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return trans;
     }
 
-	private ExpressionTransformer(Context context) {
+    private ExpressionTransformer(Context context) {
         super(context);
     }
 
@@ -2171,7 +2171,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.FlipOp op) {
-    	return transformOverridableUnaryOperator(op, op.getUnit().getBinaryDeclaration());
+        return transformOverridableUnaryOperator(op, op.getUnit().getBinaryDeclaration());
     }
     
     public JCExpression transform(Tree.PositiveOp op) {
@@ -2376,7 +2376,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getObjectType());
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getRightTerm().getTypeModel()
-        		.getSupertype(typeFact().getCategoryDeclaration()));
+                .getSupertype(typeFact().getCategoryDeclaration()));
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
         JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
@@ -2653,8 +2653,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         protected OperatorTranslation getOperatorTranslation(Tree.Bound lowerBound) {
             return lowerBound instanceof Tree.OpenBound ? 
-            		OperatorTranslation.BINARY_SMALLER : 
-        			OperatorTranslation.BINARY_SMALL_AS;
+                    OperatorTranslation.BINARY_SMALLER : 
+                    OperatorTranslation.BINARY_SMALL_AS;
         }
 
         private JCExpression transformWithin(Tree.WithinOp op, 
@@ -2857,14 +2857,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.BitwiseOp op) {
-		if (op.getBinary()) {
-        	return transformOverridableBinaryOperator(op, typeFact().getBinaryDeclaration()).build();
+        if (op.getBinary()) {
+            return transformOverridableBinaryOperator(op, typeFact().getBinaryDeclaration()).build();
         }
         else {
             Interface sd = typeFact().getSetDeclaration();
             Type leftType = getSupertype(op.getLeftTerm(), sd);
             Type rightType = getSupertype(op.getRightTerm(), sd);
-        	return transformOverridableBinaryOperator(op, leftType, rightType).build();
+            return transformOverridableBinaryOperator(op, leftType, rightType).build();
         }
     }    
 
@@ -3100,15 +3100,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Operator-Assignment expressions
 
-	private Type getRightType(final Tree.Term leftTerm, final Tree.Term rightTerm, Interface compoundType) {
-		final Type leftSupertype = getSupertype(leftTerm, compoundType);
+    private Type getRightType(final Tree.Term leftTerm, final Tree.Term rightTerm, Interface compoundType) {
+        final Type leftSupertype = getSupertype(leftTerm, compoundType);
         
         // Normally we don't look at the RHS type because it can lead to unknown types, but if we want to extract its
         // underlying type we have to, and we deal with any eventual unknown type. Presumably unknown types will not 
         // have any useful underlying type anyways.
         // Note that looking at the RHS allows us to not have the issue of using the LHS type wrongly for the RHS type 
         // when the LHS type is Float and the RHS type is Integer with implicit Float coercion
-		Type rightSupertype = getSupertype(rightTerm, compoundType);
+        Type rightSupertype = getSupertype(rightTerm, compoundType);
         if (rightSupertype == null || rightSupertype.isUnknown()) {
             // supertype could be null if, e.g. right type is Nothing
             rightSupertype = leftSupertype;
@@ -3118,7 +3118,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             rightTypeArgument = getTypeArgument(leftSupertype);
         }
         return getMostPreciseType(leftTerm, rightTypeArgument);
-	}
+    }
 
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op);
@@ -3130,7 +3130,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final Tree.Term rightTerm = op.getRightTerm();
 
         // see if we can optimise it
-		if(op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
+        if(op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -3154,7 +3154,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Type leftType = leftTerm.getTypeModel();
 
         // we work on boxed types
-		return transformAssignAndReturnOperation(op, leftTerm, boxResult, leftType, resultType, 
+        return transformAssignAndReturnOperation(op, leftTerm, boxResult, leftType, resultType, 
                 new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
@@ -3178,7 +3178,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final Tree.Term rightTerm = op.getRightTerm();
 
         // see if we can optimise it
-		if(op.getBinary() && op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
+        if(op.getBinary() && op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -3189,17 +3189,17 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         final Type leftType = leftTerm.getTypeModel();
         final Type rightType = getRightType(leftTerm, rightTerm, compoundType);
-		final Type resultType = getLeastPreciseType(leftTerm, rightTerm);
+        final Type resultType = getLeastPreciseType(leftTerm, rightTerm);
         
         return transformAssignAndReturnOperation(op, leftTerm, boxResult, leftType, resultType, 
-        		new AssignAndReturnOperationFactory() {
+                new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
-            	// make this call: previousValue OP RHS
-            	return transformOverridableBinaryOperator(op, leftTerm, rightTerm, rightType, 
-            			operator.binaryOperator, 
-            			boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE,
-    					previousValue, op.getTypeModel());
+                // make this call: previousValue OP RHS
+                return transformOverridableBinaryOperator(op, leftTerm, rightTerm, rightType, 
+                        operator.binaryOperator, 
+                        boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE,
+                        previousValue, op.getTypeModel());
             }
         });
     }
@@ -3214,7 +3214,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final Tree.Term rightTerm = op.getRightTerm();
         
         // optimise if we can
-		if(CodegenUtil.isDirectAccessVariable(leftTerm)){
+        if(CodegenUtil.isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -3225,7 +3225,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-				return transformLogicalOp(op, operator.binaryOperator, 
+                return transformLogicalOp(op, operator.binaryOperator, 
                         previousValue, rightTerm);
             }
         });
@@ -7392,34 +7392,34 @@ public class ExpressionTransformer extends AbstractTransformer {
         private void transformIfClause(Tree.IfComprehensionClause clause) {
             List<JCStatement> body;
             if (prevItemVar == null) {
-            	List<JCStatement> initBlock;
-            	if (clause == comp.getInitialComprehensionClause()) {
-            		//No previous context
-            		assert (ctxtName == null);
-            		ctxtName = naming.synthetic(Prefix.$next$, idx);
-            		//define a variable that records if the expression was already evaluated
-            		SyntheticName exhaustedName = ctxtName.suffixedBy(Suffix.$exhausted$);
+                List<JCStatement> initBlock;
+                if (clause == comp.getInitialComprehensionClause()) {
+                    //No previous context
+                    assert (ctxtName == null);
+                    ctxtName = naming.synthetic(Prefix.$next$, idx);
+                    //define a variable that records if the expression was already evaluated
+                    SyntheticName exhaustedName = ctxtName.suffixedBy(Suffix.$exhausted$);
                     JCVariableDecl exhaustedDef = make().VarDef(make().Modifiers(Flags.PRIVATE),
                             exhaustedName.asName(), makeJavaType(typeFact().getBooleanType()), null);
                     fields.add(exhaustedDef);
                     JCStatement returnIfExhausted = make().If(exhaustedName.makeIdent(), make().Return(makeBoolean(false)), null);
                     JCStatement setExhaustedTrue = make().Exec(make().Assign(exhaustedName.makeIdent(), makeBoolean(true)));
                     initBlock =  List.<JCStatement>of(
-                    		//if we already evaluated the expression, return
-                    		returnIfExhausted,
+                            //if we already evaluated the expression, return
+                            returnIfExhausted,
                             //record that we will have evaluated the expression
                             setExhaustedTrue);
-            	} else {
-            		assert (ctxtName != null);
-            		JCStatement returnIfExhausted = make().If(
-            				//if the previous comprehension is false or was already evaluated...
-            				make().Unary(JCTree.Tag.NOT, make().Apply(null,
-            						ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
-            				//return false
-                    		make().Return(makeBoolean(false)), null);
-            		ctxtName = naming.synthetic(Prefix.$next$, idx);
-            		initBlock = List.<JCStatement>of(returnIfExhausted);
-            	}
+                } else {
+                    assert (ctxtName != null);
+                    JCStatement returnIfExhausted = make().If(
+                            //if the previous comprehension is false or was already evaluated...
+                            make().Unary(JCTree.Tag.NOT, make().Apply(null,
+                                    ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+                            //return false
+                            make().Return(makeBoolean(false)), null);
+                    ctxtName = naming.synthetic(Prefix.$next$, idx);
+                    initBlock = List.<JCStatement>of(returnIfExhausted);
+                }
                 
                 JCStatement returnTrue = make().Return(makeBoolean(true));
                 JCStatement returnFalse = make().Return(makeBoolean(false));
@@ -7443,7 +7443,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCStatement loop = make().Labelled(label, make().WhileLoop(makeBoolean(true), make().Block(0, ifs)));
                 body = List.<JCStatement>of(loop,
                     make().Return(make().Unary(JCTree.Tag.NOT, prevItemVar.suffixedBy(Suffix.$exhausted$).makeIdent())));
-        	}
+            }
             MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
                 .ignoreModelAnnotations()
                 .modifiers(Flags.PRIVATE | Flags.FINAL)

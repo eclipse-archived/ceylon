@@ -35,14 +35,14 @@ import org.eclipse.ceylon.common.tools.CeylonTool;
 @Summary( 
 value="A tool which provides completion suggestions for the Bash shell.")
 @Description("The `<arguments>` are the elements of the `${COMP_WORDS}` bash array variable.\n" +
-		"\n" +
-		"The tool inspects the `<arguments>` and writes its completions to standard output." +
-		"Currently the tool can complete\n" +
-		"\n" +
-		"* tool names (except tools names which are arguments to another tool),\n" +
-		"* long option names,\n" +
-		"* long option values **if** the setter type is a `java.lang.File` or a subclass" +
-		"  of `java.lang.Enum`.")
+        "\n" +
+        "The tool inspects the `<arguments>` and writes its completions to standard output." +
+        "Currently the tool can complete\n" +
+        "\n" +
+        "* tool names (except tools names which are arguments to another tool),\n" +
+        "* long option names,\n" +
+        "* long option values **if** the setter type is a `java.lang.File` or a subclass" +
+        "  of `java.lang.Enum`.")
 public class CeylonBashCompletionTool implements Tool {
 
     public class CompletionResults {
@@ -100,7 +100,7 @@ public class CeylonBashCompletionTool implements Tool {
     
     @OptionArgument
     @Description("The index in the `<arguments>` of the argument being " +
-    		"completed, i.e. The value of `${COMP_CWORD}`.")
+            "completed, i.e. The value of `${COMP_CWORD}`.")
     public void setCword(int word) {
         this.cword = word;
     }

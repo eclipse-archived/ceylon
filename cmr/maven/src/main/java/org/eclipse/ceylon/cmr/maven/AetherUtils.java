@@ -139,8 +139,8 @@ class AetherUtils {
     }
 
     private ArtifactResult fetchDependencies(RepositoryManager manager, CmrRepository repository, 
-    		String groupId, String artifactId, String classifier, String version,
-    		boolean fetchSingleArtifact, String repositoryDisplayString) {
+            String groupId, String artifactId, String classifier, String version,
+            boolean fetchSingleArtifact, String repositoryDisplayString) {
         
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
@@ -190,7 +190,7 @@ class AetherUtils {
         final String name = MavenUtils.moduleName(groupId, artifactId, classifier);
         final String coordinates = canonicalForm(groupId, artifactId, classifier, version); //only used for messages
         try {
-        	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, null, fetchSingleArtifact);
+            DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, null, fetchSingleArtifact);
             if (info == null) {
                 log.debug("No artifact found: " + coordinates);
                 return null;
@@ -287,7 +287,7 @@ class AetherUtils {
         } catch (AetherException e) {
           log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
           return null;
-		}
+        }
     }
 
     public static ModuleScope toModuleScope(DependencyDescriptor dep) {
@@ -302,28 +302,28 @@ class AetherUtils {
 
     public void search(String groupId, String artifactId, String version, 
             boolean exactVersionMatch, ModuleVersionResult result, 
-    		Overrides overrides, String repositoryDisplayString){
+            Overrides overrides, String repositoryDisplayString){
 
-    	try{
-    	    if(version == null || version.isEmpty()){
-    	        List<String> versions = impl.resolveVersionRange(groupId, artifactId, "(,)");
-    	        for(String resolvedVersion : versions){
-    	            if(resolvedVersion != null && !resolvedVersion.isEmpty())
-    	                addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
-    	        }
-    	    }else if(exactVersionMatch){
-    	        addSearchResult(groupId, artifactId, version, result, overrides, repositoryDisplayString);
-    	    }else{
-    	        List<String> versions = impl.resolveVersionRange(groupId, artifactId, "["+version+",]");
-    	        for(String resolvedVersion : versions){
-    	            // make sure the version matches because with maven if we ask for [1,] we also get 2.x
-    	            if(resolvedVersion != null && resolvedVersion.startsWith(version))
-    	                addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
-    	        }
-    	    }
+        try{
+            if(version == null || version.isEmpty()){
+                List<String> versions = impl.resolveVersionRange(groupId, artifactId, "(,)");
+                for(String resolvedVersion : versions){
+                    if(resolvedVersion != null && !resolvedVersion.isEmpty())
+                        addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
+                }
+            }else if(exactVersionMatch){
+                addSearchResult(groupId, artifactId, version, result, overrides, repositoryDisplayString);
+            }else{
+                List<String> versions = impl.resolveVersionRange(groupId, artifactId, "["+version+",]");
+                for(String resolvedVersion : versions){
+                    // make sure the version matches because with maven if we ask for [1,] we also get 2.x
+                    if(resolvedVersion != null && resolvedVersion.startsWith(version))
+                        addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
+                }
+            }
         } catch (AetherException e) {
             log.debug("Could not search for artifact versions [" + groupId+":"+artifactId+":"+version + "] : " + e);
-  		}
+        }
     }
 
     private void addSearchResult(String groupId, String artifactId, String version, ModuleVersionResult result, 
@@ -351,7 +351,7 @@ class AetherUtils {
             }
             artifactOverrides = overrides.getArtifactOverrides(ctx);
         }
-    	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, "pom", false);
+        DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, "pom", false);
         if(info != null){
             StringBuilder description = new StringBuilder();
             StringBuilder licenseBuilder = new StringBuilder();
@@ -424,30 +424,30 @@ class AetherUtils {
     private void collectInfo(DependencyDescriptor info, StringBuilder description, StringBuilder licenseBuilder) {
         File pomFile = info.getFile();
         if(pomFile != null && pomFile.exists()){
-        	try(InputStream is = new FileInputStream(pomFile)) {
-        		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        		Document doc = dBuilder.parse(is);
-        		doc.getDocumentElement().normalize();
-        		Element root = doc.getDocumentElement();
-        		MavenUtils.collectText(root, description, "name", "description", "url");
-        		Element licenses = MavenUtils.getFirstElement(root, "licenses");
-        		if(licenses != null){
-        			Element license = MavenUtils.getFirstElement(licenses, "license");
-        			if(license != null){
-        			    MavenUtils.collectText(license, licenseBuilder, "name", "url");
-        			}
-        		}
-        	} catch (IOException e) {
-        		// ignore, no info
-        		e.printStackTrace();
-        	} catch (ParserConfigurationException e) {
-        		// ignore, no info
-        		e.printStackTrace();
-        	} catch (SAXException e) {
-        		// ignore, no info
-        		e.printStackTrace();
-        	}
+            try(InputStream is = new FileInputStream(pomFile)) {
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(is);
+                doc.getDocumentElement().normalize();
+                Element root = doc.getDocumentElement();
+                MavenUtils.collectText(root, description, "name", "description", "url");
+                Element licenses = MavenUtils.getFirstElement(root, "licenses");
+                if(licenses != null){
+                    Element license = MavenUtils.getFirstElement(licenses, "license");
+                    if(license != null){
+                        MavenUtils.collectText(license, licenseBuilder, "name", "url");
+                    }
+                }
+            } catch (IOException e) {
+                // ignore, no info
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                // ignore, no info
+                e.printStackTrace();
+            } catch (SAXException e) {
+                // ignore, no info
+                e.printStackTrace();
+            }
         };
     }
 

@@ -193,8 +193,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     @OptionArgument(shortName='s', longName="src", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to source files. " +
-    		"Can be specified multiple times; you can also specify several " +
-    		"paths separated by your operating system's `PATH` separator." +
+            "Can be specified multiple times; you can also specify several " +
+            "paths separated by your operating system's `PATH` separator." +
             " (default: `./source`)")
     public void setSrc(List<File> src) {
         roots = src;

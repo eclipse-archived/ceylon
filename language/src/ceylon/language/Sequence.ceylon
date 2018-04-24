@@ -36,10 +36,10 @@
  - [[Tuple]], a typed linked list, and
  - [[Singleton]], a sequence of just one element."
 see (interface Empty, 
-	   class ArraySequence, 
-	   class Range, 
-	   class Tuple, 
-	   class Singleton)
+       class ArraySequence, 
+       class Range, 
+       class Tuple, 
+       class Singleton)
 by ("Gavin")
 tagged("Sequences")
 shared sealed interface Sequence<out Element=Anything>

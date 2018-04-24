@@ -433,7 +433,7 @@ public class ModuleSourceMapper {
                 }
             }
             ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.namespace(), 
-            		artifact.name(), artifact.version(), 
+                    artifact.name(), artifact.version(), 
                     artifact.groupId(), artifact.artifactId(), artifact.classifier(), 
                     null, existingModuleDependencies);
             ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);

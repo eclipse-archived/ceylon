@@ -526,7 +526,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<CommonToken> getTokens() {
+    public List<CommonToken> getTokens() {
         return (List) tokens;
     }
 

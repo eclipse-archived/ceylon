@@ -24,7 +24,7 @@ import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 8)
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @SatisfiedTypes({"ceylon.language::Comparable<ceylon.language::Character>",
-		        "ceylon.language::Enumerable<ceylon.language::Character>"})
+                "ceylon.language::Enumerable<ceylon.language::Character>"})
 @ValueType
 @SharedAnnotation$annotation$
 @FinalAnnotation$annotation$
@@ -206,14 +206,14 @@ public final class Character
         }
     }
 
-	@Override
-	public Comparison compare(@Name("other") Character other) {
+    @Override
+    public Comparison compare(@Name("other") Character other) {
         int x = codePoint;
         int y = other.codePoint;
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
-	}
-	
+    }
+    
     @Override @Ignore
     public int compareTo(Character other) {
         return java.lang.Integer.compare(codePoint, other.codePoint);
@@ -221,8 +221,8 @@ public final class Character
 
     @Ignore
     public static Comparison compare(int codePoint, int otherCodePoint) {
-    	int x = codePoint;
-    	int y = otherCodePoint;
+        int x = codePoint;
+        int y = otherCodePoint;
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }
@@ -230,7 +230,7 @@ public final class Character
     @Override
     @Transient
     public Character getPredecessor() {
-    	return new Character(getPredecessor(codePoint));
+        return new Character(getPredecessor(codePoint));
     }
 
     @Ignore
@@ -241,7 +241,7 @@ public final class Character
     @Override
     @Transient
     public Character getSuccessor() {
-    	return new Character(getSuccessor(codePoint));
+        return new Character(getSuccessor(codePoint));
     }
 
     @Ignore
@@ -296,7 +296,7 @@ public final class Character
 
     @Ignore
     public static boolean largerThan(int codePoint, Character other) {
-    	return codePoint>other.codePoint;
+        return codePoint>other.codePoint;
     }
 
     @Ignore
@@ -306,12 +306,12 @@ public final class Character
     
     @Override
     public boolean largerThan(@Name("other") Character other) {
-    	return codePoint>other.codePoint;
+        return codePoint>other.codePoint;
     }
 
     @Ignore
     public static boolean notSmallerThan(int codePoint, Character other) {
-    	return codePoint>=other.codePoint;
+        return codePoint>=other.codePoint;
     }
 
     @Ignore
@@ -321,12 +321,12 @@ public final class Character
 
     @Override
     public boolean notSmallerThan(@Name("other") Character other) {
-    	return codePoint>=other.codePoint;
+        return codePoint>=other.codePoint;
     }
 
     @Ignore
     public static boolean smallerThan(int codePoint, Character other) {
-    	return codePoint<other.codePoint;
+        return codePoint<other.codePoint;
     }
 
     @Ignore
@@ -336,12 +336,12 @@ public final class Character
 
     @Override
     public boolean smallerThan(@Name("other") Character other) {
-    	return codePoint<other.codePoint;
+        return codePoint<other.codePoint;
     }
 
     @Ignore
     public static boolean notLargerThan(int codePoint, Character other) {
-    	return codePoint<=other.codePoint;
+        return codePoint<=other.codePoint;
     }
 
     @Ignore
@@ -351,7 +351,7 @@ public final class Character
 
     @Override
     public boolean notLargerThan(@Name("other") Character other) {
-    	return codePoint<=other.codePoint;
+        return codePoint<=other.codePoint;
     }
 
     @Ignore

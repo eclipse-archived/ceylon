@@ -486,7 +486,7 @@ public class AnalyzerUtil {
                         TypeParameter tp = 
                                 typeParameters.get(i);
                         if (tp.isTypeConstructor()) {
-                        	t.setTypeConstructorParameter(tp);
+                            t.setTypeConstructorParameter(tp);
                         }
                         typeArgs.put(tp, t);
                         if (type instanceof Tree.StaticType) {
@@ -1211,25 +1211,25 @@ public class AnalyzerUtil {
     }
     
     static String message(Declaration dec) {
-    	String name = dec.getName();
-		if (name==null) {
-    		if (isConstructor(dec)
-    				&& dec.isClassMember()) {
-    			Class c = (Class) dec.getContainer();
-    			return "default constructor of '" 
-    					+ c.getName() 
-    					+ "'";
-    		}
-    		else {
-    			return "";
-    		}
-    	}
-    	else {
-	        return "'" 
-	                + name 
-	                + "'" 
-	                + messageQualifier(dec);
-    	}
+        String name = dec.getName();
+        if (name==null) {
+            if (isConstructor(dec)
+                    && dec.isClassMember()) {
+                Class c = (Class) dec.getContainer();
+                return "default constructor of '" 
+                        + c.getName() 
+                        + "'";
+            }
+            else {
+                return "";
+            }
+        }
+        else {
+            return "'" 
+                    + name 
+                    + "'" 
+                    + messageQualifier(dec);
+        }
     }
     
     static String message(Declaration dec, 
@@ -1566,7 +1566,7 @@ public class AnalyzerUtil {
             et = et.resolveAliases();
             d = et.getDeclaration();
             if (et.isTypeConstructor() 
-            		&& d.isParameterized()) {
+                    && d.isParameterized()) {
                 return d;
             }
         }
@@ -1821,17 +1821,17 @@ public class AnalyzerUtil {
         }
     }
 
-	static boolean isStatementExpression(Tree.Expression e) {
-	    if (e==null) {
-	        return false;
-	    }
-	    else {
-	        Tree.Term t = e.getTerm();
-	        return t instanceof Tree.InvocationExpression 
-	            || t instanceof Tree.PostfixOperatorExpression 
-	            || t instanceof Tree.AssignmentOp 
-	            || t instanceof Tree.PrefixOperatorExpression;
-	    }
-	}
+    static boolean isStatementExpression(Tree.Expression e) {
+        if (e==null) {
+            return false;
+        }
+        else {
+            Tree.Term t = e.getTerm();
+            return t instanceof Tree.InvocationExpression 
+                || t instanceof Tree.PostfixOperatorExpression 
+                || t instanceof Tree.AssignmentOp 
+                || t instanceof Tree.PrefixOperatorExpression;
+        }
+    }
 
 }

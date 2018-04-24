@@ -38,10 +38,10 @@ shared class Bug6566() {
 
 
 languageRegistration {
-	mimeType = {"text/x-ceylon"};
+    mimeType = {"text/x-ceylon"};
 }
 class MyLanguage() extends DefaultLanguageConfig() {
-	shared actual String displayName => nothing;
-	shared actual Language<out Anything> lexerLanguage => nothing;
+    shared actual String displayName => nothing;
+    shared actual Language<out Anything> lexerLanguage => nothing;
 }
 

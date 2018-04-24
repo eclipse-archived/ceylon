@@ -16,8 +16,8 @@ package org.eclipse.ceylon.model.typechecker.model;
  */
 public class Setter extends FunctionOrValue implements Scope {
 
-	private Value getter;
-	private Parameter parameter;
+    private Value getter;
+    private Parameter parameter;
 
     public Value getGetter() {
         return getter;
@@ -28,12 +28,12 @@ public class Setter extends FunctionOrValue implements Scope {
     }
     
     public Parameter getParameter() {
-		return parameter;
-	}
+        return parameter;
+    }
     
     public void setParameter(Parameter parameter) {
-		this.parameter = parameter;
-	}
+        this.parameter = parameter;
+    }
     
     @Override
     public String getQualifiedNameString() {

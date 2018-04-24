@@ -51,11 +51,11 @@ public class UnknownType extends TypeDeclaration {
         return "unknown";
     }
     
-	@Override
-	public DeclarationKind getDeclarationKind() {
-		return DeclarationKind.TYPE;
-	}
-	
+    @Override
+    public DeclarationKind getDeclarationKind() {
+        return DeclarationKind.TYPE;
+    }
+    
     @Override
     public String getQualifiedNameString() {
         return getName();
@@ -82,12 +82,12 @@ public class UnknownType extends TypeDeclaration {
     
     @Override
     public boolean equals(Object object) {
-    	return this==object;
+        return this==object;
     }
     
     @Override
     public int hashCode() {
-    	return System.identityHashCode(this);
+        return System.identityHashCode(this);
     }
 
     public void setErrorReporter(ErrorReporter errorReporter) {

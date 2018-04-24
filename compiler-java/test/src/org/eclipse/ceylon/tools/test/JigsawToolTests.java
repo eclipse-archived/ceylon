@@ -50,7 +50,7 @@ public class JigsawToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonJigsawTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList(
-                		"create-mlib",
+                        "create-mlib",
                         "--rep", "../dist/dist/repo",
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
@@ -74,7 +74,7 @@ public class JigsawToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonJigsawTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList(
-                		"create-mlib",
+                        "create-mlib",
                         "--rep", "../dist/dist/repo",
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
@@ -95,7 +95,7 @@ public class JigsawToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonJigsawTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList(
-                		"create-mlib",
+                        "create-mlib",
                         "--rep", getOutPath(),
                         "--rep", "../../../AndroidStudioProjects/TestJava/modules",
                         "--out", getOutPath(),

@@ -20,6 +20,6 @@
 "The stub top level method"
 see(`class StubClass`, `value stubTopLevelAttribute`, `module`, `package`)
 shared StubClass? stubTopLevelMethod(
-	"Sequenced parameters `numbers`" Integer* numbers) {
+    "Sequenced parameters `numbers`" Integer* numbers) {
     return null;
 }

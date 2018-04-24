@@ -35,15 +35,15 @@ public final class type_ {
     @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.meta.model::ClassModel<Type,ceylon.language::Nothing>")
     @TypeParameters(@TypeParameter(value = "Type", 
-    		variance = Variance.OUT, 
-    		satisfies = "ceylon.language::Anything"))
+            variance = Variance.OUT, 
+            satisfies = "ceylon.language::Anything"))
     @NonNull
     public static <Type> 
     ClassModel<? extends Type, ? super Sequential<? extends Object>>
     type(@Ignore TypeDescriptor $reifiedType,
             @Name("instance") @TypeInfo("Type") Type instance) {
         return (ClassModel<? extends Type, ? super Sequential<? extends Object>>) 
-        		getAppliedMetamodel(getTypeDescriptor(instance));
+                getAppliedMetamodel(getTypeDescriptor(instance));
     }
     
 }

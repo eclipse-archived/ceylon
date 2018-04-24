@@ -28,18 +28,18 @@ public class InitialModuleLoader extends ModuleLoader {
     
     @Override
     protected ModuleSpec findModule(ModuleIdentifier module) throws ModuleLoadException {
-    	if(JDKUtils.isJDKModule(module.getName())){
+        if(JDKUtils.isJDKModule(module.getName())){
             ModuleSpec.Builder builder = ModuleSpec.build(module);
             Set<String> jdkPaths = JDKUtils.getJDKPathsByModule(module.getName());
             builder.addDependency(DependencySpec.createSystemDependencySpec(jdkPaths, true));
             return builder.create();
-    	}
-    	if(JDKUtils.isOracleJDKModule(module.getName())){
+        }
+        if(JDKUtils.isOracleJDKModule(module.getName())){
             ModuleSpec.Builder builder = ModuleSpec.build(module);
             Set<String> jdkPaths = JDKUtils.getOracleJDKPathsByModule(module.getName());
             builder.addDependency(DependencySpec.createSystemDependencySpec(jdkPaths, true));
             return builder.create();
-    	}
-    	return super.findModule(module);
+        }
+        return super.findModule(module);
     }
 }

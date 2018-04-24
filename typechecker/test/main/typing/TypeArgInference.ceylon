@@ -93,12 +93,12 @@ class TypeArgInference() {
 
     V f1<U,V>(U u) 
             given U satisfies V {
-    	return u;
+        return u;
     }
     
     V f2<U,V>(U u) 
             given U satisfies Sequence<V> {
-    	return u.first;
+        return u.first;
     }
     
     $type:"String" f1("hello");

@@ -59,8 +59,8 @@ public class Value extends FunctionOrValue implements Scope {
     
     @Override
     public boolean isLate() {
-		return (flags&LATE)!=0;
-	}
+        return (flags&LATE)!=0;
+    }
     
     public void setLate(boolean late) {
         if (late) {
@@ -69,7 +69,7 @@ public class Value extends FunctionOrValue implements Scope {
         else {
             flags&=(~LATE);
         }
-	}
+    }
 
     public boolean isEnumValue() {
         return (flags&ENUM_VALUE)!=0;

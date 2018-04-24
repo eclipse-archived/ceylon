@@ -183,8 +183,8 @@ public class ConditionGenerator {
     /** Handles the "is", "exists" and "nonempty" conditions, with a pre-generated
      * list of the variables from the conditions. */
     void specialConditions(final List<VarHolder> vars, 
-    		Tree.ConditionList conditions, String keyword,
-    		final boolean forAssert) {
+            Tree.ConditionList conditions, String keyword,
+            final boolean forAssert) {
         //The first pass is gathering the conditions, which we already get here
         //Second pass: generate the conditions
         if (!keyword.isEmpty()) {
@@ -210,8 +210,8 @@ public class ConditionGenerator {
     }
 
     private void specialConditionCheck(Condition condition, 
-    		Tree.Term variableRHS, String varName,
-    		final boolean forAssert) {
+            Tree.Term variableRHS, String varName,
+            final boolean forAssert) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             ExistsOrNonemptyCondition enc = (ExistsOrNonemptyCondition) condition;
             if (enc.getNot()) {
@@ -235,7 +235,7 @@ public class ConditionGenerator {
     void specialConditionRHS(Tree.Term variableRHS, String varName) {
         if (varName == null) {
             if (variableRHS!=null) {
-            	specialConditionExpr(variableRHS);
+                specialConditionExpr(variableRHS);
             }
         } else {
             gen.out("(", varName, "=");
@@ -245,12 +245,12 @@ public class ConditionGenerator {
     }
     
     void specialConditionExpr(Tree.Term term) {
-    	if (term instanceof Tree.BaseMemberExpression) {
-    		BmeGenerator.generateBme((Tree.BaseMemberExpression) term, gen, false);
-    	}
-    	else {
-    		term.visit(gen);
-    	}
+        if (term instanceof Tree.BaseMemberExpression) {
+            BmeGenerator.generateBme((Tree.BaseMemberExpression) term, gen, false);
+        }
+        else {
+            term.visit(gen);
+        }
     }
 
     void specialConditionRHS(String variableRHS, String varName) {
@@ -463,7 +463,7 @@ public class ConditionGenerator {
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
             Type caseType = isCaseItem.getType().getTypeModel();
-			gen.generateIsOfType(item, expvar, caseType, null, false, false);
+            gen.generateIsOfType(item, expvar, caseType, null, false, false);
             caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 caseDec = caseVar.getDeclarationModel();
@@ -475,7 +475,7 @@ public class ConditionGenerator {
             gen.out("true");
         } else if (item instanceof MatchCase) {
             Type switchType = switchTerm.getTypeModel();
-			final boolean isNull = switchType.covers(switchTerm.getUnit().getNullType());
+            final boolean isNull = switchType.covers(switchTerm.getUnit().getNullType());
             boolean first = true;
             MatchCase matchCaseItem = (MatchCase) item;
             Tree.MatchList matchList = matchCaseItem.getExpressionList();
@@ -486,27 +486,27 @@ public class ConditionGenerator {
                    ModelUtil.addToUnion(union, type.getTypeModel());
                 }
                 gen.generateIsOfType(item, expvar, 
-                		ModelUtil.union(union, matchList.getUnit()), 
-                		null, false, false);
+                        ModelUtil.union(union, matchList.getUnit()), 
+                        null, false, false);
             }
             for (Expression exp : matchList.getExpressions()) {
                 if (!first) gen.out(" || ");
                 final Tree.Term term = exp.getTerm();
                 if (term instanceof Tree.NaturalLiteral 
-                		|| term instanceof Tree.NegativeOp 
-                		&& ((Tree.NegativeOp)term).getTerm() 
-                			instanceof Tree.NaturalLiteral) {
-                	if (isNull) {
+                        || term instanceof Tree.NegativeOp 
+                        && ((Tree.NegativeOp)term).getTerm() 
+                            instanceof Tree.NaturalLiteral) {
+                    if (isNull) {
                         gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
                     }
-                	if (switchType.isInteger()) {
-                    	gen.out(expvar, "==");
-                    	exp.visit(gen);
+                    if (switchType.isInteger()) {
+                        gen.out(expvar, "==");
+                        exp.visit(gen);
                     }
                     else {
-	                    gen.out(expvar, ".equals(");
-	                    gen.box(term, true, true);
-	                    gen.out(")");
+                        gen.out(expvar, ".equals(");
+                        gen.box(term, true, true);
+                        gen.out(")");
                     }
                 } else if (term instanceof Tree.StringLiteral) {
                     if (isNull) {
@@ -517,7 +517,7 @@ public class ConditionGenerator {
                     gen.out(")");
                 } else if (term instanceof Tree.CharLiteral) {
                     if (isNull) {
-                    	gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
+                        gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
                     }
                     gen.out(expvar, ".equals(");
                     gen.box(term, true, true);

@@ -230,12 +230,12 @@ public abstract class CompilerTests {
     
     protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener<? super FileObject> diagnosticListener){
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
-	}
-	
-	protected void compareWithJavaSource(String name) {
-		compareWithJavaSource(name+".src", name+".ceylon");
-	}
-	
+    }
+    
+    protected void compareWithJavaSource(String name) {
+        compareWithJavaSource(name+".src", name+".ceylon");
+    }
+    
     protected void compareWithJavaSourceNoOpt(String name) {
         List<String> options = new ArrayList<String>();
         options.add("-disableOptimization");
@@ -245,14 +245,14 @@ public abstract class CompilerTests {
         compareWithJavaSource(options, name+".noopt.src", name+".ceylon");
     }
 
-	@Before
-	public void cleanCars() {
-	    cleanCars(destDir);
-	    // Stef: this would be very nice and all, except it makes the build take forever, so let's
-	    // please have none of this correctness nonsense
-//	    cleanCars(cacheDir);
-	}
-	
+    @Before
+    public void cleanCars() {
+        cleanCars(destDir);
+        // Stef: this would be very nice and all, except it makes the build take forever, so let's
+        // please have none of this correctness nonsense
+//      cleanCars(cacheDir);
+    }
+    
     public void cleanCars(String repo) {
         File destFile = new File(repo);
         List<String> extensionsToDelete = Arrays.asList("");
@@ -1146,7 +1146,7 @@ public abstract class CompilerTests {
         args[1] = "--rep";
         args[2] = getOutPath();
         for(int i=0;i<runnerArgs.size();i++)
-        	args[3+i] = runnerArgs.get(i);
+            args[3+i] = runnerArgs.get(i);
         args[args.length-1] = module;
         exit = Launcher.run(true, args);
         Assert.assertEquals(0, exit);
@@ -1200,9 +1200,9 @@ public abstract class CompilerTests {
         // use the same JVM as the current one
         pb.environment().put("JAVA_HOME", System.getProperty("java.home"));
         if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-        	pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
-        			+",java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
-        			+",java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
+            pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
+                    +",java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
+                    +",java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
         }
         Process p = pb.start();
         return p.waitFor();
@@ -1211,30 +1211,30 @@ public abstract class CompilerTests {
     protected int runInJava9(String[] repos, ModuleSpec module, List<String> moduleArgs) throws Throwable {
         File mlib = Files.createTempDirectory(new File(destDir).toPath(), "mlib").toFile();
         try{
-        	
-        	CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
-        	jigsawTool.setOut(mlib);
-        	jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
-        	jigsawTool.setModules(Arrays.asList(module.getName()));
-        	jigsawTool.run();
+            
+            CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
+            jigsawTool.setOut(mlib);
+            jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
+            jigsawTool.setModules(Arrays.asList(module.getName()));
+            jigsawTool.run();
 
-        	ArrayList<String> a = new ArrayList<String>();
-        	String java = System.getProperty("java.home")+"/bin/java";
-        	a.add(java);
-        	a.add("-modulepath");
-        	a.add(mlib.getAbsolutePath());
-        	a.add("-m");
-        	a.add(Module.LANGUAGE_MODULE_NAME);
-        	a.add(module.toString());
-        	a.addAll(moduleArgs);
-        	System.err.println(a);
-        	ProcessBuilder pb = new ProcessBuilder(a);
-        	pb.redirectError(Redirect.INHERIT);
-        	pb.redirectOutput(Redirect.INHERIT);
-        	Process p = pb.start();
-        	return p.waitFor();
+            ArrayList<String> a = new ArrayList<String>();
+            String java = System.getProperty("java.home")+"/bin/java";
+            a.add(java);
+            a.add("-modulepath");
+            a.add(mlib.getAbsolutePath());
+            a.add("-m");
+            a.add(Module.LANGUAGE_MODULE_NAME);
+            a.add(module.toString());
+            a.addAll(moduleArgs);
+            System.err.println(a);
+            ProcessBuilder pb = new ProcessBuilder(a);
+            pb.redirectError(Redirect.INHERIT);
+            pb.redirectOutput(Redirect.INHERIT);
+            Process p = pb.start();
+            return p.waitFor();
         }finally{
-        	FileUtil.delete(mlib);
+            FileUtil.delete(mlib);
         }
 
     }

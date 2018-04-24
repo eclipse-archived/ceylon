@@ -62,7 +62,7 @@ public class BashCompletionToolTests {
         tool.run();
         Assert.assertEquals(
                 "example \n" +
-        		"", b.toString().replace("\r\n", "\n"));
+                "", b.toString().replace("\r\n", "\n"));
     }
     
     @Test

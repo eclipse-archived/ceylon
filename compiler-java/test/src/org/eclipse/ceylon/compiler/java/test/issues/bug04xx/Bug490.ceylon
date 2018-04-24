@@ -20,9 +20,9 @@
 @noanno
 class Bug490() {
 
-	void f(){
-		Character c = 'a';
-		print("``c``");
+    void f(){
+        Character c = 'a';
+        print("``c``");
         print("a``c``b``2``c");
-	}
+    }
 }

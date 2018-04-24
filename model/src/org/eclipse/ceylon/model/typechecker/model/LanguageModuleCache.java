@@ -386,7 +386,7 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
     @Override
     public Interface getMultiplicableDeclaration() {
         if (multiplicableDeclaration == null) {
-        	multiplicableDeclaration = (Interface) getLanguageModuleDeclaration(multiplicableName);
+            multiplicableDeclaration = (Interface) getLanguageModuleDeclaration(multiplicableName);
         }
         return multiplicableDeclaration;
     }

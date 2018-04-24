@@ -121,10 +121,10 @@ class Generics() {
         shared class GoodParameterizedClassGiven3<in T>(T t) given T satisfies Y {}
         shared class GoodParameterizedClassGiven4<out T>(T t) given T satisfies Y {}
         shared class OKParameterizedClassGiven1<out T>(T t) given T satisfies Y {
-        	shared T get() { return t; }
+            shared T get() { return t; }
         }
         shared class OKParameterizedClassGiven2<in T>(T t) given T satisfies Y {
-        	shared void put(T t) {}
+            shared void put(T t) {}
         }
         shared class GoodParameterizedClass<out T>(T t) {}
         shared class GoodParameterizedClass2<out T>(Producer<T> t) {}
@@ -247,10 +247,10 @@ class Generics() {
             given T satisfies Sequence<X> & Object
             given X satisfies Object {}
     
-	$error: "sealed interface" 
+    $error: "sealed interface" 
     interface BadSequenceSequence<out T> 
             satisfies Sequence<T>
-	        given T satisfies Sequence<X> & Object
+            given T satisfies Sequence<X> & Object
             $error given X satisfies Object {}
     
     class Upper<X>(X x)
@@ -384,12 +384,12 @@ class Generics() {
     $error Holder<String>.X wrong;
     
     T choose<T>(Boolean b, T first, T second) {
-    	if (b) {
-    		return first;
-    	}
-    	else {
-    		return second;
-    	}
+        if (b) {
+            return first;
+        }
+        else {
+            return second;
+        }
     }
     
     P getFirst<P>(Sequence<P> list) {
@@ -401,7 +401,7 @@ class Generics() {
     } 
     Object getFirstNonEmpty(Sequence<String> strs, Sequence<Object> obs) {
         return getFirst(choose(true, strs, obs));
-    	/*if (nonempty strs) {
+        /*if (nonempty strs) {
             return getFirst(strs);
         }
         else {
@@ -419,21 +419,21 @@ class Generics() {
     }
     
     interface Addable<in T> {
-    	shared formal void add(T t);
+        shared formal void add(T t);
     }
     class Var() { 
-    	Boolean bool = true; 
-    	void addTo(Addable<Var> trues, Addable<Var> falses) {
-    		choose(bool, trues, falses).add(this);
-    		//if (mValue) { trues.add(this); } else { falses.add(this); }
-    	}
+        Boolean bool = true; 
+        void addTo(Addable<Var> trues, Addable<Var> falses) {
+            choose(bool, trues, falses).add(this);
+            //if (mValue) { trues.add(this); } else { falses.add(this); }
+        }
     }
     
     interface Inter1<in T> {
-    	shared void put(T t) { throw; }
+        shared void put(T t) { throw; }
     }
     interface Inter2<out T> {
-    	shared T get() { throw; }
+        shared T get() { throw; }
     }
 
     interface Super1 satisfies Inter1<Nothing> & Inter2<String> {}
@@ -548,7 +548,7 @@ class Generics() {
             given Absent satisfies Null {
         return iterable.coalesced;
     }
-	    
+        
     $type:"{String*}" coalesce{null, "hello"};
     $type:"[String+]|[]" concatenate({}, {"hello", "world"}, {"goodbye"});
     

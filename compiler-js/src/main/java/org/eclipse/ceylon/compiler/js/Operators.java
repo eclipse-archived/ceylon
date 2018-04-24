@@ -28,17 +28,17 @@ import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 public class Operators {
 
 //    static void unwrappedNumberOrTerm(final Tree.Term term, final boolean wrapFloat, final GenerateJsVisitor gen) {
-//    	if (term instanceof Tree.NaturalLiteral) {
+//        if (term instanceof Tree.NaturalLiteral) {
 //            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)term, false)));
 //        } else if (term instanceof Tree.FloatLiteral) {
-//        	if (wrapFloat) gen.out("Float(");
+//            if (wrapFloat) gen.out("Float(");
 //            gen.out(gen.parseFloatLiteral((Tree.FloatLiteral)term, false));
 //            if (wrapFloat) gen.out(")");
 //        } else if (term instanceof Tree.NegativeOp && ((Tree.NegativeOp) term).getTerm() instanceof Tree.NaturalLiteral) {
-//        	gen.out("(", Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)term, true)), ")");
+//            gen.out("(", Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)term, true)), ")");
 //        } else if (term instanceof Tree.NegativeOp && ((Tree.NegativeOp) term).getTerm() instanceof Tree.FloatLiteral) {
-//        	if (wrapFloat) gen.out("Float");
-//        	gen.out("(", gen.parseFloatLiteral((Tree.FloatLiteral)term, true), ")");
+//            if (wrapFloat) gen.out("Float");
+//            gen.out("(", gen.parseFloatLiteral((Tree.FloatLiteral)term, true), ")");
 //        } else {
 //            gen.box(term);
 //        }
@@ -53,9 +53,9 @@ public class Operators {
         Tree.Term leftTerm = exp.getLeftTerm();
         Tree.Term rightTerm = exp.getRightTerm();
         boolean isMethod = op.charAt(0)=='.';
-		gen.box(leftTerm, isMethod, isMethod);
+        gen.box(leftTerm, isMethod, isMethod);
         gen.out(op);
-		gen.box(rightTerm, isMethod, isMethod);
+        gen.box(rightTerm, isMethod, isMethod);
         if (after != null) {
             gen.out(after);
         }
@@ -66,11 +66,11 @@ public class Operators {
             final GenerateJsVisitor gen) {
         Tree.Term leftTerm = exp.getLeftTerm();
         Tree.Term rightTerm = exp.getRightTerm();
-		final Term term = leftTerm;
-		gen.box(term, true, true);
+        final Term term = leftTerm;
+        gen.box(term, true, true);
         gen.out(op);
-		final Term term1 = rightTerm;
-		gen.box(term1, true, true);
+        final Term term1 = rightTerm;
+        gen.box(term1, true, true);
         if (targs != null) {
             gen.out(",");
             TypeUtils.printTypeArguments(exp, gen, false, targs, overrides);
@@ -79,22 +79,22 @@ public class Operators {
     }
 
     static void unaryOp(final Tree.UnaryOperatorExpression exp, 
-    		final String before, final String after,
+            final String before, final String after,
             final GenerateJsVisitor gen) {
         if (before != null) {
             gen.out(before);
         }
         Tree.Term term = exp.getTerm();
-		boolean existsOp = exp instanceof Tree.Exists;
-		if (after==null || after.charAt(0)!='.') {
-			if (term instanceof Tree.BaseMemberExpression) {
+        boolean existsOp = exp instanceof Tree.Exists;
+        if (after==null || after.charAt(0)!='.') {
+            if (term instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen, !existsOp);
             } else {
-            	gen.box(term, false, false);
+                gen.box(term, false, false);
             }
         } else {
             final Term fromTerm = term;
-			final int boxTypeLeft = gen.boxUnboxStart(fromTerm, false, true, true);
+            final int boxTypeLeft = gen.boxUnboxStart(fromTerm, false, true, true);
             if (term instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)term, gen, !existsOp);
             } else {
@@ -332,7 +332,7 @@ public class Operators {
             builtInBinaryOp(that, "$eq$", gen);
         } else {
             if (canUseNativeComparator(that.getLeftTerm(), that.getRightTerm())) {
-            	simpleBinaryOp(that, "(", "!=", ")", gen);
+                simpleBinaryOp(that, "(", "!=", ")", gen);
             } else {
                 gen.out("!");
                 builtInBinaryOp(that, "$eq$", gen);
@@ -346,7 +346,7 @@ public class Operators {
             builtInBinaryOp(that, "$eq$", gen);
         } else {
             if (canUseNativeComparator(that.getLeftTerm(), that.getRightTerm())) {
-            	simpleBinaryOp(that, "(", "==", ")", gen);
+                simpleBinaryOp(that, "(", "==", ")", gen);
             } else {
                 builtInBinaryOp(that, "$eq$", gen);
             }
@@ -393,46 +393,46 @@ public class Operators {
         }
         final Type d = t.getTypeModel();
         final boolean useMinus = 
-        		d != null && (d.isInteger() || d.isFloat())
+                d != null && (d.isInteger() || d.isFloat())
                 || gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(d);
         if (useMinus) {
-			Operators.unaryOp(that, "(-", ")", gen);
+            Operators.unaryOp(that, "(-", ")", gen);
         }
         else {
             Operators.unaryOp(that, null, ".negated", gen);
         }
     }
 
-	static void flip(final Tree.FlipOp that, GenerateJsVisitor gen) {
-		final Term t = that.getTerm();
+    static void flip(final Tree.FlipOp that, GenerateJsVisitor gen) {
+        final Term t = that.getTerm();
         final Type d = t.getTypeModel();
         final boolean useTwiddle = d != null && d.isInteger()
                 || gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(d);
-    	if (useTwiddle) {
-			Operators.unaryOp(that, "(~", ")", gen);
+        if (useTwiddle) {
+            Operators.unaryOp(that, "(~", ")", gen);
         }
-    	else {
-    		Operators.unaryOp(that, null, ".not", gen);
-    	}
-	}
+        else {
+            Operators.unaryOp(that, null, ".not", gen);
+        }
+    }
 
-	static void not(final Tree.NotOp that, GenerateJsVisitor gen) {
-		final Term t = that.getTerm();
+    static void not(final Tree.NotOp that, GenerateJsVisitor gen) {
+        final Term t = that.getTerm();
         final boolean omitParens = 
-        		   t instanceof BaseMemberExpression
+                   t instanceof BaseMemberExpression
                 || t instanceof QualifiedMemberExpression
                 || t instanceof Tree.IsOp 
                 || t instanceof Tree.Exists || t instanceof Tree.Nonempty
                 || t instanceof Tree.IdenticalOp
                 || t instanceof Tree.InOp 
                 || (t instanceof Tree.InvocationExpression 
-                		&& ((Tree.InvocationExpression)t).getNamedArgumentList() == null);
+                        && ((Tree.InvocationExpression)t).getNamedArgumentList() == null);
         if (omitParens) {
             Operators.unaryOp(that, "!", null, gen);
         } else {
             Operators.unaryOp(that, "(!", ")", gen);
         }
-	}
+    }
 
     static void generateSafeOp(final Tree.QualifiedMemberOrTypeExpression that,
             final GenerateJsVisitor gen) {
@@ -460,14 +460,14 @@ public class Operators {
     /** Returns true if both Terms' types is either Integer or Boolean. */
     static boolean canUseNativeComparator(final Tree.Term left, final Tree.Term right) {
         if (left == null || right == null 
-        		|| left.getTypeModel() == null 
-        		|| right.getTypeModel() == null) {
+                || left.getTypeModel() == null 
+                || right.getTypeModel() == null) {
             return false;
         }
         final Type lt = left.getTypeModel();
         final Type rt = right.getTypeModel();
         return TypeUtils.bothInts(lt, rt)
-    		|| lt.isBoolean() && rt.isBoolean();
+            || lt.isBoolean() && rt.isBoolean();
     }
 
 }

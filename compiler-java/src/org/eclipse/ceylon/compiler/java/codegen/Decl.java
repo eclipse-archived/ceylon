@@ -259,12 +259,12 @@ public class Decl {
     
     public static boolean isValueTypeDecl(Tree.Term decl) {
         return decl != null 
-    		&& isValueTypeDecl(decl.getTypeModel());
+            && isValueTypeDecl(decl.getTypeModel());
     }
     
     public static boolean isValueTypeDecl(TypedDeclaration decl) {
         return decl != null 
-    		&& isValueTypeDecl(decl.getType());
+            && isValueTypeDecl(decl.getType());
     }
 
     public static boolean isValueTypeDecl(Type type) {
@@ -272,11 +272,11 @@ public class Decl {
             return false;
         type = type.resolveAliases();
         if (type != null) {
-			TypeDeclaration decl = type.getDeclaration();
-			if (decl instanceof LazyClass) {
-			    return ((LazyClass)decl).isValueType();
-			}
-		}
+            TypeDeclaration decl = type.getDeclaration();
+            if (decl instanceof LazyClass) {
+                return ((LazyClass)decl).isValueType();
+            }
+        }
         return false;
     }
 

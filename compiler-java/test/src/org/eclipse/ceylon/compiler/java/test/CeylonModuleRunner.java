@@ -191,7 +191,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 classpath));
         //args.add("-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y");
         if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-        	args.add("-XaddExports:java.base/sun.reflect.annotation=ALL-UNNAMED");
+            args.add("-XaddExports:java.base/sun.reflect.annotation=ALL-UNNAMED");
         }
         args.add("org.eclipse.ceylon.compiler.java.runtime.Main");
         args.add(moduleSpec);

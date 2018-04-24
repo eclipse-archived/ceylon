@@ -87,7 +87,7 @@ public class ImportList implements Scope {
     
     @Override
     public Scope getScope() {
-    	return container;
+        return container;
     }
     
     public void setContainer(Scope container) {
@@ -125,7 +125,7 @@ public class ImportList implements Scope {
     public boolean hasImport(Declaration d) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-            		i.getDeclaration().equals(d)) {
+                    i.getDeclaration().equals(d)) {
                 return true;
             }
         }
@@ -135,7 +135,7 @@ public class ImportList implements Scope {
     public Import getImport(String alias) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-            		i.getAlias().equals(alias)) {
+                    i.getAlias().equals(alias)) {
                 return i;
             }
         }

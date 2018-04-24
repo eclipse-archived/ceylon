@@ -21,14 +21,14 @@ package org.eclipse.ceylon.compiler.java.test.issues.bug07xx.bug711;
 
 public class ClassWithGetterAndSetter implements InterfaceWithGetter {
 
-	protected String someString;
+    protected String someString;
 
-	public String getSomeString() {
-		return someString;
-	}
-	
-	public void setSomeString(String someString) {
-		this.someString = someString;
-	}
-	
+    public String getSomeString() {
+        return someString;
+    }
+    
+    public void setSomeString(String someString) {
+        this.someString = someString;
+    }
+    
 }

@@ -10,14 +10,14 @@
 package org.eclipse.ceylon.model.typechecker.model;
 
 public class Import {
-	
-	private TypeDeclaration typeDeclaration;
-	private String alias;
-	private Declaration declaration;
-	private boolean wildcardImport;
-	private boolean ambiguous;
-	
-	public Import() {}
+    
+    private TypeDeclaration typeDeclaration;
+    private String alias;
+    private Declaration declaration;
+    private boolean wildcardImport;
+    private boolean ambiguous;
+    
+    public Import() {}
 
     public Declaration getDeclaration() {
         return declaration;
@@ -36,30 +36,30 @@ public class Import {
     }
     
     public boolean isAmbiguous() {
-		return ambiguous;
-	}
+        return ambiguous;
+    }
     
     public void setAmbiguous(boolean ambiguous) {
-		this.ambiguous = ambiguous;
-	}
+        this.ambiguous = ambiguous;
+    }
     
     public TypeDeclaration getTypeDeclaration() {
-		return typeDeclaration;
-	}
+        return typeDeclaration;
+    }
     
     public void setTypeDeclaration(TypeDeclaration typeDeclaration) {
-		this.typeDeclaration = typeDeclaration;
-	}
+        this.typeDeclaration = typeDeclaration;
+    }
     
     @Override
     public String toString() {
         return "import " + 
-        		(typeDeclaration==null ? 
-        		        "" : typeDeclaration.getName() + " { ") + 
-        		alias + " = " + 
-        		declaration.getName() +
-        		(typeDeclaration==null ? 
-        		        "" : " }");
+                (typeDeclaration==null ? 
+                        "" : typeDeclaration.getName() + " { ") + 
+                alias + " = " + 
+                declaration.getName() +
+                (typeDeclaration==null ? 
+                        "" : " }");
     }
     
     public boolean isWildcardImport() {

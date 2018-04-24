@@ -293,17 +293,17 @@ shared void testIterables() {
     check({for (i in 1..10) i }.shorterThan(11), "Iterable.shorterThan");
     check({for (i in 1..10) i }.longerThan(9), "Iterable.longerThan");
 
-	// string
-	value ia = {};
-	value ib = { 1, 2, 3, 4, 5 };
-	value ic = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
-	value ix = mapPairs(ia, ia, plus);
-	{Integer+} iy = mapPairs(ib, ib, plus<Integer>);
-	{Integer+} iz = mapPairs(ic, ic, plus<Integer>);
+    // string
+    value ia = {};
+    value ib = { 1, 2, 3, 4, 5 };
+    value ic = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
+    value ix = mapPairs(ia, ia, plus);
+    {Integer+} iy = mapPairs(ib, ib, plus<Integer>);
+    {Integer+} iz = mapPairs(ic, ic, plus<Integer>);
     check(ix.string=="{}", "Iterable.string [1]");
     check(iy.string=="{ 2, 4, 6, 8, 10 }", "Iterable.string [2]");
     check(iz.string=="{ 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, ... }", "Iterable.string [3]");
-	
+    
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence()=={"z","tt","aaa"}.sequence(), "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence()=={"aaa","tt","z"}.sequence(), "sort(byDecreasing)");

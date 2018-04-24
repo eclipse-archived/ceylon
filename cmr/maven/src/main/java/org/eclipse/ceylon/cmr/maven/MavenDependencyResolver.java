@@ -78,11 +78,11 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         }
 
         DependencyDescriptor descriptor;
-		try {
-			descriptor = utils.getDependencies(file, name, version);
-		} catch (IOException e) {
-			throw new RepositoryException("Failed to resolve pom", e);
-		}
+        try {
+            descriptor = utils.getDependencies(file, name, version);
+        } catch (IOException e) {
+            throw new RepositoryException("Failed to resolve pom", e);
+        }
         return toModuleInfo(descriptor, name, version, overrides);
     }
 
@@ -93,9 +93,9 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
 
         DependencyDescriptor descriptor;
         try{
-        	descriptor = utils.getDependencies(stream, name, version);
+            descriptor = utils.getDependencies(stream, name, version);
         } catch (IOException e) {
-        	throw new RepositoryException("Failed to resolve pom", e);
+            throw new RepositoryException("Failed to resolve pom", e);
         }
         return toModuleInfo(descriptor, name, version, overrides);
     }

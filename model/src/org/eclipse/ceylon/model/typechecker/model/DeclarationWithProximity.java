@@ -74,8 +74,8 @@ public class DeclarationWithProximity {
     }
     
     public boolean isUnimported() {
-		return unimported;
-	}
+        return unimported;
+    }
 
     public boolean isAlias(){
         return alias;

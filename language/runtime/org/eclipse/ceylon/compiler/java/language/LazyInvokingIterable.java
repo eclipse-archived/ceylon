@@ -20,9 +20,9 @@ import org.eclipse.ceylon.compiler.java.language.LazyIterable;
 
 public abstract class LazyInvokingIterable<Element, Absent> 
 extends LazyIterable<Element, Absent> {
-	
+    
     private static final MethodType methodType = 
-    		MethodType.methodType(Object.class);
+            MethodType.methodType(Object.class);
     
     private final MethodHandles.Lookup lookup;
     
@@ -31,11 +31,11 @@ extends LazyIterable<Element, Absent> {
             getClass();
     
     public LazyInvokingIterable(
-    		TypeDescriptor $reifiedElement,
+            TypeDescriptor $reifiedElement,
             TypeDescriptor $reifiedAbsent, 
             int $numMethods, boolean $spread) {
         super($reifiedElement, $reifiedAbsent, 
-        		$numMethods, $spread);
+                $numMethods, $spread);
         lookup = $lookup$();
     }
     
@@ -45,7 +45,7 @@ extends LazyIterable<Element, Absent> {
     
     /*compiler generated*/ 
     protected abstract Object $invoke$(MethodHandle handle) 
-    		throws Throwable;
+            throws Throwable;
     
     @Override
     @Ignore
@@ -53,7 +53,7 @@ extends LazyIterable<Element, Absent> {
         java.lang.String methodName = "$"+$index$;
         try {
             MethodHandle handle = lookup.findSpecial(subclass, 
-            		methodName, methodType, subclass);
+                    methodName, methodType, subclass);
             // by delegating to the (anonymous) subclass `this` 
             // will have the subclasses type and it can use 
             // invokeExact(), where this class could not 

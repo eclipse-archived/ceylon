@@ -27,9 +27,9 @@ void spreadConstructor() {
 }
 
 void spreadEmptyToNonempty() {
-	void fun<Element>(Element+ elements) {}
-	$error fun(*[]);
-	fun("", *[]);
-	fun(*[""]);
-	fun("", *[""]);
+    void fun<Element>(Element+ elements) {}
+    $error fun(*[]);
+    fun("", *[]);
+    fun(*[""]);
+    fun("", *[""]);
 }

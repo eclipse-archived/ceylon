@@ -12,8 +12,8 @@ package org.eclipse.ceylon.model.typechecker.model;
 
 public class Parameter {
     
-	private boolean defaulted;
-	private boolean sequenced;
+    private boolean defaulted;
+    private boolean sequenced;
     private Declaration declaration;
     private boolean atLeastOne = false;
     private boolean declaredAnything = false;

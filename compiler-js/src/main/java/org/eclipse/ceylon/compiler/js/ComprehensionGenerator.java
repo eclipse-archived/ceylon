@@ -70,8 +70,8 @@ class ComprehensionGenerator {
         gen.endBlock(); // end one more block - this one is for the function
         gen.out(",");
         TypeUtils.printTypeArguments(that,gen, false, 
-        		TypeUtils.wrapAsIterableArguments(that.getTypeModel()), 
-        		null);
+                TypeUtils.wrapAsIterableArguments(that.getTypeModel()), 
+                null);
         gen.out(")");
     }
 
@@ -309,7 +309,7 @@ class ComprehensionGenerator {
         gen.out("return ", finished, ";");
         gen.endBlockNewLine();
         if (tail != null) {
-        	// tail is set for comprehensions beginning with an "if" clause
+            // tail is set for comprehensions beginning with an "if" clause
             // we have to close the blocks that were opened by the "if"s
             for (int i = 0; i < initialIfClauses; i++) {
                 gen.endBlock();
@@ -321,8 +321,8 @@ class ComprehensionGenerator {
         gen.endBlock();
         gen.out(",");
         TypeUtils.printTypeArguments(that, gen, false, 
-        		TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
-        		null);
+                TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
+                null);
         gen.out(")");
     }
 
@@ -368,7 +368,7 @@ class ComprehensionGenerator {
             for (List<ConditionGenerator.VarHolder> lvh : conditionVars) {
                 for (ConditionGenerator.VarHolder vh : lvh) {
                     if (vh.var != null 
-                    		&& expdecs.contains(vh.var.getDeclarationModel())) {
+                            && expdecs.contains(vh.var.getDeclarationModel())) {
                         treeVars.add(vh);
                     }
                     if (vh.captured != null) {

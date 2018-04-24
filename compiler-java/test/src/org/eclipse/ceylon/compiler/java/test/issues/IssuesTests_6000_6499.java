@@ -48,11 +48,11 @@ public class IssuesTests_6000_6499 extends CompilerTests {
 
     @Test
     public void testBug6005() throws Throwable {
-    	compile("bug60xx/bug6005/run.ceylon");
-    	runInJBossModules("run", "org.eclipse.ceylon.compiler.java.test.issues.bug60xx.bug6005/1", 
-    			Arrays.asList("--flat-classpath"));
-    	runInJBossModules("run", "org.eclipse.ceylon.compiler.java.test.issues.bug60xx.bug6005/1", 
-    			Arrays.asList("--overrides", getPackagePath()+"/bug60xx/bug6005/overrides.xml"));
+        compile("bug60xx/bug6005/run.ceylon");
+        runInJBossModules("run", "org.eclipse.ceylon.compiler.java.test.issues.bug60xx.bug6005/1", 
+                Arrays.asList("--flat-classpath"));
+        runInJBossModules("run", "org.eclipse.ceylon.compiler.java.test.issues.bug60xx.bug6005/1", 
+                Arrays.asList("--overrides", getPackagePath()+"/bug60xx/bug6005/overrides.xml"));
     }
     
     @Test

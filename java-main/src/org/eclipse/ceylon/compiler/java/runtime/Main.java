@@ -109,7 +109,7 @@ public class Main {
     
     private ClassPath classPath;
     private Set<ClassPath.Module> visited;
-	private ClassLoader moduleClassLoader;
+    private ClassLoader moduleClassLoader;
     
     public static Main instance() {
         return new Main();
@@ -388,13 +388,13 @@ public class Main {
             if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
                 String modulePath = System.getProperty("jdk.module.path");
                 if(modulePath != null){
-                	String[] modulePathEntries = modulePath.split(File.pathSeparator);
-                	for(String moduleFolder : modulePathEntries){
-                		File folder = new File(moduleFolder);
-                		if(folder.isDirectory()){
-                			scanFolderForJars(folder);
-                		}
-                	}
+                    String[] modulePathEntries = modulePath.split(File.pathSeparator);
+                    for(String moduleFolder : modulePathEntries){
+                        File folder = new File(moduleFolder);
+                        if(folder.isDirectory()){
+                            scanFolderForJars(folder);
+                        }
+                    }
                 }
 
             }
@@ -403,19 +403,19 @@ public class Main {
         }
         
         private void scanFolderForJars(File folder) {
-            	for(File file : folder.listFiles()){
-            		if(file.isFile()) {
+                for(File file : folder.listFiles()){
+                    if(file.isFile()) {
                     String name = file.getName();
                     if (name.endsWith(".car")
-                		|| name.endsWith(".jar")
-                		|| name.endsWith(".zip")) {
+                        || name.endsWith(".jar")
+                        || name.endsWith(".zip")) {
                         potentialJars.add(file);
                     }
-            		}
-            	}
-		}
+                    }
+                }
+        }
 
-		// for tests
+        // for tests
         ClassPath(List<File> potentialJars){
             this.potentialJars = potentialJars;
             initJars();
@@ -482,8 +482,8 @@ public class Main {
             if(module != null)
                 return module;
             if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-            	    // unalias jdk7-8 module names if we're running on jdk9+
-            	    name = JDKUtils.getJava9ModuleName(name, version);
+                    // unalias jdk7-8 module names if we're running on jdk9+
+                    name = JDKUtils.getJava9ModuleName(name, version);
             }
             if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
                 module = new Module(name, JDKUtils.jdk.version, null, null, Type.JDK, null);
@@ -613,7 +613,7 @@ public class Main {
                 // Java 9 module
                 List<ZipEntry> java9Module = findEntries(zipFile, "", JAVA9_MODULE);
                 if(java9Module.size() == 1) {
-                	return loadJava9ModuleJar(file, zipFile, java9Module.get(0), null, null);
+                    return loadJava9ModuleJar(file, zipFile, java9Module.get(0), null, null);
                 }
 
                 // try Maven
@@ -673,7 +673,7 @@ public class Main {
                     String externalDescriptorPath = String.format("%s-%s.pom", artifactId, version);
                     File externalDescriptor = new File(file.getParentFile(), externalDescriptorPath);
                     if(externalDescriptor.exists()){
-                    	return loadMavenJar(file, externalDescriptor, name, version);
+                        return loadMavenJar(file, externalDescriptor, name, version);
                     }
                 }
                 
@@ -710,7 +710,7 @@ public class Main {
                 // Java 9 module
                 List<ZipEntry> java9Module = findEntries(zipFile, "", JAVA9_MODULE);
                 if(java9Module.size() == 1) {
-                	return loadJava9ModuleJar(file, zipFile, java9Module.get(0), name, version);
+                    return loadJava9ModuleJar(file, zipFile, java9Module.get(0), name, version);
                 }
 
                 // last OSGi
@@ -732,16 +732,16 @@ public class Main {
         private Module loadCeylonModuleCar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-                	ClassFile classFile = ClassFile.read(inputStream);
-                	RuntimeAnnotations_attribute annotationsAttribute = (RuntimeAnnotations_attribute) classFile.getAttribute(Attribute.RuntimeVisibleAnnotations);
-                	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(classFile, annotationsAttribute, org.eclipse.ceylon.compiler.java.metadata.Module.class);
+                    ClassFile classFile = ClassFile.read(inputStream);
+                    RuntimeAnnotations_attribute annotationsAttribute = (RuntimeAnnotations_attribute) classFile.getAttribute(Attribute.RuntimeVisibleAnnotations);
+                    Annotation moduleAnnotation = ClassFileUtil.findAnnotation(classFile, annotationsAttribute, org.eclipse.ceylon.compiler.java.metadata.Module.class);
                 if(moduleAnnotation == null)
                     throw new IOException("Missing module annotation");
 
                 Object moduleName = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "name");
                 Object moduleVersion = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "version");
                 if(moduleName instanceof String == false 
-                		|| moduleVersion instanceof String == false)
+                        || moduleVersion instanceof String == false)
                     throw new IOException("Invalid module annotation");
                 
                 if(name != null && !moduleName.equals(name))
@@ -780,7 +780,7 @@ public class Main {
                     boolean supportsNamespaces = binver != null 
                             && ModuleUtil.supportsImportsWithNamespaces(binver[0], binver[1]);
                     for(Object dependency : (Object[])moduleDependencies){
-                    	Annotation dependencyAnnotation = (Annotation) dependency;
+                        Annotation dependencyAnnotation = (Annotation) dependency;
                         String depName = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "name");
                         String depNamespace;
                         if (supportsNamespaces) {
@@ -798,10 +798,10 @@ public class Main {
                         String depVersion = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "version");
                         Boolean optional = (Boolean)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "optional");
                         if(optional == null)
-                        	    optional = false;
+                                optional = false;
                         Boolean export = (Boolean)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "export");
                         if(export == null)
-                        	    export = false;
+                                export = false;
                         if(depName == null || depVersion == null)
                             throw new IOException("Invalid module import");
                         
@@ -842,12 +842,12 @@ public class Main {
                 return module;
             } catch (ConstantPoolException e) {
                 throw new IOException(e);
-			}finally{
+            }finally{
                 inputStream.close();
             }
         }
 
-		private Module loadJBossModulePropertiesJar(File file, ZipFile zipFile, ZipEntry moduleProperties, String name, String version) throws IOException {
+        private Module loadJBossModulePropertiesJar(File file, ZipFile zipFile, ZipEntry moduleProperties, String name, String version) throws IOException {
             return loadJBossModuleJar(file, zipFile, moduleProperties, PropertiesDependencyResolver.INSTANCE, name, version);
         }
 
@@ -861,49 +861,49 @@ public class Main {
                                         Type moduleType) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-        		    return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
+                    return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
             }finally{
                 inputStream.close();
             }
         }
 
         private Module loadFromResolver(File file, File moduleDescriptor, 
-        		DependencyResolver dependencyResolver, String name, String version,
-        		Type moduleType) throws IOException {
-            	InputStream inputStream = new FileInputStream(moduleDescriptor);
-            	try{
-            		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
-            	}finally{
-            		inputStream.close();
-            	}
+                DependencyResolver dependencyResolver, String name, String version,
+                Type moduleType) throws IOException {
+                InputStream inputStream = new FileInputStream(moduleDescriptor);
+                try{
+                    return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
+                }finally{
+                    inputStream.close();
+                }
         }
 
         private Module loadFromResolver(File file, InputStream inputStream, DependencyResolver dependencyResolver,
-				String name, String version, Type moduleType) throws IOException {
-        		ModuleInfo moduleInfo = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
-        		if (moduleInfo != null) {
-        		    if(name != null && moduleInfo.getName() != null && !name.equals(moduleInfo.getName()))
-        		        return null;
+                String name, String version, Type moduleType) throws IOException {
+                ModuleInfo moduleInfo = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
+                if (moduleInfo != null) {
+                    if(name != null && moduleInfo.getName() != null && !name.equals(moduleInfo.getName()))
+                        return null;
                     if(version != null && moduleInfo.getVersion() != null && !version.equals(moduleInfo.getVersion()))
                         return null;
-        			Module module = new Module(name != null ? name : moduleInfo.getName(), 
-        			        version != null ? version : moduleInfo.getVersion(),
-        			        moduleInfo.getGroupId(), moduleInfo.getArtifactId(),
-        			        moduleType, file);
-        			for(ModuleDependencyInfo dep : moduleInfo.getDependencies()){
-        			    // skip this nonsense scope
-        			    if(dep.getModuleScope() == ModuleScope.TEST)
-        			        continue;
-        				module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
-        			}
-        			if(moduleInfo.getFilter() != null)
-        				module.setFilter(PathFilterParser.parse(moduleInfo.getFilter()));
-        			return module;
-        		}
-        		return null;
-		}
+                    Module module = new Module(name != null ? name : moduleInfo.getName(), 
+                            version != null ? version : moduleInfo.getVersion(),
+                            moduleInfo.getGroupId(), moduleInfo.getArtifactId(),
+                            moduleType, file);
+                    for(ModuleDependencyInfo dep : moduleInfo.getDependencies()){
+                        // skip this nonsense scope
+                        if(dep.getModuleScope() == ModuleScope.TEST)
+                            continue;
+                        module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
+                    }
+                    if(moduleInfo.getFilter() != null)
+                        module.setFilter(PathFilterParser.parse(moduleInfo.getFilter()));
+                    return module;
+                }
+                return null;
+        }
 
-		private Module loadJBossModuleXmlJar(File file, ZipFile zipFile, ZipEntry moduleXml, String name, String version) throws IOException {
+        private Module loadJBossModuleXmlJar(File file, ZipFile zipFile, ZipEntry moduleXml, String name, String version) throws IOException {
             return loadJBossModuleJar(file, zipFile, moduleXml, XmlDependencyResolver.INSTANCE, name, version);
         }
 
@@ -924,15 +924,15 @@ public class Main {
         }
 
         private Module loadJava9ModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
-        	Java9Module java9Module = Java9ModuleReader.getJava9Module(zipFile, moduleDescriptor);
-        	if(java9Module != null)
-        		return new Module(java9Module.name, java9Module.version, null, null, Type.JAVA9, file);
-        	// or throw?
-        	return null;
+            Java9Module java9Module = Java9ModuleReader.getJava9Module(zipFile, moduleDescriptor);
+            if(java9Module != null)
+                return new Module(java9Module.name, java9Module.version, null, null, Type.JAVA9, file);
+            // or throw?
+            return null;
         }
         
         private Module loadOsgiJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
-        	String label = null;
+            String label = null;
             // first verify that it is indeed for the module we're looking for
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
@@ -1070,7 +1070,7 @@ public class Main {
         }
         Metamodel.resetModuleManager(new OverridesRuntimeResolver(parsedOverrides));
         if(moduleClassLoader == null)
-        	setupModuleClassLoader(module);
+            setupModuleClassLoader(module);
         if (classPath == null) {
             classPath = new ClassPath(parsedOverrides);
             visited = new HashSet<ClassPath.Module>();
@@ -1084,36 +1084,36 @@ public class Main {
     }
 
     private void setupModuleClassLoader(String module) {
-    	if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-    		try{
-    		Object mod = Java9ModuleUtil.getModule(getClass());
-    		// make sure we're running as a module, not from the classpath
-    		if(Java9ModuleUtil.isNamedModule(mod)){
-    			// also add a read to it
-    			Object otherModule = Java9ModuleUtil.findModule(mod, module);
-    			if(otherModule == null){
-    				// try to load it dynamically
-    				otherModule = Java9ModuleUtil.loadModuleDynamically(module);
-    			}
-    			if(otherModule != null){
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            try{
+            Object mod = Java9ModuleUtil.getModule(getClass());
+            // make sure we're running as a module, not from the classpath
+            if(Java9ModuleUtil.isNamedModule(mod)){
+                // also add a read to it
+                Object otherModule = Java9ModuleUtil.findModule(mod, module);
+                if(otherModule == null){
+                    // try to load it dynamically
+                    otherModule = Java9ModuleUtil.loadModuleDynamically(module);
+                }
+                if(otherModule != null){
                     Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
                     // also add a read to it
                     Method addReads = moduleClass.getMethod("addReads", moduleClass);
                     addReads.invoke(mod, otherModule);
-    				moduleClassLoader = Java9ModuleUtil.getClassLoader(otherModule);
-    			}
-    		}
-    		}catch(InvocationTargetException | IllegalAccessException | IllegalArgumentException 
-    				| ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException x){
-    			throw new RuntimeException(x);
-    		}
-    		
-    	}
-    	if(moduleClassLoader == null)
-    		moduleClassLoader = ClassLoader.getSystemClassLoader();
-	}
+                    moduleClassLoader = Java9ModuleUtil.getClassLoader(otherModule);
+                }
+            }
+            }catch(InvocationTargetException | IllegalAccessException | IllegalArgumentException 
+                    | ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException x){
+                throw new RuntimeException(x);
+            }
+            
+        }
+        if(moduleClassLoader == null)
+            moduleClassLoader = ClassLoader.getSystemClassLoader();
+    }
 
-	/**
+    /**
      * Resets the metamodel. This will impact any Ceylon code running on the same ClassLoader, across
      * threads, and will crash them if they are not done running.
      */
@@ -1161,7 +1161,7 @@ public class Main {
      * </p>
      */
     public static void main(String[] args) {
-		// WARNING: keep in sync with Main2
+        // WARNING: keep in sync with Main2
         int idx = 0;
         boolean allowMissingModules = false;
         String overrides = null;

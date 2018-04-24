@@ -1,15 +1,15 @@
 class MultipleInheritance() {
 
 interface Top {
-	shared formal Object id;
+    shared formal Object id;
 }
 
 interface Middle satisfies Top {
-	shared actual default Object id { return "hello"; }
+    shared actual default Object id { return "hello"; }
 }
 
 interface Nothing satisfies Middle {
-	shared actual default String id { return "world"; }
+    shared actual default String id { return "world"; }
 }
 
 class Super() satisfies Middle {}
@@ -17,7 +17,7 @@ class Super() satisfies Middle {}
 class Impl() extends Super() satisfies Top & Middle & Nothing {}
 
 void method() {
-	$type:"String" value id = Impl().id;
+    $type:"String" value id = Impl().id;
 }
 
 

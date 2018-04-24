@@ -37,14 +37,14 @@ import org.eclipse.ceylon.aether.github.sardine.impl.io.ContentLengthInputStream
 public class WebDAVRepository {
 
     private volatile SardineImpl sardine;
-	private String password;
-	private String username;
-	private int timeout;
+    private String password;
+    private String username;
+    private int timeout;
 
     public WebDAVRepository(int timeout, String username, String password) {
         this.username = username;
         this.password = password;
-    	this.timeout = timeout;
+        this.timeout = timeout;
     }
 
     private SardineImpl getSardine() {
@@ -70,41 +70,41 @@ public class WebDAVRepository {
         return sardine;
     }
 
-	public boolean exists(String url) throws IOException {
-		return getSardine().exists(url);
-	}
+    public boolean exists(String url) throws IOException {
+        return getSardine().exists(url);
+    }
 
-	public void createDirectory(String url) throws IOException {
-		getSardine().createDirectory(url);
-	}
+    public void createDirectory(String url) throws IOException {
+        getSardine().createDirectory(url);
+    }
 
-	public String lock(String url) throws IOException {
-		return getSardine().lock(url);
-	}
+    public String lock(String url) throws IOException {
+        return getSardine().lock(url);
+    }
 
-	public void unlock(String url, String token) throws IOException {
-		getSardine().unlock(url, token);
-	}
+    public void unlock(String url, String token) throws IOException {
+        getSardine().unlock(url, token);
+    }
 
-	public void put(String url, InputStream stream) throws IOException {
-		getSardine().put(url, stream);
-	}
+    public void put(String url, InputStream stream) throws IOException {
+        getSardine().put(url, stream);
+    }
 
-	public List<WebDAVResource> list(String url) throws IOException {
-		List<DavResource> list = getSardine().list(url);
-		ArrayList<WebDAVResource> ret = new ArrayList<>(list.size());
-		for(DavResource res : list){
-			ret.add(new WebDAVResource(res));
-		}
-		return ret;
-	}
+    public List<WebDAVResource> list(String url) throws IOException {
+        List<DavResource> list = getSardine().list(url);
+        ArrayList<WebDAVResource> ret = new ArrayList<>(list.size());
+        for(DavResource res : list){
+            ret.add(new WebDAVResource(res));
+        }
+        return ret;
+    }
 
-	public WebDAVInputStream get(String url) throws IOException {
-		ContentLengthInputStream ret = getSardine().get(url);
-		return ret == null ? null : new WebDAVInputStream(ret);
-	}
+    public WebDAVInputStream get(String url) throws IOException {
+        ContentLengthInputStream ret = getSardine().get(url);
+        return ret == null ? null : new WebDAVInputStream(ret);
+    }
 
-	public String getBetterExceptionMessage(IOException x, String root) {
+    public String getBetterExceptionMessage(IOException x, String root) {
         if (x instanceof SardineException) {
             // hide this from callers because its getMessage() is borked
             SardineException sx = (SardineException) x;
@@ -120,5 +120,5 @@ public class WebDAVRepository {
                 return x.getCause().getMessage();
         }
         return null;
-	}
+    }
 }

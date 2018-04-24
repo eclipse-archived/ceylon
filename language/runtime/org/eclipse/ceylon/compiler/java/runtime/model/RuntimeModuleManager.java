@@ -44,19 +44,19 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     private RuntimeResolver runtimeResolver;
     private boolean manualMetamodelSetup;
 
-	public RuntimeModuleManager(RuntimeResolver runtimeResolver) {
+    public RuntimeModuleManager(RuntimeResolver runtimeResolver) {
         super();
         this.runtimeResolver = runtimeResolver;
     }
 
-	@Override
+    @Override
     protected void loadPackageDescriptors() {
-	    // DO NOT load package descriptors here because that happens before any
-	    // manual setup, and so will trigger lazy-loading of modules before we've
-	    // had a chance to set them up: this is done after we've manually set up the
-	    // language module in loadModule instead
+        // DO NOT load package descriptors here because that happens before any
+        // manual setup, and so will trigger lazy-loading of modules before we've
+        // had a chance to set them up: this is done after we've manually set up the
+        // language module in loadModule instead
     }
-	
+    
     @Override
     public boolean isModuleLoadedFromSource(String moduleName) {
         return false;
@@ -71,8 +71,8 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     public Package createPackage(String pkgName, Module module) {
         final Package pkg = new LazyPackage(getModelLoader());
         List<String> name = pkgName.isEmpty() ? 
-        		Collections.<String>emptyList() : 
-        			splitModuleName(pkgName); 
+                Collections.<String>emptyList() : 
+                    splitModuleName(pkgName); 
         pkg.setName(name);
         if (module != null) {
             module.getPackages().add(pkg);
@@ -98,7 +98,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     }
     
     public boolean loadModule(String name, String version, 
-    		ArtifactResult artifact, ClassLoader classLoader, boolean staticMetamodel) {
+            ArtifactResult artifact, ClassLoader classLoader, boolean staticMetamodel) {
         RuntimeModelLoader modelLoader = getModelLoader();
         synchronized(modelLoader.getLock()){
             manualMetamodelSetup = true;
@@ -195,12 +195,12 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     
     @SuppressWarnings("serial")
     private final LinkedHashMap<TypeDescriptor, Type> typeCache = 
-    		new LinkedHashMap<TypeDescriptor, Type>(100, (float)0.75, true) {
-    	@Override
-    	protected boolean removeEldestEntry
-    	        (Map.Entry<TypeDescriptor,Type> eldest) {
-    		return size() > 100;
-    	}
+            new LinkedHashMap<TypeDescriptor, Type>(100, (float)0.75, true) {
+        @Override
+        protected boolean removeEldestEntry
+                (Map.Entry<TypeDescriptor,Type> eldest) {
+            return size() > 100;
+        }
     };
     
     public Type getCachedType(TypeDescriptor td) {
@@ -214,12 +214,12 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     
     @SuppressWarnings("serial")
     private final LinkedHashMap<String, Boolean> isCache = 
-    		new LinkedHashMap<String, Boolean>(100, (float)0.75, true) {
-    	@Override
-    	protected boolean removeEldestEntry
-    	        (Map.Entry<String,Boolean> eldest) {
-    		return size() > 100;
-    	}
+            new LinkedHashMap<String, Boolean>(100, (float)0.75, true) {
+        @Override
+        protected boolean removeEldestEntry
+                (Map.Entry<String,Boolean> eldest) {
+            return size() > 100;
+        }
     };
     
     public boolean cachedIs(Object o, TypeDescriptor type) {
@@ -243,18 +243,18 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     protected void loadStaticMetamodel() {
         InputStream is = JvmBackendUtil.getStaticMetamodelInputStream(getClass());
         if(is != null){
-        	List<String> dexEntries = AndroidUtil.isRunningAndroid() ? AndroidUtil.getDexEntries() : JvmBackendUtil.getCurrentJarEntries();
-        	JvmBackendUtil.loadStaticMetamodel(is, dexEntries, this);
+            List<String> dexEntries = AndroidUtil.isRunningAndroid() ? AndroidUtil.getDexEntries() : JvmBackendUtil.getCurrentJarEntries();
+            JvmBackendUtil.loadStaticMetamodel(is, dexEntries, this);
         }
     }
 
-	@Override
-	public void loadModule(String name, String version, ArtifactResult artifact) {
-		loadModule(name, version, artifact, getClass().getClassLoader(), true);
-	}
-	
-	@Override
-	public boolean isManualMetamodelSetup() {
-	    return manualMetamodelSetup;
-	}
+    @Override
+    public void loadModule(String name, String version, ArtifactResult artifact) {
+        loadModule(name, version, artifact, getClass().getClassLoader(), true);
+    }
+    
+    @Override
+    public boolean isManualMetamodelSetup() {
+        return manualMetamodelSetup;
+    }
 }

@@ -43,13 +43,13 @@ public class MarkdownTests {
     @Test
     public void testSplit() {
         Document doc = Markdown.markdown("Some stuff\n" +
-        		"\n" +
-        		"# First `H1`\n" +
-        		"\n" +
-        		"A sentence\n" +
-        		"\n" +
-        		"## `H2` under first `H1`" +
-        		"\n" +
+                "\n" +
+                "# First `H1`\n" +
+                "\n" +
+                "A sentence\n" +
+                "\n" +
+                "## `H2` under first `H1`" +
+                "\n" +
                 "A sentence\n" +
                 "\n" +
                 "# Second `H1`\n" +

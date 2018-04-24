@@ -4123,9 +4123,9 @@ public class StatementTransformer extends AbstractTransformer {
                     null);
         } else {
             // we must unerase the exception to Throwable
-        	Type exprType = expr.getTypeModel();
-        	TypeDeclaration throwable = t.getUnit().getThrowableDeclaration();
-        	Type exceptionType = exprType.isNothing() ? throwable.getType() : exprType.getSupertype(throwable); 
+            Type exprType = expr.getTypeModel();
+            TypeDeclaration throwable = t.getUnit().getThrowableDeclaration();
+            Type exceptionType = exprType.isNothing() ? throwable.getType() : exprType.getSupertype(throwable); 
             exception = gen().expressionGen().transformExpression(expr, BoxingStrategy.UNBOXED, exceptionType);
         }
         return make().Throw(exception);

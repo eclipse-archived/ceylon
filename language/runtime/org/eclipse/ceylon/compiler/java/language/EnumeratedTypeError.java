@@ -29,7 +29,7 @@ public class EnumeratedTypeError extends Error {
 
     private static final long serialVersionUID = 4496076366345444435L;
 
-	public EnumeratedTypeError(String message) {
+    public EnumeratedTypeError(String message) {
         super(message);
     }
 

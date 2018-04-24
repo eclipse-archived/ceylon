@@ -77,85 +77,85 @@ class GenericRefinement() {
     }
     
     interface GenericRefinesConcrete {
-    	abstract class WithNumber() {
-    		shared formal Object num;
-    	}
-    	class WithNumeric<T>(Numeric<T> n) 
-    	        extends WithNumber() 
-    	        given T satisfies Numeric<T> {
-    		shared actual default Numeric<T> num = n;
-    	}
-    	class WithNumeric2<T>(Number<T> n) 
-    			extends WithNumeric<T>(n) 
-    			given T satisfies Number<T> {
-    		shared actual default Number<T> num = n;
-    	}
-    	class WithFloat(Float f) 
-    	        extends WithNumeric<Float>(f) {
-    		shared actual Float num = f;
-    	}
+        abstract class WithNumber() {
+            shared formal Object num;
+        }
+        class WithNumeric<T>(Numeric<T> n) 
+                extends WithNumber() 
+                given T satisfies Numeric<T> {
+            shared actual default Numeric<T> num = n;
+        }
+        class WithNumeric2<T>(Number<T> n) 
+                extends WithNumeric<T>(n) 
+                given T satisfies Number<T> {
+            shared actual default Number<T> num = n;
+        }
+        class WithFloat(Float f) 
+                extends WithNumeric<Float>(f) {
+            shared actual Float num = f;
+        }
     }
     
     interface Constraints {
-		interface Foo {
-		    shared formal void accept<T>(T t) 
-		            given T satisfies Comparable<T>;
-		}
-		class Bar() satisfies Foo {
-		    shared actual void accept<T>(T t)
-		            given T satisfies Comparable<T> {}
-		}
+        interface Foo {
+            shared formal void accept<T>(T t) 
+                    given T satisfies Comparable<T>;
+        }
+        class Bar() satisfies Foo {
+            shared actual void accept<T>(T t)
+                    given T satisfies Comparable<T> {}
+        }
     }
 
     interface MoreConstraints {
         interface Baz<X> {}
-		interface Foo<S> {
-		    shared formal void accept<T>(T t) 
-		            given T satisfies Baz<T&S>;
-		}
-		class Bar() satisfies Foo<String> {
-		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&String> {}
-		}
+        interface Foo<S> {
+            shared formal void accept<T>(T t) 
+                    given T satisfies Baz<T&S>;
+        }
+        class Bar() satisfies Foo<String> {
+            shared actual void accept<T>(T t)
+                    given T satisfies Baz<T&String> {}
+        }
     }
 
     interface OkConstraints {
         interface Baz<X> {}
-		interface Foo<S> {
-		    shared formal void accept<T>(T t) 
-		            given T satisfies List<T&S>;
-		}
-		class Bar() satisfies Foo<String> {
-		    shared actual void accept<T>(T t)
-		            given T satisfies List<String> {}
-		}
+        interface Foo<S> {
+            shared formal void accept<T>(T t) 
+                    given T satisfies List<T&S>;
+        }
+        class Bar() satisfies Foo<String> {
+            shared actual void accept<T>(T t)
+                    given T satisfies List<String> {}
+        }
     }
 
     interface BadConstraints {
         interface Baz<X> {}
-		interface Foo<S> {
-		    shared formal void accept<T>(T t) 
-		            given T satisfies Comparable<T&S>;
-		}
-		class Bar() satisfies Foo<String> {
-		    $error
-		    shared actual void accept<T>(T t)
-		            given T satisfies Comparable<String> {}
-		}
+        interface Foo<S> {
+            shared formal void accept<T>(T t) 
+                    given T satisfies Comparable<T&S>;
+        }
+        class Bar() satisfies Foo<String> {
+            $error
+            shared actual void accept<T>(T t)
+                    given T satisfies Comparable<String> {}
+        }
     }
 
     interface BrokenConstraints {
         interface I {} interface J {}
         interface Baz<X> {}
-		interface Foo<S> {
-		    shared formal void accept<T>(T t) 
-		            given T satisfies Baz<T&S>;
-		}
-		class Bar() satisfies Foo<I> {
-			$error
-		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&J> {}
-		}
+        interface Foo<S> {
+            shared formal void accept<T>(T t) 
+                    given T satisfies Baz<T&S>;
+        }
+        class Bar() satisfies Foo<I> {
+            $error
+            shared actual void accept<T>(T t)
+                    given T satisfies Baz<T&J> {}
+        }
     }
     
     interface UnBrokenConstraints {

@@ -1397,21 +1397,21 @@ public class Pretty extends JCTree.Visitor {
             printExpr(tree.annotationType);
             if (tree.args.length() > 0) {
             print("(");
-	            if (tree.args.length() == 1) {
-	                JCExpression annot = tree.args.head;
-	                if (annot instanceof JCAssign) {
-	                    JCAssign assign = (JCAssign)annot;
-	                    if ("value".equals(assign.lhs.toString())) {
+                if (tree.args.length() == 1) {
+                    JCExpression annot = tree.args.head;
+                    if (annot instanceof JCAssign) {
+                        JCAssign assign = (JCAssign)annot;
+                        if ("value".equals(assign.lhs.toString())) {
                             printExpr(assign.rhs);
-	                    } else {
-	                        printExpr(assign);
-	                    }
-	                } else {
-	                    printExpr(annot);
-	                }
-	            } else {
-	                printExprs(tree.args, true);
-	            }
+                        } else {
+                            printExpr(assign);
+                        }
+                    } else {
+                        printExpr(annot);
+                    }
+                } else {
+                    printExprs(tree.args, true);
+                }
             print(")");
             }
         } catch (IOException e) {

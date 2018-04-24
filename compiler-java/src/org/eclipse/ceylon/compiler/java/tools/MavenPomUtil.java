@@ -47,7 +47,7 @@ import org.eclipse.ceylon.model.typechecker.model.ModuleImport;
 public class MavenPomUtil {
 
     public static void writeMavenManifest2(File outputFolder, Module module,  
-    		JdkProvider jdkProvider) {
+            JdkProvider jdkProvider) {
         String groupId;
         String artifactId;
         if(module.getGroupId() != null){
@@ -67,7 +67,7 @@ public class MavenPomUtil {
     }
 
     private static void writePomXml(File outputFolder, String groupId, String artifactId, 
-    		Module module, JdkProvider jdkProvider) {
+            Module module, JdkProvider jdkProvider) {
         try (OutputStream os = new FileOutputStream(new File(outputFolder,"pom.xml"))){
             XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
                     new OutputStreamWriter(os, "utf-8"));

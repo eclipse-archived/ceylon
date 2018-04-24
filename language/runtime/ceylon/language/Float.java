@@ -764,7 +764,7 @@ public final class Float
     @Transient
     public boolean getStrictlyNegative() {
         return (Double.doubleToRawLongBits(value) >> 63)!=0
-        		&& !Double.isNaN(value);
+                && !Double.isNaN(value);
     }
     
     @Ignore
@@ -781,7 +781,7 @@ public final class Float
         if (value < 0)
             return -1;
         return 0;
-    }	
+    }   
     
     @Ignore
     public static long getSign(double value) {
@@ -918,7 +918,7 @@ public final class Float
     
     @Ignore
     public static int hashCode(double value) {
-    	long wholePart = (long) value;
+        long wholePart = (long) value;
         if (value == wholePart) {// make integers and floats have consistent hashes
             return Integer.hashCode(wholePart);
         } else {
@@ -935,7 +935,7 @@ public final class Float
 
     @Ignore
     public static boolean largerThan(double value, Float other) {
-    	return value>other.value;
+        return value>other.value;
     }
 
     @Ignore
@@ -945,12 +945,12 @@ public final class Float
     
     @Override
     public boolean largerThan(@Name("other")Float other) {
-    	return value>other.value;
+        return value>other.value;
     }
 
     @Ignore
     public static boolean notSmallerThan(double value, Float other) {
-    	return value>=other.value;
+        return value>=other.value;
     }
 
     @Ignore
@@ -960,12 +960,12 @@ public final class Float
 
     @Override
     public boolean notSmallerThan(@Name("other") Float other) {
-    	return value>=other.value;
+        return value>=other.value;
     }
 
     @Ignore
     public static boolean smallerThan(double value, Float other) {
-    	return value<other.value;
+        return value<other.value;
     }
 
     @Ignore
@@ -975,12 +975,12 @@ public final class Float
 
     @Override
     public boolean smallerThan(@Name("other") Float other) {
-    	return value<other.value;
+        return value<other.value;
     }
 
     @Ignore
     public static boolean notLargerThan(double value, Float other) {
-    	return value<=other.value;
+        return value<=other.value;
     }
 
     @Ignore
@@ -990,27 +990,27 @@ public final class Float
 
     @Override
     public boolean notLargerThan(@Name("other") Float other) {
-    	return value<=other.value;
+        return value<=other.value;
     }
     
     @Override
     public Float timesInteger(@Name("integer") long integer) {
-    	return instance(value*integer);
+        return instance(value*integer);
     }
     
     @Ignore
     public static double timesInteger(double value, long integer) {
-    	return value*integer;
+        return value*integer;
     }
     
     @Override
     public Float plusInteger(@Name("integer") long integer) {
-    	return instance(value+integer);
+        return instance(value+integer);
     }
     
     @Ignore
     public static double plusInteger(double value, long integer) {
-    	return value+integer;
+        return value+integer;
     }
     
     @Override

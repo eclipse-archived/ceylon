@@ -832,7 +832,7 @@ public final class Integer
             throw new OverflowException(value + " cannot be coerced into a 64 bit floating point value");
         }
         else {
-        	return (double) value;
+            return (double) value;
         }
     }
 
@@ -1104,7 +1104,7 @@ public final class Integer
     
     @Ignore
     public static boolean largerThan(long value, Integer other) {
-    	return value>other.value;
+        return value>other.value;
     }
 
     @Ignore
@@ -1114,12 +1114,12 @@ public final class Integer
     
     @Override
     public boolean largerThan(@Name("other") Integer other) {
-    	return value>other.value;
+        return value>other.value;
     }
 
     @Ignore
     public static boolean notSmallerThan(long value, Integer other) {
-    	return value>=other.value;
+        return value>=other.value;
     }
 
     @Ignore
@@ -1129,12 +1129,12 @@ public final class Integer
 
     @Override
     public boolean notSmallerThan(@Name("other") Integer other) {
-    	return value>=other.value;
+        return value>=other.value;
     }
 
     @Ignore
     public static boolean smallerThan(long value, Integer other) {
-    	return value<other.value;
+        return value<other.value;
     }
 
     @Ignore
@@ -1144,12 +1144,12 @@ public final class Integer
 
     @Override
     public boolean smallerThan(@Name("other") Integer other) {
-    	return value<other.value;
+        return value<other.value;
     }
 
     @Ignore
     public static boolean notLargerThan(long value, Integer other) {
-    	return value<=other.value;
+        return value<=other.value;
     }
 
     @Ignore
@@ -1159,27 +1159,27 @@ public final class Integer
 
     @Override
     public boolean notLargerThan(@Name("other") Integer other) {
-    	return value<=other.value;
+        return value<=other.value;
     }
 
     @Override
     public Integer timesInteger(@Name("integer") long integer) {
-    	return instance(value*integer);
+        return instance(value*integer);
     }
     
     @Ignore
     public static long timesInteger(long value, long integer) {
-    	return value*integer;
+        return value*integer;
     }
     
     @Override
     public Integer plusInteger(@Name("integer") long integer) {
-    	return instance(value+integer);
+        return instance(value+integer);
     }
     
     @Ignore
     public static long plusInteger(long value, long integer) {
-    	return value+integer;
+        return value+integer;
     }
     
     @Override

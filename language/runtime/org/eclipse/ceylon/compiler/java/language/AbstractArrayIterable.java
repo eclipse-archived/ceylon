@@ -125,9 +125,9 @@ extends BaseIterable<Element, ceylon.language.Null> {
         return getEmpty() ? 
                 this :
                 newInstance(this.array, 
-                		this.start+this.step, 
-                		this.len-1, 
-                		this.step);
+                        this.start+this.step, 
+                        this.len-1, 
+                        this.step);
     }
     
     @Ignore
@@ -141,10 +141,10 @@ extends BaseIterable<Element, ceylon.language.Null> {
     public Iterator<? extends Element> iterator() {
         if (this.getEmpty()) {
             return (Iterator<? extends Element>) 
-            		emptyIterator_.get_();
+                    emptyIterator_.get_();
         }
         return new AbstractArrayIterator<Element>($reified$Element, 
-        		start, len, step) {
+                start, len, step) {
             protected Element get(int index) {
                 return AbstractArrayIterable.this.get(array, index);
             }

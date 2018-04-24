@@ -78,17 +78,17 @@ public class BmeGenerator {
                 gen.out(exp);
             } else if (nonNull) {
                 gen.out("(typeof ",exp,"==='undefined'?", 
-                		gen.getClAlias(), "err$(", 
-                		gen.getClAlias(), "Exception('undefined native reference: ", exp, "')):", 
-                		exp, ")");
+                        gen.getClAlias(), "err$(", 
+                        gen.getClAlias(), "Exception('undefined native reference: ", exp, "')):", 
+                        exp, ")");
             } else {
                 gen.out("(typeof ",exp,"==='undefined'?undefined:", exp, ")");
             }
         } else {
             final boolean isCallable = !forInvoke 
-            		&& (decl instanceof Functional
+                    && (decl instanceof Functional
                     || bme.getUnit().getCallableDeclaration()
-                    	.equals(bme.getTypeModel().getDeclaration()));
+                        .equals(bme.getTypeModel().getDeclaration()));
             final boolean hasTparms = hasTypeParameters(bme);
             if (isCallable && (decl.isParameter() || decl.isToplevel() && !hasTparms)) {
                 //Callables passed as arguments are already wrapped in JsCallable
@@ -117,8 +117,8 @@ public class BmeGenerator {
 
     static boolean hasTypeParameters(final Tree.StaticMemberOrTypeExpression expr) {
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
-		return typeArguments != null 
-    		&& typeArguments.getTypeModels() != null
+        return typeArguments != null 
+            && typeArguments.getTypeModels() != null
             && !typeArguments.getTypeModels().isEmpty();
     }
 
@@ -160,8 +160,8 @@ public class BmeGenerator {
         //Function refs with type arguments must be passed as a special function
         gen.out(gen.getClAlias(), "f3$(", who, ",", member, ",");
         TypeUtils.printTypeArguments(expr, gen, false,
-        		createTypeArguments(expr), 
-        		expr.getTypeModel().getVarianceOverrides());
+                createTypeArguments(expr), 
+                expr.getTypeModel().getVarianceOverrides());
         gen.out(")");
     }
 

@@ -43,9 +43,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     protected String jdkProviderModule;
     protected ToolModuleLoader loader;
 
-	public ModuleLoadingTool() {
-		super(ModuleLoadingMessages.RESOURCE_BUNDLE);
-	}
+    public ModuleLoadingTool() {
+        super(ModuleLoadingMessages.RESOURCE_BUNDLE);
+    }
     
     @Option
     @Description("Downgrade which were compiled with a more recent "
@@ -58,7 +58,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     public void setLinkWithCurrentDistribution(boolean downgradeDist) {
         this.upgradeDist = !downgradeDist;
     }
-	
+    
     @Description("Alternate JDK provider module (defaults to the current running JDK).")
     @OptionArgument(argumentName="module")
     public void setJdkProvider(String jdkProviderModule) {
@@ -70,39 +70,39 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         return upgradeDist;
     }
     
-	protected String moduleVersion(String moduleNameOptVersion) throws IOException {
-		return checkModuleVersionsOrShowSuggestions(
-				ModuleUtil.moduleName(moduleNameOptVersion),
-				ModuleUtil.moduleVersion(moduleNameOptVersion),
-				ModuleQuery.Type.JVM,
-				Versions.JVM_BINARY_MAJOR_VERSION,
-				Versions.JVM_BINARY_MINOR_VERSION,
-				// JS binary but don't care since JVM
-				null, null);
+    protected String moduleVersion(String moduleNameOptVersion) throws IOException {
+        return checkModuleVersionsOrShowSuggestions(
+                ModuleUtil.moduleName(moduleNameOptVersion),
+                ModuleUtil.moduleVersion(moduleNameOptVersion),
+                ModuleQuery.Type.JVM,
+                Versions.JVM_BINARY_MAJOR_VERSION,
+                Versions.JVM_BINARY_MINOR_VERSION,
+                // JS binary but don't care since JVM
+                null, null);
 
-	}
-	
-	protected boolean loadModule(String namespace, String moduleName, String moduleVersion) throws IOException {
-		if (moduleVersion != null) {
-			return internalLoadModule(namespace, moduleName, moduleVersion);
-		}
-		return false;
-	}
+    }
+    
+    protected boolean loadModule(String namespace, String moduleName, String moduleVersion) throws IOException {
+        if (moduleVersion != null) {
+            return internalLoadModule(namespace, moduleName, moduleVersion);
+        }
+        return false;
+    }
 
-	protected boolean shouldExclude(String moduleName, String version) {
-		// FIXME: update for Android/JDK9
-		if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
-			moduleName = JDKUtils.getJava9ModuleName(moduleName, version);
-		}
-		return jdkProvider.isJDKModule(moduleName);
-	}
+    protected boolean shouldExclude(String moduleName, String version) {
+        // FIXME: update for Android/JDK9
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            moduleName = JDKUtils.getJava9ModuleName(moduleName, version);
+        }
+        return jdkProvider.isJDKModule(moduleName);
+    }
 
-	protected boolean isProvided(String moduleName, String version) {
-	    return false;
-	}
+    protected boolean isProvided(String moduleName, String version) {
+        return false;
+    }
 
-	private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
-	    try {
+    private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
+        try {
             return loader.loadModuleForTool(name, version, ModuleScope.RUNTIME);
         } catch (ModuleNotFoundException e) {
             // this should not happen, since we collect errors, but just in case…
@@ -112,23 +112,23 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
             return false;
         }
     }
-	
-	/**
-	 * For subclasses.
-	 */
-	protected boolean skipDependency(ArtifactResult dep) {
+    
+    /**
+     * For subclasses.
+     */
+    protected boolean skipDependency(ArtifactResult dep) {
         return false;
     }
 
     protected void errorOnConflictingModule(String module, String version) throws IOException{
-	    boolean duplicate = false;
-	    for(Map.Entry<String, SortedSet<String>> entry : loader.getDuplicateModules().entrySet()){
-	        duplicate = true;
-	        printDuplicateModuleErrorMessage(entry.getKey(), entry.getValue());
-	    }
-	    if(duplicate)
-	        throw new ToolUsageError(Messages.msg(bundle, "module.conflict.error", module, version));
-	}
+        boolean duplicate = false;
+        for(Map.Entry<String, SortedSet<String>> entry : loader.getDuplicateModules().entrySet()){
+            duplicate = true;
+            printDuplicateModuleErrorMessage(entry.getKey(), entry.getValue());
+        }
+        if(duplicate)
+            throw new ToolUsageError(Messages.msg(bundle, "module.conflict.error", module, version));
+    }
 
     private void printDuplicateModuleErrorMessage(String name, SortedSet<String> versions) throws IOException {
         StringBuilder err = new StringBuilder();
@@ -149,17 +149,17 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
-    	super.initialize(mainTool);
-    	loader = new ToolModuleLoader(this, getRepositoryManager(), getLoaderSuffixes());
-    	if(jdkProviderModule != null){
-    		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
-			if(!internalLoadModule(null, moduleSpec.getName(), moduleSpec.getVersion())){
-		        throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
-			}
-			ArtifactResult result = loader.getModuleArtifact(moduleSpec.getName());
-			jdkProvider = new JdkProvider(moduleSpec.getName(), moduleSpec.getVersion(), null, result.artifact());
-    	}
-    	// else keep the JDK one
+        super.initialize(mainTool);
+        loader = new ToolModuleLoader(this, getRepositoryManager(), getLoaderSuffixes());
+        if(jdkProviderModule != null){
+            ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
+            if(!internalLoadModule(null, moduleSpec.getName(), moduleSpec.getVersion())){
+                throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
+            }
+            ArtifactResult result = loader.getModuleArtifact(moduleSpec.getName());
+            jdkProvider = new JdkProvider(moduleSpec.getName(), moduleSpec.getVersion(), null, result.artifact());
+        }
+        // else keep the JDK one
     }
 
     public void handleMissingModuleError(String name, String version) {

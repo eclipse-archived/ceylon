@@ -643,7 +643,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     protected String getAlternateJdkModuleSpec() {
-    	return null;
+        return null;
     }
     
     protected Module loadLanguageModuleAndPackage() {
@@ -665,7 +665,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     protected void loadJDKModules() {
-    	String version = jdkProvider.getJDKVersion();
+        String version = jdkProvider.getJDKVersion();
         for(String jdkModule : jdkProvider.getJDKModuleNames())
             findOrCreateModule(jdkModule, version);
     }
@@ -6715,7 +6715,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public JdkProvider getJdkProvider(){
-    	return jdkProvider;
+        return jdkProvider;
     }
     
     public Interface getRepeatableContainer(Class c) {

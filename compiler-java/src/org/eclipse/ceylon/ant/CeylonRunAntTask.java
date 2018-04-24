@@ -64,8 +64,8 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     private String module;
     private String compileFlags;
     private List<Arg> args = new ArrayList<Arg>(0);
-	private boolean autoExportMavenDependencies;
-	private boolean flatClasspath;
+    private boolean autoExportMavenDependencies;
+    private boolean flatClasspath;
     private boolean linkWithCurrentDistribution;
     
     public CeylonRunAntTask() {
@@ -107,7 +107,7 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
      */
     @OptionEquivalent
     public void setFlatClasspath(boolean flatClasspath){
-    	this.flatClasspath = flatClasspath;
+        this.flatClasspath = flatClasspath;
     }
     
     @OptionEquivalent
@@ -164,11 +164,11 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
         }
         
         if(autoExportMavenDependencies){
-        	appendOption(cmd, "--auto-export-maven-dependencies");
+            appendOption(cmd, "--auto-export-maven-dependencies");
         }
 
         if(flatClasspath){
-        	appendOption(cmd, "--flat-classpath");
+            appendOption(cmd, "--flat-classpath");
         }
         
         if (linkWithCurrentDistribution) {

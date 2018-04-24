@@ -640,9 +640,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                     (ceylon.language.meta.model.Type<Container>)this, reifiedGet, reifiedSet);
         }
         Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
-		ObjectArrayIterable<Attribute> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<Attribute> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
     
     private <Container,Get,Set> void addAttributeIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
@@ -723,9 +723,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                             lookup.qualifyingType, lookup.containerMetamodel, reifiedGet, reifiedSet);
         }
         Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[members.size()]);
-		ObjectArrayIterable<Attribute> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<Attribute> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -790,9 +790,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                     (ClassOrInterfaceImpl<Container>)this, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
-		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -857,9 +857,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                             lookup.containerMetamodel, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
-		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "hiding" })
@@ -945,9 +945,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                             producedType, (ClassOrInterfaceImpl<Container>)this, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
-		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -1012,9 +1012,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                             lookup.qualifyingType, lookup.containerMetamodel, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
-		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "hiding" })
@@ -1096,9 +1096,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                             (ClassOrInterfaceImpl<Container>)this, reifiedType);
         }
         ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
-		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -1159,9 +1159,9 @@ public abstract class ClassOrInterfaceImpl<Type>
                             lookup.containerMetamodel, reifiedType);
         }
         ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
-		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
-				new ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "hiding" })

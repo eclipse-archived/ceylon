@@ -53,7 +53,7 @@ import org.eclipse.ceylon.model.typechecker.util.ModuleManager;
 // FIXME: we're still using a flat classpath here
 public class PhasedUnitsModelLoader extends ReflectionModelLoader {
 
-	ModulesClassLoader classLoader;
+    ModulesClassLoader classLoader;
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     private Callable<PhasedUnits> getPhasedUnits;
 

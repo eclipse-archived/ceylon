@@ -29,7 +29,7 @@ import org.junit.Assume;
 import org.junit.Test;
 
 public class ExpressionTests extends CompilerTests {
-	
+    
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         int p = main.lastIndexOf('.');
@@ -42,8 +42,8 @@ public class ExpressionTests extends CompilerTests {
         }
     }
     
-	// Attributes
-	
+    // Attributes
+    
     @Test
     public void testAtrAttributeAccess(){
         compareWithJavaSource("attribute/AttributeAccess");
@@ -467,7 +467,7 @@ public class ExpressionTests extends CompilerTests {
     }
     @Test
     public void testOprSetOperators(){
-    	compareWithJavaSource("operator/SetOperators");
+        compareWithJavaSource("operator/SetOperators");
     }
     @Test
     public void testOprParenthesized(){

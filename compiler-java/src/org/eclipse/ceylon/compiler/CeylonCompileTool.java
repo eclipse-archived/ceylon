@@ -75,27 +75,27 @@ import org.eclipse.ceylon.langtools.tools.javac.util.Options;
 import org.eclipse.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
-		"and source archives in a module repository.")
+        "and source archives in a module repository.")
 @Description("The default module repositories are `modules` and `" +
-		Constants.REPO_URL_CEYLON+"`, while the default source directory is `source` " +
-		"and the default resource directory is `resource`. " +
-		"The default output module repository is `modules`." +
-		"\n\n" +
-		"The `<moduleOrFile>` arguments can be either module names (without versions) " +
-		"or file paths specifying the Ceylon or Java source code to compile." +
-		"\n\n" +
-		"When `<moduleOrFile>` specifies a module the compiler searches for " +
-		"compilation units and resource files belonging to the specified modules " +
-		"in the specified source and resource directories. " +
-		"For each specified module, the compiler generates a module archive, " +
-		"source archive, and their checksum files in the specified output module " +
-		"repository." +
-		"\n\n"+
-		"When `<moduleOrFile>` specifies a source file only that file is compiled and " +
-		"the module archive is created or updated with the .class files produced. " +
-		"The source file path is treated as relative to the current directory " +
-		"(it still needs to be located either in the default source folder or in " +
-		"any folder defined by the configuration file or `--source` options!)."+
+        Constants.REPO_URL_CEYLON+"`, while the default source directory is `source` " +
+        "and the default resource directory is `resource`. " +
+        "The default output module repository is `modules`." +
+        "\n\n" +
+        "The `<moduleOrFile>` arguments can be either module names (without versions) " +
+        "or file paths specifying the Ceylon or Java source code to compile." +
+        "\n\n" +
+        "When `<moduleOrFile>` specifies a module the compiler searches for " +
+        "compilation units and resource files belonging to the specified modules " +
+        "in the specified source and resource directories. " +
+        "For each specified module, the compiler generates a module archive, " +
+        "source archive, and their checksum files in the specified output module " +
+        "repository." +
+        "\n\n"+
+        "When `<moduleOrFile>` specifies a source file only that file is compiled and " +
+        "the module archive is created or updated with the .class files produced. " +
+        "The source file path is treated as relative to the current directory " +
+        "(it still needs to be located either in the default source folder or in " +
+        "any folder defined by the configuration file or `--source` options!)."+
         "\n\n" +
         "When `<moduleOrFile>` specifies a resource file only that file is added to " +
         "the module archive. " +

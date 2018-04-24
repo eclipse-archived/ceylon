@@ -20,5 +20,5 @@
 package org.eclipse.ceylon.compiler.java.test.issues.bug07xx.bug711;
 
 public interface InterfaceWithGetter {
-	String getSomeString();
+    String getSomeString();
 }
