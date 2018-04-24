@@ -101,11 +101,12 @@ public class Stitcher {
             if (exclude) {
                 filename = filename.substring(1);
             }
-            final File src = ".".equals(filename) ? clSrcFileDir : new File(isJsSrc ? LANGMOD_JS_SRC : clSrcFileDir,
-                    isJsSrc || isDir ? filename :
-                    String.format("%s.ceylon", filename));
+            final File src = ".".equals(filename) ? clSrcFileDir : 
+                new File(isJsSrc ? LANGMOD_JS_SRC : clSrcFileDir,
+                    isJsSrc || isDir ? filename : filename + ".ceylon");
             if (!addFiles(includes, src, exclude)) {
-                final File src2 = new File(clJsFileDir, isDir ? filename : String.format("%s.ceylon", filename));
+                final File src2 = new File(clJsFileDir, 
+                        isDir ? filename : filename + ".ceylon");
                 if (!addFiles(includes, src2, exclude)) {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src + " or " + src2);
                 }
