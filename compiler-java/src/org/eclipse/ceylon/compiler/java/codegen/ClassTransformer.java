@@ -70,6 +70,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.langtools.tools.javac.code.Flags;
 import org.eclipse.ceylon.langtools.tools.javac.code.TypeTag;
 import org.eclipse.ceylon.langtools.tools.javac.jvm.Target;
@@ -3346,7 +3347,7 @@ public class ClassTransformer extends AbstractTransformer {
                 
                 if(specifierExpression instanceof Tree.LazySpecifierExpression == false){
                     Tree.Expression expression = specifierExpression.getExpression();
-                    Tree.Term expressionTerm = Decl.unwrapExpressionsUntilTerm(expression);
+                    Tree.Term expressionTerm = TreeUtil.unwrapExpressionUntilTerm(expression);
                     // we can optimise lambdas and static method calls
                     if(!CodegenUtil.canOptimiseMethodSpecifier(expressionTerm, m)){
                         // we need a field to save the callable value
@@ -4632,7 +4633,7 @@ public class ClassTransformer extends AbstractTransformer {
         Tree.Term term = null;
         if (specifierExpression != null
                 && specifierExpression.getExpression() != null) {
-            term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+            term = TreeUtil.unwrapExpressionUntilTerm(specifierExpression.getExpression());
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(term);
             if (error != null) {
                 return List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error));

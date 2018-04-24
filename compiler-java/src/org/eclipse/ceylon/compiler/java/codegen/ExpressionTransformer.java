@@ -3606,7 +3606,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             // We can coerce most SAMs in transformExpression, EXCEPT invocation
             // calls which we do here.
-            Term term = Decl.unwrapExpressionsUntilTerm(expr);
+            Term term = TreeUtil.unwrapExpressionUntilTerm(expr);
             if (coerced
                     && term instanceof Tree.InvocationExpression
                     && isFunctionalResult(term.getTypeModel())
@@ -3941,7 +3941,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && numArguments == argIndex+1
                 && !invocation.isArgumentComprehension(argIndex)){
             Expression argumentExpression = invocation.getArgumentExpression(argIndex);
-            Term argument = Decl.unwrapExpressionsUntilTerm(argumentExpression);
+            Term argument = TreeUtil.unwrapExpressionUntilTerm(argumentExpression);
             if (argument instanceof Tree.QualifiedMemberExpression) {
                 Tree.QualifiedMemberExpression qualifiedMemberArgument = (Tree.QualifiedMemberExpression)argument;
                 if ("iterable".equals(qualifiedMemberArgument.getIdentifier().getText())
@@ -4228,7 +4228,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return transformCallableSpecifierInvocation(callBuilder, (CallableSpecifierInvocation)invocation);
             } else {
                 at(invocation.getNode());
-                Tree.Term primary = Decl.unwrapExpressionsUntilTerm(invocation.getPrimary());
+                Tree.Term primary = TreeUtil.unwrapExpressionUntilTerm(invocation.getPrimary());
                 JCExpression result = transformTermForInvocation(primary, new InvocationTermTransformer(invocation, callBuilder));
                 return result;
                 
@@ -4727,16 +4727,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(ret != null)
             return ret;
         
-        Tree.Term primary = Decl.unwrapExpressionsUntilTerm(ce.getPrimary());
+        Tree.Term primary = TreeUtil.unwrapExpressionUntilTerm(ce.getPrimary());
         Declaration primaryDeclaration = null;
         Reference producedReference = null;
         if (primary instanceof Tree.MemberOrTypeExpression) {
-            producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
-            primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) primary;
+            producedReference = mte.getTarget();
+            primaryDeclaration = mte.getDeclaration();
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if ((isIndirectInvocation(ce, true)
+            if ((isIndirectInvocation(ce)
                     || isWithinDefaultParameterExpression(primaryDeclaration.getContainer()))
                     && !Decl.isJavaStaticOrInterfacePrimary(ce.getPrimary())){
                 // indirect invocation

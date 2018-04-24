@@ -388,11 +388,11 @@ T indirectInvocationWhichIsNotReallyIndirect<T>(T t){
     indirectInvocationWhichIsNotReallyIndirect(2);
     $type:"Integer"
     (indirectInvocationWhichIsNotReallyIndirect)(2);
-    $error
+    $type:"Integer"
     (indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
     
-    $error value a = ("hello ".plus) { "world"; };   
-    $error value b = (("hello ".plus)) { "world"; }; 
+    value a = ("hello ".plus) { "world"; };   
+    value b = (("hello ".plus)) { "world"; }; 
 
     return t;
 }

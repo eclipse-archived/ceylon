@@ -530,7 +530,7 @@ public class FunctionHelper {
             }
             if (ModelUtil.isConstructor(d)) {
                 Constructor cd = TypeUtils.getConstructor(d);
-                final boolean hasTargs = BmeGenerator.hasTypeParameters(
+                final boolean hasTargs = BmeGenerator.hasTypeArguments(
                         (Tree.BaseTypeExpression) that.getPrimary());
                 if (hasTargs) {
                     if (that.getDirectlyInvoked()) {
@@ -553,7 +553,7 @@ public class FunctionHelper {
                 BmeGenerator.generateStaticReference(that, d, gen);
             } else {
                 gen.out("function(x){return ");
-                if (BmeGenerator.hasTypeParameters(that)) {
+                if (BmeGenerator.hasTypeArguments(that)) {
                     BmeGenerator.printGenericMethodReference(gen, that, "x", "x."+name);
                 } else {
                     gen.out(gen.getClAlias(), "f3$(x,x.", name, ")");

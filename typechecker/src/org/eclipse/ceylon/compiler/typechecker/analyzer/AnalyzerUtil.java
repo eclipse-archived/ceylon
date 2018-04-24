@@ -1167,27 +1167,16 @@ public class AnalyzerUtil {
         return dec.getUnit().getPackage()
                 .equals(unit.getPackage());
     }
-
-    /**
-     * Does not unwrap primary expressions
-     */
+    
     public static boolean isIndirectInvocation(
             Tree.InvocationExpression that) {
-        return isIndirectInvocation(that, false);
-    }
-
-    /**
-     * Unwraps primary expressions if you tell it to
-     */
-    public static boolean isIndirectInvocation(
-            Tree.InvocationExpression that, boolean unwrap) {
-        return isIndirectInvocation(that.getPrimary(), unwrap);
+        return isIndirectInvocation(that.getPrimary());
     }
 
     private static boolean isIndirectInvocation(
-            Tree.Primary primary, boolean unwrap) {
-        Tree.Term term = unwrap ? 
-                unwrapExpressionUntilTerm(primary) : primary;
+            Tree.Primary primary) {
+        Tree.Term term = 
+                unwrapExpressionUntilTerm(primary);
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) term;
@@ -1218,7 +1207,7 @@ public class AnalyzerUtil {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 
                                 that;
-                    return isIndirectInvocation(qmte.getPrimary(), false);
+                    return isIndirectInvocation(qmte.getPrimary());
                 }
                 else {
                     return true;

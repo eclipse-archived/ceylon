@@ -20,6 +20,7 @@
 
 package org.eclipse.ceylon.compiler.java.codegen;
 
+import static org.eclipse.ceylon.compiler.java.codegen.ExpressionTransformer.isSuperOrSuperOf;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 
@@ -80,6 +81,7 @@ import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
+import org.eclipse.ceylon.model.typechecker.model.Unit;
 
 public abstract class BoxingVisitor extends Visitor {
 
@@ -99,20 +101,21 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(BaseMemberExpression that) {
         super.visit(that);
+        Declaration dec = that.getDeclaration();
         // handle errors gracefully
-        if(that.getDeclaration() == null)
+        if (dec == null)
             return;
-        TypedDeclaration decl = (TypedDeclaration) that.getDeclaration();
-        if(CodegenUtil.isUnBoxed(decl)
+        TypedDeclaration decl = (TypedDeclaration) dec;
+        if (CodegenUtil.isUnBoxed(decl)
                 // special cases for true/false
                 || isBooleanTrue(decl)
                 || isBooleanFalse(decl))
             CodegenUtil.markUnBoxed(that);
-        if(CodegenUtil.isRaw(decl))
+        if (CodegenUtil.isRaw(decl))
             CodegenUtil.markRaw(that);
-        if(CodegenUtil.hasTypeErased(decl))
+        if (CodegenUtil.hasTypeErased(decl))
             CodegenUtil.markTypeErased(that);
-        if(CodegenUtil.hasUntrustedType(decl))
+        if (CodegenUtil.hasUntrustedType(decl))
             CodegenUtil.markUntrustedType(that);
     }
 
@@ -120,55 +123,65 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(QualifiedMemberExpression that) {
         super.visit(that);
         // handle errors gracefully
-        if(that.getDeclaration() == null)
+        Declaration dec = that.getDeclaration();
+        if (dec == null)
             return;
-        if(that.getMemberOperator() instanceof Tree.SafeMemberOp){
-            TypedDeclaration decl = (TypedDeclaration) that.getDeclaration();
-            if(CodegenUtil.isRaw(decl))
+        Tree.MemberOperator op = that.getMemberOperator();
+        if (op instanceof Tree.SafeMemberOp){
+            TypedDeclaration decl = (TypedDeclaration) dec;
+            if (CodegenUtil.isRaw(decl))
                 CodegenUtil.markRaw(that);
-            if(CodegenUtil.hasTypeErased(decl))
+            if (CodegenUtil.hasTypeErased(decl))
                 CodegenUtil.markTypeErased(that);
-            if(CodegenUtil.hasUntrustedType(decl) || hasTypeParameterWithConstraintsOutsideScope(decl.getType(), that.getScope()))
+            if (CodegenUtil.hasUntrustedType(decl) 
+                    || hasTypeParameterWithConstraintsOutsideScope(
+                            decl.getType(), 
+                            that.getScope()))
                 CodegenUtil.markUntrustedType(that);
             // we must be boxed, since safe member op "?." returns an optional type
             //return;
-        } else if (
-                that.getMemberOperator() instanceof Tree.MemberOp
+        } else if (op instanceof Tree.MemberOp
                 && Decl.isValueTypeDecl(that.getPrimary()) 
                 && CodegenUtil.isUnBoxed(that.getPrimary())) {
+            TypedDeclaration decl = (TypedDeclaration) dec;
             // it's unboxed if it's an unboxable type or it's declared void
-            if (Decl.isValueTypeDecl((TypedDeclaration)that.getDeclaration())
-                    || (that.getDeclaration() instanceof Function 
-                        && ((Function)that.getDeclaration()).isDeclaredVoid()))
+            if (Decl.isValueTypeDecl(decl)
+                    || (dec instanceof Function 
+                        && ((Function)dec).isDeclaredVoid()))
                 CodegenUtil.markUnBoxed(that);
-            if(CodegenUtil.isRaw((TypedDeclaration) that.getDeclaration()))
+            if (CodegenUtil.isRaw(decl))
                 CodegenUtil.markRaw(that);
-            if(CodegenUtil.hasTypeErased((TypedDeclaration) that.getDeclaration()))
+            if (CodegenUtil.hasTypeErased(decl))
                 CodegenUtil.markTypeErased(that);
         } else {
-            propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
+            propagateFromDeclaration(that, (TypedDeclaration)dec);
         }
-        // special case for spread op, because even if the primary is erased (ex: <T> T|String), its application may not
-        // be (ex: <String>), and in that case we will generate a proper Sequential<String> which is not raw at all
-        if(that.getMemberOperator() instanceof Tree.SpreadOp){
+        // special case for spread op, because even if the primary is 
+        // erased (ex: <T> T|String), its application may not
+        // be (ex: <String>), and in that case we will generate a proper 
+        // Sequential<String> which is not raw at all
+        if (op instanceof Tree.SpreadOp) {
             // find the return element type
             Type elementType = that.getTarget().getType();
             CodegenUtil.markTypeErased(that, hasErasure(elementType));
         }
-        if(ExpressionTransformer.isSuperOrSuperOf(that.getPrimary())){
-            // if the target is an interface whose type arguments have been turned to raw, make this expression
+        if (isSuperOrSuperOf(that.getPrimary())) {
+            // if the target is an interface whose type arguments have 
+            // been turned to raw, make this expression
             // as erased
             Reference target = that.getTarget();
-            if(target != null
+            if (target != null
                     && target.getQualifyingType() != null
-                    && target.getQualifyingType().getDeclaration() instanceof Interface){
-                if(isRaw(target.getQualifyingType())){
+                    && target.getQualifyingType().getDeclaration() 
+                            instanceof Interface) {
+                if (isRaw(target.getQualifyingType())) {
                     CodegenUtil.markTypeErased(that);
                 }
                 // See note in ClassTransformer.makeDelegateToCompanion for a similar test
-                else{
-                    TypeDeclaration declaration = target.getQualifyingType().getDeclaration();
-                    if(needsRawCastForMixinSuperCall(declaration, target.getType()))
+                else {
+                    TypeDeclaration declaration = 
+                            target.getQualifyingType().getDeclaration();
+                    if (needsRawCastForMixinSuperCall(declaration, target.getType()))
                         CodegenUtil.markTypeErased(that);
                 }
             }
@@ -181,15 +194,19 @@ public abstract class BoxingVisitor extends Visitor {
             primaryType = that.getTarget().getQualifyingType();
         }
         
-        if(primaryType != null
+        if (primaryType != null
                 && (isRaw(primaryType) || willEraseToSequence(primaryType))
                 && that.getTarget() != null
-                && that.getTarget().getDeclaration() instanceof TypedDeclaration
-                && CodegenUtil.containsTypeParameter(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
+                && that.getTarget().getDeclaration() 
+                        instanceof TypedDeclaration
+                && CodegenUtil.containsTypeParameter(
+                        ((TypedDeclaration)that.getTarget().getDeclaration())
+                            .getType())) {
             CodegenUtil.markTypeErased(that);
         }
         if (isRaw(primaryType)
-                && that.getTypeModel().getDeclaration().isParameterized()) {
+                && that.getTypeModel().getDeclaration()
+                    .isParameterized()) {
             CodegenUtil.markRaw(that);
         }
     }
@@ -207,7 +224,8 @@ public abstract class BoxingVisitor extends Visitor {
         // by an expression will be turned into a Callable
         // which will need to be marked boxed
         if (term instanceof MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression expr = (Tree.MemberOrTypeExpression)term;
+            Tree.MemberOrTypeExpression expr = 
+                    (Tree.MemberOrTypeExpression) term;
             if (expr.getDeclaration() instanceof Function) {
                 that.setUnboxed(false);
             }
@@ -218,65 +236,82 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(InvocationExpression that) {
         super.visit(that);
-        if (isIndirectInvocation(that, true)
-                && !Decl.isJavaStaticOrInterfacePrimary(that.getPrimary())) {
+        Tree.Primary primary = that.getPrimary();
+        if (isIndirectInvocation(that)
+                && !Decl.isJavaStaticOrInterfacePrimary(primary)) {
             // if the Callable is raw the invocation will be erased
-            if(that.getPrimary().getTypeModel() != null
-                    && isRaw(that.getPrimary().getTypeModel()))
+            if (primary.getTypeModel() != null
+                    && isRaw(primary.getTypeModel())) {
                 CodegenUtil.markTypeErased(that);
-            
+            }
             // These are always boxed
             return;
         }
-        if(isByteLiteral(that))
+        if (isByteLiteral(that)) {
             CodegenUtil.markUnBoxed(that);
-        else
-            propagateFromTerm(that, that.getPrimary());
+        }
+        else {
+            propagateFromTerm(that, primary);
+        }
         
         // Specifically for method invocations we check if the return type is
         // a type parameter and if so 
         // * if any of the type arguments is erased, or
         // * if the invocation itself has a raw type
         // then we mark the expression itself as erased as well
-        if (that.getPrimary() instanceof StaticMemberOrTypeExpression) {
-            StaticMemberOrTypeExpression expr = (StaticMemberOrTypeExpression)that.getPrimary();
-            if (expr.getDeclaration() instanceof Function) {
-                Function mth = (Function)expr.getDeclaration();
+        if (primary instanceof StaticMemberOrTypeExpression) {
+            StaticMemberOrTypeExpression expr = 
+                    (StaticMemberOrTypeExpression) primary;
+            Declaration dec = expr.getDeclaration();
+            if (dec instanceof Function) {
+                Function mth = (Function)dec;
                 if (isTypeParameter(mth.getType()) 
-                        && (hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments())
+                        && (hasErasedTypeParameter(expr.getTarget(), 
+                                expr.getTypeArguments())
                         || CodegenUtil.isRaw(that))) {
                     CodegenUtil.markTypeErased(that);
                     CodegenUtil.markUntrustedType(that);
                 }
             }
         }
-        if (that.getPrimary() instanceof Tree.MemberOrTypeExpression
-                && Decl.isConstructor(((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration())) {
-            Constructor ctor = ModelUtil.getConstructor(((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration());
-            if (Decl.isJavaObjectArrayWith(ctor)) {
-                CodegenUtil.markTypeErased(that);
+        if (primary instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) primary;
+            if (Decl.isConstructor(mte.getDeclaration())) {
+                Constructor ctor = ModelUtil.getConstructor(mte.getDeclaration());
+                if (Decl.isJavaObjectArrayWith(ctor)) {
+                    CodegenUtil.markTypeErased(that);
+                }
             }
         }
     }
 
     private boolean isByteLiteral(Tree.InvocationExpression ce) {
         // same test as in ExpressionTransformer.checkForByteLiterals
-        if(ce.getPrimary() instanceof Tree.BaseTypeExpression
+        Tree.Primary primary = ce.getPrimary();
+        if(primary instanceof Tree.BaseTypeExpression
                 && ce.getPositionalArgumentList() != null){
-            java.util.List<Tree.PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            java.util.List<Tree.PositionalArgument> positionalArguments = 
+                    ce.getPositionalArgumentList().getPositionalArguments();
             if(positionalArguments.size() == 1){
                 PositionalArgument argument = positionalArguments.get(0);
-                if(argument instanceof Tree.ListedArgument
-                        && ((Tree.ListedArgument) argument).getExpression() != null){
-                    Term term = ((Tree.ListedArgument)argument).getExpression().getTerm();
-                    if(term instanceof Tree.NegativeOp){
-                        term = ((Tree.NegativeOp) term).getTerm();
-                    }
-                    if(term instanceof Tree.NaturalLiteral){
-                        Declaration decl = ((Tree.BaseTypeExpression)ce.getPrimary()).getDeclaration();
-                        if(decl instanceof Class){
-                            if(((Class) decl).isByte()){
-                                return true;
+                if(argument instanceof Tree.ListedArgument) {
+                    Tree.Expression ex = 
+                            ((Tree.ListedArgument) argument)
+                                .getExpression();
+                    if (ex != null) {
+                        Term term = ex.getTerm();
+                        if(term instanceof Tree.NegativeOp){
+                            term = ((Tree.NegativeOp) term).getTerm();
+                        }
+                        if(term instanceof Tree.NaturalLiteral){
+                            Declaration decl = 
+                                    ((Tree.BaseTypeExpression)primary)
+                                        .getDeclaration();
+                            if (decl instanceof Class){
+                                if (((Class) decl).isByte()){
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -286,8 +321,10 @@ public abstract class BoxingVisitor extends Visitor {
         return false;
     }
 
-    private boolean hasErasedTypeParameter(Reference producedReference, TypeArguments typeArguments) {
-        if (typeArguments != null && typeArguments.getTypeModels() != null){
+    private boolean hasErasedTypeParameter(Reference producedReference, 
+            TypeArguments typeArguments) {
+        if (typeArguments != null 
+                && typeArguments.getTypeModels() != null){
             for (Type arg : typeArguments.getTypeModels()) {
                 if (hasErasure(arg) /*|| willEraseToSequential(param.getType())*/) {
                     return true;
@@ -307,24 +344,32 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(IndexExpression that) {
         super.visit(that);
         // we need to propagate from the underlying method call (item/span)
-        if(that.getPrimary() == null
-                || that.getPrimary().getTypeModel() == null)
+        Tree.Primary primary = that.getPrimary();
+        if (primary == null
+                || primary.getTypeModel() == null)
             return;
-        Type lhsModel = that.getPrimary().getTypeModel();
+        Type lhsModel = primary.getTypeModel();
         if(lhsModel.getDeclaration() == null)
             return;
-        String methodName = that.getElementOrRange() instanceof Tree.Element ? "get" : "span";
+        String methodName = 
+                that.getElementOrRange() 
+                    instanceof Tree.Element ? 
+                        "get" : "span";
         // find the method from its declaration
-        TypedDeclaration member = (TypedDeclaration) lhsModel.getDeclaration().getMember(methodName, null, false);
+        TypedDeclaration member = (TypedDeclaration) 
+                lhsModel.getDeclaration()
+                    .getMember(methodName, null, false);
         if(member == null)
             return;
         propagateFromDeclaration(that, member);
-        // also copy the underlying type, mostly useful for java primitive arrays
-        if(member.getType().getUnderlyingType() != null){
+        // also copy the underlying type, mostly 
+        // useful for java primitive arrays
+        String underlyingType = 
+                member.getType().getUnderlyingType();
+        if (underlyingType != null) {
             Type type = that.getTypeModel();
-            if(type.isCached())
-                type = type.clone();
-            type.setUnderlyingType(member.getType().getUnderlyingType());
+            if (type.isCached()) type = type.clone();
+            type.setUnderlyingType(underlyingType);
             that.setTypeModel(type);
         }
     }
@@ -356,7 +401,8 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(StringTemplate that) {
         super.visit(that);
-        // for now we always produce an unboxed string in ExpressionTransformer
+        // for now we always produce an unboxed 
+        // string in ExpressionTransformer
         CodegenUtil.markUnBoxed(that);
     }
     
@@ -562,49 +608,50 @@ public abstract class BoxingVisitor extends Visitor {
     }
 
     private boolean hasTypeParameterWithConstraintsOutsideScope(Type type, Scope scope) {
-        return hasTypeParameterWithConstraintsOutsideScopeResolved(type != null ? type.resolveAliases() : null, scope);
+        return hasTypeParameterWithConstraintsOutsideScopeResolved(
+                type != null ? type.resolveAliases() : null, scope);
     }
     
     private boolean hasTypeParameterWithConstraintsOutsideScopeResolved(Type type, Scope scope) {
-        if(type == null)
+        if (type == null)
             return false;
-        if(type.isUnion()){
+        if (type.isUnion()){
             java.util.List<Type> caseTypes = type.getCaseTypes();
-            for(Type pt : caseTypes){
-                if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
+            for (Type pt : caseTypes) {
+                if (hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                     return true;
             }
             return false;
         }
-        if(type.isIntersection()){
+        if (type.isIntersection()) {
             java.util.List<Type> satisfiedTypes = type.getSatisfiedTypes();
-            for(Type pt : satisfiedTypes){
-                if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
+            for (Type pt : satisfiedTypes){
+                if (hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                     return true;
             }
             return false;
         }
         TypeDeclaration declaration = type.getDeclaration();
-        if(declaration == null)
+        if (declaration == null)
             return false;
-        if(type.isTypeParameter()){
+        if (type.isTypeParameter()) {
             // only look at it if it is defined outside our scope
             Scope typeParameterScope = declaration.getContainer();
-            while(scope != null){
+            while (scope != null) {
                 if (Decl.equalScopes(scope,  typeParameterScope))
                     return false;
                 scope = scope.getContainer();
             }
             TypeParameter tp = (TypeParameter) declaration;
             Boolean nonErasedBounds = tp.hasNonErasedBounds();
-            if(nonErasedBounds == null)
+            if (nonErasedBounds == null)
                 visitTypeParameter(tp);
             return nonErasedBounds != null ? nonErasedBounds.booleanValue() : false;
         }
         
         // now check its type parameters
-        for(Type pt : type.getTypeArgumentList()){
-            if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
+        for (Type pt : type.getTypeArgumentList()) {
+            if (hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                 return true;
         }
         // no problem here
@@ -612,10 +659,10 @@ public abstract class BoxingVisitor extends Visitor {
     }
 
     private void visitTypeParameter(TypeParameter typeParameter) {
-        if(typeParameter.hasNonErasedBounds() != null)
+        if (typeParameter.hasNonErasedBounds() != null)
             return;
-        for(Type pt : typeParameter.getSatisfiedTypes()){
-            if(!willEraseToObject(pt)){
+        for (Type pt : typeParameter.getSatisfiedTypes()) {
+            if (!willEraseToObject(pt)) {
                 typeParameter.setNonErasedBounds(true);
                 return;
             }
@@ -638,15 +685,19 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getIfClause() == null
                 || that.getElseClause() == null)
             return;
-        Tree.Expression ifExpr = that.getIfClause().getExpression();
-        Tree.Expression elseExpr = that.getElseClause().getExpression();
+        Tree.Expression ifExpr = 
+                that.getIfClause().getExpression();
+        Tree.Expression elseExpr = 
+                that.getElseClause().getExpression();
         if(ifExpr == null || elseExpr == null)
             return;
+        Unit unit = that.getUnit();
         if(CodegenUtil.isUnBoxed(ifExpr) 
                 && CodegenUtil.isUnBoxed(elseExpr)
-                && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
+                && !willEraseToObject(unit
+                        .denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
-        if (that.getTypeModel().isExactly(that.getUnit().getNullValueType())) {
+        if (that.getTypeModel().isExactly(unit.getNullValueType())) {
             CodegenUtil.markTypeErased(that);
         }
         // An If expression can never be raw, type erased or untrusted because
@@ -675,18 +726,18 @@ public abstract class BoxingVisitor extends Visitor {
             // up the tree.
         }
         if(caseList.getElseClause() != null){
-            Expression expr = caseList.getElseClause().getExpression();
-            if(expr == null)
+            Tree.Expression expr = caseList.getElseClause().getExpression();
+            if (expr == null)
                 return;
             // a single boxed one makes the whole switch boxed
-            if(!CodegenUtil.isUnBoxed(expr))
+            if (!CodegenUtil.isUnBoxed(expr))
                 unboxed = false;
             // see comment about about why we don't propagate rawness etc here.
         }
-        if(unboxed 
-                && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
+        Unit unit = that.getUnit();
+        if (unboxed && !willEraseToObject(unit.denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
-        if (that.getTypeModel().isExactly(that.getUnit().getNullValueType())) {
+        if (that.getTypeModel().isExactly(unit.getNullValueType())) {
             CodegenUtil.markTypeErased(that);
         }
     }
@@ -694,7 +745,7 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(Tree.LetExpression that) {
         super.visit(that);
-        if(that.getLetClause() == null
+        if (that.getLetClause() == null
                 || that.getLetClause().getExpression() == null)
             return;
         propagateFromTerm(that, that.getLetClause().getExpression());
@@ -747,7 +798,7 @@ public abstract class BoxingVisitor extends Visitor {
     // Set the next preferred boxing to be the currently active one
     private Stack<Boolean> setPEB() {
         Stack<Boolean> npebs = nextPreferredExpressionBoxings;
-        preferredExpressionBoxing = (npebs != null && !npebs.isEmpty()) ? npebs.pop() : null;
+        preferredExpressionBoxing = npebs != null && !npebs.isEmpty() ? npebs.pop() : null;
         nextPreferredExpressionBoxings = null;
         return npebs;
     }

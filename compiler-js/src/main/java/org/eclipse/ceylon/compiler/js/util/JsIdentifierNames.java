@@ -9,6 +9,8 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js.util;
 
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getRealScope;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -128,7 +130,8 @@ public class JsIdentifierNames {
         if (param == null) { return null; }
         String name = param.getName();
         FunctionOrValue decl = param.getModel();
-        final boolean nonLocal = decl.isShared() && decl.isMember()
+        final boolean nonLocal = 
+                   decl.isShared() && decl.isMember()
                 || decl.isToplevel() && decl instanceof Function;
         if (nonLocal) {
             // The identifier might be accessed from other .js files, so it must
@@ -153,7 +156,9 @@ public class JsIdentifierNames {
     }
 
     public String valueName(FunctionOrValue d) {
-        return d.isShared() && !d.isActual() ? name(d) + "_" : privateName(d);
+        return d.isShared() && !d.isActual() ? 
+                name(d) + "_" : 
+                privateName(d);
     }
 
     /**
@@ -191,8 +196,8 @@ public class JsIdentifierNames {
         String name = getName(decl, true, false);
         //TODO remove this shit when we break bincompat again
         final int binMajor = decl.getUnit().getPackage().getModule().getJsMajor();
-        if (!forMetamodel && !decl.isClassOrInterfaceMember() &&
-                (binMajor == 0 || binMajor == Versions.JS_BINARY_MAJOR_VERSION)) {
+        if (!forMetamodel && !decl.isClassOrInterfaceMember() 
+                && (binMajor == 0 || binMajor == Versions.JS_BINARY_MAJOR_VERSION)) {
             return reservedWords.contains(name) ? "$_" + name : name;
         }
         return String.format("%sget%c%s", forMetamodel?"$prop$":"",
@@ -207,8 +212,11 @@ public class JsIdentifierNames {
     public String setter(Declaration decl) {
         String name = getName(decl, true, false);
         final Module mod = decl.getUnit().getPackage().getModule();
-        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
-            return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
+        if (mod.getJsMajor() > 0 
+                && (mod.getJsMajor() < 9 
+                        || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return String.format("set%c%s", 
+                    Character.toUpperCase(name.charAt(0)),
                     name.substring(1));
         }
         return String.format("set$%s", name);
@@ -219,7 +227,8 @@ public class JsIdentifierNames {
      * an alias for the given package.
      */
     public String moduleAlias(Module pkg) {
-        if (compiler.isCompilingLanguageModule() && pkg.getLanguageModule()==pkg) {
+        if (compiler.isCompilingLanguageModule() 
+                && pkg.getLanguageModule()==pkg) {
             //If we're compiling the language module, omit the package name
             return "";
         }
@@ -238,7 +247,7 @@ public class JsIdentifierNames {
      */
     public String self(TypeDeclaration decl) {
         if (decl instanceof Constructor) {
-            decl = (TypeDeclaration)decl.getContainer();
+            decl = (TypeDeclaration) decl.getContainer();
         }
         String name = JsUtils.escapeStringLiteral(decl.getName());
         if (decl.isShared() || decl.isToplevel()) {
@@ -258,7 +267,10 @@ public class JsIdentifierNames {
      * the suffixes generated for two different scopes are different.
      */
     public String scopeSuffix(Scope scope) {
-        return String.format("$%s", scope.getQualifiedNameString().replace("::","$").replace('.', '$'));
+        return String.format("$%s", 
+                scope.getQualifiedNameString()
+                    .replace("::","$")
+                    .replace('.', '$'));
     }
 
     /**
@@ -276,7 +288,7 @@ public class JsIdentifierNames {
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
             // member must have the same name as the member it overrides.
-            Scope scope = ModelUtil.getRealScope(originalDeclaration(decl).getContainer());
+            Scope scope = getRealScope(originalDeclaration(decl).getContainer());
             while (scope instanceof TypeDeclaration) {
                 sb.append('$');
                 sb.append(((TypeDeclaration) scope).getName().replaceAll("#", ""));
@@ -352,15 +364,17 @@ public class JsIdentifierNames {
         }
         //Fix #204 - same top-level declarations in different packages
         final Package declPkg = decl.getUnit().getPackage();
-        if (decl.isToplevel() && !declPkg.equals(declPkg.getModule().getRootPackage())) {
-            final Package raiz = declPkg.getModule().getRootPackage();
+        Module declMod = declPkg.getModule();
+        if (decl.isToplevel() 
+                && !declPkg.equals(declMod.getRootPackage())) {
+            final Package root = declMod.getRootPackage();
             //rootPackage can be null when compiling from IDE
-            String rootName = raiz == null ?
-                    (declPkg.getModule().isDefaultModule() ? "" : declPkg.getModule().getNameAsString()) :
-                        raiz.getNameAsString();
+            String rootName = root == null ?
+                    (declMod.isDefaultModule() ? "" : declMod.getNameAsString()) :
+                    root.getNameAsString();
             String pkgName = declPkg.getNameAsString();
             rootName = pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
-            if (rootName.length()>0 && rootName.charAt(0) != '$') {
+            if (!rootName.isEmpty() && rootName.charAt(0) != '$') {
                 rootName = '$' + rootName;
             }
             name += rootName;
@@ -376,8 +390,10 @@ public class JsIdentifierNames {
         if (name != null) {
             return name;
         }
-        if (d.isClassOrInterfaceMember() && !compiler.isCompilingLanguageModule()) {
-            final String containerName = d.getUnit().getPackage().getModule().getNameAsString();
+        if (d.isClassOrInterfaceMember() 
+                && !compiler.isCompilingLanguageModule()) {
+            final String containerName = 
+                    d.getUnit().getPackage().getModule().getNameAsString();
             return String.format(priv ? "$%s$%s_" : "$%s$%s",
                     Integer.toString(Math.abs(containerName.hashCode()),36),
                     Long.toString(getUID(d), 36));
@@ -389,7 +405,7 @@ public class JsIdentifierNames {
         Declaration refinedDecl = decl;
         while (true) {
             Declaration d = refinedDecl.getRefinedDeclaration();
-            if ((d == null) || (d == refinedDecl)) { break; }
+            if (d == null || d == refinedDecl) break;
             refinedDecl = d;
         }
         return refinedDecl;
@@ -435,12 +451,15 @@ public class JsIdentifierNames {
 
     public String valueConstructorName(TypeDeclaration d) {
         final TypeDeclaration c = (TypeDeclaration)d.getContainer();
-        return name(c) + constructorSeparator(d) + name(c.getDirectMember(d.getName(), null, false));
+        return name(c) + constructorSeparator(d) 
+            + name(c.getDirectMember(d.getName(), null, false));
     }
 
     public String constructorSeparator(Declaration c) {
         final Module mod = c.getUnit().getPackage().getModule();
-        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || mod.getJsMajor() == 9 && mod.getJsMinor() < 1)) {
+        if (mod.getJsMajor() > 0 
+                && (mod.getJsMajor() < 9 
+                        || mod.getJsMajor() == 9 && mod.getJsMinor() < 1)) {
             return "_";
         }
         return "$c_";
@@ -448,7 +467,7 @@ public class JsIdentifierNames {
 
     public boolean isJsGlobal(Declaration d) {
         return d.isToplevel() 
-            && globals.contains(d.getName()) &&
-            d.getUnit().getPackage().getModule().getJsMajor()==0;
+            && globals.contains(d.getName()) 
+            && d.getUnit().getPackage().getModule().getJsMajor()==0;
     }
 }

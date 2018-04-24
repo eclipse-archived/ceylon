@@ -299,13 +299,6 @@ public class Decl {
         return name;
     }
 
-    public static Tree.Term unwrapExpressionsUntilTerm(Tree.Term term) {
-        while (term instanceof Tree.Expression) {
-            term = ((Tree.Expression)term).getTerm();
-        }
-        return term;
-    }
-    
     /**
      * Determines whether the given attribute should be accessed and assigned 
      * via a {@code VariableBox}

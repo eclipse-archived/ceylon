@@ -45,6 +45,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StatementOrArgument;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Variable;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.model.loader.JvmBackendUtil;
 import org.eclipse.ceylon.model.typechecker.context.TypeCache;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -157,7 +158,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 && specifierExpression != null
                 && specifierExpression.getExpression() != null){
             boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
-            Term term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+            Term term = TreeUtil.unwrapExpressionUntilTerm(specifierExpression.getExpression());
             if (!isLazy && term instanceof Tree.FunctionArgument) {
                 // this is inlined for member methods, so the term should inherit our boxing specs
                 Function specifierModel = ((Tree.FunctionArgument)term).getDeclarationModel();
@@ -491,7 +492,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration instanceof Function){
             if(that.getSpecifierExpression() != null
                     && that.getSpecifierExpression() instanceof LazySpecifierExpression == false){
-                Tree.Term term = Decl.unwrapExpressionsUntilTerm(that.getSpecifierExpression().getExpression());
+                Tree.Term term = TreeUtil.unwrapExpressionUntilTerm(that.getSpecifierExpression().getExpression());
                 if(term != null
                         && term instanceof Tree.FunctionArgument){
                     optimisedDeclaration = ((Tree.FunctionArgument)term).getDeclarationModel();

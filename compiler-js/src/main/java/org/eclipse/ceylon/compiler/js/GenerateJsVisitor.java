@@ -280,7 +280,7 @@ public class GenerateJsVisitor extends Visitor {
         out(" at ", node.getUnit().getFilename(), " (", node.getLocation(), ")");
     }
 
-    private String generateToString(final GenerateCallback callback) {
+    String generateToString(final GenerateCallback callback) {
         return out.generateToString(callback);
     }
 
@@ -2087,109 +2087,7 @@ public class GenerateJsVisitor extends Visitor {
         if (errVisitor.hasErrors(that))return;
         //Big TODO: make sure the member is actually
         //          refined by the current class!
-        final Declaration d = that.getDeclaration();
-        Tree.MemberOperator op = that.getMemberOperator();
-        Tree.Primary primary = that.getPrimary();
-
-        if (op instanceof Tree.SafeMemberOp) {
-            Operators.generateSafeOp(that, this);
-        } else if (op instanceof Tree.SpreadOp) {
-            SequenceGenerator.generateSpread(that, this);
-        } else if (d instanceof Function 
-                && that.getSignature() == null) {
-            //TODO right now this causes that all method invocations 
-            //are done this way we need to filter somehow to only use 
-            //this pattern when the result is supposed to be a callable
-            //looks like checking for signature is a good way (not THE 
-            //way though; named arg calls don't have signature)
-            FunctionHelper.generateCallable(that, null, this);
-        } else if (that.getStaticMethodReference() && d!=null) {
-            if (d instanceof Value 
-                    && ModelUtil.isConstructor(d)) {
-                Constructor cnst = (Constructor)
-                        ((Value)d).getTypeDeclaration();
-                String tse = cnst.getTypescriptEnum();
-                if (tse != null && tse.matches("[0-9.-]+")) {
-                    out(tse);
-                } else {
-                    //TODO this won't work anymore I think
-                    boolean wrap = false;
-                    Scope container = d.getContainer();
-                    if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
-                        Tree.QualifiedMemberOrTypeExpression prim = 
-                                (Tree.QualifiedMemberOrTypeExpression)
-                                    primary;
-                        if (prim.getStaticMethodReference()) {
-                            wrap=true;
-                            out("function(_$){return _$");
-                        } else {
-                            prim.getPrimary().visit(this);
-                        }
-                        out(".");
-                    } else {
-                        if (container instanceof Declaration) {
-                            qualify(primary, (Declaration)container);
-                        } else if (container instanceof Package) {
-                            Module module = ((Package)container).getModule();
-                            out(names.moduleAlias(module));
-                        }
-                    }
-                    if (tse != null) {
-                        out(names.name((TypeDeclaration)container), ".", tse);
-                    } else {
-                        out(names.name((TypeDeclaration)container), 
-                            names.constructorSeparator(d),
-                            names.name(d), "()");
-                    }
-                    if (wrap) {
-                        out(";}");
-                    }
-                }
-            } else if (d instanceof Function) {
-                Function fd = (Function)d;
-                TypeDeclaration typeDec = fd.getTypeDeclaration();
-                if (typeDec instanceof Constructor) {
-                    primary.visit(this);
-                    out(names.constructorSeparator(fd), 
-                        names.name(typeDec));
-                } else if (fd.isStatic()) {
-                    BmeGenerator.generateStaticReference(that, fd, this);
-                } else {
-                    out("function($O$){return ");
-                    if (BmeGenerator.hasTypeParameters(that)) {
-                        BmeGenerator.printGenericMethodReference(this, that, 
-                                "$O$", "$O$."+names.name(d));
-                    } else {
-                        out(getClAlias(), "f3$($O$,$O$.", names.name(d), ")");
-                    }
-                    out(";}");
-                }
-            } else {
-                if (d.isStatic()) {
-                    BmeGenerator.generateStaticReference(that, d, this);
-                } else {
-                    out("function($O$){return $O$.", names.name(d), ";}");
-                }
-            }
-        } else {
-            final boolean isDynamic = primary instanceof Tree.Dynamic;
-            String lhs = generateToString(new GenerateCallback() {
-                @Override public void generateValue() {
-                    if (isDynamic) {
-                        out("(");
-                    }
-                    box(that.getPrimary(), true, true);
-                    if (isDynamic) {
-                        out(")");
-                    }
-                }
-            });
-            if (d != null && d.isStatic()) {
-                BmeGenerator.generateStaticReference(that, d, this);
-            } else {
-                out(memberAccess(that, lhs));
-            }
-        }
+        BmeGenerator.generateQme(that, this);
     }
 
     /**

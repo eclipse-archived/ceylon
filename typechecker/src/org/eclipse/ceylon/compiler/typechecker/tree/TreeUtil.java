@@ -18,8 +18,6 @@ import java.util.List;
 
 import org.eclipse.ceylon.common.Backend;
 import org.eclipse.ceylon.common.Backends;
-import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import org.eclipse.ceylon.model.typechecker.model.Annotation;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
@@ -643,7 +641,7 @@ public class TreeUtil {
                 isSelfReference(((Tree.QualifiedMemberExpression) term)
                         .getPrimary());
     }
-
+    
     public static boolean isInstantiationExpression(
             Tree.Expression e) {
         Tree.Term term = e.getTerm();
