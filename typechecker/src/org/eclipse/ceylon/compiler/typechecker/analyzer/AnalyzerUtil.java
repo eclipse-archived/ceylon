@@ -876,6 +876,24 @@ public class AnalyzerUtil {
     static String notAssignableMessage(Type type,
             Type supertype, Node node) {
         Unit unit = node.getUnit();
+        if (supertype.isTypeConstructor() 
+                && !type.isTypeConstructor()) {
+            return ": the assigned type '" + 
+                    type.asString(unit) +
+                    "' is a regular type, but the type '" + 
+                    supertype.asString(unit) +
+                    "' is a type constructor (explicitly specify type arguments to '" + 
+                    supertype.asString(unit) + 
+                    "')";
+        }
+        if (type.isTypeConstructor() 
+                && !supertype.isTypeConstructor()) {
+            return ": the assigned type '" + 
+                    type.asString(unit) +
+                    "' is a type constructor, but the type '" + 
+                    supertype.asString(unit) +
+                    "' is a regular type";
+        }
         if (supertype.covers(type)) {
             return ": the assigned type '" + 
                     type.asString(unit) +
