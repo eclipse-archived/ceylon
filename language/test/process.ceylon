@@ -14,7 +14,7 @@ shared void testProcess() {
     check(!process.namedArgumentValue("") exists, "process.namedArgumentValue");
     String? filesep = process.propertyValue("file.separator");
     if (exists filesep) {
-        check((filesep=="/")||(filesep=="\\"), "process.propertyValue");
+        check(filesep=="/"||filesep=="\\", "process.propertyValue");
     } else {
         fail("process.propertyValue (null)");
     }
@@ -56,18 +56,18 @@ shared void testSystem() {
     check(system.milliseconds > 0, "system.milliseconds");
     check(system.nanoseconds > 0, "system.milliseconds");
     Integer timezoneOffset = system.timezoneOffset;
-    check(timezoneOffset >= -(12 * 3600 * 1000), "system.timezoneOffset min value");
-    check(timezoneOffset <= (14 * 3600 * 1000), "system.timezoneOffset max value");
-    check(system.locale.size > 0, "system.locale");
-    check(system.characterEncoding.size > 0, "system.characterEncoding");
+    check(timezoneOffset >= -12 * 3600 * 1000, "system.timezoneOffset min value");
+    check(timezoneOffset <= 14 * 3600 * 1000, "system.timezoneOffset max value");
+    check(!system.locale.empty, "system.locale");
+    check(!system.characterEncoding.empty, "system.characterEncoding");
 }
 
 @test
 shared void testRuntime() {
     // basically just test if everything can be called without error
     print("runtime[name: ``runtime.name``, version: ``runtime.version``]");
-    check(runtime.name.size > 0, "runtime.name");
-    check(runtime.version.size > 0, "runtime.version");
+    check(!runtime.name.empty, "runtime.name");
+    check(!runtime.version.empty, "runtime.version");
     if (runtime.name == "jvm") {
         check(runtime.integerSize == 64, "jvm runtime.integerSize");
     } else if (runtime.name in {"node.js", "Browser"}) {
@@ -96,11 +96,11 @@ shared void testRuntime() {
 shared void testOperatingSystem() {
     // basically just test if everything can be called without error
     print("operatingSystem[name:``operatingSystem.name``, version:``operatingSystem.version``]");
-    check(operatingSystem.name.size > 0, "operatingSystem.name");
-    check(operatingSystem.version.size > 0, "operatingSystem.version");
-    check(operatingSystem.newline.contains('\n') || operatingSystem.newline.contains('\r'), "operatingSystem.newline");
+    check(!operatingSystem.name.empty, "operatingSystem.name");
+    check(!operatingSystem.version.empty, "operatingSystem.version");
+    check('\n' in operatingSystem.newline || '\r' in operatingSystem.newline, "operatingSystem.newline");
     String fileSeparator = operatingSystem.fileSeparator;
-    check((fileSeparator=="/") || (fileSeparator=="\\"), "operatingSystem.fileSeparator");
+    check(fileSeparator=="/" || fileSeparator=="\\", "operatingSystem.fileSeparator");
     String pathSeparator = operatingSystem.pathSeparator;
-    check((pathSeparator==":") || (pathSeparator==";"), "operatingSystem.pathSeparator");
+    check(pathSeparator==":" || pathSeparator==";", "operatingSystem.pathSeparator");
 }

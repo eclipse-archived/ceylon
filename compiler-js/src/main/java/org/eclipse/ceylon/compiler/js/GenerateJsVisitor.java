@@ -1946,10 +1946,10 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 final Expression expr = exprs.get(i);
                 final Type t = expr.getTypeModel();
-                box(expr, true, false);
+                box(expr, true, true);
                 if (t == null || t.isUnknown()) {
                     out(".toString()");
-                } else if (t.isInteger() || t.isString()) {
+                } else if (t.isString()) {
                     //nothing to do
                 } else if (!t.isString()) {
                     out(".string");
