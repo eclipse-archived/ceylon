@@ -4717,7 +4717,7 @@ public class ExpressionVisitor extends Visitor {
                     typeArgs = tas.getTypeModels();
                 }
                 visitBaseTypeExpression(bte, type, typeArgs, 
-                        tas, receivingType);
+                        tas, receivingType, true);
             }
         }
         
@@ -4743,12 +4743,12 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qte.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(qte, type, 
-                            typeArgs, tas, null);
+                            typeArgs, tas, null, true);
                 }
                 else {
                     visitQualifiedTypeExpression(qte, 
                             receivingType, type, typeArgs, 
-                            tas);
+                            tas, true);
                 }
             }
         }
@@ -4773,7 +4773,8 @@ public class ExpressionVisitor extends Visitor {
                     typeArgs = tas.getTypeModels();
                 }
                 visitBaseMemberExpression(bme, base, 
-                        typeArgs, tas, receivingType);
+                        typeArgs, tas, receivingType,
+                        true);
             }
         }
         
@@ -4800,12 +4801,13 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qme.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, 
-                            member, typeArgs, tas, null);
+                            member, typeArgs, tas, null,
+                            true);
                 }
                 else {
                     visitQualifiedMemberExpression(qme, 
                             receivingType, member, typeArgs, 
-                            tas);
+                            tas, true);
                 }
             }
         }
@@ -7787,7 +7789,7 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
                 visitBaseMemberExpression(that, member, 
-                        typeArgs, tal, null);
+                        typeArgs, tal, null, notDirectlyInvoked);
                 //otherwise infer type arguments later
             }
             else if (notDirectlyInvoked) {
@@ -7931,12 +7933,13 @@ public class ExpressionVisitor extends Visitor {
                 tal.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(that, member, 
-                            typeArgs, tal, null);
+                            typeArgs, tal, null, 
+                            notDirectlyInvoked);
                 }
                 else {
                     visitQualifiedMemberExpression(that, 
                             receiverType, member, typeArgs, 
-                            tal);
+                            tal, notDirectlyInvoked);
                 }
             }
             else if (notDirectlyInvoked) {
@@ -8208,19 +8211,25 @@ public class ExpressionVisitor extends Visitor {
             Type receivingType, 
             TypedDeclaration member, 
             List<Type> typeArgs, 
-            Tree.TypeArguments tal) {
-        checkMemberOperator(receivingType, that);
-        Tree.Primary primary = that.getPrimary();
-        if (isConstructor(member) &&
-                !(primary instanceof Tree.BaseTypeExpression ||
-                  primary instanceof Tree.QualifiedTypeExpression)) {
-            primary.addError("constructor reference must be qualified by a type expression");
-        }
+            Tree.TypeArguments tal,
+            boolean error) {
+        
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        checkTypeArguments(member, receiverType, 
-                typeArgs, tal, that);
+        
+        if (error) {
+            checkMemberOperator(receivingType, that);
+            Tree.Primary primary = that.getPrimary();
+            if (isConstructor(member) &&
+                    !(primary instanceof Tree.BaseTypeExpression ||
+                      primary instanceof Tree.QualifiedTypeExpression)) {
+                primary.addError("constructor reference must be qualified by a type expression");
+            }
+            checkTypeArguments(member, receiverType, 
+                    typeArgs, tal, that);
+        }
+        
         TypedReference ptr = 
                 receiverType.getTypedMember(member, 
                         typeArgs, that.getAssigned());
@@ -8238,9 +8247,10 @@ public class ExpressionVisitor extends Visitor {
                         tal, receivingType, typeArgs, 
                         ptr.getFullType(wrap(ptr.getType(), 
                                 receivingType, that)));
-        Scope scope = that.getScope();
-        if (!dynamic 
-                && !isNativeForWrongBackend(scope, unit) 
+        
+        if (error
+                && !dynamic 
+                && !isNativeForWrongBackend(that.getScope(), unit) 
                 && !isAbstraction(member) 
                 && isTypeUnknown(fullType) 
                 && !hasError(that)) {
@@ -8255,6 +8265,7 @@ public class ExpressionVisitor extends Visitor {
                     "' of '" + rtname + "' is ambiguous" + 
                     getTypeUnknownError(fullType));
         }
+        
         that.setTypeModel(accountForStaticReferenceType(
                 that, member, fullType));
         //}
@@ -8428,9 +8439,14 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
-            Type receivingType) {
-        checkTypeArguments(member, null, 
-                typeArgs, tal, that);
+            Type receivingType,
+            boolean error) {
+        
+        if (error) {
+            checkTypeArguments(member, null, 
+                    typeArgs, tal, that);
+        }
+        
         Scope scope = that.getScope();
         Type outerType = scope.getDeclaringType(member);
         if (outerType==null) {
@@ -8445,7 +8461,8 @@ public class ExpressionVisitor extends Visitor {
                 accountForGenericFunctionRef(direct, 
                         tal, outerType, typeArgs, 
                         pr.getFullType());
-        if (!dynamic 
+        if (error 
+                && !dynamic 
                 && !isNativeForWrongBackend(scope, unit) 
                 && !isAbstraction(member) 
                 && isTypeUnknown(fullType) 
@@ -8455,6 +8472,7 @@ public class ExpressionVisitor extends Visitor {
                     member.getName(unit) + "' is not known" + 
                     getTypeUnknownError(fullType));
         }
+        
         if (dynamic && 
                 isTypeUnknown(fullType)) {
             //deliberately throw away the partial
@@ -8508,7 +8526,7 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
                 visitBaseTypeExpression(that, type, typeArgs, 
-                        tal, null);
+                        tal, null, notDirectlyInvoked);
                 //otherwise infer type arguments later
             }
             else if (notDirectlyInvoked
@@ -8855,12 +8873,13 @@ public class ExpressionVisitor extends Visitor {
                 tal.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(that, type, 
-                            typeArgs, tal, null);
+                            typeArgs, tal, null, 
+                            notDirectlyInvoked);
                 }
                 else {
                     visitQualifiedTypeExpression(that, 
                             receiverType, type, typeArgs, 
-                            tal);
+                            tal, notDirectlyInvoked);
                 }
             }
             else if (notDirectlyInvoked) {
@@ -9180,17 +9199,23 @@ public class ExpressionVisitor extends Visitor {
             Type receivingType, 
             TypeDeclaration memberType, 
             List<Type> typeArgs, 
-            Tree.TypeArguments tal) {
-        checkMemberOperator(receivingType, that);
-        if (memberType instanceof Constructor) {
-            that.addError("constructor is not a type: '" + 
-                    memberType.getName(unit) + "' is a constructor");
-        }
+            Tree.TypeArguments tal, 
+            boolean error) {
+        
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        checkTypeArguments(memberType, receiverType, 
-                typeArgs, tal, that);
+        
+        if (error) {
+            checkMemberOperator(receivingType, that);
+            if (memberType instanceof Constructor) {
+                that.addError("constructor is not a type: '" + 
+                        memberType.getName(unit) + "' is a constructor");
+            }
+            checkTypeArguments(memberType, receiverType, 
+                    typeArgs, tal, that);
+        }
+        
         Type type = 
                 receiverType.getTypeMember(memberType, 
                         typeArgs);
@@ -9198,7 +9223,8 @@ public class ExpressionVisitor extends Visitor {
         Type fullType =
                 type.getFullType(wrap(type, 
                         receivingType, that));
-        if (!dynamic 
+        if (error
+                && !dynamic 
                 && !that.getStaticMethodReference() 
                 && memberType instanceof Class 
                 && !isAbstraction(memberType) 
@@ -9213,6 +9239,7 @@ public class ExpressionVisitor extends Visitor {
                     memberType.getName(unit) + "' of '" + 
                     rtname + "' is ambiguous");
         }
+        
         that.setTypeModel(accountForStaticReferenceType(
                 that, memberType, fullType));
         if (that.getStaticMethodReference()) {
@@ -9226,9 +9253,14 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration baseType, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
-            Type receivingType) {
-        checkTypeArguments(baseType, null, 
-                typeArgs, tal, that);
+            Type receivingType, 
+            boolean error) {
+        
+        if (error) {
+            checkTypeArguments(baseType, null, 
+                    typeArgs, tal, that);
+        }
+        
         Type outerType = 
                 that.getScope()
                     .getDeclaringType(baseType);
@@ -10542,7 +10574,7 @@ public class ExpressionVisitor extends Visitor {
             if (tas instanceof Tree.TypeArgumentList) {
                 //explicit type argument list to something
                 //that cannot possibly accept type arguments
-                tas.addError("does not accept type arguments: '" + 
+                tas.addError("declaration does not accept type arguments: '" + 
                         dec.getName(unit) + 
                         "' is not a generic declaration");
             }

@@ -555,11 +555,12 @@ public class TypeVisitor extends Visitor {
             }
         }
         else {
-            if (params.isEmpty()) {
+            //handled in ExpressionVisitor
+            /*if (params.isEmpty()) {
                 that.addError("type declaration does not accept type arguments: '" + 
                         dec.getName(unit) + 
                         "' is not a generic type");
-            }
+            }*/
             tal.setTypeModels(typeArgs);
             List<Tree.Type> args = tal.getTypes();
             for (int i = 0; 
