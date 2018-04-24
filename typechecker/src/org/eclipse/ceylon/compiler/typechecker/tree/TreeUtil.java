@@ -636,9 +636,9 @@ public class TreeUtil {
     }
 
     public static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
-        return term instanceof Tree.BaseMemberExpression ||
-                term instanceof Tree.QualifiedMemberExpression &&
-                isSelfReference(((Tree.QualifiedMemberExpression) term)
+        return term instanceof Tree.BaseMemberExpression 
+            || term instanceof Tree.QualifiedMemberExpression 
+            && isSelfReference(((Tree.QualifiedMemberExpression) term)
                         .getPrimary());
     }
     

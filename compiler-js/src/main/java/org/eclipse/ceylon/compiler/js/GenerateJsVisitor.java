@@ -47,6 +47,7 @@ import org.eclipse.ceylon.compiler.typechecker.io.VirtualFile;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -150,11 +151,9 @@ public class GenerateJsVisitor extends Visitor {
 
         @Override
         public void visit(Tree.QualifiedMemberOrTypeExpression qe) {
-            if (qe.getPrimary() instanceof Tree.Outer ||
-                    qe.getPrimary() instanceof Tree.This) {
-                if ( qe.getDeclaration().equals(dec) ) {
-                    found = true;
-                }
+            if (TreeUtil.isSelfReference(qe.getPrimary()) 
+                    && qe.getDeclaration().equals(dec)) {
+                found = true;
             }
             super.visit(qe);
         }

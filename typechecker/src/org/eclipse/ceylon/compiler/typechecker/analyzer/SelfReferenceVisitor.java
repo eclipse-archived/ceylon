@@ -295,11 +295,11 @@ public class SelfReferenceVisitor extends Visitor {
 
     private boolean isSelfReference(Tree.Term that) {
         Tree.Term term = eliminateParensAndWidening(that);
-        return directlyInBody() && 
-                    (term instanceof Tree.This || 
-                     term instanceof Tree.Super) || 
-               directlyInNestedBody() && 
-                     that instanceof Tree.Outer;
+        return directlyInBody() 
+                && (term instanceof Tree.This 
+                    || term instanceof Tree.Super) 
+            || directlyInNestedBody() 
+                && that instanceof Tree.Outer;
     }
 
     @Override

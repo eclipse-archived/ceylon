@@ -36,6 +36,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerE
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Statement;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
@@ -218,7 +219,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             cs = enterCapturingScope();
         }
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
+        if (TreeUtil.isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
         else {
@@ -227,10 +228,6 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         if (isCallableReference) {
             exitCapturingScope(cs);
         }
-    }
-
-    private boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || that instanceof Tree.Outer;
     }
 
     @Override public void visit(Tree.Declaration that) {

@@ -10,6 +10,7 @@
 package org.eclipse.ceylon.compiler.js;
 
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
@@ -81,16 +82,12 @@ public class ValueVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
+        if (TreeUtil.isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
         else {
             capture(that);
         }
-    }
-
-    private boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || that instanceof Tree.Outer;
     }
 
     @Override public void visit(Tree.Declaration that) {

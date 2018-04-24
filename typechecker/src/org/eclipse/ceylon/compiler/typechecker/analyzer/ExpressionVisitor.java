@@ -8159,7 +8159,7 @@ public class ExpressionVisitor extends Visitor {
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = 
-                        isSelfReference(primary);
+                        isSelfOrSuperReference(primary);
                 if (!selfReference && 
                         !member.isShared()) {
                     if (that.getAssigned()) {
@@ -8185,10 +8185,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private boolean isSelfReference(Tree.Primary p) {
-        return p instanceof Tree.This ||
-                p instanceof Tree.Outer ||
-                p instanceof Tree.Super;
+    private boolean isSelfOrSuperReference(Tree.Primary p) {
+        return p instanceof Tree.This 
+            || p instanceof Tree.Outer 
+            || p instanceof Tree.Super;
     }
 
     private void checkSuperMember(
@@ -8995,7 +8995,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 that.setDeclaration(type);
                 resetSuperReference(that);
-                if (!isSelfReference(primary) && 
+                if (!isSelfOrSuperReference(primary) && 
                         !type.isShared()) {
                     if (that.getAssigned()) {
                         type.setOtherInstanceWriteAccess(true);
