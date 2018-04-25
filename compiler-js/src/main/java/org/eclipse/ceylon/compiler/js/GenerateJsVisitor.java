@@ -2276,7 +2276,8 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.PositionalArgumentList that) {
-        invoker.generatePositionalArguments(null, that, that.getPositionalArguments(), false, false);
+        invoker.generatePositionalArguments(null, that, 
+                that.getPositionalArguments(), false, false);
     }
 
     /** Box a term, visit it, unbox it. */

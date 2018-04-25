@@ -409,6 +409,7 @@ public class InvocationGenerator {
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
             gen.out(varName, "=");
+            
             if (arg instanceof Tree.MethodArgument) {
                 Tree.MethodArgument marg = 
                         (Tree.MethodArgument) arg;
@@ -433,6 +434,7 @@ public class InvocationGenerator {
             }
             gen.out(",");
         }
+        
         Tree.SequencedArgument sarg = argList.getSequencedArgument();
         if (sarg!=null) {
             String paramName = sarg.getParameter().getName();
@@ -444,6 +446,7 @@ public class InvocationGenerator {
                     sarg.getPositionalArguments(), true, false);
             gen.out(",");
         }
+        
         return argVarNames;
     }
 
