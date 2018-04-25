@@ -57,13 +57,12 @@ public class BmeGenerator {
             Package pkg = decl.getUnit().getPackage();
 
             // map Ceylon true/false/null directly to JS true/false/null
-            if (pkg.isLanguagePackage()) {
-                if ("null".equals(name) 
-                        || "false".equals(name) 
-                        || "true".equals(name)) {
-                    gen.out(name);
-                    return;
-                }
+            if (pkg.isLanguagePackage() 
+                    && ("null".equals(name) 
+                    || "false".equals(name) 
+                    || "true".equals(name))) {
+               gen.out(name);
+               return;
             }
             
             if (ModelUtil.isConstructor(decl)) {
@@ -84,11 +83,13 @@ public class BmeGenerator {
                 return;
             }
         }
+        
         String exp = gen.memberAccess(bme, null);
-        if (decl == null && gen.isInDynamicBlock()) {
+        if (decl==null && gen.isInDynamicBlock()) {
             if ("undefined".equals(exp)) {
                 gen.out(exp);
             } else if (nonNull) {
+                //throw error if native ref is undefined at runtime
                 gen.out("(typeof ",exp,"==='undefined'?", 
                         gen.getClAlias(), "err$(", 
                         gen.getClAlias(), "Exception('undefined native reference: ", exp, "')):", 
@@ -97,30 +98,36 @@ public class BmeGenerator {
                 gen.out("(typeof ",exp,"==='undefined'?undefined:", exp, ")");
             }
         } else {
-            boolean isCallable = !directlyInvoked 
-                    && (decl instanceof Functional || bme.getTypeModel().isCallable());
+            boolean isCallable = 
+                    !directlyInvoked 
+                        && (decl instanceof Functional 
+                            || bme.getTypeModel().isCallable());
             boolean hasTypeArgs = hasTypeArguments(bme);
             if (isCallable && (decl.isParameter() || decl.isToplevel() && !hasTypeArgs)) {
                 //Callables passed as arguments are already wrapped in JsCallable
                 gen.out(exp);
-                return;
             }
-            String who = isCallable && decl.isMember() ? gen.getMember(bme, null) : null;
-            if (who == null || who.isEmpty()) {
-                //We may not need to wrap this in certain cases
-                ClassOrInterface cont = getContainingClassOrInterface(bme.getScope());
-                who = cont == null ? "0" : gen.getNames().self(cont);
-            }
-            if (isCallable && (who != null || hasTypeArgs)) {
-                if (hasTypeArgs) {
-                    //Function refs with type arguments must be passed as a special function
-                    printGenericMethodReference(gen, bme, who, exp);
-                } else {
-                    //Member methods must be passed as JsCallables
-                    gen.out(gen.getClAlias(), "f3$(", who, ",", exp, ")");
+            else {
+                String who = 
+                        isCallable && decl.isMember() ? 
+                                gen.getMember(bme, null) : null;
+                if (who == null || who.isEmpty()) {
+                    //We may not need to wrap this in certain cases
+                    ClassOrInterface cont = 
+                            getContainingClassOrInterface(bme.getScope());
+                    who = cont == null ? "0" : gen.getNames().self(cont);
                 }
-            } else {
-                gen.out(exp);
+                if (isCallable && (who != null || hasTypeArgs)) {
+                    if (hasTypeArgs) {
+                        //Function refs with type arguments must be passed as a special function
+                        printGenericMethodReference(gen, bme, who, exp);
+                    } else {
+                        //Member methods must be passed as JsCallables
+                        gen.out(gen.getClAlias(), "f3$(", who, ",", exp, ")");
+                    }
+                } else {
+                    gen.out(exp);
+                }
             }
         }
     }

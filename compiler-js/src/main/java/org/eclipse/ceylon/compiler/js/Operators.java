@@ -9,7 +9,7 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
-import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
+import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 
 import java.util.Map;
 
@@ -380,7 +380,7 @@ public class Operators {
     }
 
     static void neg(Tree.NegativeOp that, GenerateJsVisitor gen) {
-        Tree.Term t = unwrapExpressionUntilTerm(that.getTerm());
+        Tree.Term t = eliminateParensAndWidening(that.getTerm());
         if (t instanceof Tree.NaturalLiteral) {
             long n = gen.parseNaturalLiteral((Tree.NaturalLiteral)t, true);
             gen.out("(", Long.toString(n), ")");

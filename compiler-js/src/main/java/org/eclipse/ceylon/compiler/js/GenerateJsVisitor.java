@@ -10,7 +10,6 @@
 package org.eclipse.ceylon.compiler.js;
 
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
-import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -47,7 +46,6 @@ import org.eclipse.ceylon.compiler.typechecker.io.VirtualFile;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -60,6 +58,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerE
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Statement;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.util.NativeUtil;
 import org.eclipse.ceylon.model.typechecker.model.Annotation;
@@ -2342,20 +2341,20 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     private boolean isLocalRef(final Tree.Term fromTerm) {
-        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+        Tree.Term term = eliminateParensAndWidening(fromTerm);
         return term instanceof Tree.BaseMemberExpression
             && !((Tree.BaseMemberExpression)term).getDeclaration().isShared();
     }
 
     private boolean isFloatOperatorExpression(Tree.Term fromTerm) {
-        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+        Tree.Term term = eliminateParensAndWidening(fromTerm);
         return term instanceof Tree.ArithmeticOp
                 && !(term instanceof Tree.PowerOp)
             || term instanceof Tree.NegativeOp;
     }
 
     private boolean isFloatLiteral(Tree.Term fromTerm) {
-        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+        Tree.Term term = eliminateParensAndWidening(fromTerm);
         return term instanceof Tree.FloatLiteral
             || term instanceof Tree.NegativeOp 
                 && isFloatLiteral(((Tree.NegativeOp)term).getTerm())
@@ -2364,7 +2363,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     private boolean isIntegerLiteral(Tree.Term fromTerm) {
-        Tree.Term term = unwrapExpressionUntilTerm(fromTerm);
+        Tree.Term term = eliminateParensAndWidening(fromTerm);
         return term instanceof Tree.NaturalLiteral
             || term instanceof Tree.NegativeOp 
                 && isIntegerLiteral(((Tree.NegativeOp)term).getTerm())

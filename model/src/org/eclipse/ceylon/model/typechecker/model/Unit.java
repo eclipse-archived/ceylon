@@ -2275,6 +2275,26 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
     
+    public boolean isCallableVariadic(Type t) {
+        Type tuple = getCallableTuple(t);
+        if (tuple == null) {
+            return false;
+        }
+        else {
+            return isTupleLengthUnbounded(tuple);
+        }
+    }
+    
+    public int getCallableRequiredParamCount(Type t) {
+        Type tuple = getCallableTuple(t);
+        if (tuple == null) {
+            return 0;
+        }
+        else {
+            return getTupleMinimumLength(tuple);
+        }
+    }
+    
     public Type getCallableTuple(Type t) {
         if (t==null) return null;
         Interface cd = getCallableDeclaration();

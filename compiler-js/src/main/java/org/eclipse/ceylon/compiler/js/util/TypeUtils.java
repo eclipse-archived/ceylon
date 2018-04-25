@@ -9,6 +9,7 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js.util;
 
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.contains;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingDeclaration;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -686,64 +687,14 @@ public class TypeUtils {
         return null;
     }
 
-    /** Turns a Tuple type into a parameter list. */
-    public static List<Parameter> convertTupleToParameters(Type _tuple) {
-        final ArrayList<Parameter> rval = new ArrayList<>();
-        int pos = 0;
-        final Unit unit = getUnit(_tuple);
-        final Type empty = unit.getEmptyType();
-        while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
-            Parameter _p = null;
-            if (isTuple(_tuple)) {
-                _p = new Parameter();
-                _p.setModel(new Value());
-                if (_tuple.isUnion()) {
-                    //Handle union types for defaulted parameters
-                    for (Type mt : _tuple.getCaseTypes()) {
-                        if (mt.isTuple()) {
-                            _p.getModel().setType(mt.getTypeArgumentList().get(1));
-                            _tuple = mt.getTypeArgumentList().get(2);
-                            break;
-                        }
-                    }
-                    _p.setDefaulted(true);
-                } else {
-                    _p.getModel().setType(_tuple.getTypeArgumentList().get(1));
-                    _tuple = _tuple.getTypeArgumentList().get(2);
-                }
-            } else if (unit.isSequentialType(_tuple)) {
-                //Handle Sequence, for nonempty variadic parameters
-                _p = new Parameter();
-                _p.setModel(new Value());
-                _p.getModel().setType(_tuple.getTypeArgumentList().get(0));
-                _p.setSequenced(true);
-                _tuple = null;
-            }
-            else {
-                if (pos > 100) {
-                    return rval;
-                }
-            }
-            if (_p != null) {
-                _p.setName("arg" + pos);
-                rval.add(_p);
-            }
-            pos++;
-        }
-        return rval;
-    }
-
     /** Check if a type is a Tuple, or a union of 2 types one of which is a Tuple. */
     private static boolean isTuple(Type pt) {
-        if (pt.isClass() && pt.getDeclaration().equals(pt.getDeclaration().getUnit().getTupleDeclaration())) {
+        if (pt.isClass() && pt.getDeclaration().isTuple()) {
             return true;
-        } else if (pt.isUnion() && pt.getCaseTypes().size() == 2) {
-            Class tuple = pt.getCaseTypes().get(0).isClassOrInterface() ?
-                    pt.getCaseTypes().get(0).getDeclaration().getUnit().getTupleDeclaration() :
-                        pt.getCaseTypes().get(1).isClassOrInterface() ?
-                                pt.getCaseTypes().get(1).getDeclaration().getUnit().getTupleDeclaration() : null;
-            return tuple != null && (tuple.equals(pt.getCaseTypes().get(0).getDeclaration())
-                    || tuple.equals(pt.getCaseTypes().get(1).getDeclaration()));
+        } else if (pt.isUnion() 
+                && pt.getCaseTypes().size() == 2) {
+            return pt.getCaseTypes().get(0).isTuple() 
+                || pt.getCaseTypes().get(1).isTuple();
         }
         return false;
     }
@@ -751,12 +702,14 @@ public class TypeUtils {
     /** This method encodes the type parameters of a Tuple in the same way
      * as a parameter list for runtime. */
     private static void encodeTupleAsParameterListForRuntime(final boolean resolveTargs, final Node node,
-            Type _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
+            Type tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
         gen.out("[");
         int pos = 1;
 //        int minTuple = node.getUnit().getTupleMinimumLength(_tuple);
-        final Type empty = node.getUnit().getEmptyType();
-        while (_tuple != null && !(_tuple.isExactly(empty) || _tuple.isTypeParameter())) {
+        Unit unit = node.getUnit();
+        final Type empty = unit.getEmptyType();
+        while (tuple != null 
+                && !(tuple.isExactly(empty) || tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
             pos++;
             if (nameAndMetatype) {
@@ -764,45 +717,54 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
                 gen.out(MetamodelGenerator.KEY_TYPE, ":");
             }
-            if (isTuple(_tuple)) {
-                if (_tuple.isUnion() && _tuple.getCaseTypes().contains(node.getUnit().getEmptyType())) {
+            if (isTuple(tuple)) {
+                if (tuple.isUnion() && tuple.getCaseTypes().contains(unit.getEmptyType())) {
                     //Handle union types for defaulted parameters
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, null, gen);
+                    metamodelTypeNameOrList(resolveTargs, node, 
+                            gen.getCurrentPackage(), tuple, null, gen);
                     if (nameAndMetatype) {
                         gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
                     }
-                    _tuple = null;
+                    tuple = null;
                 } else {
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                            _tuple.getTypeArgumentList().get(1), null, gen);
-                    _tuple = _tuple.getTypeArgumentList().get(2);
+                    metamodelTypeNameOrList(resolveTargs, node, 
+                            gen.getCurrentPackage(),
+                            tuple.getTypeArgumentList().get(1), 
+                            null, gen);
+                    tuple = tuple.getTypeArgumentList().get(2);
                 }
-            } else if (node.getUnit().isSequentialType(_tuple)) {
-                Type _t2 = _tuple.getSupertype(node.getUnit().getSequenceDeclaration());
+            } else if (unit.isSequentialType(tuple)) {
+                Type t2 = tuple.getSupertype(unit.getSequenceDeclaration());
                 final int seq;
-                if (_t2 == null) {
-                    _t2 = _tuple.getSupertype(node.getUnit().getSequentialDeclaration());
+                if (t2 == null) {
+                    t2 = tuple.getSupertype(unit.getSequentialDeclaration());
                     seq = 1;
                 } else {
                     seq = 2;
                 }
                 //Handle Sequence, for nonempty variadic parameters
                 if (nameAndMetatype) {
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                            _t2.getTypeArgumentList().get(0), null, gen);
+                    metamodelTypeNameOrList(resolveTargs, node, 
+                            gen.getCurrentPackage(),
+                            t2.getTypeArgumentList().get(0), 
+                            null, gen);
                     gen.out(",seq:", Integer.toString(seq));
                 } else {
                     gen.out(gen.getClAlias(), "mkseq$(");
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                            _t2.getTypeArgumentList().get(0), null, gen);
+                    metamodelTypeNameOrList(resolveTargs, node, 
+                            gen.getCurrentPackage(),
+                            t2.getTypeArgumentList().get(0), 
+                            null, gen);
                     gen.out(",", Integer.toString(seq), ")");
                 }
-                _tuple = null;
-            } else if (_tuple.isUnion()) {
-                metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, null, gen);
-                _tuple=null;
+                tuple = null;
+            } else if (tuple.isUnion()) {
+                metamodelTypeNameOrList(resolveTargs, node, 
+                        gen.getCurrentPackage(), 
+                        tuple, null, gen);
+                tuple=null;
             } else {
-                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.asString(), "*/");
+                gen.out("\n/*WARNING3! Tuple is actually ", tuple.asString(), "*/");
                 if (pos > 100) {
                     break;
                 }
@@ -817,27 +779,27 @@ public class TypeUtils {
     /** This method encodes the Arguments type argument of a Callable the same way
      * as a parameter list for runtime. */
     public static void encodeCallableArgumentsAsParameterListForRuntime(final Node node,
-            Type _callable, GenerateJsVisitor gen) {
-        if (_callable.getCaseTypes() != null) {
-            for (Type pt : _callable.getCaseTypes()) {
+            Type callable, GenerateJsVisitor gen) {
+        if (callable.getCaseTypes() != null) {
+            for (Type pt : callable.getCaseTypes()) {
                 if (pt.isCallable()) {
-                    _callable = pt;
+                    callable = pt;
                     break;
                 }
             }
-        } else if (_callable.getSatisfiedTypes() != null) {
-            for (Type pt : _callable.getSatisfiedTypes()) {
+        } else if (callable.getSatisfiedTypes() != null) {
+            for (Type pt : callable.getSatisfiedTypes()) {
                 if (pt.isCallable()) {
-                    _callable = pt;
+                    callable = pt;
                     break;
                 }
             }
         }
-        if (!_callable.isCallable()) {
-            gen.out("[/*WARNING1: got ", _callable.asString(), " instead of Callable*/]");
+        if (!callable.isCallable()) {
+            gen.out("[/*WARNING1: got ", callable.asString(), " instead of Callable*/]");
             return;
         }
-        List<Type> targs = _callable.getTypeArgumentList();
+        List<Type> targs = callable.getTypeArgumentList();
         if (targs == null || targs.size() != 2) {
             gen.out("[/*WARNING2: missing argument types for Callable*/]");
             return;
@@ -846,8 +808,9 @@ public class TypeUtils {
     }
 
     public static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
-        if (d.getAnnotations() == null || d.getAnnotations().isEmpty() ||
-                (d instanceof Class && d.isAnonymous())) {
+        if (d.getAnnotations() == null 
+                || d.getAnnotations().isEmpty() 
+                || d instanceof Class && d.isAnonymous()) {
             encodeForRuntime(that, d, gen, null);
         } else {
             encodeForRuntime(that, d, gen, new ModelAnnotationGenerator(gen, d, that));
@@ -855,9 +818,12 @@ public class TypeUtils {
     }
 
     public static void encodeMethodForRuntime(final Tree.AnyMethod that, final GenerateJsVisitor gen) {
-        encodeForRuntime(that, that.getDeclarationModel(), gen, new RuntimeMetamodelAnnotationGenerator() {
+        encodeForRuntime(that, 
+                that.getDeclarationModel(), gen, 
+                new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
-                outputAnnotationsFunction(that.getAnnotationList(), that.getDeclarationModel(), gen);
+                outputAnnotationsFunction(that.getAnnotationList(), 
+                        that.getDeclarationModel(), gen);
             }
         });
     }
@@ -865,7 +831,8 @@ public class TypeUtils {
     /** Output a metamodel map for runtime use. */
     public static void encodeForRuntime(final Node node, final Declaration d,
             final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        encodeForRuntime(node, d, gen, new RuntimeMetamodelAnnotationGenerator() {
+        encodeForRuntime(node, d, gen, 
+                new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 outputAnnotationsFunction(annotations, d, gen);
             }
@@ -914,8 +881,12 @@ public class TypeUtils {
                     }
                 }
                 p = ModelUtil.getContainingDeclaration(p);
-                while (p != null  && p instanceof ClassOrInterface == false &&
-                        !(p.isToplevel() || p.isAnonymous() || p.isClassOrInterfaceMember() || p.isJsCaptured())) {
+                while (p!=null 
+                        && !(p instanceof ClassOrInterface) 
+                        && !(p.isToplevel() 
+                                || p.isAnonymous() 
+                                || p.isClassOrInterfaceMember() 
+                                || p.isJsCaptured())) {
                     p = ModelUtil.getContainingDeclaration(p);
                 }
             }
@@ -929,23 +900,27 @@ public class TypeUtils {
         boolean first = true;
         for (String p : parts) {
             if (p.startsWith("anon$") || p.startsWith("anonymous#"))continue;
-            if (first)first=false;else gen.out(",");
+            if (first) first=false;else gen.out(",");
             gen.out("'", p, "'");
         }
         gen.out("]");
     }
 
-    public static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
+    public static void encodeForRuntime(final Node that, final Declaration d, 
+            final GenerateJsVisitor gen,
             final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$M$");
-        List<TypeParameter> tparms = d instanceof Generic ? d.getTypeParameters() : null;
+        List<TypeParameter> tparms = 
+                d instanceof Generic ? 
+                    d.getTypeParameters() : null;
         List<Type> satisfies = null;
         List<Type> caseTypes = null;
+        Package pack = d.getUnit().getPackage();
         if (d instanceof Class) {
             Class _cd = (Class)d;
             if (_cd.getExtendedType() != null) {
                 gen.out(",'super':");
-                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                metamodelTypeNameOrList(false, that, pack,
                         _cd.getExtendedType(), null, gen);
             }
             //Parameter types
@@ -973,11 +948,11 @@ public class TypeUtils {
             if (d instanceof Function && ((Function)d).getParameterLists().size() > 1) {
                 Type callableType = ((Function)d).getTypedReference().getFullType();
                 //This needs a new setting to resolve types but not type parameters
-                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                metamodelTypeNameOrList(false, that, pack,
                         that.getUnit().getCallableReturnType(callableType), null, gen);
             } else {
                 //This needs a new setting to resolve types but not type parameters
-                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                metamodelTypeNameOrList(false, that, pack,
                         ((FunctionOrValue)d).getType(), null, gen);
             }
             if (d instanceof Function) {
@@ -993,60 +968,64 @@ public class TypeUtils {
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
-            Declaration _cont = ModelUtil.getContainingDeclaration(d);
+            Declaration cont = getContainingDeclaration(d);
             //Skip over anonymous types/funs as well as local non-captured fields
-            while (_cont.isAnonymous() || !(_cont.isToplevel() || _cont.isClassOrInterfaceMember()
-                    || _cont instanceof Value == false)) {
+            while (cont.isAnonymous() 
+                    || !(cont.isToplevel() 
+                            || cont.isClassOrInterfaceMember() 
+                            || !(cont instanceof Value))) {
                 //Captured values will have a metamodel so we don't skip those
                 //Neither do we skip classes, even if they're anonymous
-                if ((_cont instanceof Value && (((Value)_cont).isJsCaptured())) || _cont instanceof Class) {
+                if ((cont instanceof Value 
+                        && (((Value)cont).isJsCaptured())) 
+                            || cont instanceof Class) {
                     break;
                 }
-                Declaration __d = ModelUtil.getContainingDeclaration(_cont);
-                if (__d==null)break;
-                _cont=__d;
+                Declaration cd = getContainingDeclaration(cont);
+                if (cd==null)break;
+                cont=cd;
             }
             gen.out(",$cont:");
             boolean generateName = true;
-            if ((_cont.getName() != null && _cont.isAnonymous() && _cont instanceof Function)
-                    || (_cont instanceof Value && !((Value)_cont).isTransient())) {
+            if ((cont.getName() != null && cont.isAnonymous() && cont instanceof Function)
+                    || (cont instanceof Value && !((Value)cont).isTransient())) {
                 //Anon functions don't have metamodel so go up until we find a non-anon container
-                Declaration _supercont = ModelUtil.getContainingDeclaration(_cont);
-                while (_supercont != null && _supercont.getName() != null
-                        && _supercont.isAnonymous()) {
-                    _supercont = ModelUtil.getContainingDeclaration(_supercont);
+                Declaration supercont = getContainingDeclaration(cont);
+                while (supercont != null && supercont.getName() != null
+                        && supercont.isAnonymous()) {
+                    supercont = getContainingDeclaration(supercont);
                 }
-                if (_supercont == null) {
+                if (supercont == null) {
                     //If the container is a package, add it because this isn't really toplevel
                     generateName = false;
                     gen.out("0");
                 } else {
-                    _cont = _supercont;
+                    cont = supercont;
                 }
             }
             if (generateName) {
-                if (_cont instanceof Value) {
-                    if (AttributeGenerator.defineAsProperty(_cont)) {
-                        gen.qualify(that, _cont);
+                if (cont instanceof Value) {
+                    if (AttributeGenerator.defineAsProperty(cont)) {
+                        gen.qualify(that, cont);
                     }
-                    gen.out(gen.getNames().getter(_cont, true));
-                } else if (_cont instanceof Setter) {
+                    gen.out(gen.getNames().getter(cont, true));
+                } else if (cont instanceof Setter) {
                     gen.out("{setter:");
-                    if (AttributeGenerator.defineAsProperty(_cont)) {
-                        gen.qualify(that, _cont);
-                        gen.out(gen.getNames().getter(((Setter) _cont).getGetter(), true), ".set");
+                    if (AttributeGenerator.defineAsProperty(cont)) {
+                        gen.qualify(that, cont);
+                        gen.out(gen.getNames().getter(((Setter) cont).getGetter(), true), ".set");
                     } else {
-                        gen.out(gen.getNames().setter(((Setter) _cont).getGetter()));
+                        gen.out(gen.getNames().setter(((Setter) cont).getGetter()));
                     }
                     gen.out("}");
                 } else {
                     boolean inProto = gen.opts.isOptimize()
-                            && (_cont.getContainer() instanceof TypeDeclaration);
-                    final String path = gen.qualifiedPath(that, _cont, inProto);
+                            && (cont.getContainer() instanceof TypeDeclaration);
+                    final String path = gen.qualifiedPath(that, cont, inProto);
                     if (path != null && !path.isEmpty()) {
                         gen.out(path, ".");
                     }
-                    final String contName = gen.getNames().name(_cont);
+                    final String contName = gen.getNames().name(cont);
                     gen.out(contName);
                 }
             }
@@ -1062,7 +1041,7 @@ public class TypeUtils {
             for (Type st : satisfies) {
                 if (!first)gen.out(",");
                 first=false;
-                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
+                metamodelTypeNameOrList(false, that, pack, st, null, gen);
             }
             gen.out("]");
         }
@@ -1082,12 +1061,13 @@ public class TypeUtils {
                     }
                 } else if (std.isAnonymous()) {
                     if (std.isStatic()) {
-                        gen.out(gen.getNames().name(ModelUtil.getContainingDeclaration(std)), ".$st$.", gen.getNames().objectName(std));
+                        gen.out(gen.getNames().name(getContainingDeclaration(std)), 
+                                ".$st$.", gen.getNames().objectName(std));
                     } else {
                         gen.out(gen.getNames().getter(std, true));
                     }
                 } else {
-                    metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
+                    metamodelTypeNameOrList(false, that, pack, st, null, gen);
                 }
             }
             gen.out("]");
@@ -1116,6 +1096,7 @@ public class TypeUtils {
                 comma = true;
             }
             List<Type> typelist = tp.getSatisfiedTypes();
+            Package pack = d.getUnit().getPackage();
             if (typelist != null && !typelist.isEmpty()) {
                 if (comma)gen.out(",");
                 gen.out(MetamodelGenerator.KEY_SATISFIES, ":[");
@@ -1123,7 +1104,7 @@ public class TypeUtils {
                 for (Type st : typelist) {
                     if (!first2)gen.out(",");
                     first2=false;
-                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, null, gen);
+                    metamodelTypeNameOrList(false, node, pack, st, null, gen);
                 }
                 gen.out("]");
                 comma = true;
@@ -1136,7 +1117,7 @@ public class TypeUtils {
                 for (Type st : typelist) {
                     if (!first3)gen.out(",");
                     first3=false;
-                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, null, gen);
+                    metamodelTypeNameOrList(false, node, pack, st, null, gen);
                 }
                 gen.out("]");
                 comma = true;
@@ -1144,7 +1125,7 @@ public class TypeUtils {
             if (tp.getDefaultTypeArgument() != null) {
                 if (comma)gen.out(",");
                 gen.out("def:");
-                metamodelTypeNameOrList(false, node, d.getUnit().getPackage(),
+                metamodelTypeNameOrList(false, node, pack,
                         tp.getDefaultTypeArgument(), null, gen);
             }
             gen.out("}");
@@ -1178,7 +1159,7 @@ public class TypeUtils {
                 final boolean nodeIsDecl = node instanceof Tree.Declaration;
                 boolean rtafs = tpowner instanceof TypeDeclaration == false &&
                         (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() != tpowner : true);
-                if (rtafs && ModelUtil.contains((Scope)tpowner, node.getScope())) {
+                if (rtafs && contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".$a$.",
@@ -1187,7 +1168,10 @@ public class TypeUtils {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
                                 gen.getNames().typeParameterName(tparm));
                     }
-                } else if (resolveTargsFromScope && tpowner instanceof TypeDeclaration && (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() == tpowner : true)  && ModelUtil.contains((Scope)tpowner, node.getScope())) {
+                } else if (resolveTargsFromScope 
+                        && tpowner instanceof TypeDeclaration 
+                        && (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() == tpowner : true) 
+                        && contains((Scope)tpowner, node.getScope())) {
                     typeNameOrList(node, tparm.getType(), gen, false);
                 } else {
                     gen.out("'", gen.getNames().typeParameterName(tparm), "'");

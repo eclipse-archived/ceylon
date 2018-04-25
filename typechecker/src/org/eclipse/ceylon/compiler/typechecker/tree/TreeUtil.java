@@ -338,16 +338,17 @@ public class TreeUtil {
     }
 
     public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
-        while (term instanceof Tree.OfOp ||
-               term instanceof Tree.Expression) {
+        while (true) {
             if (term instanceof Tree.OfOp) {
                 term = ((Tree.OfOp) term).getTerm();
             }
             else if (term instanceof Tree.Expression) {
                 term = ((Tree.Expression) term).getTerm();
             }
+            else {
+                return term;
+            }
         }
-        return term;
     }
     
     public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
