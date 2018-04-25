@@ -730,4 +730,12 @@ shared void strings() {
     check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".rest=="\{THUMBS DOWN SIGN}");
     check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".exceptLast=="\{THUMBS UP SIGN}");
     
+    value interpolated = 
+            "foo \{123} bar" 
+            + "bar \{23.0} baz"
+            + "foo \{[1]} bar"
+            + "bar \{123.byte} baz";
+    check(interpolated is String, "interpolated string 1");
+    check(interpolated=="foo 123 barbar 23.0 bazfoo [1] barbar 123 baz", 
+        "interpolated string 2");
 }
