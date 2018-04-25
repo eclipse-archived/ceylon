@@ -107,7 +107,8 @@ shared native object runtime  {
     since("1.2.0")
     shared native Integer maxExactIntegralFloat;
     
-    string => "runtime [``type`` / ``version``]";
+    shared actual String string 
+            => "runtime [``type`` / ``version``]";
 }
 
 shared native("jvm") object runtime  {

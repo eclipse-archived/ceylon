@@ -66,7 +66,8 @@ shared native object operatingSystem {
         return result;
     }
     
-    string => "operating system [``name`` / ``version``]";
+    shared actual String string 
+            => "operating system [``name`` / ``version``]";
 }
 
 shared native("jvm") object operatingSystem {

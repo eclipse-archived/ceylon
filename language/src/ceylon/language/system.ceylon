@@ -37,7 +37,7 @@ shared native object system {
     since("1.1.0")
     shared native String characterEncoding;
     
-    string => "system";
+    shared actual String string => "system";
 }
 
 shared native("jvm") object system {
