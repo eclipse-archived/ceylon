@@ -297,14 +297,16 @@ public class Singletons {
         if (dc != null) {
             Tree.InvocationExpression invoke = 
                     dc.getInvocationExpression();
-            invoke.getPrimary().visit(gen);
-            gen.out("(");
-            //For now, only positional invocations are allowed here
+            //For now, only positional invocations are 
+            //allowed here
             Tree.PositionalArgumentList pal = 
                     invoke.getPositionalArgumentList();
+            Tree.Primary primary = invoke.getPrimary();
+            primary.visit(gen);
+            gen.out("(");
             gen.getInvoker()
-                .generatePositionalArguments(invoke.getPrimary(), pal, 
-                        pal.getPositionalArguments(), false, false);
+                .generatePositionalArguments(primary, pal, 
+                        false, false);
             if (!pal.getPositionalArguments().isEmpty()) {
                 gen.out(",");
             }

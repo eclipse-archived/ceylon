@@ -9,6 +9,20 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.encodeForRuntime;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.getTypes;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.isStaticWithGenericContainer;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.matchTypeParametersWithArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.compiler.typechecker.util.NativeUtil.isForBackend;
+import static org.eclipse.ceylon.compiler.typechecker.util.NativeUtil.isHeaderWithoutBackend;
+import static org.eclipse.ceylon.compiler.typechecker.util.NativeUtil.isNativeHeader;
+import static org.eclipse.ceylon.compiler.typechecker.util.NativeUtil.mergeStatements;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingDeclaration;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +30,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.ceylon.common.Backend;
+import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
+import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
+import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
+import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
+import org.eclipse.ceylon.compiler.js.util.TypeComparator;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StaticType;
@@ -27,6 +47,7 @@ import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.Interface;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
+import org.eclipse.ceylon.model.typechecker.model.Parameter;
 import org.eclipse.ceylon.model.typechecker.model.ParameterList;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Type;
@@ -34,12 +55,6 @@ import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
-import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
-import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
-import org.eclipse.ceylon.compiler.js.util.TypeComparator;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 
 public class TypeGenerator {
 
@@ -294,26 +309,38 @@ public class TypeGenerator {
         return sb.toString();
     }
 
-    static void interfaceDefinition(final Tree.InterfaceDefinition that, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
+    static void interfaceDefinition(final Tree.InterfaceDefinition that, 
+            final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Interface d = that.getDeclarationModel();
         //If it's inside a dynamic interface, don't generate anything
-        if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
-        final Interface natd = (Interface)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
-        final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
-        if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
+        Scope container = d.getContainer();
+        if (d.isClassOrInterfaceMember() 
+                && ((ClassOrInterface)container).isDynamic())
+            return;
+        
+        final Interface natd = (Interface) 
+                getNativeDeclaration(d, Backend.JavaScript);
+        final boolean headerWithoutBackend = 
+                isHeaderWithoutBackend(that, Backend.JavaScript);
+        if (natd!=null && 
+                (headerWithoutBackend || isNativeHeader(that))) {
             // It's a native header, remember it for later when we deal with its implementation
             gen.saveNativeHeader(that);
             return;
         }
-        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || headerWithoutBackend)) {
+        if (!isForBackend(that, Backend.JavaScript) 
+                && !headerWithoutBackend) {
             return;
         }
         gen.comment(that);
 
-        gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-        final boolean withTargs = generateParameters(that.getTypeParameterList(), null, d, gen);
+        JsIdentifierNames names = gen.getNames();
+        gen.out(GenerateJsVisitor.function, names.name(d));
+        final boolean withTargs = 
+                generateParameters(that.getTypeParameterList(), 
+                        null, d, gen);
         gen.beginBlock();
         final List<Declaration> superDecs = new ArrayList<>(3);
         if (!gen.opts.isOptimize()) {
@@ -321,16 +348,18 @@ public class TypeGenerator {
         }
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         if (withTargs) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
-                    ",$a$,", gen.getNames().name(d), ")");
+            gen.out(gen.getClAlias(), "set_type_args(", names.self(d),
+                    ",$a$,", names.name(d), ")");
             gen.endLine(true);
         }
-        callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
+        callSupertypes(sats == null ? null : getTypes(sats.getTypes()),
                 null, d, that, superDecs, null, null, gen);
-        if (!d.isToplevel() && d.getContainer() instanceof Function && !((Function)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
-                    ",", gen.getNames().typeArgsParamName((Function)d.getContainer()), ",",
-                    gen.getNames().name(d), ")");
+        if (!d.isToplevel() 
+                && container instanceof Function 
+                && !((Function)container).getTypeParameters().isEmpty()) {
+            gen.out(gen.getClAlias(), "set_type_args(", names.self(d),
+                    ",", names.typeArgsParamName((Function)container), ",",
+                    names.name(d), ")");
             gen.endLine(true);
         }
         final List<Tree.Statement> stmts;
@@ -339,7 +368,8 @@ public class TypeGenerator {
             if (nh == null && NativeUtil.hasNativeMembers(d)) {
                 nh = that;
             }
-            stmts = NativeUtil.mergeStatements(that.getInterfaceBody(), nh, Backend.JavaScript);
+            stmts = mergeStatements(that.getInterfaceBody(), 
+                    nh, Backend.JavaScript);
         } else {
             stmts = that.getInterfaceBody().getStatements();
         }
@@ -349,35 +379,42 @@ public class TypeGenerator {
         if (d.isDynamic()) {
             //Add the list of expected members here
             final List<Declaration> members = d.getMembers();
-            gen.out(gen.getNames().name(d), ".dynmem$=[");
+            gen.out(names.name(d), ".dynmem$=[");
             if (members.isEmpty()) {
                 gen.out("];");
             } else {
                 gen.out("'");
                 boolean first = true;
                 for (Declaration m : members) {
-                    if (first)first=false;else gen.out("','");
-                    gen.out(gen.getNames().name(m));
+                    if (first) {
+                        first=false; 
+                    }
+                    else {
+                        gen.out("','");
+                    }
+                    gen.out(names.name(m));
                 }
                 gen.out("'];");
             }
         }
         //Add reference to metamodel
-        gen.out(gen.getNames().name(d), ".$m$=");
-        TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
+        gen.out(names.name(d), ".$m$=");
+        encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.share(d);
         initializeType(that, gen, initDeferrer);
     }
 
-    /** Outputs the parameter list of the type's constructor, including surrounding parens.
+    /** Outputs the parameter list of the type's constructor, 
+     * including surrounding parens.
      * Returns true if the type has type parameters. */
     static boolean generateParameters(final Tree.TypeParameterList tparms,
-            final Tree.ParameterList plist, final TypeDeclaration d, final GenerateJsVisitor gen) {
+            final Tree.ParameterList plist, final TypeDeclaration d, 
+            final GenerateJsVisitor gen) {
         gen.out("(");
-        final boolean withTargs = (tparms != null &&
-                !tparms.getTypeParameterDeclarations().isEmpty()) ||
-                TypeUtils.isStaticWithGenericContainer(d);
+        final boolean withTargs = 
+                (tparms!=null && !tparms.getTypeParameterDeclarations().isEmpty()) 
+                || isStaticWithGenericContainer(d);
         if (plist != null) {
             for (Tree.Parameter p: plist.getParameters()) {
                 p.visit(gen);
@@ -391,51 +428,76 @@ public class TypeGenerator {
         return withTargs;
     }
 
-    static void callSuperclass(final Tree.SimpleType extendedType, final Tree.InvocationExpression invocation,
-            final Class d, final ParameterList plist, final Node that, final boolean pseudoAbstractConstructor,
-            final List<Declaration> superDecs, final GenerateJsVisitor gen) {
-        TypeDeclaration typeDecl = extendedType.getDeclarationModel();
+    static void callSuperclass(final Tree.SimpleType extendedType, 
+            final Tree.InvocationExpression invocation,
+            final Class d, 
+            final ParameterList plist, 
+            final Node that, 
+            final boolean pseudoAbstractConstructor,
+            final List<Declaration> superDecs, 
+            final GenerateJsVisitor gen) {
+        TypeDeclaration typeDecl = 
+                extendedType.getDeclarationModel();
         if (invocation != null) {
-            Tree.PositionalArgumentList argList = invocation.getPositionalArgumentList();
+            Tree.Primary primary = invocation.getPrimary();
+            Tree.PositionalArgumentList argList = 
+                    invocation.getPositionalArgumentList();
+            JsIdentifierNames names = gen.getNames();
+            
             final String qpath;
             if (typeDecl instanceof Constructor) {
-                final String path = gen.qualifiedPath(that, (TypeDeclaration) typeDecl.getContainer(), false);
+                TypeDeclaration td = 
+                        (TypeDeclaration) 
+                            typeDecl.getContainer();
+                final String path = gen.qualifiedPath(that, 
+                        td, false);
                 if (path.isEmpty()) {
-                    qpath = gen.getNames().name((TypeDeclaration) typeDecl.getContainer());
+                    qpath = names.name(td);
                 } else {
-                    qpath = path + "." + gen.getNames().name((TypeDeclaration) typeDecl.getContainer());
+                    qpath = path + "." + names.name(td);
                 }
             } else {
                 if (typeDecl.isStatic()) {
-                    Declaration _cont = ModelUtil.getContainingDeclaration(typeDecl);
-                    String qp = gen.qualifiedPath(that, _cont, false);
-                    qpath = qp + (qp.isEmpty() ? "" : ".") + gen.getNames().name(_cont);
+                    Declaration cont = getContainingDeclaration(typeDecl);
+                    String qp = gen.qualifiedPath(that, cont, false);
+                    qpath = qp + (qp.isEmpty() ? "" : ".") + names.name(cont);
                 } else {
                     qpath = gen.qualifiedPath(that, typeDecl, false);
                 }
             }
+            
             if (pseudoAbstractConstructor) {
                 if (typeDecl instanceof Constructor) {
-                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "$$a(");
+                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), 
+                            "$$a(");
                 } else {
                     gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
-                            gen.getNames().constructorSeparator(typeDecl), "$c$$$a(");
+                            names.constructorSeparator(typeDecl), 
+                            "$c$$$a(");
                 }
             } else {
                 gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
-                        (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType) != null))
-                        ? ".call(this," : "(");
+                        gen.opts.isOptimize() 
+                            && gen.getSuperMemberScope(extendedType) != null ? 
+                                    ".call(this," : "(");
             }
 
-            gen.getInvoker().generatePositionalArguments(invocation.getPrimary(),
-                    argList, argList.getPositionalArguments(), false, false);
-            if (argList.getPositionalArguments().size() > 0) {
+            gen.getInvoker()
+                .generatePositionalArguments(primary, argList, 
+                        false, false);
+            List<Tree.PositionalArgument> positionalArgs = 
+                    argList.getPositionalArguments();
+            if (!positionalArgs.isEmpty()) {
                 gen.out(",");
             }
+            
             //There may be defaulted args we must pass as undefined
-            if (plist != null && plist.getParameters().size() > argList.getPositionalArguments().size()) {
-                for (int i = argList.getPositionalArguments().size(); i < plist.getParameters().size(); i++) {
-                    org.eclipse.ceylon.model.typechecker.model.Parameter p = plist.getParameters().get(i);
+            if (plist!=null) {
+                List<Parameter> parameters = plist.getParameters();
+                for (int i=positionalArgs.size(); 
+                        i<parameters.size(); 
+                        i++) {
+                    Parameter p = parameters.get(i);
                     if (p.isSequenced()) {
                         gen.out(gen.getClAlias(), "empty(),");
                     } else {
@@ -443,18 +505,20 @@ public class TypeGenerator {
                     }
                 }
             }
+            
             //If the supertype has type arguments, add them to the call
             List<TypeParameter> typeParams;
             if (typeDecl instanceof Constructor) {
                 //Output the type arguments to the constructor,
-                //UNLESS you're in the same class, then just pass the type arguments object
+                //UNLESS you're in the same class, then just pass
+                //the type arguments object
                 typeParams = ((Class)typeDecl.getContainer()).getTypeParameters();
                 if (typeParams != null && !typeParams.isEmpty()) {
                     typeParams = null;
                     if (ModelUtil.contains(d, typeDecl)) {
                         gen.out("$a$,");
                     } else {
-                        TypeUtils.printTypeArguments(that,gen, false, 
+                        printTypeArguments(that,gen, false, 
                                 extendedType.getTypeModel()
                                     .getQualifyingType()
                                     .getTypeArguments(),
@@ -465,27 +529,35 @@ public class TypeGenerator {
             } else {
                 typeParams = typeDecl.getTypeParameters();
             }
+            
             if (typeParams != null && !typeParams.isEmpty()) {
                 List<Type> typeArgs = null;
                 if (extendedType.getTypeArgumentList() != null) {
-                    typeArgs = extendedType.getTypeArgumentList().getTypeModels();
+                    typeArgs = extendedType.getTypeArgumentList()
+                                    .getTypeModels();
                 }
-                TypeUtils.printTypeArguments(that, gen, false, 
-                        TypeUtils.matchTypeParametersWithArguments(typeParams, typeArgs),
+                printTypeArguments(that, gen, false, 
+                        matchTypeParametersWithArguments(typeParams, typeArgs),
                         null);
                 gen.out(",");
             }
-            gen.out(gen.getNames().self(d), ")");
+            gen.out(names.self(d), ")");
             gen.endLine(true);
         }
         copySuperMembers(typeDecl, superDecs, d, gen);
     }
 
-    static void callSupertypes(final List<Type> sats, final Tree.SimpleType supertype,
-            final ClassOrInterface d, final Node that, final List<Declaration> superDecs,
-            final Tree.InvocationExpression invoke, final ParameterList plist, final GenerateJsVisitor gen) {
+    static void callSupertypes(final List<Type> sats, 
+            final Tree.SimpleType supertype,
+            final ClassOrInterface d, 
+            final Node that, 
+            final List<Declaration> superDecs,
+            final Tree.InvocationExpression invoke, 
+            final ParameterList plist, 
+            final GenerateJsVisitor gen) {
         if (sats != null) {
-            final ArrayList<Type> supers = new ArrayList<>(sats.size()+1);
+            final ArrayList<Type> supers = 
+                    new ArrayList<>(sats.size()+1);
             supers.addAll(sats);
             if (supertype != null) {
                 supers.add(supertype.getTypeModel());
@@ -496,61 +568,74 @@ public class TypeGenerator {
                 myTypeArgs.add(tp.getName());
             }
             for (Type st: supers) {
-                if (supertype != null && st == supertype.getTypeModel()) {
-                    callSuperclass(supertype, invoke, (Class)d, plist, that, false, superDecs, gen);
+                if (supertype != null 
+                        && st == supertype.getTypeModel()) {
+                    callSuperclass(supertype, invoke, 
+                            (Class)d, plist, that, false, superDecs, gen);
                 } else {
                     TypeDeclaration typeDecl = st.getDeclaration();
-                    final TypeDeclaration _anoncont;
-                    if (d.isAnonymous() && ModelUtil.contains(
-                            ModelUtil.getContainingClassOrInterface(d.getContainer()), typeDecl)) {
-                        _anoncont = ModelUtil.getContainingClassOrInterface(d);
+                    final TypeDeclaration anoncont;
+                    if (d.isAnonymous() 
+                            && ModelUtil.contains(
+                                    getContainingClassOrInterface(d.getContainer()), 
+                                    typeDecl)) {
+                        anoncont = getContainingClassOrInterface(d);
                     } else {
-                        _anoncont = null;
+                        anoncont = null;
                     }
-                    if (_anoncont == null) {
+                    JsIdentifierNames names = gen.getNames();
+                    if (anoncont == null) {
                         if (typeDecl.isStatic()) {
-                            Declaration _cont = ModelUtil.getContainingDeclaration(typeDecl);
-                            String qp = gen.qualifiedPath(that, _cont, false);
-                            gen.out(qp, qp.isEmpty() ? "" : ".", gen.getNames().name(_cont), ".$st$.");
+                            Declaration cont = getContainingDeclaration(typeDecl);
+                            String qp = gen.qualifiedPath(that, cont, false);
+                            gen.out(qp, 
+                                    qp.isEmpty() ? "" : ".", 
+                                    names.name(cont), 
+                                    ".$st$.");
                         } else {
                             gen.qualify(that, typeDecl);
                         }
-                        gen.out(gen.getNames().name(typeDecl), "(");
+                        gen.out(names.name(typeDecl), "(");
                     } else {
-                        gen.qualify(that, _anoncont);
-                        gen.out(gen.getNames().name(typeDecl), ".call(",
-                                gen.getNames().self(ModelUtil.getContainingClassOrInterface(d.getContainer())), ",");
+                        gen.qualify(that, anoncont);
+                        gen.out(names.name(typeDecl), ".call(",
+                                names.self(getContainingClassOrInterface(
+                                        d.getContainer())), 
+                                ",");
                     }
                     if (typeDecl.isParameterized()) {
-                        TypeUtils.printTypeArguments(that, gen, d.isToplevel(), 
+                        printTypeArguments(that, gen, d.isToplevel(), 
                                 st.getTypeArguments(), null);
                         gen.out(",");
                     }
-                    gen.out(gen.getNames().self(d), ")");
+                    gen.out(names.self(d), ")");
                     gen.endLine(true);
                     copySuperMembers(typeDecl, superDecs, d, gen);
                 }
             }
         } else if (supertype != null) {
-            callSuperclass(supertype, invoke, (Class)d, plist, that, false, superDecs, gen);
+            callSuperclass(supertype, invoke, (Class) d, plist, that, false, superDecs, gen);
         }
     }
 
-    private static void copySuperMembers(final TypeDeclaration typeDecl, final List<Declaration> decs,
-            final ClassOrInterface d, final GenerateJsVisitor gen) {
+    private static void copySuperMembers(final TypeDeclaration typeDecl, 
+            final List<Declaration> decs, final ClassOrInterface d, 
+            final GenerateJsVisitor gen) {
         if (!gen.opts.isOptimize() && decs != null) {
             for (Declaration dec: decs) {
                 if (!typeDecl.isMember(dec)) { continue; }
-                String suffix = gen.getNames().scopeSuffix(dec.getContainer());
-                if (dec instanceof Value && ((Value)dec).isTransient()) {
+                JsIdentifierNames names = gen.getNames();
+                String suffix = names.scopeSuffix(dec.getContainer());
+                if (dec instanceof Value 
+                        && ((Value)dec).isTransient()) {
                     superGetterRef(dec,d,suffix, gen);
                     if (((Value) dec).isVariable()) {
                         superSetterRef(dec,d,suffix, gen);
                     }
                 }
                 else {
-                    gen.out(gen.getNames().self(d), ".", gen.getNames().name(dec), suffix, "=",
-                            gen.getNames().self(d), ".", gen.getNames().name(dec));
+                    gen.out(names.self(d), ".", names.name(dec), suffix, "=",
+                            names.self(d), ".", names.name(dec));
                     gen.endLine(true);
                 }
             }
@@ -559,13 +644,14 @@ public class TypeGenerator {
 
     private static void superGetterRef(final Declaration d, final ClassOrInterface sub,
             final String parentSuffix, final GenerateJsVisitor gen) {
+        JsIdentifierNames names = gen.getNames();
         if (AttributeGenerator.defineAsProperty(d)) {
-            gen.out(gen.getClAlias(), "copySuperAttr(", gen.getNames().self(sub), ",'",
-                    gen.getNames().name(d), "','", parentSuffix, "')");
+            gen.out(gen.getClAlias(), "copySuperAttr(", names.self(sub), ",'",
+                    names.name(d), "','", parentSuffix, "')");
         }
         else {
-            gen.out(gen.getNames().self(sub), ".", gen.getNames().getter(d, false), parentSuffix, "=",
-                    gen.getNames().self(sub), ".", gen.getNames().getter(d, false));
+            gen.out(names.self(sub), ".", names.getter(d, false), parentSuffix, "=",
+                    names.self(sub), ".", names.getter(d, false));
         }
         gen.endLine(true);
     }
@@ -573,23 +659,24 @@ public class TypeGenerator {
     private static void superSetterRef(final Declaration d, final ClassOrInterface sub,
             final String parentSuffix, final GenerateJsVisitor gen) {
         if (!AttributeGenerator.defineAsProperty(d)) {
-            gen.out(gen.getNames().self(sub), ".", gen.getNames().setter(d), parentSuffix, "=",
-                    gen.getNames().self(sub), ".", gen.getNames().setter(d));
+            JsIdentifierNames names = gen.getNames();
+            gen.out(names.self(sub), ".", names.setter(d), parentSuffix, "=",
+                    names.self(sub), ".", names.setter(d));
             gen.endLine(true);
         }
     }
 
-    public static class StaticTypeComparator implements Comparator<Tree.StaticType> {
-
+    public static class StaticTypeComparator 
+            implements Comparator<Tree.StaticType> {
         @Override
         public int compare(StaticType o1, StaticType o2) {
             final Type t1 = o1.getTypeModel();
             final Type t2 = o2.getTypeModel();
-            if (ModelUtil.isTypeUnknown(t1)) {
-                return ModelUtil.isTypeUnknown(t2) ? 0 : -1;
+            if (isTypeUnknown(t1)) {
+                return isTypeUnknown(t2) ? 0 : -1;
             }
-            if (ModelUtil.isTypeUnknown(t2)) {
-                return ModelUtil.isTypeUnknown(t1) ? 0 : -1;
+            if (isTypeUnknown(t2)) {
+                return isTypeUnknown(t1) ? 0 : -1;
             }
             if (t1.isSubtypeOf(t2)) {
                 return 1;
@@ -599,22 +686,32 @@ public class TypeGenerator {
             }
             //Check the members
             for (Declaration d : t1.getDeclaration().getMembers()) {
-                if (d instanceof TypedDeclaration || d instanceof ClassOrInterface) {
-                    Declaration d2 = t2.getDeclaration().getMember(d.getName(), null, false);
+                if (d instanceof TypedDeclaration 
+                        || d instanceof ClassOrInterface) {
+                    Declaration d2 = t2.getDeclaration()
+                            .getMember(d.getName(), null, false);
                     if (d2 != null) {
-                        final Declaration dd2 = ModelUtil.getContainingDeclaration(d2);
-                        if (dd2 instanceof TypeDeclaration && t1.getDeclaration().inherits((TypeDeclaration)dd2)) {
+                        final Declaration dd2 = 
+                                getContainingDeclaration(d2);
+                        if (dd2 instanceof TypeDeclaration 
+                                && t1.getDeclaration()
+                                    .inherits((TypeDeclaration)dd2)) {
                             return 1;
                         }
                     }
                 }
             }
             for (Declaration d : t2.getDeclaration().getMembers()) {
-                if (d instanceof TypedDeclaration || d instanceof ClassOrInterface) {
-                    Declaration d2 = t1.getDeclaration().getMember(d.getName(), null, false);
+                if (d instanceof TypedDeclaration 
+                        || d instanceof ClassOrInterface) {
+                    Declaration d2 = t1.getDeclaration()
+                            .getMember(d.getName(), null, false);
                     if (d2 != null) {
-                        final Declaration dd2 = ModelUtil.getContainingDeclaration(d2);
-                        if (dd2 instanceof TypeDeclaration && t2.getDeclaration().inherits((TypeDeclaration)dd2)) {
+                        final Declaration dd2 = 
+                                getContainingDeclaration(d2);
+                        if (dd2 instanceof TypeDeclaration 
+                                && t2.getDeclaration()
+                                    .inherits((TypeDeclaration)dd2)) {
                             return -1;
                         }
                     }
