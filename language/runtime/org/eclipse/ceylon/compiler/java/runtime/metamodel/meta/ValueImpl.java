@@ -235,14 +235,15 @@ public class ValueImpl<Get, Set>
     private void initSetter(org.eclipse.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
                             java.lang.Class<?> getterReturnType, Object instance, Type valueType) {
         
-        if(!decl.isVariable()
-                && !decl.isLate())
+        if(!decl.isVariable() && !decl.isLate())
             return;
         if (ModelUtil.isEnumeratedConstructor(decl)) {
             return;
         }
         if(decl instanceof JavaBeanValue){
             String setterName = ((JavaBeanValue) decl).getSetterName();
+            if (setterName==null)
+                return;
             try {
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 m.setAccessible(true);
