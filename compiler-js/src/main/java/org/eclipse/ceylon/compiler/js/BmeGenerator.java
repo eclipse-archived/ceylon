@@ -10,6 +10,10 @@
 package org.eclipse.ceylon.compiler.js;
 
 import static org.eclipse.ceylon.compiler.js.AttributeGenerator.defineAsProperty;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.getConstructor;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.isNativeJs;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.matchTypeParametersWithArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 
 import java.util.HashMap;
@@ -19,7 +23,6 @@ import java.util.Map;
 
 import org.eclipse.ceylon.common.Backend;
 import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
@@ -66,7 +69,7 @@ public class BmeGenerator {
             }
             
             if (ModelUtil.isConstructor(decl)) {
-                Constructor cd = TypeUtils.getConstructor(decl);
+                Constructor cd = getConstructor(decl);
                 Declaration cdc = (Declaration)cd.getContainer();
                 if (!gen.qualify(bme, cd)) {
                     gen.out(gen.getNames().name(cdc), 
@@ -176,7 +179,7 @@ public class BmeGenerator {
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Function refs with type arguments must be passed as a special function
         gen.out(gen.getClAlias(), "f3$(", who, ",", member, ",");
-        TypeUtils.printTypeArguments(expr, gen, false,
+        printTypeArguments(expr, gen, false,
                 createTypeArguments(expr), 
                 expr.getTypeModel().getVarianceOverrides());
         gen.out(")");
@@ -197,7 +200,7 @@ public class BmeGenerator {
         
         if (dynamic) {
             plainName = expr.getIdentifier().getText();
-        } else if (TypeUtils.isNativeJs(decl)) {
+        } else if (isNativeJs(decl)) {
             // direct access to a native element
             plainName = decl.getName();
         }
@@ -326,9 +329,9 @@ public class BmeGenerator {
                     gen.out(pname, "$", Integer.toString(i), ",");
                 }
                 Tree.TypeArguments typeArgs = that.getTypeArguments();
-                TypeUtils.printTypeArguments(that, 
+                printTypeArguments(that, 
                         gen, false, 
-                        TypeUtils.matchTypeParametersWithArguments(
+                        matchTypeParametersWithArguments(
                                 d.getTypeParameters(), 
                                 typeArgs == null ? null :
                                     typeArgs.getTypeModels()), 

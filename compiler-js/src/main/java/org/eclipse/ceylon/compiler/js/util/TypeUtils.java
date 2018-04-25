@@ -666,27 +666,6 @@ public class TypeUtils {
         gen.out("]");
     }
 
-    private static Unit getUnit(Type pt) {
-        if (pt.isClassOrInterface()) {
-            return pt.getDeclaration().getUnit();
-        } else if (pt.isUnion()) {
-            for (Type ct : pt.getCaseTypes()) {
-                Unit u = getUnit(ct);
-                if (u != null) {
-                    return u;
-                }
-            }
-        } else if (pt.isIntersection()) {
-            for (Type st : pt.getSatisfiedTypes()) {
-                Unit u = getUnit(st);
-                if (u != null) {
-                    return u;
-                }
-            }
-        }
-        return null;
-    }
-
     /** Check if a type is a Tuple, or a union of 2 types one of which is a Tuple. */
     private static boolean isTuple(Type pt) {
         if (pt.isClass() && pt.getDeclaration().isTuple()) {

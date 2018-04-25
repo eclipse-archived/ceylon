@@ -9,7 +9,25 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.acceptNative;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.bothInts;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.encodeCallableArgumentsAsParameterListForRuntime;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.encodeForRuntime;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.encodeMethodForRuntime;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.encodeParameterListForRuntime;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.generateDynamicCheck;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.getTypes;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.intsOrFloats;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.isNativeExternal;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.isNativeJs;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.isUnknown;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.makeAbstractNative;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.mapTypeArgument;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.outputAnnotationsFunction;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.typeNameOrList;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -39,7 +57,7 @@ import org.eclipse.ceylon.compiler.js.util.JsUtils;
 import org.eclipse.ceylon.compiler.js.util.JsWriter;
 import org.eclipse.ceylon.compiler.js.util.Options;
 import org.eclipse.ceylon.compiler.js.util.RetainedVars;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils.AnnotationFunctionHelper;
 import org.eclipse.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.Warning;
 import org.eclipse.ceylon.compiler.typechecker.io.VirtualFile;
@@ -300,7 +318,8 @@ public class GenerateJsVisitor extends Visitor {
                 ((JsonModule)that.getUnit().getPackage().getModule()).setNpmPath(npmName);
             }
             out("x$.$mod$ans$=");
-            TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), new TypeUtils.AnnotationFunctionHelper() {
+            outputAnnotationsFunction(md.getAnnotationList(), 
+                    new AnnotationFunctionHelper() {
                 @Override
                 public String getPathToModelDoc() {
                     return "''";
@@ -345,8 +364,8 @@ public class GenerateJsVisitor extends Visitor {
                         path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
                         if (first)first=false;else{out(",");endLine();}
                         out(path.toString(), ":");
-                        TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), 
-                                new TypeUtils.AnnotationFunctionHelper(){
+                        outputAnnotationsFunction(im.getAnnotationList(), 
+                                new AnnotationFunctionHelper(){
                             @Override
                             public String getPathToModelDoc() {
                                 return null;
@@ -386,8 +405,8 @@ public class GenerateJsVisitor extends Visitor {
         if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
             out("x$.$pkg$ans$", pknm, "=");
-            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(),
-                    new TypeUtils.AnnotationFunctionHelper(){
+            outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(),
+                    new AnnotationFunctionHelper(){
                 @Override
                 public String getPathToModelDoc() {
                     return "'" + that.getUnit().getPackage().getQualifiedNameString() + "'";
@@ -809,9 +828,9 @@ public class GenerateJsVisitor extends Visitor {
             skip=false;
         }
         out(_tmp, "=");
-        TypeUtils.typeNameOrList(that, pt, this, skip);
+        typeNameOrList(that, pt, this, skip);
         out(";", _tmp, ".$m$=");
-        TypeUtils.encodeForRuntime(that,d,this);
+        encodeForRuntime(that,d,this);
         out(";return ", _tmp, ";}");
         endLine(true);
     }
@@ -892,7 +911,7 @@ public class GenerateJsVisitor extends Visitor {
         qualify(that,aliased);
         out(names.name(aliased), "(");
         if (!pt.getTypeArguments().isEmpty()) {
-            TypeUtils.printTypeArguments(that, this, true,
+            printTypeArguments(that, this, true,
                     pt.getTypeArguments(), 
                     pt.getVarianceOverrides());
             out(",");
@@ -900,7 +919,7 @@ public class GenerateJsVisitor extends Visitor {
         out(names.self(d), ");}");
         endLine();
         out(aname,".$m$=");
-        TypeUtils.encodeForRuntime(that, d, this);
+        encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
     }
@@ -946,11 +965,14 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             out("/*PENDIENTE NAMED ARG CLASS DECL */");
         }
-        Map<TypeParameter, Type> invargs = ext.getType().getTypeModel().getTypeArguments();
+        Map<TypeParameter, Type> invargs = 
+                ext.getType().getTypeModel()
+                    .getTypeArguments();
         if (invargs != null && !invargs.isEmpty()) {
-            TypeUtils.printTypeArguments(that, this, true,
+            printTypeArguments(that, this, true,
                     invargs, 
-                    ext.getType().getTypeModel().getVarianceOverrides());
+                    ext.getType().getTypeModel()
+                        .getVarianceOverrides());
             out(",");
         }
         out(names.self(d), ");}");
@@ -960,14 +982,19 @@ public class GenerateJsVisitor extends Visitor {
         out(aliasedName, ".$$");
         endLine(true);
         out(aname,".$m$=");
-        TypeUtils.encodeForRuntime(that, d, this);
+        encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
-        if (aliased instanceof Class && ((Class)aliased).hasConstructors() || aliased instanceof Constructor) {
-            Class ac = aliased instanceof Constructor ? (Class)((Constructor)aliased).getContainer() :
-                (Class)aliased;
+        if (aliased instanceof Class 
+                && ((Class)aliased).hasConstructors() 
+                    || aliased instanceof Constructor) {
+            Class ac = aliased instanceof Constructor ? 
+                    (Class)((Constructor)aliased).getContainer() :
+                    (Class) aliased;
             for (Declaration cm : ac.getMembers()) {
-                if (cm instanceof Constructor && cm!=ac.getDefaultConstructor() && cm.isShared()) {
+                if (cm instanceof Constructor 
+                        && cm != ac.getDefaultConstructor() 
+                        && cm.isShared()) {
                     Constructor cons = (Constructor)cm;
                     final String constructorName = aname + names.constructorSeparator(cons) + names.name(cons);
                     out("function ", constructorName, "(");
@@ -1016,11 +1043,15 @@ public class GenerateJsVisitor extends Visitor {
         comment(that);
         final String tname=names.createTempVariable();
         out(function, names.name(d), "{var ", tname, "=");
-        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, false);
+        typeNameOrList(that, 
+                that.getTypeSpecifier().getType().getTypeModel(), 
+                this, false);
         out(";", tname, ".$m$=");
-        TypeUtils.encodeForRuntime(that, d, this, new RuntimeMetamodelAnnotationGenerator() {
+        encodeForRuntime(that, d, this, 
+                new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
-                TypeUtils.outputAnnotationsFunction(that.getAnnotationList(), d, GenerateJsVisitor.this);
+                outputAnnotationsFunction(that.getAnnotationList(), d, 
+                        GenerateJsVisitor.this);
             }
         });
         out(";return ", tname, ";}");
@@ -1052,7 +1083,7 @@ public class GenerateJsVisitor extends Visitor {
                 && ((Class)d).isSerializable();
         boolean enter = opts.isOptimize();
         ArrayList<Parameter> plist = null;
-        final boolean isAbstractNative = TypeUtils.makeAbstractNative(d);
+        final boolean isAbstractNative = makeAbstractNative(d);
         final String typename = names.name(d);
         final boolean overrideToString = d.getDirectMember("toString", null, true) == null;
         if (enter) {
@@ -1108,7 +1139,7 @@ public class GenerateJsVisitor extends Visitor {
                         defineAttribute(names.self(d), names.name(vcd));
                         out("{return ", typename, names.constructorSeparator(vcd),
                                 names.name(vcd), "();},undefined,");
-                        TypeUtils.encodeForRuntime(vc, vcd, vc.getAnnotationList(), this);
+                        encodeForRuntime(vc, vcd, vc.getAnnotationList(), this);
                         out(");");
                     }
                 }
@@ -1161,7 +1192,7 @@ public class GenerateJsVisitor extends Visitor {
             out(",undefined");
         }
         out(",");
-        TypeUtils.encodeForRuntime(node, pdec, this);
+        encodeForRuntime(node, pdec, this);
         out(")");
         endLine(true);
     }
@@ -1260,7 +1291,7 @@ public class GenerateJsVisitor extends Visitor {
             out(names.self(type), ".", names.name(c));
         }
         out(".$m$=");
-        TypeUtils.encodeForRuntime(objDef, d, this);
+        encodeForRuntime(objDef, d, this);
         endLine(true);
     }
 
@@ -1304,8 +1335,10 @@ public class GenerateJsVisitor extends Visitor {
         try {
             final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
             final Tree.ExtendedType et = that.getExtendedType();
-            Singletons.defineObject(that, null, sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
-                    et == null ? null : et.getType(), et == null ? null : et.getInvocationExpression(),
+            Singletons.defineObject(that, null, 
+                    sts == null ? null : getTypes(sts.getTypes()),
+                    et == null ? null : et.getType(), 
+                    et == null ? null : et.getInvocationExpression(),
                     that.getClassBody(), null, this, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1316,7 +1349,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.MethodDeclaration that) {
         //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
+        if (errVisitor.hasErrors(that) || !acceptNative(that)) return;
         FunctionHelper.methodDeclaration(null, that, this, verboseStitcher);
     }
 
@@ -1338,7 +1371,7 @@ public class GenerateJsVisitor extends Visitor {
                 return true;
             }
             out(names.name(d), ".$m$=");
-            TypeUtils.encodeForRuntime(n, d, n.getAnnotationList(), this);
+            encodeForRuntime(n, d, n.getAnnotationList(), this);
             endLine(true);
             return true;
         } else {
@@ -1400,16 +1433,16 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that)) return;
+        if (errVisitor.hasErrors(that) || !acceptNative(that)) return;
         final Function d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember()
-                || TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule())) {
+                || isNativeExternal(d) && compiler.isCompilingLanguageModule())) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), that);
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
             //Add reference to metamodel
             out(names.name(d), ".$m$=");
-            TypeUtils.encodeMethodForRuntime(that, this);
+            encodeMethodForRuntime(that, this);
             endLine(true);
         }
     }
@@ -1593,13 +1626,13 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             out(names.self(outer), ".", names.name(d), ".$m$=");
         }
-        TypeUtils.encodeMethodForRuntime(that, this);
+        encodeMethodForRuntime(that, this);
         endLine(true);
     }
 
     @Override
     public void visit(final Tree.AttributeGetterDefinition that) {
-        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
+        if (errVisitor.hasErrors(that) || !acceptNative(that))return;
         Value d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -1614,16 +1647,16 @@ public class GenerateJsVisitor extends Visitor {
                 AttributeGenerator.setter(setterDef, this);
             }
             out(",");
-            TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
+            encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
             if (setterDef != null) {
                 out(",");
-                TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+                encodeForRuntime(setterDef, setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
             }
             out(");");
         }
         else {
             out(function, names.getter(d, false), "()");
-            if (TypeUtils.isNativeExternal(d)) {
+            if (isNativeExternal(d)) {
                 out("{");
                 if (stitchNative(d, that)) {
                     if (verboseStitcher) {
@@ -1639,7 +1672,7 @@ public class GenerateJsVisitor extends Visitor {
             }
             endLine();
             out(names.getter(d, false), ".$m$=");
-            TypeUtils.encodeForRuntime(that, d, this);
+            encodeForRuntime(that, d, this);
             if (!shareGetter(d)) { out(";"); }
             AttributeGenerator.generateAttributeMetamodel(that, true, false, this);
         }
@@ -1652,7 +1685,7 @@ public class GenerateJsVisitor extends Visitor {
         comment(that);
         defineAttribute(d.isStatic() ? names.name(outer)+".$st$" : names.self(outer),
                 names.name(d));
-        if (TypeUtils.isNativeExternal(d)) {
+        if (isNativeExternal(d)) {
             out("{");
             if (stitchNative(d, that)) {
                 if (verboseStitcher) {
@@ -1674,10 +1707,10 @@ public class GenerateJsVisitor extends Visitor {
             AttributeGenerator.setter(setterDef, this);
         }
         out(",");
-        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
+        encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         if (setterDef != null) {
             out(",");
-            TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+            encodeForRuntime(setterDef, setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
         }
         out(");");
     }
@@ -1714,7 +1747,7 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.AttributeSetterDefinition that) {
-        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
+        if (errVisitor.hasErrors(that) || !acceptNative(that)) return;
         Setter d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember() ||
                 AttributeGenerator.defineAsProperty(d)) return;
@@ -1724,7 +1757,7 @@ public class GenerateJsVisitor extends Visitor {
         if (!shareSetter(d)) { out(";"); }
         if (!d.isToplevel())outerSelf(d);
         out(names.setter(d.getGetter()), ".$m$=");
-        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
+        encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         endLine(true);
         AttributeGenerator.generateAttributeMetamodel(that, false, true, this);
     }
@@ -1766,7 +1799,7 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.AttributeDeclaration that) {
-        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
+        if (errVisitor.hasErrors(that) || !acceptNative(that)) return;
         final Value value = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
@@ -1790,7 +1823,7 @@ public class GenerateJsVisitor extends Visitor {
                 //Stitch native member attribute declaration with no value
                 final boolean eagerExpr = specifier != null
                         && !(specifier instanceof LazySpecifierExpression); 
-                if (eagerExpr && !TypeUtils.isNativeExternal(value)) {
+                if (eagerExpr && !isNativeExternal(value)) {
                     comment(that);
                     outerSelf(value);
                     out(".", names.privateName(value), "=");
@@ -1814,7 +1847,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 initSelf(that);
                 boolean genatr=true;
-                if (TypeUtils.isNativeExternal(value)) {
+                if (isNativeExternal(value)) {
                     if (stitchNative(value, that)) {
                         if (verboseStitcher) {
                             spitOut("Stitching in native attribute " 
@@ -1847,10 +1880,10 @@ public class GenerateJsVisitor extends Visitor {
                             out(",undefined");
                         }
                         out(",");
-                        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
+                        encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
                         if (setterDef != null) {
                             out(",");
-                            TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(),
+                            encodeForRuntime(setterDef, setterDef.getDeclarationModel(),
                                     setterDef.getAnnotationList(), this);
                         }
                         out(")");
@@ -2188,7 +2221,7 @@ public class GenerateJsVisitor extends Visitor {
         if (decl == null && isInDynamicBlock()) {
             plainName = expr.getIdentifier().getText();
         }
-        else if (TypeUtils.isNativeJs(decl)) {
+        else if (isNativeJs(decl)) {
             if (decl==null) {
                 expr.addUnexpectedError("Expression with no declaration outside of dynamic block");
                 return "(throw new TypeError('<NULL>'))";
@@ -2253,9 +2286,9 @@ public class GenerateJsVisitor extends Visitor {
         if (t == 4) {
             final Type ct = term.getTypeModel();
             out(",");
-            TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, ct, this);
+            encodeCallableArgumentsAsParameterListForRuntime(term, ct, this);
             out(",");
-            TypeUtils.printTypeArguments(term, this, true, ct.getTypeArguments(), null);
+            printTypeArguments(term, this, true, ct.getTypeArguments(), null);
         }
         boxUnboxEnd(t);
     }
@@ -2286,7 +2319,7 @@ public class GenerateJsVisitor extends Visitor {
             }
         }
         
-        final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
+        final boolean fromNative = isNativeJs(fromTerm);
         if (fromNative != toNative || fromType.isCallable()) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
@@ -2440,7 +2473,7 @@ public class GenerateJsVisitor extends Visitor {
                 out(",undefined");
             }
             out(",");
-            TypeUtils.encodeForRuntime(expr, d, this);
+            encodeForRuntime(expr, d, this);
             out(")");
             endLine(true);
         }
@@ -2470,7 +2503,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }
             out("=");
-            int box = boxUnboxStart(expr, TypeUtils.isNativeJs(term), true, true);
+            int box = boxUnboxStart(expr, isNativeJs(term), true, true);
             expr.visit(this);
             if (box == 4) out("/*TODO: callable targs 6.1*/");
             boxUnboxEnd(box);
@@ -2502,7 +2535,7 @@ public class GenerateJsVisitor extends Visitor {
                 endBlock();
                 if (property) {
                     out(",undefined,");
-                    TypeUtils.encodeForRuntime(specStmt, bmeDecl, this);
+                    encodeForRuntime(specStmt, bmeDecl, this);
                     out(")");
                 }
                 endLine(true);
@@ -2512,7 +2545,9 @@ public class GenerateJsVisitor extends Visitor {
                 // "attr = expr;" in a prototype definition
                 //since #451 we now generate an attribute here
                 if (outer instanceof Constructor 
-                        || bmeDecl.isMember() && bmeDecl instanceof Value && bmeDecl.isActual()) {
+                        || bmeDecl.isMember() 
+                            && bmeDecl instanceof Value 
+                            && bmeDecl.isActual()) {
                     assignment(outer, bmeDecl, expr);
                 }
             }
@@ -2523,11 +2558,12 @@ public class GenerateJsVisitor extends Visitor {
                     // simple assignment to a variable attribute
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
-                            int boxType = boxUnboxStart(expr.getTerm(), TypeUtils.isNativeJs(moval), true, false);
+                            int boxType = boxUnboxStart(expr.getTerm(), isNativeJs(moval), true, false);
                             if (isInDynamicBlock() 
-                                    && !ModelUtil.isTypeUnknown(moval.getType())
-                                    && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
-                                TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false,
+                                    && !isTypeUnknown(moval.getType())
+                                    && isTypeUnknown(expr.getTypeModel())) {
+                                generateDynamicCheck(expr, moval.getType(), 
+                                        GenerateJsVisitor.this, false,
                                         expr.getTypeModel().getTypeArguments());
                             } else {
                                 expr.visit(GenerateJsVisitor.this);
@@ -2536,8 +2572,9 @@ public class GenerateJsVisitor extends Visitor {
                                 out(",");
                                 if (moval instanceof Function) {
                                     //Add parameters
-                                    TypeUtils.encodeParameterListForRuntime(true, specStmt,
-                                            ((Function)moval).getFirstParameterList(), GenerateJsVisitor.this);
+                                    encodeParameterListForRuntime(true, specStmt,
+                                            ((Function)moval).getFirstParameterList(), 
+                                            GenerateJsVisitor.this);
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
@@ -2548,7 +2585,7 @@ public class GenerateJsVisitor extends Visitor {
                                         out("[/*VALUE Callable params ", ps.asString()+"*/],");
                                     }
                                 }
-                                TypeUtils.printTypeArguments(expr, 
+                                printTypeArguments(expr, 
                                         GenerateJsVisitor.this, false, 
                                         expr.getTypeModel().getTypeArguments(),
                                         expr.getTypeModel().getVarianceOverrides());
@@ -2614,13 +2651,16 @@ public class GenerateJsVisitor extends Visitor {
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    if (isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getTypeModel())
-                            && !ModelUtil.isTypeUnknown(((FunctionOrValue) bmeDecl).getType())) {
-                        TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
+                    Type funType = ((FunctionOrValue) bmeDecl).getType();
+                    if (isInDynamicBlock() 
+                            && isTypeUnknown(expr.getTypeModel())
+                            && !isTypeUnknown(funType)) {
+                        generateDynamicCheck(expr, funType, this, false,
                                 expr.getTypeModel().getTypeArguments());
                     } else {
                         if (expr.getTerm() instanceof Tree.FunctionArgument) {
-                            Function fun = ((Tree.FunctionArgument) expr.getTerm()).getDeclarationModel();
+                            Function fun = ((Tree.FunctionArgument) expr.getTerm())
+                                                .getDeclarationModel();
                             if (fun.isAnonymous()) {
                                 fun.setRefinedDeclaration(moval);
                             }
@@ -2692,7 +2732,8 @@ public class GenerateJsVisitor extends Visitor {
         if (leftDynamic) {
             that.getLeftTerm().visit(this);
             out("=");
-            int box = boxUnboxStart(that.getRightTerm(), TypeUtils.isNativeJs(that.getLeftTerm()), true, true);
+            int box = boxUnboxStart(that.getRightTerm(), 
+                    isNativeJs(that.getLeftTerm()), true, true);
             that.getRightTerm().visit(this);
             if (box == 4) out("/*TODO: callable targs 6.2*/");
             boxUnboxEnd(box);
@@ -2731,7 +2772,8 @@ public class GenerateJsVisitor extends Visitor {
         BmeGenerator.generateMemberAccess(lhsExpr, new GenerateCallback() {
             @Override public void generateValue() {
                 //if (!isNaturalLiteral(that.getRightTerm())) {
-                    int boxType = boxUnboxStart(that.getRightTerm(), TypeUtils.isNativeJs(that.getLeftTerm()), true, false);
+                    int boxType = boxUnboxStart(that.getRightTerm(), 
+                            isNativeJs(that.getLeftTerm()), true, false);
                     that.getRightTerm().visit(GenerateJsVisitor.this);
                     if (boxType == 4) out("/*TODO: callable targs 7*/");
                     boxUnboxEnd(boxType);
@@ -2969,7 +3011,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }
             if (!ModelUtil.isTypeUnknown(dectype)) {
-                TypeUtils.generateDynamicCheck(ex, dectype, this, false,
+                generateDynamicCheck(ex, dectype, this, false,
                         returnType.getTypeArguments());
                 endLine(true);
                 return;
@@ -3012,7 +3054,7 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "plus", "+", null, this);
         } else {
-            if (TypeUtils.intsOrFloats(lt,rt)) {
+            if (intsOrFloats(lt,rt)) {
                 Operators.simpleBinaryOp(that, "(", "+", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
@@ -3027,7 +3069,7 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "minus", "-", null, this);
         } else {
-            if (TypeUtils.intsOrFloats(lt,rt)) {
+            if (intsOrFloats(lt,rt)) {
                 Operators.simpleBinaryOp(that, "(", "-", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
@@ -3042,7 +3084,7 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "times", "*", null, this);
         } else {
-            if (TypeUtils.intsOrFloats(lt,rt)) {
+            if (intsOrFloats(lt,rt)) {
                 Operators.simpleBinaryOp(that, "(", "*", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".times(", ")", this);
@@ -3057,10 +3099,10 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "divided", "/", null, this);
         } else {
-            if (TypeUtils.bothInts(lt, rt)) {
+            if (bothInts(lt, rt)) {
                 out(getClAlias());
                 Operators.simpleBinaryOp(that, "i$(", "/", ")", this);
-            } else if (TypeUtils.intsOrFloats(lt, rt)) {
+            } else if (intsOrFloats(lt, rt)) {
                 Operators.simpleBinaryOp(that, "(", "/", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
@@ -3074,7 +3116,7 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(lt)) {
             Operators.nativeBinaryOp(that, "remainder", "%", null, this);
         } else {
-            if (TypeUtils.bothInts(lt, rt)) {
+            if (bothInts(lt, rt)) {
                 out(getClAlias());
                 Operators.simpleBinaryOp(that, "i$(", "%", ")", this);
             }
@@ -3126,7 +3168,8 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(Tree.ComplementAssignOp that) {
-        assignOp(that, "complement", TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"));
+        assignOp(that, "complement", 
+                mapTypeArgument(that, "complement", "Element", "Other"));
     }
     public void visit(Tree.UnionAssignOp that) {
         if (that.getBinary()) {
@@ -3135,7 +3178,8 @@ public class GenerateJsVisitor extends Visitor {
             }
         }
         else {
-            assignOp(that, "union", TypeUtils.mapTypeArgument(that, "union", "Element", "Other"));
+            assignOp(that, "union", 
+                    mapTypeArgument(that, "union", "Element", "Other"));
         }
     }
     public void visit(Tree.IntersectAssignOp that) {
@@ -3145,7 +3189,8 @@ public class GenerateJsVisitor extends Visitor {
             }
         }
         else {
-            assignOp(that, "intersection", TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"));
+            assignOp(that, "intersection", 
+                    mapTypeArgument(that, "intersection", "Element", "Other"));
         }
     }
 
@@ -3161,7 +3206,7 @@ public class GenerateJsVisitor extends Visitor {
         final Type ltype = lhs.getTypeModel();
         final Type rtype = that.getRightTerm().getTypeModel();
         final boolean oneFloat = ltype.isFloat() || rtype.isFloat();
-        if (TypeUtils.intsOrFloats(ltype, rtype)) {
+        if (intsOrFloats(ltype, rtype)) {
             if (lhs instanceof BaseMemberExpression) {
                 BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
                 Declaration lhsDecl = lhsBME.getDeclaration();
@@ -3185,13 +3230,16 @@ public class GenerateJsVisitor extends Visitor {
                 if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
                 out(")");
 
-            } else if (lhs instanceof QualifiedMemberExpression) {
-                QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-                if (TypeUtils.isNativeJs(lhsQME)) {
+            } else if (lhs instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression lhsQME = 
+                        (Tree.QualifiedMemberExpression) lhs;
+                if (isNativeJs(lhsQME)) {
                     // ($1.foo = Box($1.foo).operator($2))
                     final String tmp = names.createTempVariable();
-                    final String dec = isInDynamicBlock() && lhsQME.getDeclaration() == null ?
-                            lhsQME.getIdentifier().getText() : lhsQME.getDeclaration().getName();
+                    final String dec = 
+                            isInDynamicBlock() && lhsQME.getDeclaration() == null ?
+                                lhsQME.getIdentifier().getText() : 
+                                lhsQME.getDeclaration().getName();
                     out("(", tmp, "=");
                     lhsQME.getPrimary().visit(this);
                     out(",", tmp, ".", dec, "=");
@@ -3257,7 +3305,7 @@ public class GenerateJsVisitor extends Visitor {
                     if (!isNative) {
                         if (targs != null) {
                             out(",");
-                            TypeUtils.printTypeArguments(that, 
+                            printTypeArguments(that, 
                                     GenerateJsVisitor.this, 
                                     false, targs, null);
                         }
@@ -3268,9 +3316,10 @@ public class GenerateJsVisitor extends Visitor {
             if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
             out(")");
 
-        } else if (lhs instanceof QualifiedMemberExpression) {
-            QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-            if (TypeUtils.isNativeJs(lhsQME)) {
+        } else if (lhs instanceof Tree.QualifiedMemberExpression) {
+            Tree.QualifiedMemberExpression lhsQME = 
+                    (Tree.QualifiedMemberExpression) lhs;
+            if (isNativeJs(lhsQME)) {
                 // ($1.foo = Box($1.foo).operator($2))
                 final String tmp = names.createTempVariable();
                 final String dec = isInDynamicBlock() && lhsQME.getDeclaration() == null ?
@@ -3428,7 +3477,7 @@ public class GenerateJsVisitor extends Visitor {
    }
 
    boolean hasSimpleGetterSetter(Declaration decl) {
-       return isInDynamicBlock() && TypeUtils.isUnknown(decl) 
+       return isInDynamicBlock() && isUnknown(decl) 
            || !(decl instanceof Value && ((Value)decl).isTransient() || decl instanceof Setter || decl.isFormal());
    }
 
@@ -3448,7 +3497,7 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "or", "|", null, this);
         } else {
             if (that.getBinary()) {
-                if (TypeUtils.bothInts(lt, rt)) {
+                if (bothInts(lt, rt)) {
                     Operators.simpleBinaryOp(that, "(", "|", ")", this);
                 }
                 else {
@@ -3457,7 +3506,7 @@ public class GenerateJsVisitor extends Visitor {
             }
             else {
                 Operators.genericBinaryOp(that, ".union(",
-                        TypeUtils.mapTypeArgument(that, "union", "Element", "Other"),
+                        mapTypeArgument(that, "union", "Element", "Other"),
                         that.getTypeModel().getVarianceOverrides(), this);
             }
         }
@@ -3471,7 +3520,7 @@ public class GenerateJsVisitor extends Visitor {
             Operators.nativeBinaryOp(that, "and", "&", null, this);
         } else {
             if (that.getBinary()) {
-                if (TypeUtils.bothInts(lt, rt)) {
+                if (bothInts(lt, rt)) {
                     Operators.simpleBinaryOp(that, "(", "&", ")", this);
                 }
                 else {
@@ -3480,7 +3529,7 @@ public class GenerateJsVisitor extends Visitor {
             }
             else {
                 Operators.genericBinaryOp(that, ".intersection(",
-                        TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"),
+                        mapTypeArgument(that, "intersection", "Element", "Other"),
                         that.getTypeModel().getVarianceOverrides(), this);
             }
         }
@@ -3489,7 +3538,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.ComplementOp that) {
         Operators.genericBinaryOp(that, ".complement(",
-                TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"),
+                mapTypeArgument(that, "complement", "Element", "Other"),
                 that.getTypeModel().getVarianceOverrides(), this);
     }
 
@@ -3564,11 +3613,11 @@ public class GenerateJsVisitor extends Visitor {
         }
         if (isInDynamicBlock() && coerceDynamic) {
             out(",");
-            TypeUtils.typeNameOrList(term, type, this, false);
+            typeNameOrList(term, type, this, false);
             out(",false)");
         }
         out(",");
-        TypeUtils.typeNameOrList(term, type, this, false);
+        typeNameOrList(term, type, this, false);
         if (type.getQualifyingType() != null) {
             Type outer = type.getQualifyingType();
             boolean first=true;
@@ -3579,7 +3628,7 @@ public class GenerateJsVisitor extends Visitor {
                 } else{
                     out(",");
                 }
-                TypeUtils.typeNameOrList(term, outer, this, false);
+                typeNameOrList(term, outer, this, false);
                 outer = outer.getQualifyingType();
             }
             if (!first) {
@@ -3697,7 +3746,9 @@ public class GenerateJsVisitor extends Visitor {
         int _box=0;
         final Tree.SpecifierExpression expr = that.getSpecifierExpression();
         if (that.getParameter() != null && expr != null) {
-            _box = boxUnboxStart(expr.getExpression().getTerm(), TypeUtils.isNativeJs(that.getParameter().getModel()), true, false);
+            _box = boxUnboxStart(expr.getExpression().getTerm(), 
+                    isNativeJs(that.getParameter().getModel()), 
+                    true, false);
         }
         expr.visit(this);
         if (_box == 4) {
@@ -3705,7 +3756,9 @@ public class GenerateJsVisitor extends Visitor {
             //Add parameters
             invoker.describeMethodParameters(expr.getExpression().getTerm());
             out(",");
-            TypeUtils.printTypeArguments(that, expr.getExpression().getTypeModel(), this, false);
+            printTypeArguments(that, 
+                    expr.getExpression().getTypeModel(), 
+                    this, false);
         }
         boxUnboxEnd(_box);
     }
@@ -3982,7 +4035,7 @@ public class GenerateJsVisitor extends Visitor {
         defineAttribute(names.self(klass), names.name(that.getDeclarationModel()));
         out("{return ", names.name(klass), names.constructorSeparator(that.getDeclarationModel()),
                 names.name(that.getDeclarationModel()), "();},undefined,");
-        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
+        encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         out(");");
     }
 
