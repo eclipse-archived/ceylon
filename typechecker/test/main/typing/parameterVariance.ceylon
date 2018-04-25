@@ -49,3 +49,20 @@ void parameterVariance() {
         shared void f($error T t, void tt(void ttt($error T t))) {}
     }
 }
+
+
+void sharedParameterVariance() {
+    class Sup<out T>(shared void x($error T t)) {}
+    
+    class Sub() extends Sup<String>(print) {}
+    
+    (Sub() of Sup<String?>).x(null);
+    
+    class Bad1<out T, in S>($error shared S(T) y) {}
+    class Bad2<out T, in S>($error shared S y($error T t)) {}
+    class Bad3<out T, in S>(shared void y($error T t($error S s))) {}
+
+    class Ok1<out T, in S>(S(T) y) {}
+    class Ok2<out T, in S>(S y(T t)) {}
+    class Ok3<out T, in S>(void y(T t(S s))) {}
+}

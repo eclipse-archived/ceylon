@@ -69,9 +69,15 @@ public class TypeArgumentVisitor extends Visitor {
             check(that.getType(), dec.isVariable() || dec.isLate(), dec);
         }
         if (dec.isParameter()) {
-            flip();
             boolean topLevel = 
                     parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
+            if (dec.isShared() && topLevel) {
+                //shared parameters are also members!
+                //so we need to pre-visit them before
+                //flipping() and revisiting
+                visitAny(that);
+            }
+            flip();
             if (topLevel) {
                 //TODO: to fix #1378 don't do this when the
                 //      parameter dec occurs in any parameter
