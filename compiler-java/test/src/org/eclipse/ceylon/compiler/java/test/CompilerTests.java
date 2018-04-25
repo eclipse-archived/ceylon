@@ -69,6 +69,7 @@ import org.eclipse.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import org.eclipse.ceylon.compiler.java.launcher.Main;
 import org.eclipse.ceylon.compiler.java.launcher.Main.ExitState;
 import org.eclipse.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncFileManager;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncTool;
@@ -79,33 +80,31 @@ import org.eclipse.ceylon.javax.tools.Diagnostic;
 import org.eclipse.ceylon.javax.tools.DiagnosticListener;
 import org.eclipse.ceylon.javax.tools.FileObject;
 import org.eclipse.ceylon.javax.tools.JavaCompiler;
+import org.eclipse.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import org.eclipse.ceylon.javax.tools.JavaFileObject;
 import org.eclipse.ceylon.javax.tools.StandardJavaFileManager;
 import org.eclipse.ceylon.javax.tools.ToolProvider;
-import org.eclipse.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import org.eclipse.ceylon.langtools.source.util.TaskEvent;
-import org.eclipse.ceylon.langtools.source.util.TaskListener;
 import org.eclipse.ceylon.langtools.source.util.TaskEvent.Kind;
+import org.eclipse.ceylon.langtools.source.util.TaskListener;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import org.eclipse.ceylon.launcher.Launcher;
 import org.eclipse.ceylon.model.cmr.ArtifactResult;
 import org.eclipse.ceylon.model.cmr.ArtifactResultType;
 import org.eclipse.ceylon.model.cmr.Exclusion;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
+import org.eclipse.ceylon.model.cmr.JDKUtils.JDK;
 import org.eclipse.ceylon.model.cmr.ModuleScope;
 import org.eclipse.ceylon.model.cmr.PathFilter;
 import org.eclipse.ceylon.model.cmr.Repository;
 import org.eclipse.ceylon.model.cmr.RepositoryException;
 import org.eclipse.ceylon.model.cmr.VisibilityType;
-import org.eclipse.ceylon.model.cmr.JDKUtils.JDK;
 import org.eclipse.ceylon.model.loader.AbstractModelLoader;
 import org.eclipse.ceylon.model.loader.JvmBackendUtil;
 import org.eclipse.ceylon.model.typechecker.model.Module;
 import org.eclipse.ceylon.tools.jigsaw.CeylonJigsawTool;
 import org.junit.Assert;
 import org.junit.Before;
-
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
 public abstract class CompilerTests {
 

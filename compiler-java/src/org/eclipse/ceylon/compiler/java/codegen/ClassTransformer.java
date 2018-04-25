@@ -2576,6 +2576,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // For each super interface
         for (Declaration member : sortedMembers(iface.getMembers())) {
+            if (member.isStatic()) continue;
             
             if (member instanceof Class) {
                 Class klass = (Class)member;

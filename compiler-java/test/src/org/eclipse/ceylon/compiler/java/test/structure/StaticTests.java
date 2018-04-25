@@ -75,6 +75,11 @@ public class StaticTests extends CompilerTests {
     public void testStaticMembers() {
         compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "attribute/StaticMembers.src", "attribute/StaticMembers.ceylon");
     }
+    
+    @Test
+    public void testStaticObjectMethod() {
+        compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "klass/StaticObjectMethod.src", "klass/StaticObjectMethod.ceylon");
+    }
 
     @Test
     public void testStaticInterfaceMethods() {

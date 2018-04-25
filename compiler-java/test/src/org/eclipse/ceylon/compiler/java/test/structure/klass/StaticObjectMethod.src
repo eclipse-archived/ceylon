@@ -1,0 +1,88 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.CaseTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::case1"})
+interface CaseInterface {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$CaseInterface$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    public static void method() {
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class CaseInterface$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    CaseInterface$impl(.org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface $this;
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("case1")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::CaseInterface"})
+final class case1_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface {
+    
+    private case1_() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$CaseInterface$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface$impl(this);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.class);
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$CaseInterface$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.CaseInterface$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$CaseInterface$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$CaseInterface$this$;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_();
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::case1")
+    static .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'case1\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.case1_.$TypeDescriptor$;
+    }
+}
