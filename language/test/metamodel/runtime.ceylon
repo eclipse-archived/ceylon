@@ -2306,6 +2306,7 @@ void runTests() {
     sandbox(bugC1998);
     sandbox(bugC2392);
     sandbox(bug7370);
+    sandbox(bug7362);
     // those were filed for the JS compiler initially
     sandbox(bugJ505);
     

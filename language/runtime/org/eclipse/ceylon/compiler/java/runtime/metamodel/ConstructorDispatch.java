@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.ceylon.compiler.java.Util;
-import org.eclipse.ceylon.compiler.java.language.IntArray;
-import org.eclipse.ceylon.compiler.java.language.LongArray;
 import org.eclipse.ceylon.compiler.java.metadata.ConstructorName;
 import org.eclipse.ceylon.compiler.java.metadata.Ignore;
 import org.eclipse.ceylon.compiler.java.metadata.Jpa;
@@ -36,10 +34,6 @@ import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Parameter;
 import org.eclipse.ceylon.model.typechecker.model.Reference;
 
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.DefaultValueProvider;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.MethodHandleUtil;
-
 import ceylon.language.Array;
 import ceylon.language.Callable;
 import ceylon.language.Entry;
@@ -48,7 +42,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.ClassModel;
-import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.InvocationException;
 
 /**
@@ -80,7 +73,8 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         this.constructorReference = constructorReference;
         freeClass = (ClassDeclarationImpl)
                 (appliedClass instanceof ClassImpl ?
-                ((ClassImpl)appliedClass).declaration : ((MemberClassImpl)appliedClass).declaration);
+                        ((ClassImpl)appliedClass).declaration : 
+                        ((MemberClassImpl)appliedClass).declaration);
         this.freeConstructor = freeConstructor;
         org.eclipse.ceylon.model.typechecker.model.Class classDecl = (org.eclipse.ceylon.model.typechecker.model.Class)freeClass.declaration;
         //org.eclipse.ceylon.model.typechecker.model.Constructor decl = freeConstructor.constructor;
@@ -338,7 +332,10 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             // which we don't want to
             Ignore ignoreAnnotation = constr.getAnnotation(Ignore.class);
             if(ignoreAnnotation != null
-                    && ignoreAnnotation.handWritten())
+                    && (ignoreAnnotation.handWritten() 
+                            || constr.getParameterTypes().length==1 
+                            && constr.getParameterTypes()[0].getName()
+                                .endsWith(".$Serialization$")))
                 continue;
             int numTypeParameters = 0;
             int ii = 0;
