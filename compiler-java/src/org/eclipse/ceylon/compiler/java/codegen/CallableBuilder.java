@@ -1487,7 +1487,7 @@ public class CallableBuilder {
             ListBuffer<JCExpression> spreadCallArgs = new ListBuffer<JCExpression>();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
             if (arity1 > CALLABLE_MAX_FIZED_ARITY+1) {
-                spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
+                spreadCallArgs.append(gen.make().Literal(args.size()));
                 spreadCallArgs.append(makeParamIdent(gen, 0));
             } else {
                 spreadCallArgs.append(gen.make().Literal(0));

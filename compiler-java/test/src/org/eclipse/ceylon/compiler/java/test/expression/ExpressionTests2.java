@@ -567,4 +567,9 @@ public class ExpressionTests2 extends CompilerTests {
         compareWithJavaSource("destructuring/Destruct");
         compareWithJavaSource("destructuring/Destruct2");
     }
+
+    @Test
+    public void testVariadic(){
+        compareWithJavaSource("invoke/Variadic");
+    }
 }
