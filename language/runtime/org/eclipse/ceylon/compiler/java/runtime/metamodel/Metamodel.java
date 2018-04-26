@@ -72,9 +72,8 @@ import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import org.eclipse.ceylon.model.cmr.ArtifactResult;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.eclipse.ceylon.model.cmr.RuntimeResolver;
-import org.eclipse.ceylon.model.loader.JvmBackendUtil;
-import org.eclipse.ceylon.model.loader.NamingBase;
 import org.eclipse.ceylon.model.loader.ModelLoader.DeclarationType;
+import org.eclipse.ceylon.model.loader.NamingBase;
 import org.eclipse.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import org.eclipse.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
 import org.eclipse.ceylon.model.loader.model.AnnotationProxyClass;
@@ -110,13 +109,6 @@ import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.UnknownType;
 import org.eclipse.ceylon.model.typechecker.util.ModuleManager;
 
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.AnnotationBearing;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.DeclarationParser;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.DefaultValueProvider;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.ModelError;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.Predicates;
-
 import ceylon.language.Annotated;
 import ceylon.language.Anything;
 import ceylon.language.Array;
@@ -151,8 +143,8 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
-    private static Map<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration> classToDeclaration
-    = new HashMap<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration>();
+    private static Map<java.lang.Class<?>, ceylon.language.meta.declaration.NestableDeclaration> classToDeclaration
+    = new HashMap<java.lang.Class<?>, ceylon.language.meta.declaration.NestableDeclaration>();
     
     private static Map<org.eclipse.ceylon.model.typechecker.model.Declaration, Object> typeCheckModelToRuntimeModel
         = new HashMap<org.eclipse.ceylon.model.typechecker.model.Declaration, Object>();
