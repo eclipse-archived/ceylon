@@ -42,8 +42,6 @@ import org.eclipse.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Break;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Condition;
@@ -58,6 +56,8 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Statement;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Switched;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Term;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Variable;
+import org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.langtools.tools.javac.code.Flags;
 import org.eclipse.ceylon.langtools.tools.javac.code.TypeTag;
 import org.eclipse.ceylon.langtools.tools.javac.main.Option;
@@ -5110,12 +5110,13 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCVariableDecl decl2 = null;
         Substitution prevSubst2 = null;
-        if (matchCase.getVariable()!=null) {
+        Tree.Variable matchVar = matchCase.getVariable();
+        if (matchVar!=null && !matchVar.getDeclarationModel().isDropped()) {
          // Use the type of the variable, which is more precise than the type we test for.
-            Type varType = matchCase.getVariable().getDeclarationModel().getType();
+            Type varType = matchVar.getDeclarationModel().getType();
             
-            String name = matchCase.getVariable().getIdentifier().getText();
-            TypedDeclaration varDecl = matchCase.getVariable().getDeclarationModel();
+            String name = matchVar.getIdentifier().getText();
+            TypedDeclaration varDecl = matchVar.getDeclarationModel();
 
             Naming.SyntheticName tmpVarName = selectorAlias;
             Name substVarName = naming.aliasName(name);
@@ -5139,7 +5140,6 @@ public class StatementTransformer extends AbstractTransformer {
 
             // Prepare for variable substitution in the following code block
             prevSubst2 = naming.addVariableSubst(varDecl , substVarName.toString());
-
         }
         
         JCExpression tests = null;

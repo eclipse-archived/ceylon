@@ -795,22 +795,15 @@ public class ExpressionVisitor extends Visitor {
         //want to check that the specifier expression is
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
-//        isCondition=true;
         Tree.Type t = that.getType();
         if (t!=null) {
             t.visit(this);
         }
-//        isCondition=false;
         Tree.Variable v = that.getVariable();
         Type type = 
                 t==null ? null : 
                     t.getTypeModel();
         if (v!=null) {
-//            if (type!=null && !that.getNot()) {
-//                v.getType().setTypeModel(type);
-//                v.getDeclarationModel().setType(type);
-//            }
-            //v.getType().visit(this);
             Tree.SpecifierExpression se = 
                     v.getSpecifierExpression();
             Type knownType;
@@ -819,11 +812,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 se.visit(this);
-                checkReferenceIsNonVariable(v, se);
-                /*checkAssignable( se.getExpression().getTypeModel(), 
-                        getOptionalType(getObjectDeclaration().getType()), 
-                        se.getExpression(), 
-                        "expression may not be of void type");*/
+                checkReferenceIsNonVariable(v, 
+                        se.getExpression());
                 initOriginalDeclaration(v);
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
@@ -997,7 +987,8 @@ public class ExpressionVisitor extends Visitor {
                         checkEmptyOptionalType(v, se, not);
                     }
                     t = e.getTypeModel();
-                    checkReferenceIsNonVariable(v, se);
+                    checkReferenceIsNonVariable(v, 
+                            se.getExpression());
                     initOriginalDeclaration(v);
                     term = e.getTerm();
                 }
@@ -1056,16 +1047,15 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkReferenceIsNonVariable(Tree.Variable v,
-            Tree.SpecifierExpression se) {
+            Tree.Expression se) {
         if (v.getType() instanceof Tree.SyntheticVariable) {
             Tree.BaseMemberExpression term = 
                     (Tree.BaseMemberExpression) 
-                        se.getExpression()
-                            .getTerm();
+                        se.getTerm();
             checkReferenceIsNonVariable(term, false);
         }
     }
-
+    
     private void checkReferenceIsNonVariable(Tree.BaseMemberExpression ref,
             boolean isSwitch) {
         Declaration d = ref.getDeclaration();
@@ -9543,6 +9533,25 @@ public class ExpressionVisitor extends Visitor {
                             var.visit(this);
                         }
                         initOriginalDeclaration(var);
+                        //disable narrowing if the switch
+                        //expression is a ref to a variable
+                        if (switchExpression!=null) {
+                            Tree.Term switchTerm = 
+                                    switchExpression.getTerm();
+                            if (switchTerm instanceof 
+                                    Tree.BaseMemberExpression) {
+                                Tree.BaseMemberExpression bme = 
+                                        (Tree.BaseMemberExpression) 
+                                            switchTerm;
+                                Declaration dec = 
+                                        bme.getDeclaration();
+                                if (dec instanceof Value 
+                                        && ((Value) dec).isVariable()) {
+                                    var.getDeclarationModel()
+                                        .setDropped(true);
+                                }
+                            }
+                        }
                     }
                     Tree.MatchList matchList = 
                             that.getExpressionList();
@@ -9551,6 +9560,11 @@ public class ExpressionVisitor extends Visitor {
                         if (e!=null) {
                             Type caseType = e.getTypeModel();
                             if (!isTypeUnknown(caseType)) {
+                                if (var!=null && 
+                                        switchType.isExactly(caseType)) {
+                                    var.getDeclarationModel()
+                                        .setDropped(true);
+                                }
                                 Type narrowedType = 
                                         intersectionType(
                                                 caseType, switchType, 
@@ -9573,7 +9587,6 @@ public class ExpressionVisitor extends Visitor {
                             checkReified(t, 
                                     caseType, switchType, 
                                     false);
-    //                        if (!isTypeUnknown(pt)) {
                             Type narrowedType = 
                                     intersectionType(
                                             caseType, switchType, 
@@ -9803,7 +9816,6 @@ public class ExpressionVisitor extends Visitor {
                         checkReified(t, 
                                 caseType, switchType, 
                                 false);
-//                        if (!isTypeUnknown(pt)) {
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
@@ -9825,7 +9837,6 @@ public class ExpressionVisitor extends Visitor {
                                  .setUncheckedNullType(false);
                             }
                         }
-//                        }
                     }
                 }
             }
@@ -10104,17 +10115,10 @@ public class ExpressionVisitor extends Visitor {
         boolean hasIsCase = false;
         for (Tree.CaseClause cc: cases) {
             Tree.CaseItem item = cc.getCaseItem();
-            if (item instanceof Tree.IsCase) {
-                hasIsCase = true;
-            }
-            if (item instanceof Tree.MatchCase) {
-                Tree.MatchCase matchCase = (Tree.MatchCase) item;
-                if (!matchCase.getExpressionList()
-                        .getTypes()
-                        .isEmpty()) {
-                    hasIsCase = true;
-                }
-            }
+            hasIsCase = hasIsCase 
+                    || item instanceof Tree.IsCase
+                    && item.getToken().getText()
+                        .equals("is");
             checkCaseClausesDisjoint(cases, cc);
         }
         if (hasIsCase) {
@@ -10127,7 +10131,8 @@ public class ExpressionVisitor extends Visitor {
                     if (switchExpression!=null) {
                         Tree.Term st = 
                                 switchExpression.getTerm();
-                        if (st instanceof Tree.BaseMemberExpression) {
+                        if (st instanceof 
+                                Tree.BaseMemberExpression) {
                             Tree.BaseMemberExpression bme = 
                                     (Tree.BaseMemberExpression) st;
                             checkReferenceIsNonVariable(bme, true);

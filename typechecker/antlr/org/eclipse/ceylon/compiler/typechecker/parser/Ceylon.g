@@ -2802,20 +2802,20 @@ switchExpression returns [SwitchExpression term]
                 }
                 for (Type t: el.getTypes()) {
                   found = true;
-                  Variable v = new Variable(null);
-                  v.setType(new SyntheticVariable(null));
-                  v.setIdentifier(id);
-                  SpecifierExpression se = new SpecifierExpression(null);
-                  Expression e = new Expression(null);
-                  BaseMemberExpression bme = new BaseMemberExpression(null);
-                  bme.setIdentifier(id);
-                  bme.setTypeArguments( new InferredTypeArguments(null) );
-                  e.setTerm(bme);
-                  se.setExpression(e);
-                  v.setSpecifierExpression(se);
-                  mc.setVariable(v);    
                   break;              
                 }
+                Variable v = new Variable(null);
+                v.setType(new SyntheticVariable(null));
+                v.setIdentifier(id);
+                SpecifierExpression se = new SpecifierExpression(null);
+                Expression e = new Expression(null);
+                BaseMemberExpression bme = new BaseMemberExpression(null);
+                bme.setIdentifier(id);
+                bme.setTypeArguments( new InferredTypeArguments(null) );
+                e.setTerm(bme);
+                se.setExpression(e);
+                v.setSpecifierExpression(se);
+                mc.setVariable(v);
               }
             }
           } 
@@ -4289,20 +4289,20 @@ switchCaseElse returns [SwitchStatement statement]
                 }
                 for (Type t: el.getTypes()) {
                   found = true;
-                  Variable v = new Variable(null);
-                  v.setType(new SyntheticVariable(null));
-                  v.setIdentifier(id);
-                  SpecifierExpression se = new SpecifierExpression(null);
-                  Expression e = new Expression(null);
-                  BaseMemberExpression bme = new BaseMemberExpression(null);
-                  bme.setIdentifier(id);
-                  bme.setTypeArguments( new InferredTypeArguments(null) );
-                  e.setTerm(bme);
-                  se.setExpression(e);
-                  v.setSpecifierExpression(se);
-                  mc.setVariable(v);    
                   break;              
                 }
+                Variable v = new Variable(null);
+                v.setType(new SyntheticVariable(null));
+                v.setIdentifier(id);
+                SpecifierExpression se = new SpecifierExpression(null);
+                Expression e = new Expression(null);
+                BaseMemberExpression bme = new BaseMemberExpression(null);
+                bme.setIdentifier(id);
+                bme.setTypeArguments( new InferredTypeArguments(null) );
+                e.setTerm(bme);
+                se.setExpression(e);
+                v.setSpecifierExpression(se);
+                mc.setVariable(v);
               }
             }
           }

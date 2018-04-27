@@ -239,8 +239,12 @@ public abstract class Declaration
     }
     
     /** 
-     * true if the JVM backend has not emitted code for this declaration
-     * due to an error in this declaration
+     * @returns true if the JVM backend has not 
+     * emitted code for this declaration due to 
+     * an error in the declaration, or when the 
+     * typechecker instructs the backend to not 
+     * emit code for some inscrutible reason of 
+     * its own.
      */
     public boolean isDropped() {
         return (flags&DROPPED)!=0;

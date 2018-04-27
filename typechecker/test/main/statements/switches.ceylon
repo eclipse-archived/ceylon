@@ -192,9 +192,9 @@ void switchMixedCases() {
     else {}
     
     variable Object var = "hello";
-    $error switch (var)
+    switch (var)
     case ("hello"|Integer) {
-        $type:"String|Integer" value xx = var;
+        $type:"Object" value xx = var;
     }
     else {}
     
@@ -207,4 +207,26 @@ void switchMixedCases() {
         $type:"String" value xx = thing;
     }
     
+}
+
+void valueCaseNarrowing(Object val, variable Object var) {
+    switch (val)
+    case ("foo"|"bar") {
+        String fooOrBar = val;
+    }
+    case (is Integer) {}
+    case ("baz"|Float) {
+        String|Float strFloat = val;
+    }
+    else {}
+    
+    switch (var)
+    case ("foo"|"bar") {
+        $error String fooOrBar = var;
+    }
+    case (Integer) {}
+    case ("baz"|Float) {
+        $error String|Float strFloat = var;
+    }
+    else {}
 }
