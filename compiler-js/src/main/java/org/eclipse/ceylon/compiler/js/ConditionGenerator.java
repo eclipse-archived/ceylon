@@ -543,7 +543,7 @@ public class ConditionGenerator {
                 first = false;
             }
             caseVar = matchCaseItem.getVariable();
-            if (caseVar != null) {
+            if (caseVar != null && !caseVar.getDeclarationModel().isDropped()) {
                 caseDec = caseVar.getDeclarationModel();
                 directAccess.add(caseDec);
                 names.forceName(caseDec, expvar);
