@@ -111,6 +111,12 @@ public class CeylonVisitor extends Visitor {
         if (plan instanceof Drop) {
             return;
         }
+        if (skipHeaderMergeLater(decl)) {
+            return;
+        }
+        // To accept this class it is either not native or native for this backend
+        if (!acceptDeclaration(decl))
+            return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
         TypeAlias dec = decl.getDeclarationModel();
@@ -147,9 +153,10 @@ public class CeylonVisitor extends Visitor {
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
-        if (decl.getDeclarationModel().isClassOrInterfaceMember()) {
-            if (decl.getDeclarationModel().isInterfaceMember()) {
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl));
+        ClassOrInterface model = decl.getDeclarationModel();
+        if (model.isClassOrInterfaceMember()) {
+            if (model.isInterfaceMember()) {
+                classBuilder.getCompanionBuilder((Interface)model.getContainer()).defs(gen.classGen().transform(decl));
             } else {
                 classBuilder.defs(gen.classGen().transform(decl));
             }

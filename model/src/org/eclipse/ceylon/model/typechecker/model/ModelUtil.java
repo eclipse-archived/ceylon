@@ -3087,14 +3087,15 @@ public class ModelUtil {
             }
             else {
                 // In the rest of the cases we go look in the declaration's container
-                nat = getNativeDeclaration(dec.getContainer(), dec.getName(), backends);
+                nat = getNativeDeclaration(dec.getContainer(), 
+                        dec.getName(), backends);
                 
                 if (dec instanceof Setter && nat instanceof Value) {
                     Value value = (Value) nat;
                     nat = value.getSetter();
                 }
-                else if (dec instanceof ClassOrInterface && 
-                        nat instanceof Value) {
+                else if (dec instanceof ClassOrInterface 
+                        && nat instanceof Value) {
                     // In case of objects make sure we return the same type of
                     // declaration we were called with
                     Value value = (Value) nat;
@@ -3138,7 +3139,8 @@ public class ModelUtil {
                     !backends.header() && cd.isNativeHeader()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                Declaration c = getNativeDeclaration(cd.getContainer(), cd.getName(), backends);
+                Declaration c = getNativeDeclaration(cd.getContainer(), 
+                        cd.getName(), backends);
                 if (c != null) {
                     // Is this the Value part of an object?
                     if (c instanceof Value) {
@@ -3153,20 +3155,16 @@ public class ModelUtil {
                 }
             }
         }
+        
         // Find the declaration
-        Declaration decl;
         if (container instanceof Class && name == null) {
             // Special case for the default constructor
             Class c = (Class) container;
-            decl = c.getDefaultConstructorFunctionOrValue();
+            return c.getDefaultConstructorFunctionOrValue();
         }
         else {
-            decl =
-                    container.getDirectMemberForBackend(
-                            name,
-                            backends);
+            return container.getDirectMemberForBackend(name, backends);
         }
-        return decl;
     }
     
     // Check if the Value is part of an object or value constructor
@@ -3196,8 +3194,9 @@ public class ModelUtil {
                 return coi.isAbstract();
             }
         }
-        else if (dec instanceof Constructor ||
-                dec instanceof Interface) {
+        else if (dec instanceof Constructor 
+                || dec instanceof Interface
+                || dec instanceof TypeAlias) {
             // For now consider these implemented
             return true;
         }

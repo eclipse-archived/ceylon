@@ -107,6 +107,7 @@ import org.eclipse.ceylon.model.typechecker.model.Value;
 public abstract class DeclarationVisitor extends Visitor {
     
     private static final ClassOrInterface[] NO_CLASSES = new ClassOrInterface[0];
+    private static final TypeAlias[] NO_TYPE_ALIASES = new TypeAlias[0];
     private static final FunctionOrValue[] NO_FUNCTIONS_OR_VALUES = new FunctionOrValue[0];
     private static final Constructor[] NO_CONSTRUCTORS = new Constructor[0];
     
@@ -381,7 +382,7 @@ public abstract class DeclarationVisitor extends Visitor {
             }
             else if (!(model instanceof Setter) && !isHeader) {
                 if (!canBeNative) {
-                    that.addError("native declaration is not a class, constructor, method, attribute or object: '" + 
+                    that.addError("native declaration is not a class, constructor, alias, function, value, or object: '" + 
                             name + "' may not be annotated 'native'");
                 }
             }
@@ -403,6 +404,7 @@ public abstract class DeclarationVisitor extends Visitor {
     
     private static boolean canBeNative(Tree.Declaration that) {
         return that instanceof Tree.ClassOrInterface
+            || that instanceof Tree.TypeAliasDeclaration
             || that instanceof Tree.Constructor
             || that instanceof Tree.Enumerated
             || that instanceof Tree.AnyMethod
@@ -413,7 +415,8 @@ public abstract class DeclarationVisitor extends Visitor {
     protected static boolean canBeNative(Declaration member) {
         return member instanceof Function 
             || member instanceof Value 
-            || member instanceof ClassOrInterface;
+            || member instanceof ClassOrInterface
+            || member instanceof TypeAlias;
     }
 
     private static boolean mustHaveHeader(Declaration model) {
@@ -436,6 +439,7 @@ public abstract class DeclarationVisitor extends Visitor {
         // Deal with implementations from the ModelLoader
         ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
         ArrayList<ClassOrInterface> loadedClasses = null;
+        ArrayList<TypeAlias> loadedTypeAliases = null;
         ArrayList<Constructor> loadedConstructors = null;
         for (Backend backendToSearch: Backend.getRegisteredBackends()) {
             Declaration overloadFromModelLoader = 
@@ -464,6 +468,17 @@ public abstract class DeclarationVisitor extends Visitor {
                         overloadFromModelLoader;
                 loadedClasses.add(c);
             }
+            else if (overloadFromModelLoader 
+                    instanceof TypeAlias) {
+            if (loadedTypeAliases == null) {
+                loadedTypeAliases = 
+                        new ArrayList<TypeAlias>();
+            }
+            ClassOrInterface c = 
+                    (ClassOrInterface) 
+                    overloadFromModelLoader;
+            loadedClasses.add(c);
+        }
             else if (overloadFromModelLoader 
                         instanceof Constructor) {
                 if (loadedConstructors == null) {
@@ -497,6 +512,17 @@ public abstract class DeclarationVisitor extends Visitor {
             }
             else {
                 c.initOverloads();
+            }
+        }
+        else if (model instanceof TypeAlias) {
+            TypeAlias a = (TypeAlias) model;
+            if (loadedTypeAliases != null) {
+                a.initOverloads(
+                        loadedTypeAliases.toArray(NO_TYPE_ALIASES));
+
+            }
+            else {
+                a.initOverloads();
             }
         }
         else if (model instanceof Constructor) {

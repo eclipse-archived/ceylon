@@ -21,6 +21,7 @@ public class TypeAlias extends TypeDeclaration {
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
     private List<TypeParameter> typeParameters = emptyList();
+    private List<Declaration> overloads;
     
     private boolean anonymous;
     
@@ -176,6 +177,25 @@ public class TypeAlias extends TypeDeclaration {
         }
         else {
             return false;
+        }
+    }
+    
+
+    @Override
+    public List<Declaration> getOverloads() {
+        return overloads;
+    }
+
+    public void setOverloads(List<Declaration> overloads) {
+        this.overloads = overloads;
+    }
+
+    public void initOverloads(TypeAlias... initial) {
+        overloads = 
+                new ArrayList<Declaration>
+                    (initial.length+1);
+        for (Declaration d: initial) {
+            overloads.add(d);
         }
     }
     

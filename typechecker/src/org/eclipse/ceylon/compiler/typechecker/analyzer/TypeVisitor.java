@@ -976,7 +976,9 @@ public class TypeVisitor extends Visitor {
         Tree.TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {
-            that.addError("missing aliased type");
+            if (!ta.isNative()) {
+                that.addError("missing aliased type");
+            }
         }
         else {
             Tree.StaticType et = typeSpecifier.getType();

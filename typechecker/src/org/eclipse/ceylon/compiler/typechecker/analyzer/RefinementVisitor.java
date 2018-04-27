@@ -73,6 +73,7 @@ import org.eclipse.ceylon.model.typechecker.model.Setter;
 import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Specification;
 import org.eclipse.ceylon.model.typechecker.model.Type;
+import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
@@ -277,6 +278,13 @@ public class RefinementVisitor extends Visitor {
             checkNativeInterface(that, 
                     (Interface) dec, 
                     (Interface) header);
+        }
+        else if (dec instanceof TypeAlias &&
+                (header == null ||
+                header instanceof TypeAlias)) {
+            checkNativeTypeAlias(that, 
+                    (TypeAlias) dec, 
+                    (TypeAlias) header);
         }
         else if (header != null) {
             that.addError("native declarations not of same type: " + 
@@ -516,6 +524,36 @@ public class RefinementVisitor extends Visitor {
                 header.getTypeParameters());
     }
 
+    private void checkNativeTypeAlias(Tree.Declaration that, 
+            TypeAlias dec, TypeAlias header) {
+        if (header == null) {
+            return;
+        }
+        if (dec.isShared() && !header.isShared()) {
+            that.addError("native header is not shared: " +
+                    message(dec));
+        }
+        if (!dec.isShared() && header.isShared()) {
+            that.addError("native header is shared: " +
+                    message(dec));
+        }
+
+//        Type dext = dec.getExtendedType();
+//        Type aext = header.getExtendedType();
+//        if ((dext != null && aext == null)
+//                || (dext == null && aext != null)
+//                || !dext.isExactly(aext)) {
+//            that.addError("native classes do not extend the same type: " +
+//                    message(dec));
+//        }
+        
+        // FIXME probably not the right tests
+        checkNativeTypeParameters(that,
+                dec, header,
+                dec.getTypeParameters(),
+                header.getTypeParameters());
+    }
+    
     private void checkNativeMethod(Tree.Declaration that, 
             Function dec, Function header) {
         if (header == null) {
@@ -1440,8 +1478,7 @@ public class RefinementVisitor extends Visitor {
                 Tree.LocalModifier mod = 
                         (Tree.LocalModifier) 
                             that;
-                Type t;
-                t = isTypeUnknown(refiningType) ? 
+                Type t = isTypeUnknown(refiningType) ? 
                         refinedType : 
                         intersectionType(
                             refinedType, 
@@ -1468,7 +1505,6 @@ public class RefinementVisitor extends Visitor {
             Node that, 
             Declaration refined,
             Declaration refining) {
-        Unit unit = that.getUnit();
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
         if (!isTypeUnknown(refinedType)) {
@@ -1479,11 +1515,9 @@ public class RefinementVisitor extends Visitor {
                 Tree.LocalModifier mod = 
                         (Tree.LocalModifier) 
                             that;
-                Type t;
                 if (isTypeUnknown(refiningType)) {
-                    t = refinedType;
-                    td.setType(t);
-                    mod.setTypeModel(t);
+                    td.setType(refinedType);
+                    mod.setTypeModel(refinedType);
                 }
                 else {
                     checkIsExactly(refiningType, 

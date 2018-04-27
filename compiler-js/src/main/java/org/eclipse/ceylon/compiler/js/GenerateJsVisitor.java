@@ -1040,6 +1040,16 @@ public class GenerateJsVisitor extends Visitor {
         if (errVisitor.hasErrors(that))return;
         final TypeAlias d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
+        final TypeAlias natd = (TypeAlias)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
+        if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
+            // It's a native header, remember it for later when we deal with its implementation
+            saveNativeHeader(that);
+            return;
+        }
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || headerWithoutBackend)) {
+            return;
+        }
         comment(that);
         final String tname=names.createTempVariable();
         out(function, names.name(d), "{var ", tname, "=");
