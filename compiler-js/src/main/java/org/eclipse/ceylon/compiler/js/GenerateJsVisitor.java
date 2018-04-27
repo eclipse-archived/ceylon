@@ -899,6 +899,16 @@ public class GenerateJsVisitor extends Visitor {
         if (errVisitor.hasErrors(that))return;
         comment(that);
         final Interface d = that.getDeclarationModel();
+        final Interface natd = (Interface)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
+        if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
+            // It's a native header, remember it for later when we deal with its implementation
+            saveNativeHeader(that);
+            return;
+        }
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || headerWithoutBackend)) {
+            return;
+        }
         final String aname = names.name(d);
         Tree.StaticType ext = that.getTypeSpecifier().getType();
         out(function, aname, "(");
@@ -929,6 +939,16 @@ public class GenerateJsVisitor extends Visitor {
         if (errVisitor.hasErrors(that))return;
         comment(that);
         final Class d = that.getDeclarationModel();
+        final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
+        if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
+            // It's a native header, remember it for later when we deal with its implementation
+            saveNativeHeader(that);
+            return;
+        }
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || headerWithoutBackend)) {
+            return;
+        }
         final String aname = names.name(d);
         final Tree.ClassSpecifier ext = that.getClassSpecifier();
         out(function, aname, "(");

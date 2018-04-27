@@ -297,8 +297,14 @@ public class RefinementVisitor extends Visitor {
         if (header == null) {
             return;
         }
-        if (dec.isAlias() || header.isAlias()) {
-            return;
+
+        if (dec.isAlias() && !header.isAlias()) {
+            that.addError("native header is not an alias: " +
+                    message(dec));
+        }
+        if (!dec.isAlias() && header.isAlias()) {
+            that.addError("native header is an alias: " +
+                    message(dec));
         }
         if (dec.isShared() && !header.isShared()) {
             that.addError("native header is not shared: " +
@@ -340,23 +346,27 @@ public class RefinementVisitor extends Visitor {
             that.addError("native header is an annotation type: " +
                     message(dec));
         }
-        Type dext = dec.getExtendedType();
-        Type aext = header.getExtendedType();
-        if ((dext != null && aext == null)
-                || (dext == null && aext != null)
-                || !dext.isExactly(aext)) {
-            that.addError("native classes do not extend the same type: " +
-                    message(dec));
+        
+        if (!dec.isAlias() && !header.isAlias()) {
+            Type dext = dec.getExtendedType();
+            Type aext = header.getExtendedType();
+            if ((dext != null && aext == null)
+                    || (dext == null && aext != null)
+                    || !dext.isExactly(aext)) {
+                that.addError("native classes do not extend the same type: " +
+                        message(dec));
+            }
+            List<Type> dst = 
+                    dec.getSatisfiedTypes();
+            List<Type> ast = 
+                    header.getSatisfiedTypes();
+            if (dst.size() != ast.size() || 
+                    !dst.containsAll(ast)) {
+                that.addError("native classes do not satisfy the same interfaces: " +
+                        message(dec));
+            }
         }
-        List<Type> dst = 
-                dec.getSatisfiedTypes();
-        List<Type> ast = 
-                header.getSatisfiedTypes();
-        if (dst.size() != ast.size() || 
-                !dst.containsAll(ast)) {
-            that.addError("native classes do not satisfy the same interfaces: " +
-                    message(dec));
-        }
+        
         // FIXME probably not the right tests
         checkNativeClassParameters(that,
                 dec, header,
@@ -465,8 +475,14 @@ public class RefinementVisitor extends Visitor {
         if (header == null) {
             return;
         }
-        if (dec.isAlias() || header.isAlias()) {
-            return;
+        
+        if (dec.isAlias() && !header.isAlias()) {
+            that.addError("native header is not an alias: " +
+                    message(dec));
+        }
+        if (!dec.isAlias() && header.isAlias()) {
+            that.addError("native header is an alias: " +
+                    message(dec));
         }
         if (dec.isShared() && !header.isShared()) {
             that.addError("native header is not shared: " +
@@ -500,23 +516,27 @@ public class RefinementVisitor extends Visitor {
             that.addError("native header is an annotation type: " +
                     message(dec));
         }
-        Type dext = dec.getExtendedType();
-        Type aext = header.getExtendedType();
-        if ((dext != null && aext == null)
-                || (dext == null && aext != null)
-                || !dext.isExactly(aext)) {
-            that.addError("native classes do not extend the same type: " +
-                    message(dec));
+        
+        if (!dec.isAlias() && !header.isAlias()) {
+            Type dext = dec.getExtendedType();
+            Type aext = header.getExtendedType();
+            if ((dext != null && aext == null)
+                    || (dext == null && aext != null)
+                    || !dext.isExactly(aext)) {
+                that.addError("native classes do not extend the same type: " +
+                        message(dec));
+            }
+            List<Type> dst = 
+                    dec.getSatisfiedTypes();
+            List<Type> ast = 
+                    header.getSatisfiedTypes();
+            if (dst.size() != ast.size() 
+                    || !dst.containsAll(ast)) {
+                that.addError("native classes do not satisfy the same interfaces: " +
+                        message(dec));
+            }
         }
-        List<Type> dst = 
-                dec.getSatisfiedTypes();
-        List<Type> ast = 
-                header.getSatisfiedTypes();
-        if (dst.size() != ast.size() 
-                || !dst.containsAll(ast)) {
-            that.addError("native classes do not satisfy the same interfaces: " +
-                    message(dec));
-        }
+        
         // FIXME probably not the right tests
         checkNativeTypeParameters(that,
                 dec, header,
@@ -529,6 +549,7 @@ public class RefinementVisitor extends Visitor {
         if (header == null) {
             return;
         }
+        
         if (dec.isShared() && !header.isShared()) {
             that.addError("native header is not shared: " +
                     message(dec));
@@ -537,15 +558,6 @@ public class RefinementVisitor extends Visitor {
             that.addError("native header is shared: " +
                     message(dec));
         }
-
-//        Type dext = dec.getExtendedType();
-//        Type aext = header.getExtendedType();
-//        if ((dext != null && aext == null)
-//                || (dext == null && aext != null)
-//                || !dext.isExactly(aext)) {
-//            that.addError("native classes do not extend the same type: " +
-//                    message(dec));
-//        }
         
         // FIXME probably not the right tests
         checkNativeTypeParameters(that,

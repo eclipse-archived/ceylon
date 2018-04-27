@@ -255,11 +255,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     that.addError("native header must be declared before its implementations: the native header '" +
                             name + "' is declared after an implementation");
                 }
-                if (model instanceof Interface
-                        && ((Interface)model).isAlias()) {
-                    that.addError("interface alias may not be marked native: '" +
-                            name + "' (add a body if a native interface was intended)");
-                }
+
                 model.setNativeBackends(mbackends);
                 Declaration member = getNativeHeader(model);
                 
@@ -3509,26 +3505,25 @@ public abstract class DeclarationVisitor extends Visitor {
         TypeDeclaration td = 
                 (TypeDeclaration) 
                     that.getScope();
-        if (td.isAlias()) {
-            return;
-        }
-        List<Tree.StaticType> types = that.getTypes();
-        List<Type> list = 
-                new ArrayList<Type>
-                    (types.size());
-        for (Tree.StaticType st: types) {
-            if (st!=null) {
-                Type type = st.getTypeModel();
-                if (type!=null) {
-                    //we can't check here that it's a 
-                    //sensible supertype, because this is
-                    //just a lazy reference that will be
-                    //resolvable later
-                    list.add(type);
+        if (!td.isAlias()) {
+            List<Tree.StaticType> types = that.getTypes();
+            List<Type> list = 
+                    new ArrayList<Type>
+                        (types.size());
+            for (Tree.StaticType st: types) {
+                if (st!=null) {
+                    Type type = st.getTypeModel();
+                    if (type!=null) {
+                        //we can't check here that it's a 
+                        //sensible supertype, because this is
+                        //just a lazy reference that will be
+                        //resolvable later
+                        list.add(type);
+                    }
                 }
             }
+            td.setSatisfiedTypes(list);
         }
-        td.setSatisfiedTypes(list);
     }
     
     @Override

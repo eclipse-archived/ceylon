@@ -852,7 +852,9 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.ClassSpecifier cs = that.getClassSpecifier();
         if (cs==null) {
-            that.addError("missing class body or aliased class reference");
+            if (!td.isNativeHeader()) {
+                that.addError("missing class body or aliased class reference");
+            }
         }
         else {
             Tree.ExtendedType et = 
@@ -927,7 +929,7 @@ public class TypeVisitor extends Visitor {
         Tree.TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {
-            if (!id.isNative()) {
+            if (!id.isNativeHeader()) {
                 that.addError("missing interface body or aliased interface reference");
             }
         }
@@ -976,7 +978,7 @@ public class TypeVisitor extends Visitor {
         Tree.TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {
-            if (!ta.isNative()) {
+            if (!ta.isNativeHeader()) {
                 that.addError("missing aliased type");
             }
         }
