@@ -1,6 +1,6 @@
-$error shared native interface NativeAliasError1;
-shared native ("jvm") interface NativeAliasError1 {}
-shared native ("js") interface NativeAliasError1 {}
+shared native interface NativeAliasError1;
+$error shared native ("jvm") interface NativeAliasError1 {}
+shared native ("js") interface NativeAliasError1 => List<String>;
 
 shared native interface NativeAliasError2 {}
 $error shared native ("jvm") interface NativeAliasError2;
