@@ -234,6 +234,14 @@ public abstract class Reference {
         captureWildcards(typedParameter);
         return typedParameter;
     }
+    
+    boolean isCovariant() {
+        return true;
+    }
+
+    boolean isContravariant() {
+        return false;
+    }
 
     /**
      * Get the type of a parameter, after substitution of
@@ -241,7 +249,8 @@ public abstract class Reference {
      */
     public TypedReference getTypedParameter(Parameter p) {
         TypedReference typedParam = 
-                new TypedReference(false, true);
+                new TypedReference(!isCovariant(), 
+                        !isContravariant());
         FunctionOrValue model = p.getModel();
         if (model!=null) {
             typedParam.setDeclaration(model);

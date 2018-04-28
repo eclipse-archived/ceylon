@@ -66,10 +66,12 @@ public class TypedReference extends Reference {
         }
     }
     
+    @Override
     public boolean isContravariant() {
         return contravariant;
     }
     
+    @Override
     public boolean isCovariant() {
         return covariant;
     }
