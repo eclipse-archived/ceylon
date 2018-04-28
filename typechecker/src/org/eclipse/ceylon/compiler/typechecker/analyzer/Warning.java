@@ -46,7 +46,8 @@ public enum Warning {
     zeroFloatLiteral("Literal so small it is indistinguishable from zero"), 
     hidesLanguageModifier("Import hides a language modifier"), 
     implicitNarrowing("Implicit narrowing to covering type"), 
-    catchType("Discouraged catch type");
+    catchType("Discouraged catch type"), 
+    directiveInFinally("Control directives in 'finally'");
     /*
      * Don't forget to update the documentation
      * of the suppressWarnings annotation in

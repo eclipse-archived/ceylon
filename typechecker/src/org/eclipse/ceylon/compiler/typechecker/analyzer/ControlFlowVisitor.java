@@ -48,6 +48,7 @@ public class ControlFlowVisitor extends Visitor {
     private boolean canReturn = false;
     private boolean canExecute = true;
     private boolean unreachabilityReported = false;
+    private boolean withinFinally = false;
     private LoopState loopState = null;
     
     boolean beginDefiniteReturnScope() {
@@ -148,7 +149,24 @@ public class ControlFlowVisitor extends Visitor {
     void unpauseLoopScope(boolean bc) {
         definitelyBreaksOrContinues = bc;
     }
-        
+    
+    @Override
+    public void visit(Tree.FinallyClause that) {
+        boolean owf = withinFinally;
+        withinFinally = true;
+        super.visit(that);
+        withinFinally = owf;
+    }
+    
+    @Override
+    public void visit(Tree.Directive that) {
+        super.visit(that);
+        if (withinFinally) {
+            that.addUsageWarning(Warning.directiveInFinally, 
+                    "control directive within 'finally'");
+        }
+    }
+    
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         boolean c = beginReturnScope(true);
