@@ -2311,12 +2311,12 @@ if (is Usable tx) { ... }</programlisting>
                     <literal>Nothing</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>if the case is a matching case with at least one type, the 
-                    <literal>switch</literal> variable, or, if there is no inline variable 
-                    declared by the <literal>switch</literal>, the value referred by the 
-                    <literal>switch</literal> expression, will be treated by the compiler as 
-                    having the type <literal>V&amp;U</literal> inside the <literal>case</literal> 
-                    block or expression.</para>
+                    <para>if the case is a matching case, the <literal>switch</literal> 
+                    variable, or, if there is no inline variable declared by the 
+                    <literal>switch</literal>, the value referred by the <literal>switch</literal> 
+                    expression, will be treated by the compiler as having the type 
+                    <literal>V&amp;U</literal> inside the <literal>case</literal> block or 
+                    expression.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2493,10 +2493,10 @@ else {
             switched expression in a <literal>switch</literal> clause may not be an 
             assignment expression.</para></comment>
             
-            <para>If a <literal>switch</literal> has a matching case with at least one type, 
-            and does not declare an inline variable, then the switched expression must be an 
-            unqualified value reference to a non-<literal>variable</literal>, 
-            non-<literal>default</literal> reference.</para>
+            <para>If a <literal>switch</literal> has a matching case, and does not declare 
+            an inline variable, then the switched expression must be an unqualified value 
+            reference to a non-<literal>variable</literal>, non-<literal>default</literal> 
+            reference.</para>
             
             <para>In addition, every <literal>switch</literal> conditional must include:</para>
             
