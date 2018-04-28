@@ -1052,30 +1052,41 @@ public class ExpressionVisitor extends Visitor {
             Tree.BaseMemberExpression term = 
                     (Tree.BaseMemberExpression) 
                         se.getTerm();
-            checkReferenceIsNonVariable(term, false);
+            checkReferenceIsNonVariable(term, false, true);
         }
     }
     
     private void checkReferenceIsNonVariable(Tree.BaseMemberExpression ref,
-            boolean isSwitch) {
+            boolean isSwitch, boolean narrowing) {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
             int code = isSwitch ? 3101:3100;
-            String help=" (assign to a new local value to narrow type)";
+            String help = " (assign to a new local value to narrow type)";
+            String extra = narrowing ? "" : " will not be narrowed";
+            
+            String message;
             if (!(d instanceof Value)) {
-                ref.addError("referenced declaration is not a value: '" + 
-                        d.getName(unit) + "'", 
-                        code);
+                message = "referenced declaration is not a value: '" + 
+                        d.getName(unit) + "'";
             }
             else if (isNonConstant(d)) {
-                ref.addError("referenced value is non-constant: '" + 
-                        d.getName(unit) + "'" + help, 
-                        code);
+                message = "referenced value is non-constant: '" + 
+                        d.getName(unit) + "'" + extra + help;
             }
             else if (d.isDefault() || d.isFormal()) {
-                ref.addError("referenced value may be refined by a non-constant value: '" + 
-                        d.getName(unit) + "'" + help, 
-                        code);
+                message = "referenced value may be refined by a non-constant value: '" + 
+                        d.getName(unit) + "'" + extra + help;
+            }
+            else {
+                return;
+            }
+            
+            if (narrowing) {
+                ref.addError(message, code);
+            }
+            else {
+                ref.addUsageWarning(Warning.syntaxDeprecation, 
+                        message);
             }
         }
     }
@@ -10130,26 +10141,24 @@ public class ExpressionVisitor extends Visitor {
                         .equals("is");
             checkCaseClausesDisjoint(cases, cc);
         }
-        if (hasIsCase) {
-            if (switchStatementOrExpression!=null) {
-                Tree.Switched switched = 
-                        switchClause().getSwitched();
-                if (switched!=null) {
-                    Tree.Expression switchExpression =
-                            switched.getExpression();
-                    if (switchExpression!=null) {
-                        Tree.Term st = 
-                                switchExpression.getTerm();
-                        if (st instanceof 
-                                Tree.BaseMemberExpression) {
-                            Tree.BaseMemberExpression bme = 
-                                    (Tree.BaseMemberExpression) st;
-                            checkReferenceIsNonVariable(bme, true);
-                        }
-                        else if (st!=null) {
-                            st.addError("switch expression must be a value reference in switch with type cases", 
-                                    3102);
-                        }
+        if (switchStatementOrExpression!=null) {
+            Tree.Switched switched = 
+                    switchClause().getSwitched();
+            if (switched!=null) {
+                Tree.Expression switchExpression =
+                        switched.getExpression();
+                if (switchExpression!=null) {
+                    Tree.Term st = 
+                            switchExpression.getTerm();
+                    if (st instanceof 
+                            Tree.BaseMemberExpression) {
+                        Tree.BaseMemberExpression bme = 
+                                (Tree.BaseMemberExpression) st;
+                        checkReferenceIsNonVariable(bme, true, hasIsCase);
+                    }
+                    else if (st!=null && hasIsCase) {
+                        st.addError("switch expression must be a value reference in switch with type cases", 
+                                3102);
                     }
                 }
             }
