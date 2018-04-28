@@ -44,6 +44,9 @@ public class ModelUtil {
     static final List<Type> NO_TYPE_ARGS = 
             Collections.<Type>emptyList();    
     
+    static final List<SiteVariance> NO_VARIANCES = 
+            Collections.<SiteVariance>emptyList();    
+    
     static final Map<TypeParameter, Type> EMPTY_TYPE_ARG_MAP = 
             Collections.<TypeParameter,Type>emptyMap();
     
@@ -1236,7 +1239,8 @@ public class ModelUtil {
     getVarianceMap(Declaration declaration, 
             Type receivingType, 
             List<SiteVariance> variances) {     
-        if (variances==null) {
+        if ((receivingType==null || receivingType.getVarianceOverrides().isEmpty())
+                && (variances==null || variances.isEmpty())) {
             return EMPTY_VARIANCE_MAP;
         }
         else {
@@ -1271,15 +1275,17 @@ public class ModelUtil {
                         declaration);
             }
         }
-        List<TypeParameter> typeParameters = 
-                declaration.getTypeParameters();
-        for (int i=0; 
-                i<typeParameters.size() && 
-                i<variances.size(); 
-                i++) {
-            SiteVariance var = variances.get(i);
-            if (var!=null) {
-                map.put(typeParameters.get(i), var);
+        if (variances!=null) {
+            List<TypeParameter> typeParameters = 
+                    declaration.getTypeParameters();
+            for (int i=0; 
+                    i<typeParameters.size() && 
+                    i<variances.size(); 
+                    i++) {
+                SiteVariance var = variances.get(i);
+                if (var!=null) {
+                    map.put(typeParameters.get(i), var);
+                }
             }
         }
         return map;

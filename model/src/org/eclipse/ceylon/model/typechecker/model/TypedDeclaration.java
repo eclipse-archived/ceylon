@@ -9,8 +9,15 @@
  ********************************************************************************/
 package org.eclipse.ceylon.model.typechecker.model;
 
-import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.*;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.DYNAMICALLY_TYPED;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.TYPE_ERASED;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.UNBOXED;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.UNBOXED_KNOWN;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.UNCHECKED_NULL;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.UNTRUSTED_KNOWN;
+import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.UNTRUSTED_TYPE;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -99,6 +106,8 @@ public abstract class TypedDeclaration
         ptr.setQualifyingType(qualifyingType);
         ptr.setTypeArguments(getTypeArgumentMap(this, 
                 qualifyingType, typeArguments));
+        ptr.setVarianceOverrides(getVarianceMap(this, 
+                qualifyingType, null));
         return ptr;
     }
     

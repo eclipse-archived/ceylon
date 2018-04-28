@@ -12,6 +12,7 @@ package org.eclipse.ceylon.model.typechecker.model;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.NO_VARIANCES;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static org.eclipse.ceylon.model.typechecker.model.Type.checkDepth;
@@ -38,7 +39,9 @@ public abstract class Reference {
 
     protected Map<TypeParameter, Type> typeArguments = 
             EMPTY_TYPE_ARG_MAP;
-    
+    protected Map<TypeParameter,SiteVariance> varianceOverrides = 
+            EMPTY_VARIANCE_MAP;
+        
     protected Type qualifyingType;
     
     //cache
@@ -71,6 +74,15 @@ public abstract class Reference {
         else {
             return typeArguments;
         }
+    }
+    
+    public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+        return varianceOverrides;
+    }
+    
+    public void setVarianceOverrides(
+            Map<TypeParameter,SiteVariance> varianceOverrides) {
+        this.varianceOverrides = varianceOverrides;
     }
 
     private Map<TypeParameter, Type> 
@@ -137,11 +149,28 @@ public abstract class Reference {
         }
     }
 
+    /**
+     * Get the use-site variances as a tuple. 
+     */
+    public List<SiteVariance> getVarianceList() {
+        Declaration declaration = getDeclaration();
+        if (declaration.isParameterized()) {
+            return getVarianceList(
+                    declaration.getUnit(),
+                    declaration.getTypeParameters(),
+                    getVarianceOverrides());
+        }
+        else {
+            return NO_VARIANCES;
+        }
+    }
+    
     private static List<Type> getTypeArgumentList(
             Unit unit, List<TypeParameter> typeParams, 
             Map<TypeParameter, Type> typeArgs) {
         int size = typeParams.size();
-        List<Type> argList = new ArrayList<Type>(size);
+        List<Type> argList = 
+                new ArrayList<Type>(size);
         for (int i=0; i<size; i++) {
             TypeParameter tp = typeParams.get(i);
             Type arg = typeArgs.get(tp);
@@ -152,6 +181,21 @@ public abstract class Reference {
         }
 //        argList = unmodifiableList(argList);
         return argList;
+    }
+
+    private static List<SiteVariance> getVarianceList(
+            Unit unit, List<TypeParameter> typeParams, 
+            Map<TypeParameter, SiteVariance> variances) {
+        int size = typeParams.size();
+        List<SiteVariance> varList = 
+                new ArrayList<SiteVariance>(size);
+        for (int i=0; i<size; i++) {
+            TypeParameter tp = typeParams.get(i);
+            SiteVariance var = variances.get(tp);
+            varList.add(var);
+        }
+//        argList = unmodifiableList(argList);
+        return varList;
     }
 
     /**
@@ -235,19 +279,29 @@ public abstract class Reference {
         return typedParameter;
     }
 
+    boolean isContravariant() {
+        return false;
+    }
+    
+    boolean isCovariant() {
+        return true;
+    }
+    
     /**
      * Get the type of a parameter, after substitution of
      * type arguments.
      */
     public TypedReference getTypedParameter(Parameter p) {
         TypedReference typedParam = 
-                new TypedReference(false, true);
+                new TypedReference(!isCovariant(), 
+                        !isContravariant());
         FunctionOrValue model = p.getModel();
         if (model!=null) {
             typedParam.setDeclaration(model);
         }
         typedParam.setQualifyingType(getQualifyingType());
         typedParam.setTypeArguments(getTypeArguments());
+        typedParam.setVarianceOverrides(getVarianceOverrides());
         return typedParam;
     }
     

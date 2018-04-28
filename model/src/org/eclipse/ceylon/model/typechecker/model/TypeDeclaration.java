@@ -12,6 +12,7 @@ package org.eclipse.ceylon.model.typechecker.model;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
@@ -188,6 +189,8 @@ public abstract class TypeDeclaration extends Declaration
             pt.setQualifyingType(qualifyingType);
             pt.setTypeArguments(getTypeArgumentMap(this, 
                     qualifyingType, typeArguments));
+            pt.setVarianceOverrides(getVarianceMap(this, 
+                    qualifyingType, null));
             return pt;
         }
     }

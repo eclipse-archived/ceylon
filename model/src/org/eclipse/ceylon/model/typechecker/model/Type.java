@@ -71,9 +71,6 @@ public class Type extends Reference {
     private int hashCode;
 //    private List<Type> typeArgumentList;
     
-    private Map<TypeParameter,SiteVariance> varianceOverrides = 
-            EMPTY_VARIANCE_MAP;
-    
     private static final List<TypeParameter> NO_TYPE_PARAMS = 
             Collections.<TypeParameter>emptyList();    
 
@@ -128,10 +125,6 @@ public class Type extends Reference {
         return newType;
     }
     
-    public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
-        return varianceOverrides;
-    }
-    
     public boolean isCovariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
@@ -163,11 +156,6 @@ public class Type extends Reference {
                     new HashMap<TypeParameter,SiteVariance>();
         }
         varianceOverrides.put(param, variance);
-    }
-    
-    public void setVarianceOverrides(
-            Map<TypeParameter,SiteVariance> varianceOverrides) {
-        this.varianceOverrides = varianceOverrides;
     }
     
     Type() {}
@@ -1617,12 +1605,10 @@ public class Type extends Reference {
      *         variances and substitution of type arguments
      */
     public Type substitute(TypedReference source) {
-        Type qualifying = source.getQualifyingType();
         return substitute(source.getTypeArguments(),
-                qualifying==null ? null :
-                    qualifying.collectVarianceOverrides(),
-                    source.isCovariant(),
-                    source.isContravariant());
+                source.getVarianceOverrides(),
+                source.isCovariant(),
+                source.isContravariant());
     }
     
     /**
@@ -1737,10 +1723,10 @@ public class Type extends Reference {
                 new TypedReference(!assigned, assigned);
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
-        Map<TypeParameter, Type> map = 
-                getTypeArgumentMap(member, declaringType, 
-                        typeArguments);
-        ptr.setTypeArguments(map);
+        ptr.setTypeArguments(getTypeArgumentMap(member, 
+                declaringType, typeArguments));
+        ptr.setVarianceOverrides(getVarianceMap(member, 
+                declaringType, null));
         return ptr;
     }
 
@@ -2368,12 +2354,12 @@ public class Type extends Reference {
                 Type declaringType = 
                         qualifying.getSupertype(dtd);
                 pt.setQualifyingType(declaringType);
-                Map<TypeParameter, Type> tam = 
-                        getTypeArgumentMap(declaration, 
-                                declaringType, 
-                                getTypeArgumentList());
-                pt.setTypeArguments(tam);
-                pt.setVarianceOverrides(getVarianceOverrides());
+                pt.setTypeArguments(getTypeArgumentMap(
+                        declaration, declaringType, 
+                        getTypeArgumentList()));
+                pt.setVarianceOverrides(getVarianceMap(
+                        declaration, declaringType, 
+                        getVarianceList()));
                 return pt;
             }
         }
