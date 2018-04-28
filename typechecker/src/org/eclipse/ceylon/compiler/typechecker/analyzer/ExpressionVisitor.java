@@ -5631,7 +5631,8 @@ public class ExpressionVisitor extends Visitor {
             } 
             else {
                 Tree.PositionalArgument arg = args.get(i);
-                Type pt = param.getType();
+                Type pt = param.getType(); //this is only the return type
+                //TODO: check parameter types for callable parameter
                 if (!dynamic && 
                         isTypeUnknown(pt)) {
                     arg.addError("parameter type could not be determined: " + 
@@ -6060,7 +6061,7 @@ public class ExpressionVisitor extends Visitor {
         if (paramModel!=null) {
             a.setParameter(p);
             TypedReference paramRef = 
-                    pr.getTypedParameterWithWildcardCaputure(p);
+                    pr.getTypedParameterWithWildcardCapture(p);
             Type paramType = 
                     paramType(a.getScope(), 
                             paramRef, paramModel);

@@ -227,7 +227,7 @@ public abstract class Reference {
      * Get the type of a parameter, after substitution of
      * type arguments and wildcard capture.
      */
-    public TypedReference getTypedParameterWithWildcardCaputure(
+    public TypedReference getTypedParameterWithWildcardCapture(
             Parameter p) {
         TypedReference typedParameter = 
                 getTypedParameter(p);
