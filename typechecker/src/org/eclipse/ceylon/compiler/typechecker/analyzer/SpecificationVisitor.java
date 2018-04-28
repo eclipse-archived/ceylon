@@ -83,6 +83,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean definitelyExited = false;
     private boolean definitelyByLoopBreaks = true;
     private boolean possiblyByLoopBreaks = false;
+    private boolean possiblyBreaks = false;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -139,6 +140,7 @@ public class SpecificationVisitor extends Visitor {
         definitelyExited = false;
         definitelyByLoopBreaks = true;
         possiblyByLoopBreaks = false;
+        possiblyBreaks = false;
     }
     
     private boolean isVariable() {
@@ -1007,13 +1009,16 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.ForClause that) {
         boolean of = endsInBreak;
         boolean oe = endsInReturnThrow;
+        boolean ob = possiblyBreaks;
         Tree.Continue olc = lastContinue;
         lastContinue = null;
         endsInBreak = false;
         endsInReturnThrow = false;
+        possiblyBreaks = false;
         super.visit(that);
         endsInBreak = of;
         endsInReturnThrow = oe;
+        possiblyBreaks = ob;
         lastContinue = olc;
     }
     
@@ -1021,13 +1026,16 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.WhileClause that) {
         boolean of = endsInBreak;
         boolean oe = endsInReturnThrow;
+        boolean ob = possiblyBreaks;
         Tree.Continue olc = lastContinue;
         lastContinue = null;
         endsInBreak = false;
         endsInReturnThrow = false;
+        possiblyBreaks = false;
         super.visit(that);
         endsInBreak = of;
         endsInReturnThrow = oe;
+        possiblyBreaks = ob;
         lastContinue = olc;
     }
     
@@ -1825,6 +1833,7 @@ public class SpecificationVisitor extends Visitor {
         if (possibly) {
             possiblyByLoopBreaks = true;
         }
+        possiblyBreaks = true;
     }
 
     @Override
@@ -2000,6 +2009,7 @@ public class SpecificationVisitor extends Visitor {
         boolean odefinitelyExited = definitelyExited;
         boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
         boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        boolean opossiblyBreaks = possiblyBreaks;
         beginSpecificationScope();
         Tree.TryClause tryClause = that.getTryClause();
         if (tryClause!=null) {
@@ -2023,6 +2033,7 @@ public class SpecificationVisitor extends Visitor {
         definitelyExited = odefinitelyExited;
         definitelyByLoopBreaks = odefinitelyByLoopBreaks;
         possiblyByLoopBreaks = opossiblyByLoopBreaks;
+        possiblyBreaks = opossiblyBreaks;
         possibly = possibly 
                 || possiblyAssignedByTryClause;
         possiblyExited = possiblyExited 
@@ -2032,8 +2043,9 @@ public class SpecificationVisitor extends Visitor {
         boolean possiblyAssignedBySomeCatchClause = false;
         boolean definitelyExitedFromEveryCatchClause = true;
         boolean possiblyExitedFromSomeCatchClause = false;
-        boolean specifiedByExitsFromEveryCatchClause = true;
-        boolean specifiedByExitsFromSomeCatchClause = false;
+        boolean definitelySpecifiedByExitsFromEveryCatchClause = true;
+        boolean possiblySpecifiedByExitsFromSomeCatchClause = false;
+        boolean possiblyBreaksInSomeCatchClause = false;
         for (Tree.CatchClause cc: that.getCatchClauses()) {
             d = declared;
             boolean pdefinitely = definitely;
@@ -2042,6 +2054,7 @@ public class SpecificationVisitor extends Visitor {
             boolean pdefinitelyExited = definitelyExited;
             boolean pdefinitelyByLoopBreaks = definitelyByLoopBreaks;
             boolean ppossiblyByLoopBreaks = possiblyByLoopBreaks;
+            boolean ppossiblyBreaks = possiblyBreaks;
             beginSpecificationScope();
             cc.visit(this);
             definitelyAssignedByEveryCatchClause = 
@@ -2056,12 +2069,15 @@ public class SpecificationVisitor extends Visitor {
             possiblyExitedFromSomeCatchClause = 
                     possiblyExitedFromSomeCatchClause 
                     || possiblyExited;
-            specifiedByExitsFromEveryCatchClause = 
-                    specifiedByExitsFromEveryCatchClause 
+            definitelySpecifiedByExitsFromEveryCatchClause = 
+                    definitelySpecifiedByExitsFromEveryCatchClause 
                     && definitelyByLoopBreaks;
-            specifiedByExitsFromSomeCatchClause =
-                    specifiedByExitsFromSomeCatchClause 
+            possiblySpecifiedByExitsFromSomeCatchClause =
+                    possiblySpecifiedByExitsFromSomeCatchClause 
                     || possiblyByLoopBreaks;
+            possiblyBreaksInSomeCatchClause = 
+                    possiblyBreaksInSomeCatchClause
+                    || possiblyBreaks;
             declared = d;
             definitely = pdefinitely;
             possibly = ppossibly;
@@ -2069,6 +2085,7 @@ public class SpecificationVisitor extends Visitor {
             definitelyExited = pdefinitelyExited;
             definitelyByLoopBreaks = pdefinitelyByLoopBreaks;
             possiblyByLoopBreaks = ppossiblyByLoopBreaks;
+            possiblyBreaks = ppossiblyBreaks;
         }
         possibly = possibly 
                 || possiblyAssignedBySomeCatchClause;
@@ -2081,6 +2098,7 @@ public class SpecificationVisitor extends Visitor {
         boolean possiblyExitedFromFinallyClause;
         boolean definitelySpecifiedByExitsFromFinallyClause;
         boolean possiblySpecifiedByExitsFromFinallyClause;
+        boolean possiblyBreaksInFinallyClause;
         Tree.FinallyClause finallyClause = 
                 that.getFinallyClause();
         if (finallyClause!=null) {
@@ -2091,6 +2109,7 @@ public class SpecificationVisitor extends Visitor {
             boolean pdefinitelyExited = definitelyExited;
             boolean pdefinitelyByLoopBreaks = definitelyByLoopBreaks;
             boolean ppossiblyByLoopBreaks = possiblyByLoopBreaks;
+            boolean ppossiblyBreaks = possiblyBreaks;
             beginSpecificationScope();
             finallyClause.visit(this);
             definitelyAssignedByFinallyClause = 
@@ -2106,6 +2125,8 @@ public class SpecificationVisitor extends Visitor {
                     definitelyByLoopBreaks;
             possiblySpecifiedByExitsFromFinallyClause =
                     possiblyByLoopBreaks;
+            possiblyBreaksInFinallyClause =
+                    possiblyBreaks;
             declared = d;
             definitely = pdefinitely;
             possibly = ppossibly;
@@ -2113,6 +2134,7 @@ public class SpecificationVisitor extends Visitor {
             definitelyExited = pdefinitelyExited;
             definitelyByLoopBreaks = pdefinitelyByLoopBreaks;
             possiblyByLoopBreaks = ppossiblyByLoopBreaks;
+            possiblyBreaks = ppossiblyBreaks;
         }
         else {
             definitelyAssignedByFinallyClause = false;
@@ -2121,24 +2143,28 @@ public class SpecificationVisitor extends Visitor {
             possiblyExitedFromFinallyClause = false;
             definitelySpecifiedByExitsFromFinallyClause = true;
             possiblySpecifiedByExitsFromFinallyClause = false;
+            possiblyBreaksInFinallyClause = false;
         }
         possibly = possibly 
                 || possiblyAssignedByFinallyClause;
         definitely = definitely 
-                || definitelyAssignedByFinallyClause 
                 || definitelyAssignedByTryClause 
-                && definitelyAssignedByEveryCatchClause;
+                && definitelyAssignedByEveryCatchClause
+                && !possiblyBreaksInFinallyClause
+                && !possiblyBreaksInSomeCatchClause
+                || definitelyAssignedByFinallyClause
+                && !possiblyBreaksInFinallyClause;
         definitelyExited = definitelyExited 
                 && definitelyExitedFromFinallyClause;
         possiblyExited = possiblyExited 
                 || possiblyExitedFromFinallyClause;
         definitelyByLoopBreaks = definitelyByLoopBreaks 
-                || definitelySpecifiedByExitsFromFinallyClause 
-                || specifiedByExitsFromEveryCatchClause 
-                && definitelySpecifiedByExitsFromTryClause;
+                && definitelySpecifiedByExitsFromEveryCatchClause 
+                && definitelySpecifiedByExitsFromTryClause
+                && definitelySpecifiedByExitsFromFinallyClause;
         possiblyByLoopBreaks = possiblyByLoopBreaks 
                 || possiblySpecifiedByExitsFromFinallyClause 
-                || specifiedByExitsFromSomeCatchClause 
+                || possiblySpecifiedByExitsFromSomeCatchClause 
                 || possiblySpecifiedByExitsFromTryClause;
         
         checkDeclarationSection(that);
