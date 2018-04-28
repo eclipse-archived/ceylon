@@ -9179,11 +9179,20 @@ public class ExpressionVisitor extends Visitor {
                             typeParametersString(type) +
                             " (add missing type argument list)");
                 }
-                else if (!declarationLiteral) {
-                    checkNotJvm(that, 
-                            "type functions are not supported on the JVM: '" + 
-                            type.getName(unit) + 
-                            "' is generic (specify explicit type arguments)");
+                else if (declarationLiteral) {
+                    //this is fine
+                }
+                else {
+                    if (!that.getStaticTypePrimary() 
+                            //qualifying types for
+                            //Java static types don't
+                            //require type arguments
+                            || !type.isJava()) {
+                        checkNotJvm(that, 
+                                "type functions are not supported on the JVM: '" + 
+                                type.getName(unit) + 
+                                "' is generic (specify explicit type arguments)");
+                    }
                 }
             }
         }
