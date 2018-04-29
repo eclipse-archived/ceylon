@@ -1083,196 +1083,44 @@ public class ModelUtil {
         return true;
     }
     
-    private static int countTypeParameters(
-            Declaration declaration, Type receivingType) {
-        int count = 0;
-        boolean containsFunctionOrValueInterface
-                = containsFunctionOrValueInterface(receivingType);
-        while (true) {
-            count += declaration.getTypeParameters().size();
-            if (declaration.isClassOrInterfaceMember()) {
-                declaration = 
-                        (Declaration) 
-                            declaration.getContainer();
-            }
-            else if (containsFunctionOrValueInterface) {
-                // we are at runtime and we care about local types' generic ancestors
-                declaration = 
-                        getFirstGenericContainer(declaration);
-                if (declaration == null) {
-                    break;
-                }
-            }
-            else {
-                break;
-            }
-        }
-        return count;
-    }
-
-    private static Declaration getFirstGenericContainer(Declaration declaration) {
-        Scope container = declaration.getContainer();
-        while (container != null && 
-                !(container instanceof Generic)) {
-            container = container.getContainer();
-        }
-        // must be Generic or null, and every Generic is a Declaration
-        return (Declaration) container;
-    }
-
-    private static boolean containsFunctionOrValueInterface(Type receivingType) {
-        while (receivingType != null) {
-            if (receivingType.isFunctionOrValueInterface()) {
-                return true;
-            }
-            receivingType = receivingType.getQualifyingType();
-        }
-        return false;
-    }
-
-    /**
-     * Given a declaration, a list of type arguments to the 
-     * declaration, and a receiving type, collect together
-     * all interesting type arguments. The resulting map 
-     * includes all type arguments from the receiving type 
-     * and all its qualifying types. That's useful, because
-     * {@link Type.Substitution} works with a single
-     * aggregated map, and so for performance
-     * {@link Type#substitute(Type)} and
-     * {@link Type#substitute(TypedReference)}
-     * assume that the given type or reference holds such a
-     * single aggregated map.
-     * 
-     * @return a map of type parameter to type argument
-     *  
-     * @param declaration a declaration
-     * @param receivingType the receiving produced type 
-     *        of which the declaration is a member
-     * @param typeArguments all the explicit or inferred 
-     *        type arguments of the declaration, including
-     *        those from qualifying types
-     */
-    public static Map<TypeParameter,Type> 
-    getTypeArgumentMap(Declaration declaration, 
-            Type receivingType, 
-            List<Type> typeArguments) {        
-        int count = countTypeParameters(declaration, receivingType);
-        if (count==0) {
-            return EMPTY_TYPE_ARG_MAP;
-        }
-        else {
-            return aggregateTypeArguments(receivingType, 
-                    typeArguments, declaration, count);
-        }
-    }
-
-    private static Map<TypeParameter, Type> 
-    aggregateTypeArguments(Type receivingType, 
-            List<Type> typeArguments,
-            Declaration declaration,
-            int count) {
+    public static Map<TypeParameter, Type> 
+    typeArgumentsAsMap(Declaration declaration,
+            List<Type> typeArguments) {
         List<TypeParameter> typeParameters = 
                 declaration.getTypeParameters();
+        if (typeArguments == null
+                || typeParameters.isEmpty()
+                || typeArguments.isEmpty()) {
+            return EMPTY_TYPE_ARG_MAP;
+        }
         Map<TypeParameter,Type> map = 
                 new HashMap<TypeParameter,Type>
-                    (count);
-        //make sure we collect all type arguments
-        //from the whole qualified type!
-        if (receivingType!=null) {
-            if (receivingType.isIntersection()) {
-                for (Type supertype: 
-                        receivingType.getSatisfiedTypes()) {
-                    aggregateTypeArguments(map, 
-                            supertype, declaration);
-                }
-            }
-            else {
-                aggregateTypeArguments(map, 
-                        receivingType, declaration);
-            }
-        }
-        if (typeArguments!=null) {
-            //now turn the type argument tuple into a
-            //map from type parameter to argument
-            for (int i=0; 
-                    i<typeParameters.size() && 
-                    i<typeArguments.size(); 
-                    i++) {
-                map.put(typeParameters.get(i), 
-                        typeArguments.get(i));
-            }
+                    (typeArguments.size());
+        //now turn the type argument tuple into a
+        //map from type parameter to argument
+        for (int i=0; 
+                i<typeParameters.size() && 
+                i<typeArguments.size(); 
+                i++) {
+            map.put(typeParameters.get(i), 
+                    typeArguments.get(i));
         }
         return map;
     }
 
-    private static void aggregateTypeArguments(
-            Map<TypeParameter, Type> map, 
-            Type dt, Declaration d) {
-        while (dt!=null){
-            Type aqt;
-            if (d.isClassOrInterfaceMember()) {
-                TypeDeclaration declaringType = 
-                        (TypeDeclaration) 
-                            d.getContainer();
-                aqt = dt.getSupertype(declaringType);
-                if (aqt==null) {
-                    break;
-                }
-            }
-            else if (dt.isFunctionOrValueInterface()) {
-                // just take it as-is
-                aqt = dt;
-            }
-            else{
-                break;
-            }
-            map.putAll(aqt.getTypeArguments());
-            dt = aqt.getQualifyingType();
-            d = aqt.getDeclaration();
-        }
-    }
-    
-    public static Map<TypeParameter,SiteVariance> 
-    getVarianceMap(Declaration declaration, 
-            Type receivingType, 
-            List<SiteVariance> variances) {     
-        if (variances==null) {
-            return EMPTY_VARIANCE_MAP;
-        }
-        else {
-            if (countTypeParameters(declaration, receivingType)==0) {
-                return EMPTY_VARIANCE_MAP;
-            }
-            else {
-                return aggregateVariances(receivingType, 
-                        variances, declaration);
-            }
-        }
-    }
-
-    private static Map<TypeParameter, SiteVariance> 
-    aggregateVariances(Type receivingType, 
-            List<SiteVariance> variances,
-            Declaration declaration) {
-        Map<TypeParameter,SiteVariance> map = 
-                new HashMap<TypeParameter,SiteVariance>();
-        //make sure we collect all type arguments
-        //from the whole qualified type!
-        if (receivingType!=null) {
-            if (receivingType.isIntersection()) {
-                for (Type supertype: 
-                        receivingType.getSatisfiedTypes()) {
-                    aggregateVariances(map, supertype, 
-                            declaration);
-                }
-            }
-            else {
-                aggregateVariances(map, receivingType, 
-                        declaration);
-            }
-        }
+    public static Map<TypeParameter, SiteVariance> 
+    variancesAsMap(Declaration declaration, 
+            List<SiteVariance> variances) {
         List<TypeParameter> typeParameters = 
                 declaration.getTypeParameters();
+        if (variances==null
+                || typeParameters.isEmpty() 
+                || variances.isEmpty()) {
+            return EMPTY_VARIANCE_MAP;
+        }
+        Map<TypeParameter,SiteVariance> map = 
+                new HashMap<TypeParameter,SiteVariance>
+                    (variances.size());
         for (int i=0; 
                 i<typeParameters.size() && 
                 i<variances.size(); 
@@ -1284,58 +1132,6 @@ public class ModelUtil {
         }
         return map;
     }
-
-    private static void aggregateVariances(
-            Map<TypeParameter,SiteVariance> map, 
-            Type dt, Declaration d) {
-        while (dt!=null) {
-            Type aqt;
-            if (d.isClassOrInterfaceMember()) {
-                TypeDeclaration declaringType = 
-                        (TypeDeclaration) 
-                            d.getContainer();
-                aqt = dt.getSupertype(declaringType);
-                if (aqt==null) {
-                    break;
-                }
-            }else if(dt.isFunctionOrValueInterface()){
-                // take it as-is
-                aqt = dt;
-            }else{
-                break;
-            }
-            map.putAll(dt.getVarianceOverrides());
-            dt = aqt.getQualifyingType();
-            d = aqt.getDeclaration();
-        }
-    }
-
-    /*private static int countTypeParameters(
-            Type receivingType,
-            List<TypeParameter> typeParameters) {
-        int count = typeParameters.size();
-        //make sure we count all type arguments
-        //from the whole qualified type!
-        if (receivingType!=null) {
-            if (receivingType.isIntersection()) {
-                for (Type supertype: 
-                        receivingType.getSatisfiedTypes()) {
-                    while (supertype!=null) {
-                        count += supertype.getTypeArguments().size();
-                        supertype = supertype.getQualifyingType();
-                    }
-                }
-            }
-            else {
-                Type dt = receivingType;
-                while (dt!=null) {
-                    count += dt.getTypeArguments().size();
-                    dt = dt.getQualifyingType();
-                }
-            }
-        }
-        return count;
-    }*/
 
     static <T> List<T> list(List<T> list, T element) {
         List<T> result = new ArrayList<T>(list.size()+1);
@@ -3214,13 +3010,13 @@ public class ModelUtil {
     }
 
     public static boolean equal(Declaration decl, Declaration other) {
-        if (decl instanceof UnionType || 
-            decl instanceof IntersectionType || 
-            other instanceof UnionType || 
-            other instanceof IntersectionType) {
-            return false;
-        }
-        return ModelUtil.eq(decl, other);
+        boolean unionOrIntersection = 
+                decl instanceof UnionType 
+             || decl instanceof IntersectionType 
+             || other instanceof UnionType 
+             || other instanceof IntersectionType;
+        return !unionOrIntersection 
+            && ModelUtil.eq(decl, other);
     }
 
     public static boolean equalModules(Module scope, Module other) {
@@ -3374,7 +3170,7 @@ public class ModelUtil {
         for (Type ct: caseTypes) {
             Type cts = 
                     ct.appliedType(receiver, member, 
-                            typeArguments, null);
+                            typeArguments);
             if (argType.isSubtypeOf(cts)) {
                 return true;
             }
@@ -3396,7 +3192,7 @@ public class ModelUtil {
                         Type cts = 
                                 ct.appliedType(receiver, 
                                         member, 
-                                        typeArguments, null);
+                                        typeArguments);
                         if (act.isSubtypeOf(cts)) {
                             foundCase = true;
                             break;

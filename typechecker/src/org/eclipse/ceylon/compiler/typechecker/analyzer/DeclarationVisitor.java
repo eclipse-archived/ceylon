@@ -34,8 +34,6 @@ import static org.eclipse.ceylon.compiler.typechecker.util.NativeUtil.checkNotJv
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getRealScope;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
@@ -43,6 +41,8 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isDefaultCons
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.lookupOverloadedByName;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.variancesAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
@@ -2965,7 +2965,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     TypeDeclaration dec = getDeclaration();
                     List<TypeParameter> tps = 
                             dec.getTypeParameters();
-                    return getTypeArgumentMap(dec, null,
+                    return typeArgumentsAsMap(dec, 
                             AnalyzerUtil.getTypeArguments(
                                     tal, null, tps));
                 }
@@ -2975,8 +2975,9 @@ public abstract class DeclarationVisitor extends Visitor {
                     TypeDeclaration dec = getDeclaration();
                     List<TypeParameter> tps = 
                             dec.getTypeParameters();
-                    return getVarianceMap(dec, null, 
-                            AnalyzerUtil.getVariances(tal, tps));
+                    return variancesAsMap(dec,  
+                            AnalyzerUtil.getVariances(
+                                    tal, tps));
                 }
             };
             that.setTypeModel(t);
@@ -2996,16 +2997,17 @@ public abstract class DeclarationVisitor extends Visitor {
                     new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    if (outerType==null) {
-                        return null;
-                    }
-                    else {
-                        TypeDeclaration dec = 
-                                outerType.getTypeModel()
-                                    .getDeclaration();
-                        return AnalyzerUtil.getTypeMember(
-                                dec, name, null, false, unit, scope);
-                    }
+                    return outerType==null ? null : 
+                        AnalyzerUtil.getTypeMember(
+                            outerType.getTypeModel()
+                                .getDeclaration(), 
+                            name, null, false, 
+                            unit, scope);
+                }
+                @Override
+                public Type initQualifyingType() {
+                    return outerType==null ? null : 
+                        outerType.getTypeModel();
                 }
                 @Override
                 public Map<TypeParameter, Type> 
@@ -3014,25 +3016,25 @@ public abstract class DeclarationVisitor extends Visitor {
                         return emptyMap();
                     }
                     else {
-                        TypeDeclaration dec = 
-                                getDeclaration();
-                        List<TypeParameter> tps = 
-                                dec.getTypeParameters();
-                        Type ot = outerType.getTypeModel();
-                        return getTypeArgumentMap(dec, ot, 
-                                AnalyzerUtil.getTypeArguments(
-                                        tal, ot, tps));
+                        TypeDeclaration dec = getDeclaration();
+                        return typeArgumentsAsMap(dec, 
+                                AnalyzerUtil.getTypeArguments(tal, 
+                                        outerType.getTypeModel(), 
+                                        dec.getTypeParameters()));
                     }
                 }
                 @Override
                 public Map<TypeParameter, SiteVariance> 
                 initVarianceOverrides() {
-                    TypeDeclaration dec = getDeclaration();
-                    List<TypeParameter> tps = 
-                            dec.getTypeParameters();
-                    Type ot = outerType.getTypeModel();
-                    return getVarianceMap(dec, ot, 
-                            AnalyzerUtil.getVariances(tal, tps));
+                    if (outerType==null) {
+                        return emptyMap();
+                    }
+                    else {
+                        TypeDeclaration dec = getDeclaration();
+                        return variancesAsMap(dec, 
+                                AnalyzerUtil.getVariances(tal, 
+                                        dec.getTypeParameters()));
+                    }
                 }
             };
             that.setTypeModel(t);

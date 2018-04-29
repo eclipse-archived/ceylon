@@ -150,9 +150,9 @@ public class Unit implements LanguageModuleProvider, ImportScope {
 
     public Import getImport(String name) {
         for (Import i: getImports()) {
-            if (!i.isAmbiguous() &&
-                    i.getTypeDeclaration()==null &&
-                    i.getAlias().equals(name)) {
+            if (!i.isAmbiguous() 
+                    && i.getTypeDeclaration()==null 
+                    && i.getAlias().equals(name)) {
                 return i;
             }
         }
@@ -165,8 +165,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
 
     public String getAliasedName(Declaration dec, String defaultValue) {
         for (Import i: getImports()) {
-            if (!i.isAmbiguous() &&
-                    i.getDeclaration()
+            if (!i.isAmbiguous() 
+                    && i.getDeclaration()
                         .equals(getAbstraction(dec))) {
                 return i.getAlias();
             }
@@ -192,8 +192,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Declaration getImportedDeclaration(String name, 
             List<Type> signature, boolean ellipsis) {
         for (Import i: getImports()) {
-            if (!i.isAmbiguous() && 
-                    i.getAlias().equals(name)) {
+            if (!i.isAmbiguous() 
+                    && i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
@@ -216,10 +216,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
      *         to the namespace of the compilation unit
      */
     static boolean isToplevelImport(Import i, Declaration d) {
-        return d.isToplevel() || 
-            d.isStatic() ||
-            isToplevelClassConstructor(i.getTypeDeclaration(), d) ||
-            isToplevelAnonymousClass(i.getTypeDeclaration());
+        return d.isToplevel() 
+            || d.isStatic() 
+            || isToplevelClassConstructor(i.getTypeDeclaration(), d) 
+            || isToplevelAnonymousClass(i.getTypeDeclaration());
     }
     
     /**
@@ -231,9 +231,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             boolean ellipsis) {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
-            if (itd!=null && td.inherits(itd) && 
-                    !i.isAmbiguous() &&
-                    i.getAlias().equals(name)) {
+            if (itd!=null 
+                    && td.inherits(itd) 
+                    && !i.isAmbiguous() 
+                    && i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
@@ -256,9 +257,9 @@ public class Unit implements LanguageModuleProvider, ImportScope {
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
             }
-            if (i.getAlias()!=null && 
-                    !i.isAmbiguous() &&
-                    isNameMatching(startingWith, i)) {
+            if (i.getAlias()!=null 
+                    && !i.isAmbiguous() 
+                    && isNameMatching(startingWith, i)) {
                 Declaration d = i.getDeclaration();
                 if (isToplevelImport(i, d)) {
                     result.put(i.getAlias(), 
@@ -281,10 +282,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
                 return Collections.emptyMap();
             }
             TypeDeclaration itd = i.getTypeDeclaration();
-            if (i.getAlias()!=null && 
-                    !i.isAmbiguous() &&
-                    itd!=null && itd.equals(td) &&
-                    isNameMatching(startingWith, i)) {
+            if (i.getAlias()!=null 
+                    && !i.isAmbiguous() 
+                    && itd!=null && itd.equals(td) 
+                    && isNameMatching(startingWith, i)) {
                 result.put(i.getAlias(), 
                         new DeclarationWithProximity(i, 
                                 proximity));
@@ -297,13 +298,13 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public boolean equals(Object obj) {
         if (obj instanceof Unit) {
             Unit that = (Unit) obj;
-            return that==this ||
-                    that.getPackage()
-                        .equals(getPackage()) && 
-                    Objects.equals(getFilename(), 
-                            that.getFilename()) &&
-                    Objects.equals(that.getFullPath(), 
-                            getFullPath());
+            return that==this 
+                || that.getPackage()
+                        .equals(getPackage()) 
+                && Objects.equals(getFilename(), 
+                        that.getFilename()) 
+                && Objects.equals(that.getFullPath(), 
+                        getFullPath());
         }
         else {
             return false;

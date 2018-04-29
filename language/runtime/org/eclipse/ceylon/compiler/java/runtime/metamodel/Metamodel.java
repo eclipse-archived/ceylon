@@ -1658,7 +1658,7 @@ public class Metamodel {
                 Type typeArgument = typeArguments.get(i);
                 org.eclipse.ceylon.model.typechecker.model.TypeParameter typeParameter = typeParameters.get(i);
                 for (Type st: typeParameter.getSatisfiedTypes()) {
-                    Type sts = st.appliedType(qualifyingType, declaration, typeArguments, null);
+                    Type sts = st.appliedType(qualifyingType, declaration, typeArguments);
                     if (!typeArgument.isSubtypeOf(sts)) {
                         throw new TypeApplicationException("Type argument "+i+": "+typeArgument.asQualifiedString()
                                 +" does not conform to upper bound constraint: "+sts.asQualifiedString()

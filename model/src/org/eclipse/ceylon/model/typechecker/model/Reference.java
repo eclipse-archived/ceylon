@@ -119,6 +119,7 @@ public abstract class Reference {
     void setTypeArguments
         (Map<TypeParameter,Type> typeArguments) {
         this.typeArguments = typeArguments;
+        this.typeArgumentsWithDefaults = null;
     }
     
     /**
@@ -334,5 +335,9 @@ public abstract class Reference {
     }
     
     public abstract String asString();
+    
+    public abstract Map<TypeParameter,Type> collectTypeArguments();
+    
+    public abstract Map<TypeParameter,SiteVariance> collectVarianceOverrides();
     
 }

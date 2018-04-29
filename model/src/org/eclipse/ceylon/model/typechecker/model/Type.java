@@ -18,12 +18,11 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.principalInstantiation;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.union;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
@@ -866,8 +865,7 @@ public class Type extends Reference {
         
         //otherwise we need to resolve aliases
         //and canonicalize the types
-        return type!=null 
-            && resolveAliases()
+        return resolveAliases()
                     .isSubtypeOfInternal(
                             type.resolveAliases());
     }
@@ -875,7 +873,9 @@ public class Type extends Reference {
     private static TypeDeclaration eliminateAlias(
             TypeDeclaration dec) {
         if (dec instanceof TypeAlias) {
-            //not handled here
+            //not handled here, since
+            //this sort of alias can
+            //involve circularities
             return dec;
         }
         while (dec.isAlias()) {
@@ -962,8 +962,8 @@ public class Type extends Reference {
                 }
                 return false;
             }
-            else if (isTypeConstructor() && 
-                    type.isTypeConstructor()) {
+            else if (isTypeConstructor() 
+                    && type.isTypeConstructor()) {
                 return isSubtypeOfTypeConstructor(type);
             }
             else if (isTypeConstructor()) {
@@ -1377,28 +1377,26 @@ public class Type extends Reference {
             TypeParameter otherParam = 
                     otherTypeParameters.get(i);
             Map<TypeParameter, Type> otherArgs = 
-                    getTypeArgumentMap(otherDeclaration, 
-                            null, paramsAsArgs);
+                    typeArgumentsAsMap(otherDeclaration, 
+                            paramsAsArgs);
             Map<TypeParameter, Type> args = 
-                    getTypeArgumentMap(declaration, 
-                            null, paramsAsArgs);
-            Map<TypeParameter, SiteVariance> none = 
-                    EMPTY_VARIANCE_MAP;
+                    typeArgumentsAsMap(declaration, 
+                            paramsAsArgs);
             Type otherBound = 
                     intersectionOfSupertypes(otherParam)
-                        .substitute(otherArgs, none);
+                        .substitute(otherArgs, null);
             Type bound = 
                     intersectionOfSupertypes(param)
-                        .substitute(args, none);
+                        .substitute(args, null);
             if (!otherBound.isSubtypeOf(bound)) {
                 return false;
             }
             Type otherEnumBound = 
                     unionOfCaseTypes(otherParam)
-                        .substitute(otherArgs, none);
+                        .substitute(otherArgs, null);
             Type enumBound = 
                     unionOfCaseTypes(param)
-                        .substitute(args, none);
+                        .substitute(args, null);
             if (!otherEnumBound.isSubtypeOf(enumBound)) {
                 return false;
             }
@@ -1447,28 +1445,26 @@ public class Type extends Reference {
             TypeParameter otherParam = 
                     otherTypeParameters.get(i);
             Map<TypeParameter, Type> otherArgs = 
-                    getTypeArgumentMap(otherDeclaration, 
-                            null, paramsAsArgs);
+                    typeArgumentsAsMap(otherDeclaration, 
+                            paramsAsArgs);
             Map<TypeParameter, Type> args = 
-                    getTypeArgumentMap(declaration, 
-                            null, paramsAsArgs);
-            Map<TypeParameter, SiteVariance> none = 
-                    EMPTY_VARIANCE_MAP;
+                    typeArgumentsAsMap(declaration, 
+                            paramsAsArgs);
             Type otherBound = 
                     intersectionOfSupertypes(otherParam)
-                        .substitute(otherArgs, none);
+                        .substitute(otherArgs, null);
             Type bound = 
                     intersectionOfSupertypes(param)
-                        .substitute(args, none);
+                        .substitute(args, null);
             if (!otherBound.isExactly(bound)) {
                 return false;
             }
             Type otherEnumBound = 
                     unionOfCaseTypes(otherParam)
-                        .substitute(otherArgs, none);
+                        .substitute(otherArgs, null);
             Type enumBound = 
                     unionOfCaseTypes(param)
-                        .substitute(args, none);
+                        .substitute(args, null);
             if (!otherEnumBound.isExactly(enumBound)) {
                 return false;
             }
@@ -1600,8 +1596,9 @@ public class Type extends Reference {
      *         variances and substitution of type arguments
      */
     public Type substitute(Type source) {
-        return substitute(source.getTypeArguments(), 
-                source.getVarianceOverrides());
+        return substitute(
+                source.collectTypeArguments(), 
+                source.collectVarianceOverrides());
     }
     
     /**
@@ -1617,12 +1614,11 @@ public class Type extends Reference {
      *         variances and substitution of type arguments
      */
     public Type substitute(TypedReference source) {
-        Type qualifying = source.getQualifyingType();
-        return substitute(source.getTypeArguments(),
-                qualifying==null ? null :
-                    qualifying.collectVarianceOverrides(),
-                    source.isCovariant(),
-                    source.isContravariant());
+        return substitute(
+                source.collectTypeArguments(),
+                source.collectVarianceOverrides(),
+                source.isCovariant(),
+                source.isContravariant());
     }
     
     /**
@@ -1669,8 +1665,8 @@ public class Type extends Reference {
      */
     private Type substituteFromSubtype(Type source) {
         return substituteFromSubtype(
-                source.getTypeArguments(), 
-                source.getVarianceOverrides());
+                source.collectTypeArguments(), 
+                source.collectVarianceOverrides());
     }
 
     private Type substituteFromSubtype(
@@ -1737,10 +1733,8 @@ public class Type extends Reference {
                 new TypedReference(!assigned, assigned);
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
-        Map<TypeParameter, Type> map = 
-                getTypeArgumentMap(member, declaringType, 
-                        typeArguments);
-        ptr.setTypeArguments(map);
+        ptr.setTypeArguments(typeArgumentsAsMap(member, 
+                typeArguments));
         return ptr;
     }
 
@@ -1782,8 +1776,7 @@ public class Type extends Reference {
      */
     public Type appliedType(Type receiver, 
             Declaration member, 
-            List<Type> typeArguments,
-            List<SiteVariance> variances) {
+            List<Type> typeArguments) {
         Type receivingType;
         if (receiver==null) {
             receivingType = null;
@@ -1794,13 +1787,11 @@ public class Type extends Reference {
                         member.getContainer();
             receivingType = receiver.getSupertype(type);
         }
-        Map<TypeParameter, Type> typeArgMap = 
-                getTypeArgumentMap(member, receivingType, 
+        Reference ref = 
+                member.appliedReference(receivingType, 
                         typeArguments);
-        Map<TypeParameter, SiteVariance> varianceMap = 
-                getVarianceMap(member, receivingType, 
-                        variances);
-        return new Substitution(typeArgMap, varianceMap)
+        return new Substitution(ref.collectTypeArguments(), 
+                                ref.collectVarianceOverrides())
                     .substitute(this, true, false);
     }
 
@@ -1882,6 +1873,10 @@ public class Type extends Reference {
             //this is what the backend expects, apparently
             return null;
         }
+        if (isUnknown()) {
+            return this;
+        }
+        
         boolean canCache = canCacheSupertype(dec);
         if (canCache) {
             TypeCache cache = 
@@ -2368,11 +2363,7 @@ public class Type extends Reference {
                 Type declaringType = 
                         qualifying.getSupertype(dtd);
                 pt.setQualifyingType(declaringType);
-                Map<TypeParameter, Type> tam = 
-                        getTypeArgumentMap(declaration, 
-                                declaringType, 
-                                getTypeArgumentList());
-                pt.setTypeArguments(tam);
+                pt.setTypeArguments(getTypeArguments());
                 pt.setVarianceOverrides(getVarianceOverrides());
                 return pt;
             }
@@ -2536,8 +2527,8 @@ public class Type extends Reference {
         }*/
         //recurse to the qualifying type
         Type outerType;
-        if (dec.isMember() && 
-                !dec.isStatic()) {
+        if (dec.isMember() 
+                && !dec.isStatic()) {
             TypeDeclaration outer = 
                     (TypeDeclaration) 
                         dec.getContainer();
@@ -3029,13 +3020,10 @@ public class Type extends Reference {
             }
         }
         else {
-            TypeDeclaration dec = getDeclaration();
-            if (!dec.isJava() || !dec.isStatic()) {
-                Type qualifying = getQualifyingType();
-                if (qualifying!=null &&
-                        qualifying.containsUnknowns()) {
-                    return true;
-                }
+            Type qualifying = trueQualifyingType();
+            if (qualifying!=null 
+                    && qualifying.containsUnknowns()) {
+                return true;
             }
             if (!isTypeConstructor()) {
                 for (Type arg: getTypeArgumentList()) {
@@ -3153,16 +3141,13 @@ public class Type extends Reference {
                     }
                 }
             }
-            TypeDeclaration dec = getDeclaration();
-            if (!dec.isJava() || !dec.isStatic()) {
-                Type qualifying = getQualifyingType();
-                if (qualifying!=null) {
-                    String error = 
-                            qualifying.getFirstUnknownTypeError(
-                                    includeSuperTypes);
-                    if (error!=null) {
-                        return error;
-                    }
+            Type qualifying = trueQualifyingType();
+            if (qualifying!=null) {
+                String error = 
+                        qualifying.getFirstUnknownTypeError(
+                                includeSuperTypes);
+                if (error!=null) {
+                    return error;
                 }
             }
             for (Type arg: getTypeArgumentList()) {
@@ -3466,7 +3451,7 @@ public class Type extends Reference {
     private List<Type> getInternalSatisfiedTypes() {
         TypeDeclaration dec = getDeclaration();
         List<Type> sts = dec.getSatisfiedTypes();
-        if (getTypeArguments().isEmpty()) {
+        if (noTypeArguments()) {
             return sts;
         }
         List<Type> satisfiedTypes = 
@@ -3485,7 +3470,7 @@ public class Type extends Reference {
             return null;
         }
         else {
-            if (getTypeArguments().isEmpty()) {
+            if (noTypeArguments()) {
                 return et;
             }
             return et.substituteFromSubtype(this);
@@ -3499,7 +3484,7 @@ public class Type extends Reference {
             return null;
         }
         else {
-            if (getTypeArguments().isEmpty()) {
+            if (noTypeArguments()) {
                 return cts;
             }
             List<Type> caseTypes = 
@@ -3515,7 +3500,7 @@ public class Type extends Reference {
     public List<Type> getSatisfiedTypes() {
         TypeDeclaration dec = getDeclaration();
         List<Type> sts = dec.getSatisfiedTypes();
-        if (getTypeArguments().isEmpty()) {
+        if (noTypeArguments()) {
             return sts; 
         }
         List<Type> satisfiedTypes = 
@@ -3528,6 +3513,12 @@ public class Type extends Reference {
         return satisfiedTypes;
     }
 
+    private boolean noTypeArguments() {
+        return getTypeArguments().isEmpty()
+            && (getQualifyingType()==null 
+                || getQualifyingType().noTypeArguments());
+    }
+
     public Type getExtendedType() {
         TypeDeclaration dec = getDeclaration();
         Type et = dec.getExtendedType();
@@ -3535,7 +3526,7 @@ public class Type extends Reference {
             return null;
         }
         else {
-            if (getTypeArguments().isEmpty()) {
+            if (noTypeArguments()) {
                 return et;
             }
             else {
@@ -3551,7 +3542,7 @@ public class Type extends Reference {
             return null;
         }
         else {
-            if (getTypeArguments().isEmpty()) {
+            if (noTypeArguments()) {
                 return cts;
             }
             List<Type> caseTypes = 
@@ -3608,7 +3599,8 @@ public class Type extends Reference {
                                 types);
                     }
                 }
-                return preserveUnderlyingType(type, union(types, unit));
+                return preserveUnderlyingType(type, 
+                        union(types, unit));
             }
             else if (type.isIntersection()) {
                 List<Type> sts = type.getSatisfiedTypes();
@@ -3623,7 +3615,8 @@ public class Type extends Reference {
                                 types, unit);
                     }
                 }
-                return preserveUnderlyingType(type, canonicalIntersection(types, unit));
+                return preserveUnderlyingType(type, 
+                        canonicalIntersection(types, unit));
             }
             else if (type.isTypeParameter()) {
                 TypeParameter tp = (TypeParameter) ptd;
@@ -4435,6 +4428,12 @@ public class Type extends Reference {
                     aliasedArgs.add(aliasedArg);
                 }
             }
+            Type result = 
+                    dec.appliedType(
+                            aliasedQualifyingType, 
+                            aliasedArgs);
+            result.setVarianceOverrides(
+                    getVarianceOverrides());
             if (dec.isAlias()) {
                 Type et = dec.getExtendedType();
                 if (et == null) {
@@ -4442,25 +4441,15 @@ public class Type extends Reference {
                 }
                 else {
                     return et.resolveAliases()
-                            .substitute(getTypeArgumentMap(
-                                    dec, 
-                                    aliasedQualifyingType, 
-                                    aliasedArgs),
-                                    getVarianceOverrides());
+                            .substitute(result);
                 }
             }
             else {
-                Type result = 
-                        dec.appliedType(
-                                aliasedQualifyingType, 
-                                aliasedArgs);
-                result.setVarianceOverrides(
-                        getVarianceOverrides());
                 return result;
             }
         }
     }
-    
+
     /*private Type simple() {
         TypeDeclaration d = getDeclaration();
         if (d instanceof UnionType) {
@@ -5030,11 +5019,79 @@ public class Type extends Reference {
         return ret;
     }
     
-    private Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
+    @Override
+    public Map<TypeParameter,Type> collectTypeArguments() {
+        if (isIntersection()) {
+            Map<TypeParameter,Type> arguments = 
+                    new HashMap<TypeParameter,Type>();
+            for (Type supertype: getSatisfiedTypes()) {
+                arguments.putAll(supertype.collectTypeArguments());
+            }
+            return arguments;
+        }
+        
         Type qualifying = getQualifyingType();
-        Map<TypeParameter,SiteVariance> qualifyingOverrides = 
-                qualifying==null ? EMPTY_VARIANCE_MAP :
-                    qualifying.collectVarianceOverrides();
+        Map<TypeParameter,Type> qualifyingArguments = 
+                EMPTY_TYPE_ARG_MAP;
+        Scope scope = declaration.getContainer();
+        if (qualifying!=null 
+                //can be a Value in the case of a type constructor
+                && scope instanceof TypeDeclaration) {
+            TypeDeclaration declaringType = 
+                    (TypeDeclaration) scope;
+            Type supertype = 
+                    qualifying.getSupertype(declaringType);
+            if (supertype!=null) {
+                qualifyingArguments = 
+                        supertype.collectTypeArguments();
+            }
+        }
+
+        Map<TypeParameter, Type> typeArguments = 
+                getTypeArguments();
+        if (typeArguments.isEmpty()) {
+            return qualifyingArguments;
+        }
+        else if (qualifyingArguments.isEmpty()) {
+            return typeArguments;
+        }
+        else {
+            Map<TypeParameter,Type> arguments = 
+                    new HashMap<TypeParameter,Type>
+                        (typeArguments);
+            arguments.putAll(qualifyingArguments);
+            return arguments;
+        }
+    }
+    
+    @Override
+    public Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
+        if (isIntersection()) {
+            Map<TypeParameter,SiteVariance> variances = 
+                    new HashMap<TypeParameter,SiteVariance>();
+            for (Type supertype: getSatisfiedTypes()) {
+                variances.putAll(supertype.collectVarianceOverrides());
+            }
+            return variances;
+        }
+        
+        Type qualifying = getQualifyingType();
+        Scope scope = declaration.getContainer();
+        Map<TypeParameter,SiteVariance> qualifyingOverrides =
+                EMPTY_VARIANCE_MAP;
+        if (qualifying!=null 
+                //can be a Value in the case of a type constructor
+                && scope instanceof TypeDeclaration) {
+            TypeDeclaration declaringType = 
+                    (TypeDeclaration) scope;
+            Type supertype = 
+                    qualifying.getSupertype(declaringType);
+            if (supertype!=null) {
+                qualifyingOverrides = 
+                        supertype.collectVarianceOverrides();
+            }
+        }
+        
         if (varianceOverrides.isEmpty()) {
             return qualifyingOverrides;
         }

@@ -11,7 +11,6 @@ package org.eclipse.ceylon.compiler.typechecker.analyzer;
 
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_SUBSTITUTIONS;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
@@ -1360,8 +1359,6 @@ public class RefinementVisitor extends Visitor {
             substitution.put(refiningTypeParam, 
                     refinedTypeParam.getType());
         }
-        Map<TypeParameter, SiteVariance> noVariances = 
-                emptyMap();
         TypeDeclaration rc = 
                 (TypeDeclaration) 
                     refined.getContainer();
@@ -1393,8 +1390,7 @@ public class RefinementVisitor extends Visitor {
             Unit unit = that.getUnit();
             for (Type bound: refiningBounds) {
                 Type refiningBound = 
-                        bound.substitute(substitution, 
-                                noVariances);
+                        bound.substitute(substitution, null);
                 //for every type constraint of the refining member, there must
                 //be at least one type constraint of the refined member which
                 //is assignable to it, guaranteeing that the intersection of
@@ -1437,8 +1433,7 @@ public class RefinementVisitor extends Visitor {
                 for (Type refiningBound: refiningBounds) {
                     refiningBound = 
                             refiningBound.substitute(
-                                    substitution, 
-                                    noVariances);
+                                    substitution, null);
                     if (refinedBound.isSubtypeOf(refiningBound)) {
                         ok = true;
                     }

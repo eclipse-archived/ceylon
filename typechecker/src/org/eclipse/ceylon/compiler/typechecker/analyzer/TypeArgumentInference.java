@@ -20,11 +20,11 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.addToIntersec
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.union;
 
@@ -267,10 +267,6 @@ public class TypeArgumentInference {
                         }
                     }
                     //just one type parameter left in the union
-                    Map<TypeParameter, Type> args = 
-                            pt.getTypeArguments();
-                    Map<TypeParameter, SiteVariance> variances = 
-                            pt.getVarianceOverrides();
                     List<Type> cts = pt.getCaseTypes();
                     List<Type> list = 
                             new ArrayList<Type>
@@ -279,8 +275,7 @@ public class TypeArgumentInference {
                         addToUnionOrIntersection(
                                 findingUpperBounds, list, 
                                 inferTypeArg(tp, 
-                                        ct.substitute(args, 
-                                                variances), 
+                                        ct.substitute(pt), 
                                         apt, 
                                         covariant, contravariant,
                                         findingUpperBounds,
@@ -681,7 +676,7 @@ public class TypeArgumentInference {
             //two types equal
             return searchForMatch(tp, at, at, 
                         pt.substitute(
-                            getTypeArgumentMap(paramDec, null,
+                            typeArgumentsAsMap(paramDec,
                                 typeParametersAsArgList(argDec)), 
                             null),
                         argTypeParams);
@@ -2094,7 +2089,7 @@ public class TypeArgumentInference {
             }
             
             Map<TypeParameter,Type> args = 
-                    ref.getTypeArguments();
+                    ref.collectTypeArguments();
             
             ArrayList<Type> result = 
                     new ArrayList<Type>

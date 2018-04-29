@@ -11,13 +11,13 @@ package org.eclipse.ceylon.model.typechecker.model;
 
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getSignature;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.strictlyBetterMatch;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -186,8 +186,8 @@ public abstract class TypeDeclaration extends Declaration
             Type pt = new Type();
             pt.setDeclaration(this);
             pt.setQualifyingType(qualifyingType);
-            pt.setTypeArguments(getTypeArgumentMap(this, 
-                    qualifyingType, typeArguments));
+            pt.setTypeArguments(typeArgumentsAsMap(this, 
+                    typeArguments));
             return pt;
         }
     }

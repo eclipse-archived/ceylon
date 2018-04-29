@@ -10,7 +10,7 @@
 package org.eclipse.ceylon.model.typechecker.model;
 
 import static org.eclipse.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.*;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -97,8 +97,8 @@ public abstract class TypedDeclaration
                         assignment);
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
-        ptr.setTypeArguments(getTypeArgumentMap(this, 
-                qualifyingType, typeArguments));
+        ptr.setTypeArguments(typeArgumentsAsMap(this, 
+                typeArguments));
         return ptr;
     }
     

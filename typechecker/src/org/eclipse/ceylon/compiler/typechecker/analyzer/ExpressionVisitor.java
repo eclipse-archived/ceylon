@@ -65,7 +65,6 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getIntervenin
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
@@ -76,6 +75,7 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isImplemented
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.union;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
@@ -117,7 +117,6 @@ import org.eclipse.ceylon.model.typechecker.model.ParameterList;
 import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
-import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
@@ -1577,8 +1576,8 @@ public class ExpressionVisitor extends Visitor {
                             " already specified by shortcut refinement: '" + 
                             d.getName(unit) + "'");
                 }
-                else if (d instanceof Value && 
-                        ((Value) d).isInferred()) {
+                else if (d instanceof Value 
+                        && ((Value) d).isInferred()) {
                     me.addError("value is not a variable: '" + 
                             d.getName() + "'");
                 }
@@ -10641,8 +10640,8 @@ public class ExpressionVisitor extends Visitor {
         for (TypeParameter tp: params) { 
             if (!tp.isDefaulted()) min++;
         }
-        if (receiver==null && 
-                dec.isClassOrInterfaceMember()) {
+        if (receiver==null 
+                && dec.isClassOrInterfaceMember()) {
             receiver = 
                     parent.getScope()
                         .getDeclaringType(dec);
@@ -10729,8 +10728,7 @@ public class ExpressionVisitor extends Visitor {
                     for (Type st: sts) {
                         Type bound =
                                 st.appliedType(receiver, 
-                                        dec, typeArguments, 
-                                        null);
+                                        dec, typeArguments);
                         if (!assignedType.isSubtypeOf(bound)) {
                             if (argTypeMeaningful) {
                                 if (explicit) {
@@ -10874,8 +10872,8 @@ public class ExpressionVisitor extends Visitor {
         if (tas instanceof Tree.TypeArgumentList) {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
-            return tal.getTypes().isEmpty() ?
-                    parent : tal.getTypes().get(i);
+            List<Tree.Type> types = tal.getTypes();
+            return types.isEmpty() ? parent : types.get(i);
         }
         else {
             return parent;
@@ -10914,10 +10912,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Map<TypeParameter, Type> args = 
-                    getTypeArgumentMap(tcd, null, 
-                            typeArguments);
-            Map<TypeParameter, SiteVariance> variances =
-                    Collections.emptyMap(); //TODO!!!!!
+                    typeArgumentsAsMap(tcd, typeArguments);
             for (int i=0; i<size; i++) {
                 TypeParameter param = typeParameters.get(i);
                 Type arg = typeArguments.get(i);
@@ -10925,16 +10920,14 @@ public class ExpressionVisitor extends Visitor {
                     List<Type> sts = 
                             param.getSatisfiedTypes();
                     for (Type st: sts) {
-                        Type bound = 
-                                st.substitute(args, 
-                                        variances);
-                        if (!isTypeUnknown(bound) &&
-                                !arg.isSubtypeOf(bound)) {
+                        Type ub = st.substitute(args, null);
+                        if (!isTypeUnknown(ub) 
+                                && !arg.isSubtypeOf(ub)) {
                             String message = 
                                     "type argument '" 
                                     + arg.asString(unit) 
                                     + "' is not assignable to upper bound '" 
-                                    + bound.asString(unit) 
+                                    + ub.asString(unit) 
                                     + "' of type parameter '" 
                                     + param.getName() 
                                     + "' of '" 
@@ -10952,8 +10945,8 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                 }
-                if (!satisfiesEnumeratedConstraint(param, 
-                        arg, args, variances)) {
+                if (!satisfiesEnumeratedConstraint(
+                        param, arg, args)) {
                     String message = 
                             "type argument '" 
                             + arg.asString(unit) 
@@ -10979,15 +10972,12 @@ public class ExpressionVisitor extends Visitor {
     boolean satisfiesEnumeratedConstraint(
             TypeParameter param,
             Type arg,
-            Map<TypeParameter, Type> args, 
-            Map<TypeParameter, SiteVariance> variances) {
+            Map<TypeParameter, Type> args) {
         List<Type> cts = param.getCaseTypes();
         if (cts!=null) {
             for (Type ct: cts) {
-                Type bound = 
-                        ct.substitute(args, 
-                                variances);
-                if (arg.isSubtypeOf(bound)) {
+                Type eb = ct.substitute(args, null);
+                if (arg.isSubtypeOf(eb)) {
                     return true;
                 }
             }
@@ -10995,10 +10985,8 @@ public class ExpressionVisitor extends Visitor {
                 for (Type act: arg.getCaseTypes()) {
                     boolean foundCase = false;
                     for (Type ct: cts) {
-                        Type bound = 
-                                ct.substitute(args, 
-                                        variances);
-                        if (act.isSubtypeOf(bound)) {
+                        Type eb = ct.substitute(args, null);
+                        if (act.isSubtypeOf(eb)) {
                             foundCase = true;
                         }
                     }

@@ -9,8 +9,10 @@
  ********************************************************************************/
 package org.eclipse.ceylon.model.typechecker.model;
 
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,6 +117,36 @@ public class TypedReference extends Reference {
             name.append(">");
         }
         return name.toString();
+    }
+    
+    @Override
+    public Map<TypeParameter, SiteVariance> collectVarianceOverrides() {
+        Type qualifying = getQualifyingType();
+        return qualifying==null ? EMPTY_VARIANCE_MAP :
+            qualifying.collectVarianceOverrides();
+    }
+    
+    @Override
+    public Map<TypeParameter, Type> collectTypeArguments() {
+        Type qualifying = getQualifyingType();
+        Map<TypeParameter,Type> qualifyingArguments = 
+                qualifying==null ? EMPTY_TYPE_ARG_MAP :
+                    qualifying.collectTypeArguments();
+        Map<TypeParameter, Type> typeArguments = 
+                getTypeArguments();
+        if (typeArguments.isEmpty()) {
+            return qualifyingArguments;
+        }
+        else if (qualifyingArguments.isEmpty()) {
+            return typeArguments;
+        }
+        else {
+            Map<TypeParameter,Type> arguments = 
+                    new HashMap<TypeParameter,Type>
+                        (typeArguments);
+            arguments.putAll(qualifyingArguments);
+            return arguments;
+        }
     }
     
 }
