@@ -178,8 +178,8 @@ public abstract class TypeDeclaration extends Declaration
     public Type appliedType(
             Type qualifyingType,
             List<Type> typeArguments) {
-        if (qualifyingType!=null && 
-                qualifyingType.isNothing()) {
+        if (qualifyingType!=null 
+                && qualifyingType.isNothing()) {
             return qualifyingType;
         }
         else {

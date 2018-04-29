@@ -523,15 +523,15 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, 
             Type ot, TypeDeclaration dec) {
-        if (dec instanceof Constructor &&
+        if (dec instanceof Constructor 
                 //in a metamodel type literal, a constructor
                 //is allowed
-                !inTypeLiteral && 
+                && !inTypeLiteral 
                 //for an extends clause or aliased class, 
                 //either a class with parameters or a 
                 //constructor is allowed
-                !inExtendsOrClassAlias && 
-                !inDelegatedConstructor) {
+                && !inExtendsOrClassAlias 
+                && !inDelegatedConstructor) {
             that.addError("constructor is not a type: '" + 
                     dec.getName(unit) + "' is a constructor");
         }

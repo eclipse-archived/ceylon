@@ -72,6 +72,10 @@ public abstract class Reference {
             return typeArguments;
         }
     }
+    
+    public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+        return EMPTY_VARIANCE_MAP;
+    }
 
     private Map<TypeParameter, Type> 
     getTypeArgumentsInternal(Declaration declaration) {
@@ -336,8 +340,92 @@ public abstract class Reference {
     
     public abstract String asString();
     
-    public abstract Map<TypeParameter,Type> collectTypeArguments();
+    public Map<TypeParameter,Type> collectTypeArguments() {
+        Type qualifying = getQualifyingType();
+        Map<TypeParameter,Type> qualifyingArguments = 
+                EMPTY_TYPE_ARG_MAP;
+        Scope scope = getDeclaration().getContainer();
+        if (qualifying!=null) {
+            if (scope instanceof TypeDeclaration) {
+                TypeDeclaration declaringType = 
+                        (TypeDeclaration) scope;
+                Type supertype = 
+                        qualifying.getSupertype(declaringType);
+                if (supertype!=null) {
+                    qualifyingArguments = 
+                            supertype.collectTypeArguments();
+                }
+                else {
+                    qualifyingArguments = 
+                            qualifying.collectTypeArguments();
+                }
+            }
+            else {
+                //can be a Value in the case of a type constructor
+                qualifyingArguments = 
+                        qualifying.collectTypeArguments();
+            }
+        }
+
+        Map<TypeParameter, Type> typeArguments = 
+                getTypeArguments();
+        if (typeArguments.isEmpty()) {
+            return qualifyingArguments;
+        }
+        else if (qualifyingArguments.isEmpty()) {
+            return typeArguments;
+        }
+        else {
+            Map<TypeParameter,Type> arguments = 
+                    new HashMap<TypeParameter,Type>
+                        (typeArguments);
+            arguments.putAll(qualifyingArguments);
+            return arguments;
+        }
+    }
     
-    public abstract Map<TypeParameter,SiteVariance> collectVarianceOverrides();
+    public Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
+        Type qualifying = getQualifyingType();
+        Scope scope = getDeclaration().getContainer();
+        Map<TypeParameter,SiteVariance> qualifyingOverrides =
+                EMPTY_VARIANCE_MAP;
+        if (qualifying!=null) {
+            if (scope instanceof TypeDeclaration) {
+                TypeDeclaration declaringType = 
+                        (TypeDeclaration) scope;
+                Type supertype = 
+                        qualifying.getSupertype(declaringType);
+                if (supertype!=null) {
+                    qualifyingOverrides = 
+                            supertype.collectVarianceOverrides();
+                }
+                else {
+                    qualifyingOverrides = 
+                            qualifying.collectVarianceOverrides();
+                }
+            }
+            else {
+                //can be a Value in the case of a type constructor
+                qualifyingOverrides = 
+                        qualifying.collectVarianceOverrides();
+            }
+        }
+        
+        Map<TypeParameter, SiteVariance> varianceOverrides = 
+                getVarianceOverrides();
+        if (varianceOverrides.isEmpty()) {
+            return qualifyingOverrides;
+        }
+        else if (qualifyingOverrides.isEmpty()) {
+            return varianceOverrides;
+        }
+        else {
+            Map<TypeParameter,SiteVariance> overrides = 
+                    new HashMap<TypeParameter,SiteVariance>
+                        (varianceOverrides);
+            overrides.putAll(qualifyingOverrides);
+            return overrides;
+        }
+    }
     
 }

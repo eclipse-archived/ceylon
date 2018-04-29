@@ -127,6 +127,7 @@ public class Type extends Reference {
         return newType;
     }
     
+    @Override
     public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
         return varianceOverrides;
     }
@@ -5029,38 +5030,8 @@ public class Type extends Reference {
             }
             return arguments;
         }
-        
-        Type qualifying = getQualifyingType();
-        Map<TypeParameter,Type> qualifyingArguments = 
-                EMPTY_TYPE_ARG_MAP;
-        Scope scope = declaration.getContainer();
-        if (qualifying!=null 
-                //can be a Value in the case of a type constructor
-                && scope instanceof TypeDeclaration) {
-            TypeDeclaration declaringType = 
-                    (TypeDeclaration) scope;
-            Type supertype = 
-                    qualifying.getSupertype(declaringType);
-            if (supertype!=null) {
-                qualifyingArguments = 
-                        supertype.collectTypeArguments();
-            }
-        }
-
-        Map<TypeParameter, Type> typeArguments = 
-                getTypeArguments();
-        if (typeArguments.isEmpty()) {
-            return qualifyingArguments;
-        }
-        else if (qualifyingArguments.isEmpty()) {
-            return typeArguments;
-        }
         else {
-            Map<TypeParameter,Type> arguments = 
-                    new HashMap<TypeParameter,Type>
-                        (typeArguments);
-            arguments.putAll(qualifyingArguments);
-            return arguments;
+            return super.collectTypeArguments();
         }
     }
     
@@ -5074,36 +5045,8 @@ public class Type extends Reference {
             }
             return variances;
         }
-        
-        Type qualifying = getQualifyingType();
-        Scope scope = declaration.getContainer();
-        Map<TypeParameter,SiteVariance> qualifyingOverrides =
-                EMPTY_VARIANCE_MAP;
-        if (qualifying!=null 
-                //can be a Value in the case of a type constructor
-                && scope instanceof TypeDeclaration) {
-            TypeDeclaration declaringType = 
-                    (TypeDeclaration) scope;
-            Type supertype = 
-                    qualifying.getSupertype(declaringType);
-            if (supertype!=null) {
-                qualifyingOverrides = 
-                        supertype.collectVarianceOverrides();
-            }
-        }
-        
-        if (varianceOverrides.isEmpty()) {
-            return qualifyingOverrides;
-        }
-        else if (qualifyingOverrides.isEmpty()) {
-            return varianceOverrides;
-        }
         else {
-            Map<TypeParameter,SiteVariance> overrides = 
-                    new HashMap<TypeParameter,SiteVariance>
-                        (varianceOverrides);
-            overrides.putAll(qualifyingOverrides);
-            return overrides;
+            return super.collectVarianceOverrides();            
         }
     }
     
