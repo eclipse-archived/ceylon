@@ -18,6 +18,7 @@ import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.Interface;
+import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
@@ -86,7 +87,6 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.Declaration that) {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
-        Backends bs = declaration.getNativeBackends();
         if (declaration!=null 
                 && declaration.getName()!=null 
                 && !declaration.isShared() 
@@ -95,7 +95,8 @@ public class UsageVisitor extends Visitor {
                 && !declaration.isParameter() 
                 && !(that instanceof Tree.Variable) 
                 && !(declaration instanceof TypeParameter) 
-                && isEnabled(bs, that)) {
+                && isEnabled(declaration.getNativeBackends(), 
+                        that)) {
             that.addUsageWarning(Warning.unusedDeclaration,
                   "declaration is never used: " 
                   + kind(declaration) 
@@ -108,17 +109,14 @@ public class UsageVisitor extends Visitor {
     @Override
     public void visit(Tree.Term that) {
         super.visit(that);
+        Scope scope = that.getScope();
         if (!hasErrorOrWarning(that) 
-                && that.getTypeModel()
-                        .isNothing()) {
-            Backends inBackends = 
-                    that.getScope()
-                        .getScopedBackends();
-            if (isEnabled(inBackends, that)) {
-                that.addUsageWarning(Warning.expressionTypeNothing,
-                        "expression has type 'Nothing'");
-            }
-        }
+                && that.getTypeModel().isNothing() 
+                && isEnabled(scope.getScopedBackends(), 
+                        that)) {
+            that.addUsageWarning(Warning.expressionTypeNothing,
+                    "expression has type 'Nothing'");
+         }
     }
 
     private boolean isEnabled(Backends backends, Node node) {
