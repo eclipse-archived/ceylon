@@ -20,6 +20,7 @@ import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.Interface;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
+import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.Value;
@@ -110,8 +111,10 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.Term that) {
         super.visit(that);
         Scope scope = that.getScope();
+        Type type = that.getTypeModel();
         if (!hasErrorOrWarning(that) 
-                && that.getTypeModel().isNothing() 
+                && type!=null
+                && type.isNothing() 
                 && isEnabled(scope.getScopedBackends(), 
                         that)) {
             that.addUsageWarning(Warning.expressionTypeNothing,
