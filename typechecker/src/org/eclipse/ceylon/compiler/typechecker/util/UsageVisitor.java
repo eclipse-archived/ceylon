@@ -7,10 +7,10 @@ package org.eclipse.ceylon.compiler.typechecker.util;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWarning;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isForBackend;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import org.eclipse.ceylon.common.Backends;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.Warning;
+import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -19,13 +19,11 @@ import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.Interface;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
-import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.Value;
 
 /**
- *
  * @author kulikov
  */
 public class UsageVisitor extends Visitor {
@@ -46,21 +44,25 @@ public class UsageVisitor extends Visitor {
         if (!referenced(that)) {
             Declaration declaration = that.getDeclarationModel();
             that.addUsageWarning(Warning.unusedImport,
-                "import is never used: " + 
-                kind(declaration) + 
-                " '" + declaration.getName() + 
-                "' has no local references");
+                "import is never used: " 
+                + kind(declaration) 
+                + " '" 
+                + declaration.getName() 
+                + "' has no local references");
         }
     }
 
     private boolean referenced(Tree.ImportMemberOrType that) {
-        Declaration d = that.getDeclarationModel();
-        boolean referenced=true;
-        if (d!=null) {
-            referenced = rc.isReferenced(d);
-            if (isAbstraction(d)) {
-                for (Declaration od: d.getOverloads()) {
-                    referenced=referenced||rc.isReferenced(od);
+        Declaration dec = that.getDeclarationModel();
+        if (dec!=null) {
+            if (rc.isReferenced(dec)) {
+                return true;
+            }
+            if (isAbstraction(dec)) {
+                for (Declaration od: dec.getOverloads()) {
+                    if (rc.isReferenced(od)) {
+                        return true;
+                    }
                 }
             }
             Tree.ImportMemberOrTypeList imtl = 
@@ -68,14 +70,16 @@ public class UsageVisitor extends Visitor {
             if (imtl!=null) {
                 for (Tree.ImportMemberOrType m: 
                         imtl.getImportMemberOrTypes()) {
-                    referenced=referenced||referenced(m);
+                    if (referenced(m)) {
+                        return true;
+                    }
                 }
                 if (imtl.getImportWildcard()!=null) {
-                    referenced = true;
+                    return true;
                 }
             }
         }
-        return referenced;
+        return true;
     }
 
     @Override
@@ -83,47 +87,45 @@ public class UsageVisitor extends Visitor {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
         Backends bs = declaration.getNativeBackends();
-        if (declaration!=null && 
-                declaration.getName()!=null &&
-                !declaration.isShared() && 
-                !declaration.isToplevel() && 
-                !rc.isReferenced(declaration) &&
-                !declaration.isParameter() &&
-                !(that instanceof Tree.Variable) &&
-                !(declaration instanceof TypeParameter &&
-                    ((TypeParameter) declaration).getDeclaration() 
-                            instanceof TypeParameter)) {
-            if (bs.none() 
-                    || isForBackend(bs, 
-                            that.getUnit()
-                                .getSupportedBackends())) {
-                that.addUsageWarning(Warning.unusedDeclaration,
-                        "declaration is never used: " + 
-                        kind(declaration) +
-                        " '" + declaration.getName() + 
-                        "' has no local references");
-            }
-        }
+        if (declaration!=null 
+                && declaration.getName()!=null 
+                && !declaration.isShared() 
+                && !declaration.isToplevel() 
+                && !rc.isReferenced(declaration) 
+                && !declaration.isParameter() 
+                && !(that instanceof Tree.Variable) 
+                && !(declaration instanceof TypeParameter) 
+                && isEnabled(bs, that)) {
+            that.addUsageWarning(Warning.unusedDeclaration,
+                  "declaration is never used: " 
+                  + kind(declaration) 
+                  + " '" 
+                  + declaration.getName() 
+                  + "' has no local references");
+         }
     }
 
     @Override
     public void visit(Tree.Term that) {
         super.visit(that);
-        if (!hasErrorOrWarning(that)) {
-            Type type = that.getTypeModel();
-            if (!isTypeUnknown(type) && type.isNothing()) {
-                Backends inBackends = 
-                        that.getScope()
-                            .getScopedBackends();
-                if (inBackends.none() 
-                        || isForBackend(inBackends, 
-                                that.getUnit()
-                                    .getSupportedBackends())) {
-                    that.addUsageWarning(Warning.expressionTypeNothing,
-                            "expression has type 'Nothing'");
-                }
+        if (!hasErrorOrWarning(that) 
+                && that.getTypeModel()
+                        .isNothing()) {
+            Backends inBackends = 
+                    that.getScope()
+                        .getScopedBackends();
+            if (isEnabled(inBackends, that)) {
+                that.addUsageWarning(Warning.expressionTypeNothing,
+                        "expression has type 'Nothing'");
             }
         }
+    }
+
+    private boolean isEnabled(Backends backends, Node node) {
+        return backends.none() 
+            || isForBackend(backends, 
+                    node.getUnit()
+                        .getSupportedBackends());
     }
 
     private static String kind(Declaration declaration) {
