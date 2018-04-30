@@ -11592,10 +11592,11 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(unit.getFunctionDeclarationType());
         }
         else {
-            // constructors look like functions but they're always members, they can't
-            // ever be local
-            if(!ModelUtil.isConstructor(result))
+            // constructors look like functions but they're 
+            // always members, they can't ever be local
+            if (!isConstructor(result)) {
                 checkNonlocal(that, result);
+            }
             setMetamodelType(that, result);
         }
     }
@@ -11692,7 +11693,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkNonlocal(Node that, Declaration declaration) {
-        if ((!declaration.isClassOrInterfaceMember() || !declaration.isShared())
+        if (!(declaration.isClassOrInterfaceMember() && declaration.isShared())
                     && !declaration.isToplevel()) {
             that.addError("metamodel reference to local declaration");
         }
