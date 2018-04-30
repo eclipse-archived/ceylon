@@ -3772,7 +3772,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(final Tree.SpecifiedArgument that) {
-        if (errVisitor.hasErrors(that))return;
+        if (errVisitor.hasErrors(that)) return;
         int _box=0;
         final Tree.SpecifierExpression expr = that.getSpecifierExpression();
         if (that.getParameter() != null && expr != null) {
@@ -3782,12 +3782,12 @@ public class GenerateJsVisitor extends Visitor {
         }
         expr.visit(this);
         if (_box == 4) {
+            Tree.Expression ex = expr.getExpression();
             out(",");
             //Add parameters
-            invoker.describeMethodParameters(expr.getExpression().getTerm());
+            invoker.describeMethodParameters(ex.getTerm());
             out(",");
-            printTypeArguments(that, 
-                    expr.getExpression().getTypeModel(), 
+            printTypeArguments(that, ex.getTypeModel(), 
                     this, false);
         }
         boxUnboxEnd(_box);

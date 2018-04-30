@@ -59,6 +59,15 @@ import org.eclipse.ceylon.model.typechecker.model.Value;
 public class TypeUtils {
 
     /** Prints the type arguments, usually for their reification. */
+    public static void printCollectedTypeArguments(final Node node, 
+            final Type type,
+            final GenerateJsVisitor gen, 
+            final boolean skipSelfDecl) {
+        printTypeArguments(node, gen, skipSelfDecl, 
+                type.collectTypeArguments(), 
+                type.collectVarianceOverrides());
+    }
+
     public static void printTypeArguments(final Node node, 
             final Type type,
             final GenerateJsVisitor gen, 
@@ -95,8 +104,7 @@ public class TypeUtils {
                 gen.out("'", typeParam.getName(), "'");
             } else if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
                 boolean hasParams = 
-                        pt.getTypeArgumentList() != null 
-                        && !pt.getTypeArgumentList().isEmpty();
+                        !pt.getTypeArgumentList().isEmpty();
                 boolean closeBracket = false;
                 final TypeDeclaration d = pt.getDeclaration();
                 if (pt.isTypeParameter()) {
@@ -199,8 +207,9 @@ public class TypeUtils {
             ClassOrInterface parent = (ClassOrInterface) t.getContainer();
             final List<ClassOrInterface> parents = new ArrayList<>(3);
             parents.add(0, parent);
-            while (parent != scope && parent.isClassOrInterfaceMember()) {
-                parent = (ClassOrInterface)parent.getContainer();
+            while (parent != scope 
+                    && parent.isClassOrInterfaceMember()) {
+                parent = (ClassOrInterface) parent.getContainer();
                 parents.add(0, parent);
             }
             boolean first = true;
@@ -311,7 +320,8 @@ public class TypeUtils {
             TypeDeclaration d = pt.getDeclaration();
             subs = d.getUnit().getTupleElementTypes(pt);
             final Type lastType = subs.get(subs.size()-1);
-            if (pt.involvesTypeParameters() && !d.getUnit().isHomogeneousTuple(pt)) {
+            if (pt.involvesTypeParameters() 
+                    && !d.getUnit().isHomogeneousTuple(pt)) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
                 printTypeArguments(node, pt, gen, skipSelfDecl);

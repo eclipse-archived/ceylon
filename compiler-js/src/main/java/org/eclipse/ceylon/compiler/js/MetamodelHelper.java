@@ -9,11 +9,19 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.getConstructor;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.outputQualifiedTypename;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printCollectedTypeArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.typeNameOrList;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingDeclaration;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
@@ -21,35 +29,39 @@ import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
+import org.eclipse.ceylon.model.typechecker.model.Interface;
+import org.eclipse.ceylon.model.typechecker.model.IntersectionType;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Module;
+import org.eclipse.ceylon.model.typechecker.model.NothingType;
+import org.eclipse.ceylon.model.typechecker.model.Package;
+import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
+import org.eclipse.ceylon.model.typechecker.model.UnionType;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 
 public class MetamodelHelper {
 
-    static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen, boolean compilingLanguageModule) {
-        final Module m = d.getUnit().getPackage().getModule();
-        final boolean isConstructor = ModelUtil.isConstructor(d)
+    static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, 
+            final GenerateJsVisitor gen, boolean compilingLanguageModule) {
+        final Package pkg = d.getUnit().getPackage();
+        final Module m = pkg.getModule();
+        final boolean isConstructor = isConstructor(d)
                 || that instanceof Tree.NewLiteral;
-        if (d instanceof TypeParameter == false) {
-            if (compilingLanguageModule) {
-                gen.out("$i$");
-            } else {
-                gen.out(gen.getClAlias());
-            }
+        if (!(d instanceof TypeParameter)) {
+            gen.out(compilingLanguageModule ? 
+                    "$i$" : gen.getClAlias());
         }
-        if (d instanceof org.eclipse.ceylon.model.typechecker.model.Interface) {
+        JsIdentifierNames names = gen.getNames();
+        if (d instanceof Interface) {
             gen.out("OpenInterface$jsint");
         } else if (isConstructor) {
-            if (TypeUtils.getConstructor(d).isValueConstructor()) {
+            if (getConstructor(d).isValueConstructor()) {
                 gen.out("OpenValueConstructor$jsint");
             } else {
                 gen.out("OpenCallableConstructor$jsint");
@@ -60,15 +72,17 @@ public class MetamodelHelper {
             gen.out("OpenFunction$jsint");
         } else if (d instanceof Value) {
             gen.out("OpenValue$jsint");
-        } else if (d instanceof org.eclipse.ceylon.model.typechecker.model.IntersectionType) {
+        } else if (d instanceof IntersectionType) {
             gen.out("OpenIntersection");
-        } else if (d instanceof org.eclipse.ceylon.model.typechecker.model.UnionType) {
+        } else if (d instanceof UnionType) {
             gen.out("OpenUnion");
         } else if (d instanceof TypeParameter) {
-            generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen, compilingLanguageModule);
+            generateOpenType(that, 
+                    ((TypeParameter) d).getDeclaration(), 
+                    gen, compilingLanguageModule);
             gen.out(".getTypeParameterDeclaration('", d.getName(), "')");
             return;
-        } else if (d instanceof org.eclipse.ceylon.model.typechecker.model.NothingType) {
+        } else if (d instanceof NothingType) {
             gen.out("NothingType");
         } else if (d instanceof TypeAlias) {
             gen.out("OpenAlias$jsint(");
@@ -77,17 +91,23 @@ public class MetamodelHelper {
             }
             if (d.isMember()) {
                 //Make the chain to the top-level container
-                ArrayList<Declaration> parents = new ArrayList<>(2);
-                Declaration pd = (Declaration)d.getContainer();
+                ArrayList<Declaration> parents = 
+                        new ArrayList<>(2);
+                Declaration pd = 
+                        (Declaration) 
+                            d.getContainer();
                 while (pd!=null) {
                     parents.add(0,pd);
-                    pd = pd.isMember()?(Declaration)pd.getContainer():null;
+                    pd = pd.isMember() ? 
+                            (Declaration) 
+                                pd.getContainer() : 
+                            null;
                 }
-                for (Declaration _d : parents) {
-                    gen.out(gen.getNames().name(_d), ".$$.prototype.");
+                for (Declaration p : parents) {
+                    gen.out(names.name(p), ".$$.prototype.");
                 }
             }
-            gen.out(gen.getNames().name(d), ")");
+            gen.out(names.name(d), ")");
             return;
         }
         //TODO optimize for local declarations
@@ -95,37 +115,44 @@ public class MetamodelHelper {
             gen.out("()");
         }
         gen.out("(", gen.getClAlias());
-        final String pkgname = d.getUnit().getPackage().getNameAsString();
-        if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
+        Package currentPackage = that.getUnit().getPackage();
+        if (Objects.equals(currentPackage.getModule(), pkg.getModule())) {
             gen.out("lmp$(x$,'");
         } else {
             //TODO use $ for language module as well
             gen.out("fmp$('", m.getNameAsString(), "','", m.getVersion(), "','");
         }
-        gen.out("ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
+        gen.out(pkg.isLanguagePackage() ? "$" : pkg.getNameAsString(), "'),");
         if (d.isMember() || isConstructor) {
             if (isConstructor) {
                 final Class actualClass;
                 final String constrName;
                 if (d instanceof Class) {
-                    actualClass = (Class)d;
+                    actualClass = (Class) d;
                     constrName = "$c$";
                 } else {
-                    actualClass = (Class)d.getContainer();
-                    if (d instanceof Constructor && ((Constructor)d).isValueConstructor()) {
-                        constrName = gen.getNames().name(actualClass.getDirectMember(d.getName(), null, false));
+                    actualClass = (Class) d.getContainer();
+                    if (d instanceof Constructor 
+                            && ((Constructor) d).isValueConstructor()) {
+                        constrName = names.name(
+                                actualClass.getDirectMember(d.getName(), 
+                                        null, false));
                     } else {
-                        constrName = gen.getNames().name(d);
+                        constrName = names.name(d);
                     }
                 }
-                if (gen.isImported(that.getUnit().getPackage(), actualClass)) {
-                    gen.out(gen.getNames().moduleAlias(actualClass.getUnit().getPackage().getModule()), ".");
+                if (gen.isImported(currentPackage, actualClass)) {
+                    Module acm = 
+                            actualClass.getUnit()
+                                .getPackage()
+                                .getModule();
+                    gen.out(names.moduleAlias(acm), ".");
                 }
                 if (actualClass.isMember()) {
                     outputPathToDeclaration(that, actualClass, gen);
                 }
-                gen.out(gen.getNames().name(actualClass),
-                        gen.getNames().constructorSeparator(d), constrName, ")");
+                gen.out(names.name(actualClass),
+                        names.constructorSeparator(d), constrName, ")");
                 return;
             } else {
                 outputPathToDeclaration(that, d, gen);
@@ -133,14 +160,18 @@ public class MetamodelHelper {
         }
         if (d instanceof Value || d.isParameter()) {
             if (!d.isMember()) gen.qualify(that, d);
-            if (d.isStatic() && d instanceof Value && ((Value)d).getType().getDeclaration().isAnonymous()) {
-                gen.out(gen.getNames().name(d), ")");
+            if (d.isStatic() 
+                    && d instanceof Value 
+                    && ((Value)d).getType()
+                        .getDeclaration()
+                        .isAnonymous()) {
+                gen.out(names.name(d), ")");
             } else {
-                gen.out(gen.getNames().getter(d, true), ")");
+                gen.out(names.getter(d, true), ")");
             }
         } else {
             if (d.isAnonymous()) {
-                final String oname = gen.getNames().objectName(d);
+                final String oname = names.objectName(d);
                 if (d.isToplevel()) {
                     gen.qualify(that, d);
                 }
@@ -150,146 +181,178 @@ public class MetamodelHelper {
                 }
             } else {
                 if (!d.isMember()) gen.qualify(that, d);
-                gen.out(gen.getNames().name(d));
+                gen.out(names.name(d));
             }
             gen.out(")");
         }
     }
 
-    static void generateClosedTypeLiteral(final Tree.TypeLiteral that, final GenerateJsVisitor gen) {
-        final Type ltype = that.getType().getTypeModel().resolveAliases();
+    static void generateClosedTypeLiteral(final Tree.TypeLiteral that, 
+            final GenerateJsVisitor gen) {
+        final Type ltype = 
+                that.getType().getTypeModel()
+                    .resolveAliases();
+        final Type type = that.getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
-        final Map<TypeParameter,Type> targs = ltype.getTypeArguments();
-        final boolean isConstructor = that instanceof Tree.NewLiteral
-                || ModelUtil.isConstructor(td);
+        final boolean isConstructor = 
+                that instanceof Tree.NewLiteral
+                || isConstructor(td);
         if (ltype.isClass()) {
-            if (td.isClassOrInterfaceMember()) {
-                gen.out(gen.getClAlias(), "$i$AppliedMemberClass$jsint()(");
-            } else {
-                gen.out(gen.getClAlias(), "$i$AppliedClass$jsint()(");
-            }
+            gen.out(gen.getClAlias(), 
+                    td.isClassOrInterfaceMember() ? 
+                            "$i$AppliedMemberClass$jsint()(" :
+                            "$i$AppliedClass$jsint()(");
             //Tuple is a special case, otherwise gets gen'd as {t:'T'...
             if (that.getUnit().isTupleType(ltype)) {
                 gen.qualify(that, td);
                 gen.out(gen.getNames().name(td));
             } else if (ltype.isNullValue()) {
-                gen.out(gen.getClAlias(), "$i$$_null()");
+                gen.out(gen.getClAlias(), 
+                        "$i$$_null()");
             } else {
-                TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
+                outputQualifiedTypename(null, 
+                        gen.isImported(gen.getCurrentPackage(), td), 
+                        ltype, gen, false);
             }
             gen.out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
-            if (targs != null && !targs.isEmpty()) {
+            printTypeArguments(that, type, gen, false);
+            if (!ltype.collectTypeArguments().isEmpty()) {
                 gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, ltype, gen, false);
+                printCollectedTypeArguments(that, ltype, gen, false);
             }
             gen.out(")");
         } else if (isConstructor) {
-            constructorLiteral(ltype, TypeUtils.getConstructor(td), that, gen);
+            constructorLiteral(ltype, getConstructor(td), that, gen);
         } else if (ltype.isInterface()) {
-            if (td.isToplevel()) {
-                gen.out(gen.getClAlias(), "$i$AppliedInterface$jsint()(");
-            } else {
-                gen.out(gen.getClAlias(), "$i$AppliedMemberInterface$jsint()(");
-            }
-            TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
+            gen.out(gen.getClAlias(), 
+                    td.isToplevel() ? 
+                        "$i$AppliedInterface$jsint()(" :
+                        "$i$AppliedMemberInterface$jsint()(");
+            outputQualifiedTypename(null, 
+                    gen.isImported(gen.getCurrentPackage(), td), 
+                    ltype, gen, false);
             gen.out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
-            if (targs != null && !targs.isEmpty()) {
+            printTypeArguments(that, type, gen, false);
+            if (!ltype.collectTypeArguments().isEmpty()) {
                 gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, ltype, gen, false);
+                printCollectedTypeArguments(that, ltype, gen, false);
             }
             gen.out(")");
         } else if (ltype.isNothing()) {
-            gen.out(gen.getClAlias(),"nothingType$meta$model()");
+            gen.out(gen.getClAlias(),
+                    "nothingType$meta$model()");
         } else if (that instanceof Tree.AliasLiteral) {
             gen.out("/*TODO: applied alias*/");
         } else if (that instanceof Tree.TypeParameterLiteral) {
             gen.out("/*TODO: applied type parameter*/");
         } else {
-            gen.out(gen.getClAlias(), "typeLiteral$meta({Type$typeLiteral:");
-            TypeUtils.typeNameOrList(that, ltype, gen, false);
+            gen.out(gen.getClAlias(), 
+                    "typeLiteral$meta({Type$typeLiteral:");
+            typeNameOrList(that, ltype, gen, false);
             gen.out("})");
         }
     }
 
     private static void constructorLiteral(final Type ltype, final Constructor cd,
             final Tree.MetaLiteral meta, final GenerateJsVisitor gen) {
-        Class _pc = (Class)cd.getContainer();
-        if (_pc.isClassOrInterfaceMember()) {
-            gen.out(gen.getClAlias(), "$i$AppliedMemberClass",
-                    cd.isValueConstructor() ? "Value" : "Callable",
-                    "Constructor$jsint()(");
-        } else {
-            gen.out(gen.getClAlias(), "$i$Applied",
-                    cd.isValueConstructor() ? "Value" : "Callable",
-                    "Constructor$jsint()(");
-        }
-        TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
-        if (cd.isValueConstructor()) {
-            gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(meta.getDeclaration()), ",");
-        } else {
-            gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(cd), ",");
-        }
+        Class cla = (Class) cd.getContainer();
+        gen.out(gen.getClAlias(), 
+                cla.isClassOrInterfaceMember() ? 
+                        "$i$AppliedMemberClass" : 
+                        "$i$Applied",
+                cd.isValueConstructor() ? 
+                        "Value" : 
+                        "Callable",
+                "Constructor$jsint()(");
+        outputQualifiedTypename(null, 
+                gen.isImported(gen.getCurrentPackage(), cla), 
+                cla.getType(), gen, false);
+        JsIdentifierNames names = gen.getNames();
+        gen.out(names.constructorSeparator(cd),
+                cd.isValueConstructor() ? 
+                    names.name(meta.getDeclaration()) : 
+                    names.name(cd), 
+                ",");
         final Type mtype = meta.getTypeModel().resolveAliases();
-        TypeUtils.printTypeArguments(meta, mtype, gen, false);
+        printTypeArguments(meta, mtype, gen, false);
         if (ltype != null 
-                && ltype.getTypeArguments() != null 
-                && !ltype.getTypeArguments().isEmpty()) {
+                && !ltype.collectTypeArguments().isEmpty()) {
             gen.out(",undefined,");
-            TypeUtils.printTypeArguments(meta, ltype, gen, false);
+            printCollectedTypeArguments(meta, ltype, gen, false);
         }
         gen.out(")");
     }
 
-    static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
-        final org.eclipse.ceylon.model.typechecker.model.Reference ref = that.getTarget();
-        Type ltype = that.getType() == null ? null : that.getType().getTypeModel().resolveAliases();
+    static void generateMemberLiteral(final Tree.MemberLiteral that, 
+            final GenerateJsVisitor gen) {
+        final Reference ref = that.getTarget();
+        final Type type = that.getTypeModel();
+        Tree.StaticType st = that.getType();
+        Type ltype = st == null ? null : 
+            st.getTypeModel().resolveAliases();
         final Declaration d = ref.getDeclaration();
-        final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
+        final Scope container = d.getContainer();
+        final Class anonClass = d.isMember()
+                && container instanceof Class 
+                && ((Class) container).isAnonymous()?
+                        (Class) container : null;
 
-        if (that instanceof Tree.FunctionLiteral || d instanceof Function) {
-            if (ModelUtil.isConstructor(d)) {
-                constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
+        JsIdentifierNames names = gen.getNames();
+        if (that instanceof Tree.FunctionLiteral 
+                || d instanceof Function) {
+            if (isConstructor(d)) {
+                constructorLiteral(ref.getType(), 
+                        getConstructor(d), that, gen);
                 return;
             }
-            gen.out(gen.getClAlias(), d.isMember()?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
+            gen.out(gen.getClAlias(), 
+                    d.isMember() ?
+                            "AppliedMethod$jsint(" :
+                            "AppliedFunction$jsint(");
             if (anonClass != null) {
                 gen.qualify(that, anonClass);
-                gen.out(gen.getNames().objectName(anonClass), ".");
+                gen.out(names.objectName(anonClass), ".");
             } else if (ltype == null) {
                 gen.qualify(that, d);
             } else {
                 if (ltype.isUnion() || ltype.isIntersection()) {
-                    if (d.getContainer() instanceof TypeDeclaration) {
-                        ltype = ((TypeDeclaration)d.getContainer()).getType();
-                    } else if (d.getContainer() instanceof TypedDeclaration) {
-                        ltype = ((TypedDeclaration)d.getContainer()).getType();
+                    if (container instanceof TypeDeclaration) {
+                        ltype = ((TypeDeclaration) container).getType();
+                    } else if (container instanceof TypedDeclaration) {
+                        ltype = ((TypedDeclaration) container).getType();
                     }
                 }
-                if (ltype.getDeclaration().isMember()) {
-                    outputPathToDeclaration(that, ltype.getDeclaration(), gen);
+                TypeDeclaration ltd = ltype.getDeclaration();
+                if (ltd.isMember()) {
+                    outputPathToDeclaration(that, ltd, gen);
                 } else {
-                    gen.qualify(that, ltype.getDeclaration());
+                    gen.qualify(that, ltd);
                 }
-                gen.out(gen.getNames().name(ltype.getDeclaration()));
-                gen.out(d.isStatic()?".$st$.":".$$.prototype.");
+                gen.out(names.name(ltd),
+                        d.isStatic() ? ".$st$." : ".$$.prototype.");
             }
-            if (d instanceof Value) {
-                gen.out(gen.getNames().getter(d, true), ",");
-            } else {
-                gen.out(gen.getNames().name(d),",");
-            }
+            gen.out(d instanceof Value ? 
+                        names.getter(d, true) : 
+                        names.name(d), 
+                    ",");
             if (d.isMember()) {
-                if (that.getTypeArgumentList()!=null) {
-                    List<Type> typeModels = that.getTypeArgumentList().getTypeModels();
+                Tree.TypeArgumentList tal = 
+                        that.getTypeArgumentList();
+                if (tal!=null) {
+                    List<Type> typeModels = tal.getTypeModels();
                     if (typeModels!=null) {
                         gen.out("[");
                         boolean first=true;
                         for (Type targ : typeModels) {
-                            if (first)first=false;else gen.out(",");
-                            gen.out(gen.getClAlias(),"typeLiteral$meta({Type$typeLiteral:");
-                            TypeUtils.typeNameOrList(that, targ, gen, false);
+                            if (first) {
+                                first=false;
+                            }
+                            else {
+                                gen.out(",");
+                            }
+                            gen.out(gen.getClAlias(),
+                                    "typeLiteral$meta({Type$typeLiteral:");
+                            typeNameOrList(that, targ, gen, false);
                             gen.out("})");
                         }
                         gen.out("]");
@@ -301,111 +364,124 @@ public class MetamodelHelper {
                 } else {
                     gen.out("undefined,");
                 }
-                TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
+                printTypeArguments(that, type, gen, false);
             } else {
-                TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
-                if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
+                printTypeArguments(that, type, gen, false);
+                if (!ref.getTypeArguments().isEmpty()) {
                     gen.out(",undefined,");
-                    TypeUtils.printTypeArguments(that, gen, false,
+                    printTypeArguments(that, gen, false,
                             ref.getTypeArguments(), 
-                            ref.getType().getVarianceOverrides());
+                            ref.getVarianceOverrides());
                 }
             }
             gen.out(")");
-        } else if (that instanceof ValueLiteral || d instanceof Value) {
-            if (ModelUtil.isConstructor(d)) {
-                constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
+        } else if (that instanceof ValueLiteral 
+                || d instanceof Value) {
+            if (isConstructor(d)) {
+                constructorLiteral(ref.getType(), 
+                        getConstructor(d), that, gen);
                 return;
             }
             Value vd = (Value)d;
             if (vd.isMember()) {
-                gen.out(gen.getClAlias(), "$i$AppliedAttribute$meta$model()('");
+                gen.out(gen.getClAlias(), 
+                        "$i$AppliedAttribute$meta$model()('");
                 gen.out(d.getName(), "',");
             } else {
-                gen.out(gen.getClAlias(), "$i$AppliedValue$jsint()(undefined,");
+                gen.out(gen.getClAlias(), 
+                        "$i$AppliedValue$jsint()(undefined,");
             }
             if (anonClass != null) {
                 gen.qualify(that, anonClass);
-                gen.out(gen.getNames().objectName(anonClass), ".");
+                gen.out(names.objectName(anonClass), ".");
             } else if (ltype == null) {
                 gen.qualify(that, d);
             } else {
                 gen.qualify(that, ltype.getDeclaration());
-                gen.out(gen.getNames().name(ltype.getDeclaration()));
+                gen.out(names.name(ltype.getDeclaration()));
                 gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
-            gen.out(gen.getNames().getter(vd, true),",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel(), gen, false);
+            gen.out(names.getter(vd, true),",");
+            printTypeArguments(that, type, gen, false);
             gen.out(")");
         } else {
-            gen.out(gen.getClAlias(), "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
+            gen.out(gen.getClAlias(), 
+                    "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
             gen.out("{t:");
             if (ltype == null) {
                 gen.qualify(that, d);
             } else {
                 gen.qualify(that, ltype.getDeclaration());
-                gen.out(gen.getNames().name(ltype.getDeclaration()));
-                gen.out(d.isStatic()?".$st$.":".$$.prototype.");
+                gen.out(names.name(ltype.getDeclaration()));
+                gen.out(d.isStatic() ? ".$st$." : ".$$.prototype.");
             }
-            gen.out(gen.getNames().name(d));
+            gen.out(names.name(d));
             if (ltype != null 
-                    && ltype.getTypeArguments() != null 
                     && !ltype.getTypeArguments().isEmpty()) {
                 gen.out(",a:");
-                TypeUtils.printTypeArguments(that, ltype, gen, false);
+                printTypeArguments(that, ltype, gen, false);
             }
             gen.out("}})");
         }
     }
 
     static void findModule(final Module m, final GenerateJsVisitor gen) {
-        gen.out(gen.getClAlias(), "findModuleOrThrow$('",
-                m.getNameAsString(), "','", m.getVersion(), "')");
+        gen.out(gen.getClAlias(), 
+                "findModuleOrThrow$('",
+                m.getNameAsString(), "','", 
+                m.getVersion(), "')");
     }
 
-    static void outputPathToDeclaration(final Node that, final Declaration d, final GenerateJsVisitor gen) {
-        final Declaration parent = ModelUtil.getContainingDeclaration(d);
-        if (!gen.opts.isOptimize() && parent instanceof TypeDeclaration && ModelUtil.contains((Scope)parent, that.getScope())) {
-            gen.out(gen.getNames().self((TypeDeclaration)parent), ".");
+    static void outputPathToDeclaration(final Node that, final Declaration d, 
+            final GenerateJsVisitor gen) {
+        final Declaration parent = getContainingDeclaration(d);
+        JsIdentifierNames names = gen.getNames();
+        if (!gen.opts.isOptimize() 
+                && parent instanceof TypeDeclaration 
+                && ModelUtil.contains((Scope) parent, 
+                        that.getScope())) {
+            gen.out(names.self((TypeDeclaration) parent), 
+                    ".");
         } else {
-            Declaration _md = d;
-            final ArrayList<Declaration> parents = new ArrayList<>(3);
-            while (_md.isMember()) {
-                _md=ModelUtil.getContainingDeclaration(_md);
-                parents.add(0, _md);
+            Declaration member = d;
+            final ArrayList<Declaration> parents = 
+                    new ArrayList<>(3);
+            while (member.isMember()) {
+                member = getContainingDeclaration(member);
+                parents.add(0, member);
             }
-            boolean first=true;
-            boolean imported=false;
-            boolean parentIsObject=false;
-            for (Declaration _d : parents) {
+            boolean first = true;
+            boolean imported = false;
+            boolean parentIsObject = false;
+            for (Declaration p : parents) {
                 if (first) {
-                    imported = gen.qualify(that, _d);
-                    first=false;
+                    imported = gen.qualify(that, p);
+                    first = false;
                 } else if (parentIsObject) {
                     gen.out(".");
-                    parentIsObject=false;
+                    parentIsObject = false;
                 } else {
-                    gen.out(_d.isStatic()?".$st$.":".$$.prototype.");
+                    gen.out(p.isStatic() ? ".$st$." : ".$$.prototype.");
                 }
-                if (_d.isAnonymous()) {
-                    final String oname = gen.getNames().objectName(_d);
-                    if (_d.isToplevel()) {
+                if (p.isAnonymous()) {
+                    String oname = names.objectName(p);
+                    if (p.isToplevel()) {
                         gen.out(oname);
                         parentIsObject = true;
                     } else {
                         gen.out("$i$", oname, "()");
                     }
                 } else {
-                    if (!imported)gen.out("$i$");
-                    gen.out(gen.getNames().name(_d), imported?"":"()");
+                    if (!imported) gen.out("$i$");
+                    gen.out(names.name(p), imported ? "" : "()");
                 }
-                imported=true;
+                imported = true;
             }
             if (!parents.isEmpty()) {
                 if (parentIsObject) {
                     gen.out(".");
                 } else {
-                    gen.out(d.isStatic()?".$st$.":".$$.prototype.");
+                    gen.out(d.isStatic() ? ".$st$." : ".$$.prototype.");
                 }
             }
         }

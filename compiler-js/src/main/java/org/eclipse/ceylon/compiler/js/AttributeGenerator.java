@@ -9,6 +9,9 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+
 import java.util.Set;
 
 import org.eclipse.ceylon.compiler.js.util.TypeUtils;
@@ -19,7 +22,6 @@ import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
 import org.eclipse.ceylon.model.typechecker.model.Functional;
-import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
 import org.eclipse.ceylon.model.typechecker.model.Type;
@@ -194,8 +196,8 @@ public class AttributeGenerator {
                 false);
         Type type = expr.getTypeModel();
         if (gen.isInDynamicBlock() 
-                && ModelUtil.isTypeUnknown(type)
-                && !ModelUtil.isTypeUnknown(decl.getType())) {
+                && isTypeUnknown(type)
+                && !isTypeUnknown(decl.getType())) {
             TypeUtils.generateDynamicCheck(expr, decl.getType(), gen, false,
                     type.getTypeArguments());
         } else {
@@ -215,7 +217,7 @@ public class AttributeGenerator {
                         type, gen);
             }
             gen.out(",");
-            TypeUtils.printTypeArguments(expr, type, gen, false);
+            printTypeArguments(expr, type, gen, false);
         }
         gen.boxUnboxEnd(boxType);
     }

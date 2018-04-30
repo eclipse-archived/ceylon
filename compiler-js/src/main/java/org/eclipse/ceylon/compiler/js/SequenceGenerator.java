@@ -9,6 +9,13 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.generateDynamicCheck;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.matchTypeParametersWithArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.spreadArrayCheck;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.typeNameOrList;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +25,10 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
+import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Functional;
-import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
+import org.eclipse.ceylon.model.typechecker.model.Interface;
+import org.eclipse.ceylon.model.typechecker.model.Parameter;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 
@@ -27,23 +36,25 @@ public class SequenceGenerator {
 
     static void lazyEnumeration(final List<Tree.PositionalArgument> args, final Node node, final Type seqType,
             final boolean spread, final GenerateJsVisitor gen) {
-        Tree.PositionalArgument seqarg = spread ? args.get(args.size()-1) : null;
-        if (args.size() == 1 && seqarg instanceof Tree.Comprehension) {
+        Tree.PositionalArgument seqarg = 
+                spread ? args.get(args.size()-1) : null;
+        if (args.size() == 1 
+                && seqarg instanceof Tree.Comprehension) {
             //Shortcut: just do the comprehension
             seqarg.visit(gen);
             return;
         }
         final String idxvar = gen.getNames().createTempVariable();
-        gen.out(gen.getClAlias(), "sarg$(function(", idxvar,"){switch(",idxvar,"){");
+        gen.out(gen.getClAlias(), "sarg$(function(", idxvar, "){switch(", idxvar, "){");
         int count=0;
         for (Tree.PositionalArgument expr : args) {
             if (expr == seqarg) {
                 gen.out("}return ", gen.getClAlias(), "finished();},function(){return ");
                 if (gen.isInDynamicBlock() 
                         && expr instanceof Tree.SpreadArgument
-                        && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
-                    TypeUtils.spreadArrayCheck(
-                            ((Tree.SpreadArgument)expr).getExpression(), 
+                        && isTypeUnknown(expr.getTypeModel())) {
+                    spreadArrayCheck(
+                            ((Tree.SpreadArgument) expr).getExpression(), 
                             gen);
                 } else {
                     boxArg(gen, expr);
@@ -59,23 +70,26 @@ public class SequenceGenerator {
         if (seqarg == null) {
             gen.out("}return ", gen.getClAlias(), "finished();},undefined,");
         }
-        TypeUtils.printTypeArguments(node, seqType, gen, false);
+        printTypeArguments(node, seqType, gen, false);
         gen.out(")");
     }
 
-    static void sequenceEnumeration(final Tree.SequenceEnumeration that, final GenerateJsVisitor gen) {
+    static void sequenceEnumeration(final Tree.SequenceEnumeration that, 
+            final GenerateJsVisitor gen) {
         final Tree.SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
             gen.out(gen.getClAlias(), "empty()");
         } else {
-            final List<Tree.PositionalArgument> positionalArgs = sarg.getPositionalArguments();
+            final Type type = that.getTypeModel();
+            final List<Tree.PositionalArgument> positionalArgs = 
+                    sarg.getPositionalArguments();
             final boolean spread = isSpread(positionalArgs);
             final boolean canBeEager = allLiterals(positionalArgs);
             boolean wantsIter = false;
             if (spread || !canBeEager) {
-                lazyEnumeration(positionalArgs, that, that.getTypeModel(), spread, gen);
+                lazyEnumeration(positionalArgs, that, type, spread, gen);
                 return;
-            } else if (that.getTypeModel().isSequential()) {
+            } else if (type.isSequential()) {
                 gen.out(gen.getClAlias(), "$arr$sa$([");
             } else {
                 gen.out(gen.getClAlias(), "sarg$(", gen.getClAlias(), "$lai$([");
@@ -86,28 +100,33 @@ public class SequenceGenerator {
                 if (count > 0) {
                     gen.out(",");
                 }
+                Parameter param = expr.getParameter();
                 if (gen.isInDynamicBlock() 
                         && expr instanceof Tree.ListedArgument 
-                        && ModelUtil.isTypeUnknown(expr.getTypeModel())
-                        && expr.getParameter() != null 
-                        && !ModelUtil.isTypeUnknown(expr.getParameter().getType())) {
+                        && isTypeUnknown(expr.getTypeModel())
+                        && param != null 
+                        && !isTypeUnknown(param.getType())) {
                     //TODO find out how to test this, if at all possible
-                    TypeUtils.generateDynamicCheck(
-                            ((Tree.ListedArgument)expr).getExpression(),
-                            expr.getParameter().getType(), 
+                    generateDynamicCheck(
+                            ((Tree.ListedArgument) expr).getExpression(),
+                            param.getType(), 
                             gen, false, 
-                            that.getTypeModel().getTypeArguments());
+                            type.getTypeArguments());
                 } else {
                     boxArg(gen, expr);
                 }
                 count++;
             }
-            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, wantsIter);
+            closeSequenceWithReifiedType(that, 
+                    type.getTypeArguments(), 
+                    gen, wantsIter);
         }
     }
 
-    static void sequencedArgument(final Tree.SequencedArgument that, final GenerateJsVisitor gen) {
-        final List<Tree.PositionalArgument> positionalArguments = that.getPositionalArguments();
+    static void sequencedArgument(final Tree.SequencedArgument that, 
+            final GenerateJsVisitor gen) {
+        final List<Tree.PositionalArgument> positionalArguments = 
+                that.getPositionalArguments();
         final boolean spread = isSpread(positionalArguments);
         if (!spread) {
             gen.out("[");
@@ -125,10 +144,13 @@ public class SequenceGenerator {
         }
     }
 
-    /** SpreadOp cannot be a simple function call because we need to reference the object methods directly, so it's a function */
-    static void generateSpread(final Tree.QualifiedMemberOrTypeExpression that, final GenerateJsVisitor gen) {
+    /** SpreadOp cannot be a simple function call because we need to reference 
+     * the object methods directly, so it's a function */
+    static void generateSpread(final Tree.QualifiedMemberOrTypeExpression that, 
+            final GenerateJsVisitor gen) {
         //Determine if it's a method or attribute
-        boolean isMethod = that.getDeclaration() instanceof Functional;
+        Declaration dec = that.getDeclaration();
+        boolean isMethod = dec instanceof Functional;
         Type type = that.getTypeModel();
         if (isMethod) {
             gen.out(gen.getClAlias(), "JsCallableList(");
@@ -139,9 +161,9 @@ public class SequenceGenerator {
             if (typeArgs != null 
                     && typeArgs.getTypeModels()!=null
                     && !typeArgs.getTypeModels().isEmpty()) {
-                TypeUtils.printTypeArguments(that, gen, true, 
-                        TypeUtils.matchTypeParametersWithArguments(
-                                that.getDeclaration().getTypeParameters(),
+                printTypeArguments(that, gen, true, 
+                        matchTypeParametersWithArguments(
+                                dec.getTypeParameters(),
                                 typeArgs.getTypeModels()),
                         null);
             } else {
@@ -149,16 +171,19 @@ public class SequenceGenerator {
             }
             gen.out(",");
             if (type != null && type.isCallable()) {
-                TypeUtils.typeNameOrList(that, type.getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
+                typeNameOrList(that, 
+                        type.getTypeArgumentList().get(0)
+                            .getTypeArgumentList().get(0), 
+                        gen, false);
             } else {
-                TypeUtils.typeNameOrList(that, type, gen, false);
+                typeNameOrList(that, type, gen, false);
             }
             gen.out(")");
         } else {
             gen.supervisit(that);
             gen.out(".collect(function(e){return ", gen.memberAccess(that, "e"),
                     ";},{Result$collect:");
-            TypeUtils.typeNameOrList(that, type.getTypeArgumentList().get(0), gen, false);
+            typeNameOrList(that, type.getTypeArgumentList().get(0), gen, false);
             gen.out("})");
         }
     }
@@ -181,20 +206,26 @@ public class SequenceGenerator {
         }
         return true;
     }
-    /** Closes a native array and invokes reifyCeylonType (rt$) with the specified type parameters. */
-    static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
+    /** Closes a native array and invokes reifyCeylonType (rt$) with 
+     * the specified type parameters. */
+    static void closeSequenceWithReifiedType(final Node that, 
+            final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen, final boolean wantsIterable) {
         if (wantsIterable) {
             gen.out("]),undefined,{Element$Iterable:");
         } else {
             gen.out("],");
         }
-        boolean nonempty=false;
+        boolean nonempty = false;
         Type elem = null;
+        Interface id = that.getUnit().getIterableDeclaration();
+        TypeParameter element = id.getTypeParameters().get(0);
+        TypeParameter absent = id.getTypeParameters().get(1);
         for (Map.Entry<TypeParameter,Type> e : types.entrySet()) {
-            if (e.getKey().getName().equals("Element")) {
+            TypeParameter key = e.getKey();
+            if (key.equals(element)) {
                 elem = e.getValue();
-            } else if (e.getKey().equals(that.getUnit().getIterableDeclaration().getTypeParameters().get(1))) {
+            } else if (key.equals(absent)) {
                 //If it's Nothing, it's nonempty
                 nonempty = e.getValue().isNothing();
             }
@@ -206,7 +237,7 @@ public class SequenceGenerator {
         TypeUtils.typeNameOrList(that, elem, gen, false);
         if (wantsIterable) {
             gen.out(",Absent$Iterable:{t:", gen.getClAlias(),
-                    nonempty?"Nothing}}":"Null}}");
+                    nonempty ? "Nothing}}" : "Null}}");
 
         }
         if (nonempty) {
@@ -220,8 +251,9 @@ public class SequenceGenerator {
         if (sarg == null) {
             gen.out(gen.getClAlias(), "empty()");
         } else {
-            final List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
-            final boolean spread = SequenceGenerator.isSpread(positionalArguments);
+            final List<PositionalArgument> positionalArguments = 
+                    sarg.getPositionalArguments();
+            final boolean spread = isSpread(positionalArguments);
             int lim = positionalArguments.size()-1;
             gen.out(gen.getClAlias(), "tpl$([");
             int count = 0;
@@ -245,7 +277,8 @@ public class SequenceGenerator {
 
     private static void boxArg(final GenerateJsVisitor gen, PositionalArgument arg) {
         if (arg instanceof Tree.ListedArgument) {
-            gen.box(((Tree.ListedArgument) arg).getExpression(), true, false);
+            gen.box(((Tree.ListedArgument) arg).getExpression(), 
+                    true, false);
         }
         else {
             arg.visit(gen);
