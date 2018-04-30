@@ -2541,8 +2541,8 @@ public class ModelUtil {
             if (!tp.isCovariant() && !tp.isContravariant()) {
                 Type ta1 = st1.getTypeArguments().get(tp);
                 Type ta2 = st2.getTypeArguments().get(tp);
-                if (ta1!=null && ta2!=null && 
-                        !ta1.isExactly(ta2)) {
+                if (ta1!=null && ta2!=null 
+                        && !ta1.isExactly(ta2)) {
                     return false;
                 }
             }

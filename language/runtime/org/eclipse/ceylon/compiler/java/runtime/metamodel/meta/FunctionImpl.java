@@ -260,7 +260,7 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(foundMethod, false)){
             List<org.eclipse.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<org.eclipse.ceylon.model.typechecker.model.Type>();
-            Map<org.eclipse.ceylon.model.typechecker.model.TypeParameter, org.eclipse.ceylon.model.typechecker.model.Type> typeArgumentMap = appliedFunction.getTypeArguments();
+            Map<org.eclipse.ceylon.model.typechecker.model.TypeParameter, org.eclipse.ceylon.model.typechecker.model.Type> typeArgumentMap = appliedFunction.collectTypeArguments();
             for (org.eclipse.ceylon.model.typechecker.model.TypeParameter tp : reifiedTypeParameters) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }
