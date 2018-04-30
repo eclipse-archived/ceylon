@@ -213,7 +213,7 @@ void test_repeat() {
     check((0..1).repeat(2).rest=={1, 0, 1}.sequence(),"Repeat + rest");
     check((0..1).repeat(2).rest.rest=={0, 1}.sequence(),"Repeat + rest until remove original");
     check((0..1).repeat(2).rest.rest.rest =={1}.sequence(),"Repeat + rest beyond remove original");
-    check({}.repeat(2).rest=={}.sequence(),"Repeat empty + rest");
+    check({}.repeat(2).rest==[].sequence(),"Repeat empty + rest");
 }
 
 shared void arraySequence() {
@@ -249,7 +249,7 @@ shared void arraySequence() {
     check(abc.reversed.measure(0, 1)==["c"], "abc.reverse.measure ``abc.reversed.measure(0, 1)``");
     check(abc.reversed.measure(2, 10)==["a"], "abc.reverse.measure ``abc.reversed.measure(2, 10)``");
     
-    check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
+    check(abc.span(-1,-1)==[], "abc.span(-1,-1)");
     check(abc.span(-1, 0)=={"a"}.sequence(), "abc.span(-1,0)");
     check(abc.span(-1, 1)=={"a", "b"}.sequence() , "abc.span(-1,1)");
     check(abc.span(-1, 2)==abc, "abc.span(-1,2)");
@@ -277,50 +277,50 @@ shared void arraySequence() {
     check(abc.span(3, 0)=={"c", "b", "a"}.sequence(), "abc.span(3,0)");
     check(abc.span(3, 1)=={"c", "b"}.sequence() , "abc.span(3,1)");
     check(abc.span(3, 2)=={"c"}.sequence(), "abc.span(3,1)");
-    check(abc.span(3, 3)=={}, "abc.span(3,3)");
+    check(abc.span(3, 3)==[], "abc.span(3,3)");
     
     check(abc.spanFrom(-1)==abc, "abc.spanFrom(-1)");
     check(abc.spanFrom(0)==abc, "abc.spanFrom(0)");
     check(abc.spanFrom(1)=={"b", "c"}.sequence() , "abc.spanFrom(1)");
     check(abc.spanFrom(2)=={"c"}.sequence(), "abc.spanFrom(2)");
-    check(abc.spanFrom(3)=={}, "abc.spanFrom(3)");
+    check(abc.spanFrom(3)==[], "abc.spanFrom(3)");
     
-    check(abc.spanTo(-1)=={}, "abc.spanTo(-1)");
+    check(abc.spanTo(-1)==[], "abc.spanTo(-1)");
     check(abc.spanTo(0)=={"a"}.sequence(), "abc.spanTo(0)");
     check(abc.spanTo(1)=={"a", "b"}.sequence() , "abc.spanTo(1)");
     check(abc.spanTo(2)==abc, "abc.spanTo(2)");
     check(abc.spanTo(3)==abc, "abc.spanTo(3)");
     
     
-    check(abc.measure(-1,-1)=={}, "abc.measure(-1,-1)");
-    check(abc.measure(-1, 0)=={}, "abc.measure(-1,0)");
-    check(abc.measure(-1, 1)=={} , "abc.measure(-1,1)");
+    check(abc.measure(-1,-1)==[], "abc.measure(-1,-1)");
+    check(abc.measure(-1, 0)==[], "abc.measure(-1,0)");
+    check(abc.measure(-1, 1)==[] , "abc.measure(-1,1)");
     check(abc.measure(-1, 2)=={"a"}.sequence(), "abc.measure(-1,2)");
     check(abc.measure(-1, 3)=={"a", "b"}.sequence(), "abc.measure(-1,3)");
     
-    check(abc.measure(0,-1)=={}, "abc.measure(0,-1)");
-    check(abc.measure(0, 0)=={}, "abc.measure(0,0)");
+    check(abc.measure(0,-1)==[], "abc.measure(0,-1)");
+    check(abc.measure(0, 0)==[], "abc.measure(0,0)");
     check(abc.measure(0, 1)=={"a"}.sequence() , "abc.measure(0,1)");
     check(abc.measure(0, 2)=={"a", "b"}.sequence(), "abc.measure(0,2)");
     check(abc.measure(0, 3)==abc, "abc.measure(0,3)");
     
-    check(abc.measure(1,-1)=={}, "abc.measure(1,-1)");
-    check(abc.measure(1, 0)=={}, "abc.measure(1,0)");
+    check(abc.measure(1,-1)==[], "abc.measure(1,-1)");
+    check(abc.measure(1, 0)==[], "abc.measure(1,0)");
     check(abc.measure(1, 1)=={"b"}.sequence() , "abc.measure(1,1)");
     check(abc.measure(1, 2)=={"b", "c"}.sequence(), "abc.measure(1,2)");
     check(abc.measure(1, 3)=={"b", "c"}.sequence(), "abc.measure(1,3)");
     
-    check(abc.measure(2,-1)=={}, "abc.measure(2,-1)");
-    check(abc.measure(2, 0)=={}, "abc.measure(2,0)");
+    check(abc.measure(2,-1)==[], "abc.measure(2,-1)");
+    check(abc.measure(2, 0)==[], "abc.measure(2,0)");
     check(abc.measure(2, 1)=={"c"}.sequence() , "abc.measure(2,1)");
     check(abc.measure(2, 2)=={"c"}.sequence(), "abc.measure(2,2)");
     check(abc.measure(2, 3)=={"c"}.sequence(), "abc.measure(2,3)");
     
-    check(abc.measure(3,-1)=={}, "abc.measure(3,-1)");
-    check(abc.measure(3, 0)=={}, "abc.measure(3,0)");
-    check(abc.measure(3, 1)=={} , "abc.measure(3,1)");
-    check(abc.measure(3, 2)=={}, "abc.measure(3,1)");
-    check(abc.measure(3, 3)=={}, "abc.measure(3,3)");
+    check(abc.measure(3,-1)==[], "abc.measure(3,-1)");
+    check(abc.measure(3, 0)==[], "abc.measure(3,0)");
+    check(abc.measure(3, 1)==[] , "abc.measure(3,1)");
+    check(abc.measure(3, 2)==[], "abc.measure(3,1)");
+    check(abc.measure(3, 3)==[], "abc.measure(3,3)");
     
     check(abc.reversed.rest==["b","a"], "abc.reversed.rest");
     check(abc.reversed==["c","b","a"], "abc.reversed");

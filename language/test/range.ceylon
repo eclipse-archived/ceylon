@@ -3,7 +3,7 @@ shared void testRange() {
     // TODO RangeOp
     
     check((1..2).rest == 2..2);
-    check((2..2).rest == {});
+    check((2..2).rest == []);
     
     // SegmentOp
     variable value x = 0:-1;

@@ -190,7 +190,7 @@ shared void entriesAndRanges() {
     check(!(1..5).span(8,6) nonempty, "empty range [4]");
     check(r1[...2] == { 1, 2, 3 }.sequence(), "r1[...2]");
     check(r1[3...] == { 4, 5 }.sequence(), "r1[3...]");
-    check(r1[...-1] == {}, "r1[...-1] `` r1[...-1] ``");
+    check(r1[...-1] == [], "r1[...-1] `` r1[...-1] ``");
 
     //non-Integer Ranges
     class TestRange(Integer number) satisfies Enumerable<TestRange> & Comparable<TestRange> {

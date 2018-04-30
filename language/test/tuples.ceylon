@@ -18,7 +18,7 @@ shared void tuples() {
     Singleton<Character> t3 = t.rest.rest.first;
     check(t3.first == '3', "tuple rest.rest.first");
     check(t.reversed.sequence() == {Singleton('3'),"2",1}.sequence(), "tuple reversed `` t.reversed.sequence() ``");
-    check(t[-2..-1] == {}, "tuple[-2..-1] `` t[-2..-1] ``, should be empty");
+    check(t[-2..-1] == [], "tuple[-2..-1] `` t[-2..-1] ``, should be empty");
     check(t[-2..0] == {1}.sequence(), "tuple[-2..0] `` t[-2..0] ``");
     check(t[0..1] == {1,"2"}.sequence(), "tuple[0..1] `` t[0..1] ``");
     check(t[1..2] == {"2",{'3'}.sequence()}.sequence(), "tuple[1..2] `` t[1..2] ``");
@@ -27,9 +27,9 @@ shared void tuples() {
     check(t[2..1] == {{'3'}.sequence(),"2"}.sequence(), "tuple[2..1] `` t[2..1] ``");
     check(t[1..0] == {"2",1}.sequence(), "tuple[1..0] `` t[1..0] ``");
     check(t[-2..6] == {1,"2",{'3'}.sequence()}.sequence(), "tuple[-2..6] `` t[-2..6] ``");
-    check(t[5..6] == {}, "tuple[5..6] `` t[5..6] ``");
+    check(t[5..6] == [], "tuple[5..6] `` t[5..6] ``");
     
-    check(t[0:0] == {}, "tuple[0] `` t[0] ``");
+    check(t[0:0] == [], "tuple[0] `` t[0] ``");
     check(t[0:2] == {1,"2"}.sequence(), "tuple[0:2] `` t[0:2] ``");
     check(t[1:2] == {"2",{'3'}.sequence()}.sequence(), "tuple[1:2] `` t[1:2] ``");
     check(t[2:1] == [['3']], "tuple[2:1] `` t[2:1] ``");
@@ -38,8 +38,8 @@ shared void tuples() {
     check(t[0...] == {1,"2",{'3'}.sequence()}.sequence(), "tuple[0...] `` t[0...] ``");
     check(t[1...] == {"2",{'3'}.sequence()}.sequence(), "tuple[1...] `` t[1...] ``");
     check(t[2...] == [['3']], "tuple[2...] `` t[2...] ``");
-    check(t[3...] == {}, "tuple[3...] `` t[3...] ``");
-    check(t[...-1] == {}, "tuple[...-1] `` t[...-1] ``");
+    check(t[3...] == [], "tuple[3...] `` t[3...] ``");
+    check(t[...-1] == [], "tuple[...-1] `` t[...-1] ``");
     check(t[...0] == {1}.sequence(), "tuple[...0] `` t[...0] ``");
     check(t[...1] == {1, "2"}.sequence(), "tuple[...1] `` t[...1] ``");
     check(t[...2] == {1, "2", {'3'}.sequence()}.sequence(), "tuple[...2] `` t[...2] ``");
@@ -69,7 +69,7 @@ shared void tuples() {
         Integer[] t4 = t.rest.rest.rest;
         check(t4.empty, "``msg``: tuple rest.rest.rest");
         check(t.reversed.sequence() == {3,2,1}.sequence(), "``msg``: tuple reversed `` t.reversed.sequence() ``");
-        check(t[-2..-1] == {}, "``msg``: tuple[-2..-1] `` t[-2..-1] ``, should be empty");
+        check(t[-2..-1] == [], "``msg``: tuple[-2..-1] `` t[-2..-1] ``, should be empty");
         check(t[-2..0] == {1}.sequence(), "``msg``: tuple[-2..0] `` t[-2..0] ``");
         check(t[0..1] == {1,2}.sequence(), "``msg``: tuple[0..1] `` t[0..1] ``");
         check(t[1..2] == {2,3}.sequence(), "``msg``: tuple[1..2] `` t[1..2] ``");
@@ -78,9 +78,9 @@ shared void tuples() {
         check(t[2..1] == {3,2}.sequence(), "``msg``: tuple[2..1] `` t[2..1] ``");
         check(t[1..0] == {2,1}.sequence(), "``msg``: tuple[1..0] `` t[1..0] ``");
         check(t[-2..6] == {1,2,3}.sequence(), "``msg``: tuple[-2..6] `` t[-2..6] ``");
-        check(t[5..6] == {}, "``msg``: tuple[5..6] `` t[5..6] ``");
+        check(t[5..6] == [], "``msg``: tuple[5..6] `` t[5..6] ``");
         
-        check(t[0:0] == {}, "``msg``: tuple[0] `` t[0] ``");
+        check(t[0:0] == [], "``msg``: tuple[0] `` t[0] ``");
         check(t[0:2] == {1,2}.sequence(), "``msg``: tuple[0:2] `` t[0:2] ``");
         check(t[1:2] == {2,3}.sequence(), "``msg``: tuple[1:2] `` t[1:2] ``");
         check(t[2:1] == [3], "``msg``: tuple[2:1] `` t[2:1] ``");
@@ -89,8 +89,8 @@ shared void tuples() {
         check(t[0...] == {1,2,3}.sequence(), "``msg``: tuple[0...] `` t[0...] ``");
         check(t[1...] == {2,3}.sequence(), "``msg``: tuple[1...] `` t[1...] ``");
         check(t[2...] == [3], "``msg``: tuple[2...] `` t[2...] ``");
-        check(t[3...] == {}, "``msg``: tuple[3...] `` t[3...] ``");
-        check(t[...-1] == {}, "``msg``: tuple[...-1] `` t[...-1] ``");
+        check(t[3...] == [], "``msg``: tuple[3...] `` t[3...] ``");
+        check(t[...-1] == [], "``msg``: tuple[...-1] `` t[...-1] ``");
         check(t[...0] == {1}.sequence(), "``msg``: tuple[...0] `` t[...0] ``");
         check(t[...1] == {1, 2}.sequence(), "``msg``: tuple[...1] `` t[...1] ``");
         check(t[...2] == {1, 2, 3}.sequence(), "``msg``: tuple[...2] `` t[...2] ``");
