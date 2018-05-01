@@ -31,6 +31,7 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getT
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedMember;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
+import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importCorrectionMessage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedModule;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
@@ -7564,8 +7565,8 @@ public class ExpressionVisitor extends Visitor {
                     + name + "'", 
                     400);
         }
-        else if (member.isPackageVisibility() && 
-                !declaredInPackage(member, unit)) {
+        else if (member.isPackageVisibility() 
+                && !declaredInPackage(member, unit)) {
             that.addError("function or value is not visible: '" 
                     + name 
                     + "' is package private");
@@ -7578,16 +7579,17 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkQualifiedVisibility(Node that, 
             TypedDeclaration member, String name, 
-            String container, boolean selfReference) {
+            boolean selfReference) {
+        Scope container = member.getContainer();
         if (!member.isVisible(that.getScope())) {
             that.addError("method or attribute is not visible: '" 
-                    + name + "' of " + container, 
+                    + name + "' of " + container(container), 
                     400);
         }
         else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
             that.addError("method or attribute is not visible: '" 
-                    + name + "' of " + container 
+                    + name + "' of " + container(container) 
                     + " is package private");
         }
         //this is actually too restrictive since
@@ -7598,7 +7600,7 @@ public class ExpressionVisitor extends Visitor {
                 !selfReference && 
                 !declaredInPackage(member, unit)) {
             that.addError("method or attribute is not visible: '" 
-                    + name + "' of " + container
+                    + name + "' of " + container(container)
                     + " is protected");
         }
     }
@@ -7668,12 +7670,12 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkQualifiedTypeAndConstructorVisibility(
             Tree.QualifiedTypeExpression that, 
-            TypeDeclaration type, String name, 
-            String container) {
+            TypeDeclaration type, String name) {
         //Note: the handling of "protected" here looks
         //      wrong because Java has a crazy rule 
         //      that you can't instantiate protected
         //      member classes from a subclass
+        Scope container = type.getContainer();
         if (isOverloadedVersion(type)) {
             //it is a Java constructor
             //get the actual type that
@@ -7684,34 +7686,34 @@ public class ExpressionVisitor extends Visitor {
                         .getDeclaration();
             if (!at.isVisible(that.getScope())) {
                 that.addError("member type is not visible: '" 
-                        + name + "' of '" + container);
+                        + name + "' of '" + container(container));
             }
             else if (at.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
                 that.addError("member type is not visible: '" 
-                        + name + "' of type " + container 
+                        + name + "' of type " + container(container) 
                         + " is package private");
             }
             else if (at.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
                 that.addError("member type is not visible: '" 
-                        + name + "' of type " + container
+                        + name + "' of type " + container(container)
                         + " is protected");
             }
             else if (!type.isVisible(that.getScope())) {
                 that.addError("member type constructor is not visible: '" 
-                        + name + "' of " + container);
+                        + name + "' of " + container(container));
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
                 that.addError("member type constructor is not visible: '" 
-                        + name + "' of " + container
+                        + name + "' of " + container(container)
                         + " is package private");
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
                 that.addError("member type constructor is not visible: '" 
-                        + name + "' of " + container
+                        + name + "' of " + container(container)
                         + " is protected");
             }
         }
@@ -7719,25 +7721,25 @@ public class ExpressionVisitor extends Visitor {
             if (!type.isVisible(that.getScope())) {
                 if (type instanceof Constructor) {
                     that.addError("constructor is not visible: '" 
-                            + name + "' of " + container, 
+                            + name + "' of " + container(container), 
                             400);
                 }
                 else {
                     that.addError("member type is not visible: '" 
-                            + name + "' of " + container, 
+                            + name + "' of " + container(container), 
                             400);
                 }
             }
-            else if (type.isPackageVisibility() && 
-                    !declaredInPackage(type, unit)) {
+            else if (type.isPackageVisibility() 
+                    && !declaredInPackage(type, unit)) {
                 that.addError("member type is not visible: '" 
-                        + name + "' of " + container
+                        + name + "' of " + container(container)
                         + " is package private");
             }
-            else if (type.isProtectedVisibility() && 
-                    !declaredInPackage(type, unit)) {
+            else if (type.isProtectedVisibility() 
+                    && !declaredInPackage(type, unit)) {
                 that.addError("member type is not visible: '" 
-                        + name + "' of " + container
+                        + name + "' of " + container(container)
                         + " is protected");
             }
         }
@@ -8088,6 +8090,36 @@ public class ExpressionVisitor extends Visitor {
         }
         return paramList;
     }
+    
+    private String container(Scope scope) {
+        if (scope instanceof Package) {
+            Package p = (Package) scope;
+            return "package '" + p.getNameAsString() + "'";
+        }
+        else if (scope instanceof TypeDeclaration) {
+            Declaration d = (Declaration) scope;
+            return "type '" + d.getName(unit) + "'";
+        }
+        else {
+            return "";
+        }
+    }
+    
+    private String correction(String name, 
+            Scope scope,  Cancellable cancellable) {
+        if (scope instanceof Package) {
+            return importCorrectionMessage(name, 
+                    (Package) scope, unit, cancellable);
+        }
+        else if (scope instanceof TypeDeclaration) {
+            return memberCorrectionMessage(name, 
+                    (TypeDeclaration) scope, scope, 
+                    unit, cancellable);
+        }
+        else {
+            return "";
+        }
+    }
 
     private TypedDeclaration resolveQualifiedMemberExpression(
             Tree.QualifiedMemberExpression that, 
@@ -8101,19 +8133,18 @@ public class ExpressionVisitor extends Visitor {
             String name = name(id);
             List<Type> signature = that.getSignature();
             boolean spread = that.getEllipsis();
-            String container;
             boolean ambiguous;
             TypedDeclaration member;
-            Type pt; 
+            Type pt;
+            Scope scope;
             if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
-                container = "package '" + 
-                        pack.getNameAsString() + "'";
                 member = 
                         getPackageTypedDeclaration(name, 
                                 signature, spread, unit);
                 ambiguous = false;
                 pt = null;
+                scope = pack;
             }
             else {
                 pt = primary.getTypeModel()
@@ -8122,28 +8153,24 @@ public class ExpressionVisitor extends Visitor {
                 if (d instanceof Constructor) {
                     d = d.getExtendedType().getDeclaration();
                 }
-                container = "type '" + d.getName(unit) + "'";
-                Scope scope = that.getScope();
+                scope = that.getScope();
                 member = 
                         getTypedMember(d, name, 
                                 signature, spread, unit, scope);
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
-                if (member==null) {
-                    container += memberCorrectionMessage(name, 
-                            d, scope, unit, cancellable);
-                }
             }
             if (member==null) {
                 if (error) {
                     if (ambiguous) {
-                        that.addError("method or attribute is ambiguous: '" +
-                                name + "' for " + container);
+                        that.addError("method or attribute is ambiguous: '" 
+                                + name + "' for " + container(scope));
                     }
                     else {
-                        that.addError("method or attribute is not defined: '" +
-                                name + "' in " + container, 
+                        that.addError("method or attribute is not defined: '" 
+                                + name + "' in " + container(scope) 
+                                + correction(name, scope, cancellable), 
                                 100);
                         unit.setUnresolvedReferences();
                     }
@@ -8161,8 +8188,8 @@ public class ExpressionVisitor extends Visitor {
                 resetSuperReference(that);
                 boolean selfReference = 
                         isSelfOrSuperReference(primary);
-                if (!selfReference && 
-                        !member.isShared()) {
+                if (!selfReference 
+                        && !member.isShared()) {
                     if (that.getAssigned()) {
                         member.setOtherInstanceWriteAccess(true);
                     }
@@ -8172,9 +8199,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (error) {
                     if (checkConcreteConstructor(member, that)) {
-                        checkQualifiedVisibility(that, 
-                                member, name, container, 
-                                selfReference);
+                        checkQualifiedVisibility(that, member, 
+                                name, selfReference);
                     }
                     checkSuperMember(that, signature, spread);
                 }
@@ -8937,19 +8963,18 @@ public class ExpressionVisitor extends Visitor {
             List<Type> signature = that.getSignature();
             boolean spread = that.getEllipsis();
             String name = name(id);
-            String container;
             boolean ambiguous;
             TypeDeclaration type;
             Type pt;
+            Scope scope;
             if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
-                container = "package '" + 
-                        pack.getNameAsString() + "'";
                 type = 
                         getPackageTypeDeclaration(name, 
                                 signature, spread, unit);
                 ambiguous = false;
                 pt = null;
+                scope = pack;
             }
             else {
                 pt = primary.getTypeModel()
@@ -8958,29 +8983,24 @@ public class ExpressionVisitor extends Visitor {
                 if (d instanceof Constructor) {
                     d = d.getExtendedType().getDeclaration();
                 }
-                container = "type '" + d.getName(unit) + "'";
-                Scope scope = that.getScope();
+                scope = that.getScope();
                 type = 
                         getTypeMember(d, name, 
                                 signature, spread, unit, scope);
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
-                if (type==null) {
-                    container += 
-                            memberCorrectionMessage(name, 
-                                    d, scope, unit, cancellable);
-                }
             }
             if (type==null) {
                 if (error) {
                     if (ambiguous) {
-                        that.addError("member type is ambiguous: '" +
-                                name + "' for " + container);
+                        that.addError("member type is ambiguous: '" 
+                                + name + "' for " + container(scope));
                     }
                     else {
-                        that.addError("member type is not defined: '" +
-                                name + "' in " + container, 
+                        that.addError("member type is not defined: '" 
+                                + name + "' in " + container(scope) 
+                                + correction(name, scope, cancellable), 
                                 100);
                         unit.setUnresolvedReferences();
                     }
@@ -8996,8 +9016,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 that.setDeclaration(type);
                 resetSuperReference(that);
-                if (!isSelfOrSuperReference(primary) && 
-                        !type.isShared()) {
+                if (!isSelfOrSuperReference(primary) 
+                        && !type.isShared()) {
                     if (that.getAssigned()) {
                         type.setOtherInstanceWriteAccess(true);
                     }
@@ -9009,7 +9029,7 @@ public class ExpressionVisitor extends Visitor {
                     if (checkConcreteClass(type, that)) {
                         if (checkVisibleConstructor(that, type)) {
                             checkQualifiedTypeAndConstructorVisibility(
-                                    that, type, name, container);
+                                    that, type, name);
                         }
                     }
                     if (!inExtendsClause) {
@@ -11536,24 +11556,24 @@ public class ExpressionVisitor extends Visitor {
                         type.getTypeModel()
                             .getDeclaration();
                 //checkNonlocalType(that.getType(), qtd);
-                String container = "type '" + qtd.getName(unit) + "'";
                 TypedDeclaration member = 
                         getTypedMember(qtd, name, 
                                 null, false, unit, 
                                 that.getScope());
                 if (member==null) {
                     if (qtd.isMemberAmbiguous(name, unit, null, false)) {
-                        that.addError("method or attribute is ambiguous: '" +
-                                name + "' for " + container);
+                        that.addError("method or attribute is ambiguous: '" 
+                                + name + "' for " + container(qtd));
                     }
                     else {
-                        that.addError("method or attribute is not defined: '" +
-                                name + "' in " + container);
+                        that.addError("method or attribute is not defined: '" 
+                                + name + "' in " + container(qtd)
+                                + correction(name, qtd, cancellable));
                     }
                 }
                 else {
                     checkQualifiedVisibility(that, member, 
-                            name, container, false);
+                            name, false);
                     setMemberMetatype(that, member);
                 }
             }
