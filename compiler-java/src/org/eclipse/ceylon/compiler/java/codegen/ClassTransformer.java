@@ -1216,7 +1216,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls, Constructor ctor, ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb, Tree.Declaration node, Tree.ParameterList pl) {
         // TODO Instantiators on companion classes
-        if (ModelUtil.isEnumeratedConstructor(ctor)) {
+        if (ctor != null && ctor.isValueConstructor()) {
             return;
         }
         ParameterList parameterList = ctor != null ? ctor.getFirstParameterList() : cls.getParameterList();
@@ -1841,7 +1841,10 @@ public class ClassTransformer extends AbstractTransformer {
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
                 // Obtain a ValueDeclaration
-                JCExpression valueDeclaration = expressionGen().makeMemberValueOrFunctionDeclarationLiteral(null, member, false);
+                JCExpression valueDeclaration = expressionGen()
+                        .makeMemberValueOrFunctionDeclarationLiteral(
+                                typeFact().getValueDeclarationType(), 
+                                member, false);
                 // Create a MemberImpl
                 JCExpression mi = make().NewClass(null, null,
                         make().QualIdent(syms().ceylonMemberImplType.tsym),
@@ -3747,7 +3750,7 @@ public class ClassTransformer extends AbstractTransformer {
             return ctor.isShared() 
                 && !Decl.isAncestorLocal(ctor) 
                 && !ctor.isAbstract() 
-                && !ModelUtil.isEnumeratedConstructor(ctor)
+                && !ctor.isValueConstructor()
                     ? (!ctor.isPackageVisibility() ? PUBLIC : 0) 
                     : PRIVATE;
         }
@@ -6008,7 +6011,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (!Decl.isDefaultConstructor(ctor)) {
             ctorDb.modelAnnotations(makeAtName(ctor.getName()));
         }
-        if (ModelUtil.isEnumeratedConstructor(ctor)) {
+        if (ctor.isValueConstructor()) {
             ctorDb.modelAnnotations(makeAtEnumerated());
         }
         
@@ -6068,7 +6071,7 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
                 ctorName, null, true);
         JCVariableDecl constructorNameConst;
-        if (ModelUtil.isEnumeratedConstructor(ctor)) {
+        if (ctor.isValueConstructor()) {
             if (clz.isToplevel()) {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
                 classMods |= PRIVATE| STATIC | FINAL ;

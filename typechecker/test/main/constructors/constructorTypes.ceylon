@@ -11,10 +11,10 @@ class ClassContainer() {
     
     shared void test(ClassContainer other){
         MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor 
-                = `\ImemberObject.Ctor.\Ictor`;
+                = `\ImemberObject.Ctor.ctor`;
         print(ctorCtor(other.memberObject)());
         MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther
-                = `\ImemberObject.Ctor.\Iother`;
+                = `\ImemberObject.Ctor.other`;
         print(ctorOther(other.memberObject)());
         $error:"constructor is not a type" 
         MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Ictor,[]> ctorCtor2;

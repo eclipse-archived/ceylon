@@ -673,7 +673,7 @@ public class Decl {
     }
 
     public static boolean isConstructor(Declaration decl) {
-        return ModelUtil.getConstructor(decl) != null;
+        return ModelUtil.isConstructor(decl);
     }
     
     public static Scope getNonSkippedContainer(Declaration decl){

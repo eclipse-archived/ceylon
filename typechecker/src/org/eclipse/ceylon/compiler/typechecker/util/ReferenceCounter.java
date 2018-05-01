@@ -31,12 +31,14 @@ public class ReferenceCounter extends Visitor {
     private Set<Declaration> referencedDeclarations = new HashSet<Declaration>();
     
     void referenced(Declaration d) {
-        referencedDeclarations.add(d);
-        //TODO: check that the value is actually assigned!
-        if (d instanceof Value) {
-            Setter setter = ((Value) d).getSetter();
-            if (setter!=null) {
-                referencedDeclarations.add(setter);
+        if (d.getName()!=null) {
+            referencedDeclarations.add(d);
+            //TODO: check that the value is actually assigned!
+            if (d instanceof Value) {
+                Setter setter = ((Value) d).getSetter();
+                if (setter!=null) {
+                    referencedDeclarations.add(setter);
+                }
             }
         }
     }
@@ -44,9 +46,9 @@ public class ReferenceCounter extends Visitor {
     boolean isReferenced(Declaration d) {
         for (Declaration rd: referencedDeclarations) {
             Scope container = rd.getContainer();
-            if (container!=null &&
-                    container.equals(d.getContainer()) &&
-                    rd.getName().equals(d.getName())) {
+            if (container!=null 
+                    && container.equals(d.getContainer()) 
+                    && rd.getName().equals(d.getName())) {
                 return true;
             }
         }
@@ -64,9 +66,9 @@ public class ReferenceCounter extends Visitor {
     public void visit(Tree.SimpleType that) {
         super.visit(that);
         TypeDeclaration t = that.getDeclarationModel();
-        if (t!=null && 
-                !(t instanceof UnionType) && 
-                !(t instanceof IntersectionType)) {
+        if (t!=null 
+                && !(t instanceof UnionType) 
+                && !(t instanceof IntersectionType)) {
             referenced(t);
         }
     }

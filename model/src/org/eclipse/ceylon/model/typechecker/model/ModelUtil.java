@@ -3302,18 +3302,24 @@ public class ModelUtil {
             return true;
         }
     }
-
-    /** Is the given constructor an enumerated ("singleton") constructor */
-    public static boolean isEnumeratedConstructor(Constructor ctor) {
-        return ctor != null && ctor.getParameterList() == null;
+    
+    /** Is the given declaration an enumerated ("singleton") constructor */
+    public static boolean isEnumeratedConstructor(Declaration dec) {
+        Constructor constructor = getConstructor(dec);
+        return constructor != null 
+            && constructor.isValueConstructor();
     }
     
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
-        return value != null
-            && value.getType() != null
-            && value.getType().isConstructor()
-            && !value.getTypeDeclaration().isJavaEnum();
+        if (value != null) {
+            TypeDeclaration type = value.getTypeDeclaration();
+            return type instanceof Constructor
+                && !type.isJavaEnum();
+        }
+        else {
+            return false;
+        }
     }
 
     /** 
@@ -3321,11 +3327,14 @@ public class ModelUtil {
      * that we store in a local variable
      */
     public static boolean isEnumeratedConstructorInLocalVariable(Value value) {
-        if(isEnumeratedConstructor(value)){
+        if (isEnumeratedConstructor(value)) {
             Class constructedClass = getConstructedClass(value);
-            return !(constructedClass.isToplevel() || constructedClass.isClassMember());
+            return !constructedClass.isToplevel() 
+                && !constructedClass.isClassMember();
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public static boolean containsRawType(Type type) {

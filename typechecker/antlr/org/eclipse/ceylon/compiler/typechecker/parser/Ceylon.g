@@ -4734,15 +4734,6 @@ interfaceLiteral returns [InterfaceLiteral literal]
    )?
  ;
 
-newLiteral returns [NewLiteral literal]
- : NEW
-   { $literal = new NewLiteral($NEW); }
-   (
-     nt=referencePath
-     { $literal.setType($nt.type); }
-   )?
- ;
-
 aliasLiteral returns [AliasLiteral literal]
  : ALIAS
    { $literal = new AliasLiteral($ALIAS); }
@@ -4761,6 +4752,31 @@ typeParameterLiteral returns [TypeParameterLiteral literal]
    )?
  ;
 
+newLiteral returns [NewLiteral literal]
+ : NEW
+   { $literal = new NewLiteral($NEW); }
+   (
+     nt=referencePath
+     {
+      if ($nt.type.getIdentifier().getToken().getType()==UIDENTIFIER) {
+        $literal.setType($nt.type);
+      }
+      else if ($nt.type instanceof QualifiedType) {
+        QualifiedType qt = (QualifiedType) $nt.type;
+        $literal.setType(qt.getOuterType());
+        $literal.setIdentifier(qt.getIdentifier());
+        $literal.setTypeArgumentList(qt.getTypeArgumentList());
+      }
+      else if ($nt.type instanceof BaseType) {
+        BaseType bt = (BaseType) $nt.type;
+        $literal.setIdentifier(bt.getIdentifier());
+        $literal.setTypeArgumentList(bt.getTypeArgumentList());
+        $literal.setPackageQualified(bt.getPackageQualified());
+      }
+    }
+   )?
+ ;
+
 valueLiteral returns [ValueLiteral literal]
   : (
       VALUE_MODIFIER
@@ -4773,13 +4789,15 @@ valueLiteral returns [ValueLiteral literal]
     vt=referencePath
     {
       if ($vt.type instanceof QualifiedType) {
-        $literal.setType(((QualifiedType)$vt.type).getOuterType());
-        $literal.setIdentifier($vt.type.getIdentifier());
-        $literal.setTypeArgumentList($vt.type.getTypeArgumentList());
+        QualifiedType qt = (QualifiedType) $vt.type;
+        $literal.setType(qt.getOuterType());
+        $literal.setIdentifier(qt.getIdentifier());
+        $literal.setTypeArgumentList(qt.getTypeArgumentList());
       }
       else if ($vt.type instanceof BaseType) {
-        $literal.setIdentifier($vt.type.getIdentifier());
-        $literal.setTypeArgumentList($vt.type.getTypeArgumentList());
+        BaseType bt = (BaseType) $vt.type;
+        $literal.setIdentifier(bt.getIdentifier());
+        $literal.setTypeArgumentList(bt.getTypeArgumentList());
       }
     }
   ;

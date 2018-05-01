@@ -644,7 +644,7 @@ public class Metamodel {
             pt = pt.getExtendedType();
             declaration = pt.getDeclaration();
             TypeDescriptor reifiedArguments;
-            if(!ModelUtil.isEnumeratedConstructor(ctorDeclaration) && !declaration.isAnonymous() 
+            if(!ctorDeclaration.isValueConstructor() && !declaration.isAnonymous() 
                     && !isLocalType(declaration))
                 reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)ctorDeclaration, ctorType);
             else

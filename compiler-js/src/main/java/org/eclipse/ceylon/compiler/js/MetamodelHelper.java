@@ -194,9 +194,6 @@ public class MetamodelHelper {
                     .resolveAliases();
         final Type type = that.getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
-        final boolean isConstructor = 
-                that instanceof Tree.NewLiteral
-                || isConstructor(td);
         if (ltype.isClass()) {
             gen.out(gen.getClAlias(), 
                     td.isClassOrInterfaceMember() ? 
@@ -221,8 +218,6 @@ public class MetamodelHelper {
                 printCollectedTypeArguments(that, ltype, gen, false);
             }
             gen.out(")");
-        } else if (isConstructor) {
-            constructorLiteral(ltype, getConstructor(td), that, gen);
         } else if (ltype.isInterface()) {
             gen.out(gen.getClAlias(), 
                     td.isToplevel() ? 
@@ -294,17 +289,16 @@ public class MetamodelHelper {
         final Scope container = d.getContainer();
         final Class anonClass = d.isMember()
                 && container instanceof Class 
-                && ((Class) container).isAnonymous()?
+                && ((Class) container).isAnonymous() ?
                         (Class) container : null;
 
         JsIdentifierNames names = gen.getNames();
-        if (that instanceof Tree.FunctionLiteral 
+        if (that instanceof Tree.NewLiteral
+                || isConstructor(d)) {
+            constructorLiteral(ref.getType(), 
+                    getConstructor(d), that, gen);            
+        } else if (that instanceof Tree.FunctionLiteral 
                 || d instanceof Function) {
-            if (isConstructor(d)) {
-                constructorLiteral(ref.getType(), 
-                        getConstructor(d), that, gen);
-                return;
-            }
             gen.out(gen.getClAlias(), 
                     d.isMember() ?
                             "AppliedMethod$jsint(" :
@@ -331,10 +325,7 @@ public class MetamodelHelper {
                 gen.out(names.name(ltd),
                         d.isStatic() ? ".$st$." : ".$$.prototype.");
             }
-            gen.out(d instanceof Value ? 
-                        names.getter(d, true) : 
-                        names.name(d), 
-                    ",");
+            gen.out(names.name(d), ",");
             if (d.isMember()) {
                 Tree.TypeArgumentList tal = 
                         that.getTypeArgumentList();
@@ -377,12 +368,7 @@ public class MetamodelHelper {
             gen.out(")");
         } else if (that instanceof ValueLiteral 
                 || d instanceof Value) {
-            if (isConstructor(d)) {
-                constructorLiteral(ref.getType(), 
-                        getConstructor(d), that, gen);
-                return;
-            }
-            Value vd = (Value)d;
+            Value vd = (Value) d;
             if (vd.isMember()) {
                 gen.out(gen.getClAlias(), 
                         "$i$AppliedAttribute$meta$model()('");

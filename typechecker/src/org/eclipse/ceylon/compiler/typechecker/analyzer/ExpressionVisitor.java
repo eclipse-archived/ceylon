@@ -61,6 +61,7 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.canonicalInte
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.contains;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.genericFunctionType;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
@@ -8728,16 +8729,15 @@ public class ExpressionVisitor extends Visitor {
     private boolean checkVisibleConstructor(
             Tree.MemberOrTypeExpression that,
             TypeDeclaration type) {
-        return checkDefaultConstructorVisibility(that, type) 
+        return that.getStaticMethodReferencePrimary()
+            || checkDefaultConstructorVisibility(that, type)
             && checkSealedReference(that, type);
     }
 
     private boolean checkDefaultConstructorVisibility(
-            Tree.MemberOrTypeExpression that, 
-            TypeDeclaration type) {
+            Node that, TypeDeclaration type) {
         if (type instanceof Class 
-                && !contains(type, that.getScope())
-                && !that.getStaticMethodReferencePrimary()) {
+                && !contains(type, that.getScope())) {
             Class c = (Class) type;
             Constructor dc = c.getDefaultConstructor();
             if (dc!=null && !dc.isShared()) {
@@ -8754,8 +8754,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression that, 
             TypeDeclaration type) {
         if (type.isSealed() 
-                && !unit.inSameModule(type) 
-                && !that.getStaticMethodReferencePrimary()) {
+                && !unit.inSameModule(type)) {
             String moduleName = 
                     type.getUnit()
                         .getPackage()
@@ -11369,9 +11368,8 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeLiteral that) {
         boolean isDeclaration = 
-                that instanceof Tree.InterfaceLiteral
+                   that instanceof Tree.InterfaceLiteral
                 || that instanceof Tree.ClassLiteral
-                || that instanceof Tree.NewLiteral
                 || that instanceof Tree.AliasLiteral
                 || that instanceof Tree.TypeParameterLiteral;
         if (isDeclaration) {
@@ -11433,29 +11431,6 @@ public class ExpressionVisitor extends Visitor {
 
                 }
             }
-            else if (that instanceof Tree.NewLiteral) {
-                if (d instanceof Class) {
-                    Class c = (Class) d;
-                    Constructor defaultConstructor = 
-                            c.getDefaultConstructor();
-                    if (defaultConstructor!=null) {
-                        d = defaultConstructor;
-                    }
-                }
-                if (d instanceof Constructor) {
-                    Constructor c = (Constructor) d;
-                    if (c.getParameterList()==null) {
-                        that.setTypeModel(unit.getValueConstructorDeclarationType());
-                    }
-                    else {
-                        that.setTypeModel(unit.getCallableConstructorDeclarationType());
-                    }
-                }
-                else if (d!=null) {
-                    errorNode.addError("referenced declaration is not a constructor" +
-                            getDeclarationReferenceSuggestion(d));
-                }
-            }
             else if (that instanceof Tree.InterfaceLiteral) {
                 if (!(d instanceof Interface)) {
                     if (d!=null) {
@@ -11486,15 +11461,16 @@ public class ExpressionVisitor extends Visitor {
                     return;
                 }
                 //checkNonlocalType(that.getType(), t.getDeclaration());
-                if (d instanceof Constructor) {
-                    if (((Constructor) d).isAbstraction()) {
-                        errorNode.addError("constructor is overloaded");
-                    }
-                    else {
-                        that.setTypeModel(unit.getConstructorMetatype(t));
-                    }
-                }
-                else if (d instanceof Class) {
+//                if (d instanceof Constructor) {
+//                    if (((Constructor) d).isAbstraction()) {
+//                        errorNode.addError("constructor is overloaded");
+//                    }
+//                    else {
+//                        that.setTypeModel(unit.getConstructorMetatype(t));
+//                    }
+//                }
+//                else 
+                if (d instanceof Class) {
 //                    checkNonlocal(that, t.getDeclaration());
                     that.setTypeModel(unit.getClassMetatype(t));
                 }
@@ -11510,8 +11486,11 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MemberLiteral that) {
-        if (that instanceof Tree.FunctionLiteral ||
-            that instanceof Tree.ValueLiteral) {
+        boolean isDeclaration = 
+               that instanceof Tree.FunctionLiteral 
+            || that instanceof Tree.ValueLiteral
+            || that instanceof Tree.NewLiteral;
+        if (isDeclaration) {
             declarationLiteral = true;
         }
         else {
@@ -11525,9 +11504,9 @@ public class ExpressionVisitor extends Visitor {
             modelLiteral = false;
         }
         Tree.Identifier id = that.getIdentifier();
+        Tree.StaticType type = that.getType();
         if (id!=null) {
             String name = name(id);
-            Tree.StaticType type = that.getType();
             if (type == null) {
                 TypedDeclaration result;
                 if (that.getPackageQualified()) {
@@ -11578,10 +11557,32 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+        else if (that instanceof Tree.NewLiteral) {
+            TypeDeclaration qtd = 
+                    type.getTypeModel()
+                        .getDeclaration();
+            if (qtd instanceof Class) {
+                Class qc = (Class) qtd;
+                Constructor member = qc.getDefaultConstructor();
+                if (member==null) {
+                    that.addError("no default constructor declared by class: '" 
+                            + container(qtd) 
+                            + " does not have a default constructor");
+                } else {
+                    checkDefaultConstructorVisibility(that, member);
+                    setMemberMetatype(that, member);
+                }
+            }
+            else {
+                that.addError("not a class: '" 
+                        + container(qtd) 
+                        + " does not have a constructor");
+            }
+        }
     }
 
     private void setMemberMetatype(Tree.MemberLiteral that, 
-            TypedDeclaration result) {
+            Declaration result) {
         that.setDeclaration(result);
         if (that instanceof Tree.ValueLiteral) {
             if (result instanceof Value) {
@@ -11610,6 +11611,21 @@ public class ExpressionVisitor extends Visitor {
             }
             that.setWantsDeclaration(true);
             that.setTypeModel(unit.getFunctionDeclarationType());
+        }
+        else if (that instanceof Tree.NewLiteral) {
+            if (isConstructor(result)) {
+                // constructors look like functions but they're 
+                // always members, they can't ever be local
+            }
+            else {
+                that.getIdentifier()
+                    .addError("referenced declaration is not a constructor" +
+                        getDeclarationReferenceSuggestion(result));
+            }
+            that.setWantsDeclaration(true);
+            that.setTypeModel(getConstructor(result).isValueConstructor() ? 
+                    unit.getValueConstructorDeclarationType() : 
+                    unit.getCallableConstructorDeclarationType());
         }
         else {
             // constructors look like functions but they're 
