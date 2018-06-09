@@ -4739,12 +4739,12 @@ public abstract class AbstractTransformer implements Transformation {
         if(expressionType != null
                 && testedType.getSupertype(typeFact().getObjectDeclaration()) != null
                 && expressionType.isExactly(typeFact().getOptionalType(testedType))){
-            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            JCExpression varExpr = firstTimeExprOrVar(firstTimeExpr, varName);
             return typeTester.nullTest(varExpr, JCTree.Tag.NE);
         }
         TypeDeclaration declaration = testedType.getDeclaration();
         if (declaration instanceof ClassOrInterface) {
-            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            JCExpression varExpr = firstTimeExprOrVar(firstTimeExpr, varName);
             if (isAnything(testedType)){
                 // everything is Void, it's the root of the hierarchy
                 return typeTester.eval(varExpr, true);
@@ -4757,9 +4757,9 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (testedType.isExactly(typeFact().getIdentifiableType())){
                 // it's erased
                 return typeTester.isIdentifiable(varExpr);
-            } else if (testedType.getDeclaration().equals(typeFact().getTrueValueDeclaration().getTypeDeclaration())) {
+            } else if (testedType.getDeclaration().isTrueValue()) {
                 return typeTester.isTrue(varExpr);
-            } else if (testedType.getDeclaration().equals(typeFact().getFalseValueDeclaration().getTypeDeclaration())) {
+            } else if (testedType.getDeclaration().isFalseValue()) {
                 return typeTester.isFalse(varExpr);
             } else if (testedType.isExactly(typeFact().getBasicType())){
                 // it's erased
@@ -4773,12 +4773,14 @@ public abstract class AbstractTransformer implements Transformation {
                 // non-generic Class or interface, use instanceof
                 return typeTester.isInstanceof(varExpr, testedType, expressionType);
             } else {// generic class or interface...
-                if (declaration.getSelfType() != null 
-                        && declaration.getSelfType().getDeclaration() instanceof TypeParameter // of TypeArg
-                        && declaration.getSelfType().isSubtypeOf(declaration.getType()) // given TypeArg satisfies SelfType<TypeArg>
+                Type selfType = declaration.getSelfType();
+                if (selfType != null 
+                        && selfType.isTypeParameter() // of TypeArg
+                        && testedType.isInvariant((TypeParameter) selfType.getDeclaration())
+                        && selfType.getDeclaration().inherits(declaration) // given TypeArg satisfies SelfType<TypeArg>
                         ){
-                    Type selfTypeArg = testedType.getTypeArguments().get(declaration.getSelfType().getDeclaration());
-                    if(selfTypeArg.getDeclaration() instanceof ClassOrInterface) {
+                    Type selfTypeArg = testedType.getTypeArguments().get(selfType.getDeclaration());
+                    if(selfTypeArg.isClassOrInterface()) {
                         // first check if the type is inhabited or not
                         if(selfTypeArg.getDeclaration().inherits(declaration)){
                             // "is SelfType<ClassOrInterface>" can be written "is ClassOrInterface" 
@@ -4835,10 +4837,10 @@ public abstract class AbstractTransformer implements Transformation {
             return result;
         } else if (testedType.isNothing()){
             // nothing is Bottom
-            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            JCExpression varExpr = firstTimeExprOrVar(firstTimeExpr, varName);
             return typeTester.eval(varExpr, false);
         } else if (declaration instanceof TypeParameter) {
-            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            JCExpression varExpr = firstTimeExprOrVar(firstTimeExpr, varName);
             if (!reifiableUpperBounds((TypeParameter)declaration, expressionType).isEmpty()) {
                 // If we're testing against a type parameter with  
                 // class or interface upper bounds we can again shortcircuit the 
@@ -4859,6 +4861,10 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             throw BugException.unhandledDeclarationCase(declaration);
         }
+    }
+
+    private JCExpression firstTimeExprOrVar(JCExpression firstTimeExpr, Naming.CName varName) {
+        return firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
     }
     
     /**

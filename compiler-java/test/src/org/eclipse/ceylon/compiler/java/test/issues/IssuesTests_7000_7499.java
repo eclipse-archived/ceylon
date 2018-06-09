@@ -120,6 +120,11 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     }
 
     @Test
+    public void bug7382(){
+        compareWithJavaSource("bug71xx/Bug7382");
+    }
+
+    @Test
     public void bug7186(){
         compareWithJavaSource(Arrays.asList("-ee"), "bug71xx/bug7186.src", "bug71xx/bug7186.ceylon");
     }
