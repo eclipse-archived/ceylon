@@ -1,0 +1,60 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug71xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class test7832_ {
+    
+    private test7832_() {
+    }
+    
+    static void test7832(@.org.eclipse.ceylon.compiler.java.metadata.Name("num")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Number<out ceylon.language::Anything>",
+            erased = true)
+    final .ceylon.language.Number num) {
+        final boolean isIntegral1 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$0 = (.ceylon.language.Number)(.ceylon.language.Number)num;
+            }
+            returning $ceylontmp$0 instanceof .ceylon.language.Integral;
+        );
+        final boolean isIntegral2 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$1 = (.ceylon.language.Number)(.ceylon.language.Number)num;
+            }
+            returning $ceylontmp$1 instanceof .ceylon.language.Integral && .org.eclipse.ceylon.compiler.java.Util.isReified($ceylontmp$1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Integral.class, new .org.eclipse.ceylon.compiler.java.metadata.Variance[]{.org.eclipse.ceylon.compiler.java.metadata.Variance.IN}, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType));
+        );
+        final boolean isInteger = (
+            let
+            {
+                .java.lang.Object $ceylontmp$2 = (.ceylon.language.Number)(.ceylon.language.Number)num;
+            }
+            returning $ceylontmp$2 instanceof .ceylon.language.Integer;
+        );
+        final boolean isAnything = (
+            let
+            {
+                .java.lang.Object $ceylontmp$3 = (.ceylon.language.Number)(.ceylon.language.Number)num;
+            }
+            returning (
+                let
+                {
+                    .java.lang.Object $ceylontmp$4 = $ceylontmp$3;
+                }
+                returning false;
+            );
+        );
+        final boolean isNothing = (
+            let
+            {
+                .java.lang.Object $ceylontmp$5 = (.ceylon.language.Number)(.ceylon.language.Number)num;
+            }
+            returning $ceylontmp$5 instanceof .ceylon.language.Integral && .org.eclipse.ceylon.compiler.java.Util.isReified($ceylontmp$5, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Integral.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType));
+        );
+    }
+}
