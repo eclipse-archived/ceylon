@@ -557,7 +557,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         func = func != null ? func : "run";
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         final Process nodeProcess = proc.start();
-        //All this shit because inheritIO doesn't work on fucking Windows
+        //All this stuff because inheritIO doesn't work on Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
         if (output == null) {
             new ReadErrorStream(nodeProcess.getErrorStream(), System.err, debug).start();
