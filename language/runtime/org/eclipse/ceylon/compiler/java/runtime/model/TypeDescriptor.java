@@ -13,6 +13,7 @@ import static org.eclipse.ceylon.compiler.java.Util.isBasic;
 import static org.eclipse.ceylon.compiler.java.Util.isIdentifiable;
 import static org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getProducedType;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,9 +44,6 @@ import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Unit;
-
-import org.eclipse.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
-import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 import ceylon.language.Anything;
 import ceylon.language.AssertionError;
@@ -359,7 +357,14 @@ public abstract class TypeDescriptor
                 return java.lang.annotation.Annotation.class;
             }
             if (klass==ObjectArray.class) {
-                return java.lang.Object[].class;
+                java.lang.Class<?> elementClass = 
+                        typeArguments[0].getArrayElementClass();
+                return elementClass==null 
+                    || elementClass==ceylon.language.Object.class
+                    || elementClass==ceylon.language.Anything.class
+                    || elementClass==java.lang.Object.class ?
+                        java.lang.Object[].class :
+                        Array.newInstance(elementClass,0).getClass();
             }
             if (klass==BooleanArray.class) {
                 return boolean[].class;
