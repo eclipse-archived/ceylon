@@ -70,7 +70,7 @@ abstract class RWBottom<Z>() extends RWTop<RWNumber, Z>() {
     shared actual formal RWCovParamExt<RWInteger> m2();
     shared actual formal RWCovParamExt<RWInteger|RWFloat> m2_erasure();
     shared actual formal RWContrParamExt<RWNumber> m3();
-    shared actual formal RWContrParamExt<RWNumber|Category> m3_erasure();
+    shared actual formal RWContrParamExt<RWNumber|Category<>> m3_erasure();
     shared actual formal S tParam<S>();
     shared actual formal S&RWNumber tParamErasure<S>();
     //shared actual formal S tBoundParam<S>();

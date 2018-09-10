@@ -31,7 +31,7 @@ interface Bug1899Right satisfies Bug1899Top {
 }
 
 @noanno
-void bug1899<T>(T t) given T satisfies Category {
+void bug1899<T>(T t) given T satisfies Category<> {
     alias IntegerOrFloat => Integer|Float;
     Comparison(Nothing)(IntegerOrFloat) compare = IntegerOrFloat.compare;
     Boolean(Object)(T) contains = T.contains;
