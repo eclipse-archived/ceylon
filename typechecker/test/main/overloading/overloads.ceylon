@@ -4,6 +4,9 @@ import java.lang {
 import ceylon.language.meta.model {
     Class
 }
+import overloading {
+    StaticClass { x }
+}
 
 interface Runnable {}
 
