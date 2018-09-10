@@ -1,6 +1,7 @@
 //interface Aaa satisfies Comparable<Ccc|Aaa> {}
 //interface Ccc satisfies Comparable<Ccc|Aaa> {}
 
+$error:"contravariant type parameter may not act as self type"
 shared abstract class Comparable2<in Other>() of Other
         given Other satisfies Comparable2<Other> {
     
@@ -73,24 +74,26 @@ class SelfTypeEquivalence4() {
 //    $error Inv<X> l4 = l1;
 }
 
-interface Aa {}
-$error interface Bb satisfies Comparable<Bb&Aa> {}
-$error interface Cc satisfies Comparable<Cc|Aa> {}
-$error interface Zz satisfies Comparable<Bb|Cc|Aa> {}
+abstract class Aa() {}
+$error abstract class Bb() extends Comparable2<Bb&Aa>() {}
+$error abstract class Cc() extends Comparable2<Cc|Aa>() {}
+$error abstract class Zz() extends Comparable2<Bb|Cc|Aa>() {}
 
-interface A satisfies Comparable<C|A> {}
-interface C satisfies Comparable<C|A> {}
+abstract class A() extends Comparable2<C|A>() {}
+abstract class C() extends Comparable2<C|A>() {}
 
-void testOf(Comparable<C|A> comp, Anything vd) {
+void testOf(Comparable2<C|A> comp, Anything vd) {
     A|C ac = comp of C|A;
     Object? maybe = vd of Object|Null;
 }
 
+$error:"contravariant type parameter may not act as self type"
 interface Comp<in T> of T
         given T satisfies Comp<T> {
     shared formal Comparison compare(T other);
 }
 
+$error:"contravariant type parameter may not act as self type"
 interface Scal<in T> of T
         satisfies Comp<T> 
         given T satisfies Scal<T> {}

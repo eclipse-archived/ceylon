@@ -2711,13 +2711,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         private Type getComparableType(Tree.Term middleTerm) {
             final Type middleSuper = getSupertype(middleTerm, typeFact().getComparableDeclaration());
-            Type middleType = middleSuper;
-            Type middleSelf = middleType.getDeclaration().getSelfType();
-            if (middleSelf != null) {
-                // Simplify Comparable<X> to X
-                middleType = middleType.getTypeArguments().get(middleSelf.getDeclaration());
-            }
-            return middleType;
+            // Simplify Comparable<X> to X
+            return middleSuper.getTypeArgumentList().get(0);
         }
         
         private JCExpression transformBound(Tree.Bound bound,

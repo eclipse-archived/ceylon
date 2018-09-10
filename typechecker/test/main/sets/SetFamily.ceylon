@@ -1,4 +1,4 @@
-abstract class SetFamily<Element,in S>() 
+abstract class SetFamily<Element,S>() 
         given S satisfies Set {
     
     shared interface Set of S

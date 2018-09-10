@@ -1345,6 +1345,9 @@ public class TypeVisitor extends Visitor {
                         else {
                             TypeParameter tp = 
                                     (TypeParameter) ctd;
+                            if (tp.isContravariant()) {
+                                ct.addError("contravariant type parameter may not act as self type");
+                            }
                             td.setSelfType(type);
                             if (tp.isSelfType()) {
                                 ct.addError("type parameter may not act as self type for two different types");
