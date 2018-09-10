@@ -832,7 +832,12 @@ public class CallableBuilder {
                 ListBuffer<JCExpression> defaultMethodArgs = new ListBuffer<JCExpression>();
                 // pass reified type arguments
                 for (TypeParameter tp : Strategy.getEffectiveTypeParameters(defaultedParam.getDeclaration())) {
-                    Type ta = ((Tree.MemberOrTypeExpression)node).getTarget().getTypeArguments().get(tp);
+                    Reference target = ((Tree.MemberOrTypeExpression)node).getTarget();
+                    Type ta = null;
+                    while (ta==null && target!=null) {
+                        ta = target.getTypeArguments().get(tp);
+                        target = target.getQualifyingType();
+                    }
                     defaultMethodArgs.add(gen.makeReifiedTypeArgument(ta));
                 }
                 
@@ -1845,14 +1850,15 @@ public class CallableBuilder {
             typedApply.parameter(pdb);
         }
         ListBuffer<JCTypeParameter> typeParameters = new ListBuffer<JCTypeParameter>();
-        for (TypeParameter typeParameter : Strategy.getEffectiveTypeParameters(typeModel.getDeclaration())) {
-            Type typeArgument = typeModel.getTypeArguments().get(typeParameter);
+        java.util.List<TypeParameter> typeParams = typeModel.getDeclaration().getTypeParameters();
+        for (int i=0; i<typeParams.size(); i++) {
+            TypeParameter typeParameter = typeParams.get(i);
             typeParameters.add(gen.makeTypeParameter(typeParameter, null));
             typedApply.body(gen.makeVar(Flags.FINAL, 
                     gen.naming.getTypeArgumentDescriptorName(typeParameter), 
                     gen.make().Type(gen.syms().ceylonTypeDescriptorType), 
                     gen.make().Indexed(gen.makeUnquotedIdent("applied"),
-                            gen.make().Literal(typeModel.getTypeArgumentList().indexOf(typeArgument)))));
+                            gen.make().Literal(i))));
         }
         
         typedApply.body(gen.make().Return(callableInstance));

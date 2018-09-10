@@ -4480,7 +4480,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (tps != null) {
             for (TypeParameter tp : tps) {
-                Type ta = mte.getTarget().getTypeArguments().get(tp);
+                Reference target = mte.getTarget();
+                Type ta = null;
+                while (ta==null && target!=null) {
+                    ta = target.getTypeArguments().get(tp);
+                    target = target.getQualifyingType();
+                }
                 java.util.List<Type> bounds = null;
                 boolean needsCastForBounds = false;
                 if(!tp.getSatisfiedTypes().isEmpty()){
