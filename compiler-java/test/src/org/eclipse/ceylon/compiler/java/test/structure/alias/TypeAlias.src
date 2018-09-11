@@ -78,12 +78,12 @@ final class typeAliasMethod1_ {
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias1",
             erased = true)
     static .java.lang.Object typeAliasMethod1(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias1",
             erased = true)
     final .java.lang.Object f) {
         return f;
@@ -100,12 +100,12 @@ final class typeAliasMethod2_ {
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias2",
             erased = true)
     static .java.lang.Object typeAliasMethod2(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias2",
             erased = true)
     final .java.lang.Object f) {
         return f;
@@ -121,10 +121,10 @@ final class typeAliasMethod3_ {
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasClass")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias3")
     static .org.eclipse.ceylon.compiler.java.test.structure.alias.TypeAliasClass typeAliasMethod3(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasClass")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias3")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.TypeAliasClass f) {
         return f;
     }
@@ -139,10 +139,10 @@ final class typeAliasMethod4_ {
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasInterface")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias4")
     static .org.eclipse.ceylon.compiler.java.test.structure.alias.TypeAliasInterface typeAliasMethod4(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasInterface")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAlias4")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.TypeAliasInterface f) {
         return f;
     }

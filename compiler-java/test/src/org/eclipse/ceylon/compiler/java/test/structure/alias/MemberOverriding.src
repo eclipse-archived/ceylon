@@ -192,7 +192,7 @@ class MemberOverriding_Sub3 extends .org.eclipse.ceylon.compiler.java.test.struc
     @.org.eclipse.ceylon.compiler.java.metadata.Container(
             klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class,
             isStatic = false)
-    @.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super.Inner")
     public class Inner extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
         
         protected Inner() {

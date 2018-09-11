@@ -37,7 +37,7 @@ final class localInterfaceAliasMethod_ {
                 minor = 1)
         @.org.eclipse.ceylon.compiler.java.metadata.Name("Class1")
         @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.1InterfaceAlias_Foo"})
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.1InterfaceAlias1"})
         class Class1 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_, .java.io.Serializable {
             
             Class1() {
@@ -55,7 +55,7 @@ final class localInterfaceAliasMethod_ {
                 minor = 1)
         @.org.eclipse.ceylon.compiler.java.metadata.Name("Class2")
         @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.alias::LocalInterfaceAlias_Toplevel"})
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.1InterfaceAlias2"})
         class Class2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel, .java.io.Serializable {
             
             Class2() {
