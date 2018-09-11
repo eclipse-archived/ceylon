@@ -542,9 +542,8 @@ class AnnotationInvocationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeLiteral tl){
-        if((tl.getType() != null && tl.getType().getTypeModel() != null)
-                || (tl.getDeclaration() != null
-                    && tl.getDeclaration().isAnonymous())){
+        if(tl.getType() != null && tl.getType().getTypeModel() != null
+                || tl.getDeclaration() != null && tl.getDeclaration().isAnonymous()){
             if (anno.isInterop()) {
                 append(exprGen.naming.makeQualIdent(
                         exprGen.makeJavaType(tl.getType().getTypeModel(), AbstractTransformer.JT_NO_PRIMITIVES | AbstractTransformer.JT_RAW),
