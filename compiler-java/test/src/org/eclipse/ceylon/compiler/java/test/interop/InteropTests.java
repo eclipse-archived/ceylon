@@ -35,7 +35,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.ceylon.common.ModuleSpec;
-import org.eclipse.ceylon.common.OSUtil;
 import org.eclipse.ceylon.common.Versions;
 import org.eclipse.ceylon.common.config.Repositories;
 import org.eclipse.ceylon.compiler.java.test.CompilerError;
