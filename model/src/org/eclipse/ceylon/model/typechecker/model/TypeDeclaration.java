@@ -1221,6 +1221,10 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
     
+    public boolean isComparable() {
+        return false;
+    }
+    
     public boolean isSequential() {
         return false;
     }

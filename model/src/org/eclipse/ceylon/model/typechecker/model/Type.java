@@ -4909,6 +4909,10 @@ public class Type extends Reference {
         return getDeclaration().isByte();
     }
     
+    public boolean isComparable() {
+        return getDeclaration().isComparable();
+    }
+    
     public boolean isIterable() {
         return getDeclaration().isIterable();
     }

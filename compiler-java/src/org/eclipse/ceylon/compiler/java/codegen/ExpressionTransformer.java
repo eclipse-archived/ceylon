@@ -2885,12 +2885,21 @@ public class ExpressionTransformer extends AbstractTransformer {
             final Type leftSuper = getSupertype(op.getLeftTerm(), compoundType);
             leftType = leftSuper;
             Type leftSelf = leftType.getDeclaration().getSelfType();
-            if (leftSelf != null
-                    && leftType.getTypeArguments().get(leftSelf.getDeclaration()).isSubtypeOf(leftSuper)) {
-                // Simplify Comparable<X> to X
-                leftType = leftType.getTypeArguments().get(leftSelf.getDeclaration());
+            if (leftSelf != null) {
+                Type argType = leftType.getTypeArguments().get(leftSelf.getDeclaration());
+                if (argType.isSubtypeOf(leftSuper)) {
+                    // Simplify Comparable<X> to X
+                    leftType = argType;
+                }
             }
-            
+            else if (leftType.isComparable()) {
+                Type argType = leftType.getTypeArgumentList().get(0);
+                if (argType.isSubtypeOf(leftSuper)) {
+                    // Simplify Comparable<X> to X
+                    leftType = argType;
+                }
+            }
+
             // the right type always only depends on the LHS so let's not try to find it on the right side because it may
             // be undecidable: https://github.com/ceylon/ceylon-compiler/issues/1535
             rightType = getTypeArgument(leftSuper, typeArgumentToUse);
@@ -3051,9 +3060,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (optimisationStrategy.useValueTypeMethod()) {
             int flags = JT_NO_PRIMITIVES;
-            if (optimisationStrategy == OptimisationStrategy.OPTIMISE_VALUE_TYPE
-                    && leftType.getDeclaration().getSelfType() != null) {
-                leftType = leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration());
+            if (optimisationStrategy == OptimisationStrategy.OPTIMISE_VALUE_TYPE) {
+                Type selfType = leftType.getDeclaration().getSelfType();
+                if (selfType != null) {
+                    leftType = leftType.getTypeArguments().get(selfType.getDeclaration());
+                }
+                else if (leftType.isComparable()) {
+                    leftType = leftType.getTypeArgumentList().get(0);
+                }
             }
             
             result = at(opExpr).Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), operator.getCeylonValueTypeMethodName()), args.prepend(left));
