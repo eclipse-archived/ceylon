@@ -123,6 +123,7 @@ final class bug2266_ {
                 {
                     boolean sel$13 = b;
                     if (sel$13 == true) {
+                        final boolean b$14 = sel$13;
                         $ceylontmp$ifResult$12 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     } else {
                         $ceylontmp$ifResult$12 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
@@ -134,239 +135,250 @@ final class bug2266_ {
         final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ anon8 = (
             let
             {
-                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$14;
+                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$15;
                 {
-                    boolean sel$15 = b;
-                    if (sel$15 == true) {
-                        $ceylontmp$ifResult$14 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    boolean sel$16 = b;
+                    if (sel$16 == true) {
+                        final boolean b$17 = sel$16;
+                        $ceylontmp$ifResult$15 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     } else {
-                        $ceylontmp$ifResult$14 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$15 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
-            returning $ceylontmp$ifResult$14;
+            returning $ceylontmp$ifResult$15;
         );
         final .java.lang.Object anon9 = (
-            let
-            {
-                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$16;
-                {
-                    boolean sel$17 = b;
-                    if (sel$17 == true) {
-                        $ceylontmp$ifResult$16 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
-                    } else {
-                        $ceylontmp$ifResult$16 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    }
-                }
-            }
-            returning $ceylontmp$ifResult$16;
-        );
-        final .java.lang.Object anon10 = (
             let
             {
                 .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$18;
                 {
                     boolean sel$19 = b;
                     if (sel$19 == true) {
-                        $ceylontmp$ifResult$18 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    } else {
+                        final boolean b$20 = sel$19;
                         $ceylontmp$ifResult$18 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    } else {
+                        $ceylontmp$ifResult$18 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
             returning $ceylontmp$ifResult$18;
         );
+        final .java.lang.Object anon10 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$21;
+                {
+                    boolean sel$22 = b;
+                    if (sel$22 == true) {
+                        final boolean b$23 = sel$22;
+                        $ceylontmp$ifResult$21 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$21 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$21;
+        );
         final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ anon11 = (
             let
             {
-                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$20;
+                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$24;
                 {
-                    boolean sel$21 = b;
-                    if (sel$21 == true) {
-                        $ceylontmp$ifResult$20 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    boolean sel$25 = b;
+                    if (sel$25 == true) {
+                        final boolean b$26 = sel$25;
+                        $ceylontmp$ifResult$24 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
-                        $ceylontmp$ifResult$20 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                        $ceylontmp$ifResult$24 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     }
-                }
-            }
-            returning $ceylontmp$ifResult$20;
-        );
-        final .java.lang.Object anon12 = (
-            let
-            {
-                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$22;
-                {
-                    boolean sel$23 = b;
-                    if (sel$23 == true) {
-                        $ceylontmp$ifResult$22 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    } else {
-                        $ceylontmp$ifResult$22 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
-                    }
-                }
-            }
-            returning $ceylontmp$ifResult$22;
-        );
-        final .ceylon.language.Comparison cmp1 = (
-            let
-            {
-                .ceylon.language.larger_ $ceylontmp$ifResult$24;
-                if (b) {
-                    $ceylontmp$ifResult$24 = .ceylon.language.larger_.get_();
-                } else {
-                    $ceylontmp$ifResult$24 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$24;
         );
-        final .ceylon.language.larger_ cmp2 = (
+        final .java.lang.Object anon12 = (
             let
             {
-                .ceylon.language.larger_ $ceylontmp$ifResult$26;
-                if (b) {
-                    $ceylontmp$ifResult$26 = .ceylon.language.larger_.get_();
-                } else {
-                    $ceylontmp$ifResult$26 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$27;
+                {
+                    boolean sel$28 = b;
+                    if (sel$28 == true) {
+                        final boolean b$29 = sel$28;
+                        $ceylontmp$ifResult$27 = (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$27 = .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    }
                 }
             }
-            returning $ceylontmp$ifResult$26;
+            returning $ceylontmp$ifResult$27;
         );
-        final .ceylon.language.Comparison cmp3 = (
-            let
-            {
-                .ceylon.language.larger_ $ceylontmp$ifResult$28;
-                if (b) {
-                    $ceylontmp$ifResult$28 = .ceylon.language.larger_.get_();
-                } else {
-                    $ceylontmp$ifResult$28 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                }
-            }
-            returning $ceylontmp$ifResult$28;
-        );
-        final .ceylon.language.Comparison cmp4 = (
+        final .ceylon.language.Comparison cmp1 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$30;
                 if (b) {
-                    $ceylontmp$ifResult$30 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                } else {
                     $ceylontmp$ifResult$30 = .ceylon.language.larger_.get_();
+                } else {
+                    $ceylontmp$ifResult$30 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$30;
         );
-        final .ceylon.language.larger_ cmp5 = (
+        final .ceylon.language.larger_ cmp2 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$32;
                 if (b) {
-                    $ceylontmp$ifResult$32 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                } else {
                     $ceylontmp$ifResult$32 = .ceylon.language.larger_.get_();
+                } else {
+                    $ceylontmp$ifResult$32 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$32;
         );
-        final .ceylon.language.Comparison cmp6 = (
+        final .ceylon.language.Comparison cmp3 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$34;
                 if (b) {
-                    $ceylontmp$ifResult$34 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                } else {
                     $ceylontmp$ifResult$34 = .ceylon.language.larger_.get_();
+                } else {
+                    $ceylontmp$ifResult$34 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$34;
         );
-        final .ceylon.language.Comparison cmp7 = (
+        final .ceylon.language.Comparison cmp4 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$36;
-                {
-                    boolean sel$37 = b;
-                    if (sel$37 == true) {
-                        $ceylontmp$ifResult$36 = .ceylon.language.larger_.get_();
-                    } else {
-                        $ceylontmp$ifResult$36 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    }
+                if (b) {
+                    $ceylontmp$ifResult$36 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$36 = .ceylon.language.larger_.get_();
                 }
             }
             returning $ceylontmp$ifResult$36;
         );
-        final .ceylon.language.larger_ cmp8 = (
+        final .ceylon.language.larger_ cmp5 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$38;
-                {
-                    boolean sel$39 = b;
-                    if (sel$39 == true) {
-                        $ceylontmp$ifResult$38 = .ceylon.language.larger_.get_();
-                    } else {
-                        $ceylontmp$ifResult$38 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    }
+                if (b) {
+                    $ceylontmp$ifResult$38 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$38 = .ceylon.language.larger_.get_();
                 }
             }
             returning $ceylontmp$ifResult$38;
         );
-        final .ceylon.language.Comparison cmp9 = (
+        final .ceylon.language.Comparison cmp6 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$40;
-                {
-                    boolean sel$41 = b;
-                    if (sel$41 == true) {
-                        $ceylontmp$ifResult$40 = .ceylon.language.larger_.get_();
-                    } else {
-                        $ceylontmp$ifResult$40 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    }
+                if (b) {
+                    $ceylontmp$ifResult$40 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$40 = .ceylon.language.larger_.get_();
                 }
             }
             returning $ceylontmp$ifResult$40;
         );
-        final .ceylon.language.Comparison cmp10 = (
+        final .ceylon.language.Comparison cmp7 = (
             let
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$42;
                 {
                     boolean sel$43 = b;
                     if (sel$43 == true) {
-                        $ceylontmp$ifResult$42 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
-                    } else {
+                        final boolean b$44 = sel$43;
                         $ceylontmp$ifResult$42 = .ceylon.language.larger_.get_();
+                    } else {
+                        $ceylontmp$ifResult$42 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
             returning $ceylontmp$ifResult$42;
         );
-        final .ceylon.language.larger_ cmp11 = (
+        final .ceylon.language.larger_ cmp8 = (
             let
             {
-                .ceylon.language.larger_ $ceylontmp$ifResult$44;
+                .ceylon.language.larger_ $ceylontmp$ifResult$45;
                 {
-                    boolean sel$45 = b;
-                    if (sel$45 == true) {
-                        $ceylontmp$ifResult$44 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    boolean sel$46 = b;
+                    if (sel$46 == true) {
+                        final boolean b$47 = sel$46;
+                        $ceylontmp$ifResult$45 = .ceylon.language.larger_.get_();
                     } else {
-                        $ceylontmp$ifResult$44 = .ceylon.language.larger_.get_();
+                        $ceylontmp$ifResult$45 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
-            returning $ceylontmp$ifResult$44;
+            returning $ceylontmp$ifResult$45;
+        );
+        final .ceylon.language.Comparison cmp9 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$48;
+                {
+                    boolean sel$49 = b;
+                    if (sel$49 == true) {
+                        final boolean b$50 = sel$49;
+                        $ceylontmp$ifResult$48 = .ceylon.language.larger_.get_();
+                    } else {
+                        $ceylontmp$ifResult$48 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$48;
+        );
+        final .ceylon.language.Comparison cmp10 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$51;
+                {
+                    boolean sel$52 = b;
+                    if (sel$52 == true) {
+                        final boolean b$53 = sel$52;
+                        $ceylontmp$ifResult$51 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$51 = .ceylon.language.larger_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$51;
+        );
+        final .ceylon.language.larger_ cmp11 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$54;
+                {
+                    boolean sel$55 = b;
+                    if (sel$55 == true) {
+                        final boolean b$56 = sel$55;
+                        $ceylontmp$ifResult$54 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$54 = .ceylon.language.larger_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$54;
         );
         final .ceylon.language.Comparison cmp12 = (
             let
             {
-                .ceylon.language.larger_ $ceylontmp$ifResult$46;
+                .ceylon.language.larger_ $ceylontmp$ifResult$57;
                 {
-                    boolean sel$47 = b;
-                    if (sel$47 == true) {
-                        $ceylontmp$ifResult$46 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
+                    boolean sel$58 = b;
+                    if (sel$58 == true) {
+                        final boolean b$59 = sel$58;
+                        $ceylontmp$ifResult$57 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
-                        $ceylontmp$ifResult$46 = .ceylon.language.larger_.get_();
+                        $ceylontmp$ifResult$57 = .ceylon.language.larger_.get_();
                     }
                 }
             }
-            returning $ceylontmp$ifResult$46;
+            returning $ceylontmp$ifResult$57;
         );
     }
 }

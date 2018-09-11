@@ -252,7 +252,7 @@ public class C implements .org.eclipse.ceylon.compiler.java.runtime.model.Reifie
     
     @.java.lang.Override
     public final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$() {
-        return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$();
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$();
     }
     
     @.java.lang.Override
@@ -262,12 +262,12 @@ public class C implements .org.eclipse.ceylon.compiler.java.runtime.model.Reifie
     
     @.java.lang.Override
     public final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
-        return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s);
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s);
     }
     
     @.java.lang.Override
     public final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
-        return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s, s2);
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$org$eclipse$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s, s2);
     }
     
     @.java.lang.Override
