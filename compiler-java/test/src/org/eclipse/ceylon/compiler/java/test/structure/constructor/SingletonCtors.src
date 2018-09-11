@@ -12,8 +12,10 @@ class SingletonCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.
         {
             .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$0 = inst;
             if (sel$0 == .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$one()) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$3 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$0;
                 return 1L;
             } else if (sel$0 == .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$two()) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$2 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$0;
                 return 2L;
             } else {
                 final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$1 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$0;
@@ -24,13 +26,15 @@ class SingletonCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.
     
     public final long use2(final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst) {
         {
-            .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$2 = inst;
-            if (sel$2 == .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$one()) {
+            .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$4 = inst;
+            if (sel$4 == .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$one()) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$7 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$4;
                 return 1L;
-            } else if (sel$2 == .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$two()) {
+            } else if (sel$4 == .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$two()) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$6 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$4;
                 return 2L;
             } else {
-                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$3 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$2;
+                final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$5 = (.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$4;
                 return 3L;
             }
         }
@@ -150,17 +154,17 @@ class ClassMemberSingletonCtors implements .org.eclipse.ceylon.compiler.java.run
     }
     
     private final void use$priv$(final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors other) {
-        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass lhs$4 = other.getMemberClass$one();
-        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass rhs$5 = getMemberClass$one();
-        if (!lhs$4.equals(rhs$5)) {
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass lhs$8 = other.getMemberClass$one();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass rhs$9 = getMemberClass$one();
+        if (!lhs$8.equals(rhs$9)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != MemberClass.one") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != MemberClass.one") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
         }
-        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass lhs$6 = other.getMemberClass$one();
-        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass rhs$7 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getMemberClass$one();
-        if (!lhs$6.equals(rhs$7)) {
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass lhs$10 = other.getMemberClass$one();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass rhs$11 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getMemberClass$one();
+        if (!lhs$10.equals(rhs$11)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != this.MemberClass.one") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != this.MemberClass.one") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$10, rhs$11));
         }
     }
     
