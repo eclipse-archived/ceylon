@@ -5112,7 +5112,7 @@ public class StatementTransformer extends AbstractTransformer {
         Substitution prevSubst2 = null;
         Tree.Variable matchVar = matchCase.getVariable();
         if (matchVar!=null && !matchVar.getDeclarationModel().isDropped()) {
-         // Use the type of the variable, which is more precise than the type we test for.
+            // Use the type of the variable, which is more precise than the type we test for.
             Type varType = matchVar.getDeclarationModel().getType();
             
             String name = matchVar.getIdentifier().getText();
@@ -5126,13 +5126,20 @@ public class StatementTransformer extends AbstractTransformer {
 
             // Substitute variable with the correct type to use in the rest of the code block
             
-            JCExpression tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
             JCExpression toTypeExpr;
-            if (isCeylonBasicType(varType) && varDecl.getUnboxed() == true) {
+            JCExpression tmpVarExpr;
+            if (isCeylonBasicType(switchType) && varDecl.getUnboxed()) {
                 toTypeExpr = makeJavaType(varType);
-                tmpVarExpr = unboxType(tmpVarExpr, varType);
-            } else {
-                toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+            }
+            else {
+                tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                if (isCeylonBasicType(varType) && varDecl.getUnboxed()) {
+                    toTypeExpr = makeJavaType(varType);
+                    tmpVarExpr = unboxType(tmpVarExpr, varType);
+                } else {
+                    toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                }
             }
             
             // The variable holding the result for the code inside the code block
