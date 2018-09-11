@@ -24,5 +24,5 @@ shared void bug867() {
     // same number of tabs as there are spaces
     // See https://github.com/ceylon/ceylon-spec/issues/577 for a discussion on why this may not be accepted in the future
     print("Hello
-                                            world");
+											world");
 }
