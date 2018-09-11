@@ -99,8 +99,10 @@ final class bug327_test_ {
         {
             .org.eclipse.ceylon.compiler.java.test.issues.bug03xx.Bug327 sel$0 = fb;
             if (sel$0 == .org.eclipse.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.get_()) {
+                final .org.eclipse.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ fb$2 = (.org.eclipse.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_)sel$0;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
             } else if (sel$0 == .org.eclipse.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.get_()) {
+                final .org.eclipse.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ fb$1 = (.org.eclipse.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_)sel$0;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("bar"));
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
