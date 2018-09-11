@@ -24,7 +24,7 @@ void selfType<X>(SelfType<X> x, SelfType<X> y)
 void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
     x.compareTo(y of X);
 }
-void selfTypeTest(Comparable<D> d) {
+void selfTypeTest(Summable<D> d) {
     value temp = d of D;
     //value v = print("");
     //print(of Object|Nothing v);
