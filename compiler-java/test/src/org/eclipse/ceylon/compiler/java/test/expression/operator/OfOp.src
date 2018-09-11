@@ -1,39 +1,12 @@
 package org.eclipse.ceylon.compiler.java.test.expression.operator;
 
-abstract class OfOp implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable<.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp>, .java.io.Serializable {
+abstract class OfOp implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp>, .java.io.Serializable {
     
     OfOp() {
-        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp>(.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Comparable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Comparable$impl<? super .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this$;
-    }
-    
-    @.java.lang.Override
-    public boolean largerThan(final .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.largerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notLargerThan(final .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notSmallerThan(final .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.notSmallerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean smallerThan(final .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     
     private final void m$priv$() {
-        final .ceylon.language.Comparable<? super .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp> comp = (.ceylon.language.Comparable<? super .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.Summable<.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp> comp = (.ceylon.language.Summable<.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp foo = (.org.eclipse.ceylon.compiler.java.test.expression.operator.OfOp)comp;
         final .java.lang.Object v = .ceylon.language.nothing_.get_();
         final .java.lang.Object x = v;
