@@ -23,8 +23,9 @@ final class switchMixedCases_ {
         {
             .ceylon.language.Boolean sel$4 = bool;
             if (sel$4 == null || sel$4.booleanValue() == false) {
-                final .ceylon.language.Boolean bool$5 = (.ceylon.language.Boolean)sel$4;
+                final .ceylon.language.Boolean bool$6 = (.ceylon.language.Boolean)sel$4;
             } else if (sel$4.booleanValue() == true) {
+                final boolean bool$5 = ((.ceylon.language.Boolean)sel$4).booleanValue();
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
