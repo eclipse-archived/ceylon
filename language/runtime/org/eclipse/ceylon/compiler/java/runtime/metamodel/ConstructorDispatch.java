@@ -561,7 +561,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, isJavaMember)){
             List<org.eclipse.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<org.eclipse.ceylon.model.typechecker.model.Type>();
-            java.util.Map<org.eclipse.ceylon.model.typechecker.model.TypeParameter, org.eclipse.ceylon.model.typechecker.model.Type> typeArgumentMap = constructorReference.getTypeArguments();
+            java.util.Map<org.eclipse.ceylon.model.typechecker.model.TypeParameter, org.eclipse.ceylon.model.typechecker.model.Type> typeArgumentMap = constructorReference.collectTypeArguments();
             for (org.eclipse.ceylon.model.typechecker.model.TypeParameter tp : reifiedTypeParameters) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }

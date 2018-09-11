@@ -219,9 +219,9 @@ public class MethodImpl<Container, Type, Arguments extends Sequential<? extends 
             return false;
         ceylon.language.meta.model.Method<?, ?, ?> other = (ceylon.language.meta.model.Method<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
-                && getDeclaringType().equals(other.getDeclaringType())
-                // so far, functions can't have use-site variance
-                && getTypeArguments().equals(other.getTypeArguments());
+            && getDeclaringType().equals(other.getDeclaringType())
+            // so far, functions can't have use-site variance
+            && getTypeArguments().equals(other.getTypeArguments());
     }
 
     @Override
