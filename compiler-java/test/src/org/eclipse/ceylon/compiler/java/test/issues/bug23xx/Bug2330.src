@@ -96,9 +96,8 @@ final class bug2330_ {
             }
         }
         .java.lang.Object item$25;
-        if ((item$25 = (Item)item) instanceof .ceylon.language.Integer) {
+        if ((item$25 = (Item)item) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.Integer.$TypeDescriptor$))) {
             final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
-            final boolean gt = 5L > ((.ceylon.language.Integer)item).longValue();
             final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable)item);
             final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
             final boolean wthn = (
@@ -111,10 +110,9 @@ final class bug2330_ {
         } else {
             final Item item$26 = (Item)item$25;
             .java.lang.Object item$28;
-            if ((item$28 = (Item)item$26) instanceof .ceylon.language.Float) {
+            if ((item$28 = (Item)item$26) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$28, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.Float.$TypeDescriptor$))) {
                 final .java.lang.Object item$44 = item$28;
                 final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$44).smallerThan((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
-                final boolean gt = 5.9 > ((.ceylon.language.Float)item$44).doubleValue();
                 final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$44).smallerThan((.ceylon.language.Comparable)item$44);
                 final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$44).compare((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
                 final boolean wthn = (
@@ -127,10 +125,9 @@ final class bug2330_ {
             } else {
                 final Item item$29 = (Item)item$28;
                 .java.lang.Object item$31;
-                if ((item$31 = (Item)item$29) instanceof .ceylon.language.Character) {
+                if ((item$31 = (Item)item$29) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$31, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.Character.$TypeDescriptor$))) {
                     final .java.lang.Object item$42 = item$31;
                     final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$42).smallerThan((.ceylon.language.Comparable).ceylon.language.Character.instance(97));
-                    final boolean gt = 97 > ((.ceylon.language.Character)item$42).intValue();
                     final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$42).smallerThan((.ceylon.language.Comparable)item$42);
                     final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$42).compare((.ceylon.language.Comparable).ceylon.language.Character.instance('5'));
                     final boolean wthn = (
@@ -143,10 +140,9 @@ final class bug2330_ {
                 } else {
                     final Item item$32 = (Item)item$31;
                     .java.lang.Object item$34;
-                    if ((item$34 = (Item)item$32) instanceof .ceylon.language.String) {
+                    if ((item$34 = (Item)item$32) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$34, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.String.$TypeDescriptor$))) {
                         final .java.lang.Object item$40 = item$34;
                         final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$40).smallerThan((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
-                        final boolean gt = .ceylon.language.String.largerThan("a", ((.ceylon.language.String)item$40).toString());
                         final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$40).smallerThan((.ceylon.language.Comparable)item$40);
                         final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$40).compare((.ceylon.language.Comparable).ceylon.language.String.instance("5"));
                         final boolean wthn = (
@@ -162,7 +158,6 @@ final class bug2330_ {
                         if ((item$37 = (Item)item$35) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$37, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, $reified$X))) {
                             final .java.lang.Object item$38 = item$37;
                             final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$38).smallerThan((.ceylon.language.Comparable)x);
-                            final boolean gt = ((X)x).largerThan((X)item$38);
                             final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$38).smallerThan((.ceylon.language.Comparable)item$38);
                             final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$38).compare((.ceylon.language.Comparable)x);
                             final boolean wthn = (
