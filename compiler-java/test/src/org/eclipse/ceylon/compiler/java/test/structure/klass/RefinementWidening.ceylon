@@ -57,7 +57,7 @@ abstract class RWTop<X, Y>() {
     shared formal T tParamErasure<T>();
     // disabled because although we can compile them, we can't invoke them: https://github.com/ceylon/ceylon-compiler/issues/1664
     //shared formal T tBoundParam<T>() given T satisfies RWNumber;
-    shared formal T tCovBoundParam<out T>() given T satisfies RWInteger;
+    //shared formal T tCovBoundParam<out T>() given T satisfies RWInteger;
     shared formal X typeBound();
     shared formal X typeCovBound();
     shared formal Y classBound();
@@ -74,7 +74,7 @@ abstract class RWBottom<Z>() extends RWTop<RWNumber, Z>() {
     shared actual formal S tParam<S>();
     shared actual formal S&RWNumber tParamErasure<S>();
     //shared actual formal S tBoundParam<S>();
-    shared actual formal S tCovBoundParam<out S>() given S satisfies RWNumber;
+    //shared actual formal S tCovBoundParam<out S>() given S satisfies RWNumber;
     shared actual formal RWNumber typeBound();
     shared actual formal RWInteger typeCovBound();
     shared actual formal Z classBound();
