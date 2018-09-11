@@ -78,7 +78,7 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0[0]).longValue();
                 final .java.lang.String b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $default$b(a);
-                return $calltyped$(a, b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
+                return $calltyped$(a, b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 2, $param$0));
             }
             
             private .ceylon.language.Integer $calltyped$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
@@ -242,7 +242,7 @@ final class callableWithDefaulted_ {
             @.java.lang.Override
             public .ceylon.language.String $callvariadic$(final .java.lang.Object... $param$0) {
                 final .java.lang.String b = ((.ceylon.language.String)$param$0[0]).toString();
-                return $calltyped$(b, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 2, $param$0));
+                return $calltyped$(b, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
             private .ceylon.language.String $calltyped$(final .java.lang.String b, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
@@ -643,7 +643,7 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
             }
             
             private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a) {
@@ -770,7 +770,7 @@ class CallableWithDefaulted implements .org.eclipse.ceylon.compiler.java.runtime
             public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0[0]).longValue();
                 final .java.lang.String b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : defaultedVariadic$b(a);
-                return $calltyped$(a, b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
+                return $calltyped$(a, b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 2, $param$0));
             }
             
             private .java.lang.Object $calltyped$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
@@ -831,7 +831,7 @@ class CallableWithDefaulted implements .org.eclipse.ceylon.compiler.java.runtime
             @.java.lang.Override
             public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0[0]).longValue();
-                return $calltyped$(a, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 2, $param$0));
+                return $calltyped$(a, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
             private .java.lang.Object $calltyped$(final long a, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
