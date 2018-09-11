@@ -5038,16 +5038,21 @@ public class Type extends Reference {
         Map<TypeParameter,Type> qualifyingArguments = 
                 EMPTY_TYPE_ARG_MAP;
         Scope scope = declaration.getContainer();
-        if (qualifying!=null 
+        if (qualifying!=null) {
                 //can be a Value in the case of a type constructor
-                && scope instanceof TypeDeclaration) {
-            TypeDeclaration declaringType = 
-                    (TypeDeclaration) scope;
-            Type supertype = 
-                    qualifying.getSupertype(declaringType);
-            if (supertype!=null) {
-                qualifyingArguments = 
-                        supertype.collectTypeArguments();
+            if (scope instanceof TypeDeclaration) {
+                TypeDeclaration declaringType = 
+                        (TypeDeclaration) scope;
+                Type supertype = 
+                        qualifying.getSupertype(declaringType);
+                if (supertype!=null) {
+                    qualifyingArguments = 
+                            supertype.collectTypeArguments();
+                }
+            }
+            //needed only by the runtime:
+            if (scope instanceof Function) {
+                qualifyingArguments = qualifying.collectTypeArguments();
             }
         }
 
