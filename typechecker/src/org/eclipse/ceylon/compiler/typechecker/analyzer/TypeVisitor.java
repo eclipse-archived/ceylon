@@ -519,6 +519,19 @@ public class TypeVisitor extends Visitor {
         inTypeLiteral = true;
         super.visit(that);
         inTypeLiteral = false;
+        boolean isDeclaration = 
+                that instanceof Tree.InterfaceLiteral
+                || that instanceof Tree.ClassLiteral
+                || that instanceof Tree.NewLiteral
+                || that instanceof Tree.AliasLiteral
+                || that instanceof Tree.TypeParameterLiteral;
+        if (isDeclaration) {
+            Tree.StaticType type = that.getType();
+            if (type!=null) {
+                type.getTypeModel()
+                    .setTypeConstructor(false);
+            }
+        }
     }
 
     private void visitSimpleType(Tree.SimpleType that, 
