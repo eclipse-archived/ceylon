@@ -60,7 +60,7 @@ final class selfType2_ {
         x.compareTo((X)y);
     }
 }
-interface D extends .ceylon.language.Comparable<.org.eclipse.ceylon.compiler.java.test.expression.invoke.D> {
+interface D extends .ceylon.language.Summable<.org.eclipse.ceylon.compiler.java.test.expression.invoke.D> {
     public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.invoke.D.class);
 }
 final class selfTypeTest_ {
@@ -68,7 +68,7 @@ final class selfTypeTest_ {
     private selfTypeTest_() {
     }
     
-    static void selfTypeTest(final .ceylon.language.Comparable<? super .org.eclipse.ceylon.compiler.java.test.expression.invoke.D> d) {
+    static void selfTypeTest(final .ceylon.language.Summable<.org.eclipse.ceylon.compiler.java.test.expression.invoke.D> d) {
         final .org.eclipse.ceylon.compiler.java.test.expression.invoke.D temp = (.org.eclipse.ceylon.compiler.java.test.expression.invoke.D)d;
         final .java.lang.Object v = (
             let
