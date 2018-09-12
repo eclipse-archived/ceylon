@@ -5128,17 +5128,42 @@ public class StatementTransformer extends AbstractTransformer {
             
             JCExpression toTypeExpr;
             JCExpression tmpVarExpr;
-            if (primitiveSelector && varDecl.getUnboxed()) {
+            
+            
+            if (varDecl.getUnboxed()) {
+                //variable local to catch block is an unboxed type
                 toTypeExpr = makeJavaType(varType);
-                tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                if (primitiveSelector) {
+                    tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                }
+                else {
+                    //need to unbox
+                    if (switchType.isSubtypeOf(varType)) {
+                        tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                    }
+                    else {
+                        //need to cast before unboxing
+                        tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                    }
+                    tmpVarExpr = unboxType(tmpVarExpr, varType);
+                }
             }
             else {
-                tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
-                if (isCeylonBasicType(varType) && varDecl.getUnboxed()) {
-                    toTypeExpr = makeJavaType(varType);
-                    tmpVarExpr = unboxType(tmpVarExpr, varType);
-                } else {
-                    toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                //variable local to catch block is a boxed type
+                toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                if (primitiveSelector) {
+                    //need to box
+                    tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                    tmpVarExpr = boxType(tmpVarExpr, varType);
+                }
+                else {
+                    if (switchType.isSubtypeOf(varType)) {
+                        tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                    }
+                    else {
+                        //need to cast
+                        tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                    }
                 }
             }
             

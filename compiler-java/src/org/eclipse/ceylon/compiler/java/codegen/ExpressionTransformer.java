@@ -714,13 +714,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // If expr type if Self<T> and expected type is T we need to cast before any unboxing
-        Type selfTypeParam = null;
         boolean mightNeedCastToSelfType = expectedType != null 
                 && exprBoxed 
                 && !((boxingStrategy == BoxingStrategy.BOXED || boxingStrategy == BoxingStrategy.INDIFFERENT)
                         && exprType.isSubtypeOf(expectedType));
         if (mightNeedCastToSelfType) {
-            selfTypeParam = exprType.getDeclaration().getSelfType();
+            Type selfTypeParam = exprType.getDeclaration().getSelfType();
             if (selfTypeParam != null) {
                 if (expectedType.isExactly(exprType.getTypeArguments().get(selfTypeParam.getDeclaration()))) {
                     result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
