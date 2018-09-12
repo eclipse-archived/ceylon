@@ -714,21 +714,25 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // If expr type if Self<T> and expected type is T we need to cast before any unboxing
-        Type selfType = null;
-        if (expectedType != null) {
-            selfType = exprType.getDeclaration().getSelfType();
-            if (selfType != null) {
-                if (expectedType.isExactly(exprType.getTypeArguments().get(selfType.getDeclaration()))) {
+        Type selfTypeParam = null;
+        boolean mightNeedCastToSelfType = expectedType != null 
+                && exprBoxed 
+                && !((boxingStrategy == BoxingStrategy.BOXED || boxingStrategy == BoxingStrategy.INDIFFERENT)
+                        && exprType.isSubtypeOf(expectedType));
+        if (mightNeedCastToSelfType) {
+            selfTypeParam = exprType.getDeclaration().getSelfType();
+            if (selfTypeParam != null) {
+                if (expectedType.isExactly(exprType.getTypeArguments().get(selfTypeParam.getDeclaration()))) {
                     result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
-                            expectedType, selfType);
+                            expectedType, selfTypeParam);
                     exprType = expectedType;
                 }
             }
             else if (exprType.isComparable()) {
-                selfType = exprType.getDeclaration().getTypeParameters().get(0).getType();
+                selfTypeParam = exprType.getDeclaration().getTypeParameters().get(0).getType();
                 if (expectedType.isExactly(exprType.getTypeArgumentList().get(0))) {
                     result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
-                            expectedType, selfType);
+                            expectedType, selfTypeParam);
                     exprType = expectedType;
                 }
             }
@@ -748,7 +752,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (canCast) {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, flags);
         }
-        ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, selfType);
+//        ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, selfTypeParam);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, exprSmall, flags);
         // Don't rely on coerced member because for SOME reason this is called
         // _after_ we reset it in transformExpression()
@@ -1052,21 +1056,19 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression applySelfTypeCasts(JCExpression result, Type exprType,
             boolean exprBoxed, BoxingStrategy boxingStrategy, 
-            Type expectedType, final Type selfType) {
-        if (expectedType == null) {
+            Type expectedType, final Type selfTypeParam) {
+        if (expectedType == null || selfTypeParam == null) {
             return result;
         }
-        if (selfType != null) {
-            if (selfType.isExactly(exprType) // self-type within its own scope
-                    || !exprType.isExactly(expectedType)) {
-                final Type castType = findTypeArgument(exprType, selfType.getDeclaration());
-                // the fact that the original expr was or not boxed doesn't mean the current result is boxed or not
-                // as boxing transformations occur before this method
-                boolean resultBoxed = boxingStrategy == BoxingStrategy.BOXED
-                        || (boxingStrategy == BoxingStrategy.INDIFFERENT && exprBoxed);
-                JCExpression targetType = makeJavaType(castType, resultBoxed ? AbstractTransformer.JT_TYPE_ARGUMENT : 0);
-                result = make().TypeCast(targetType, result);
-            }
+        if (selfTypeParam.isExactly(exprType) // self-type within its own scope
+                || !exprType.isExactly(expectedType)) {
+            final Type castType = findTypeArgument(exprType, selfTypeParam.getDeclaration());
+            // the fact that the original expr was or not boxed doesn't mean the current result is boxed or not
+            // as boxing transformations occur before this method
+            boolean resultBoxed = boxingStrategy == BoxingStrategy.BOXED
+                    || boxingStrategy == BoxingStrategy.INDIFFERENT && exprBoxed;
+            JCExpression targetType = makeJavaType(castType, resultBoxed ? AbstractTransformer.JT_TYPE_ARGUMENT : 0);
+            result = make().TypeCast(targetType, result);
         }
         return result;
     }
