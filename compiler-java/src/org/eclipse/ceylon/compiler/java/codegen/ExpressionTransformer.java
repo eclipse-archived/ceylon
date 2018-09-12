@@ -719,21 +719,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !((boxingStrategy == BoxingStrategy.BOXED || boxingStrategy == BoxingStrategy.INDIFFERENT)
                         && exprType.isSubtypeOf(expectedType));
         if (mightNeedCastToSelfType) {
-            Type selfTypeParam = exprType.getDeclaration().getSelfType();
-            if (selfTypeParam != null) {
-                if (expectedType.isExactly(exprType.getTypeArguments().get(selfTypeParam.getDeclaration()))) {
-                    result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
-                            expectedType, selfTypeParam);
-                    exprType = expectedType;
-                }
-            }
-            else if (exprType.isComparable()) {
-                selfTypeParam = exprType.getDeclaration().getTypeParameters().get(0).getType();
-                if (expectedType.isExactly(exprType.getTypeArgumentList().get(0))) {
-                    result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
-                            expectedType, selfTypeParam);
-                    exprType = expectedType;
-                }
+            Type selfType = getSelfType(exprType);
+            if (selfType != null && expectedType.isExactly(selfType)) {
+                result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
+                        expectedType, getSelfTypeParam(exprType));
+                exprType = expectedType;
             }
         }
         // we must do the boxing after the cast to the proper type
@@ -758,6 +748,31 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(coerced)
             ret = applyJavaCoercions(ret, exprType, expectedType);
         return ret;
+    }
+    
+    static TypeParameter getSelfTypeParam(Type exprType) {
+        Type selfTypeParam = exprType.getDeclaration().getSelfType();
+        if (selfTypeParam!=null && selfTypeParam.isTypeParameter()) {
+            return (TypeParameter) selfTypeParam.getDeclaration();
+        }
+        return null;
+    }
+
+    static Type getSelfType(Type exprType) {
+        Type selfTypeParam = exprType.getDeclaration().getSelfType();
+        if (selfTypeParam!=null && selfTypeParam.isTypeParameter()) {
+            return exprType.getTypeArguments().get(selfTypeParam.getDeclaration());
+        }
+//        if (exprType.getDeclaration().isParameterized()) {
+//            Type argType = exprType.getTypeArgumentList().get(0);
+//            if (argType.isSubtypeOf(exprType)) {
+//                // unfortunately X is not a self type 
+//                // of Comparable<X> and therefore does 
+//                // not cover Comparable<X>
+//                return argType;
+//            }
+//        }
+        return null;
     }
 
     private JCExpression applyJavaCoercions(JCExpression ret, Type exprType, Type expectedType) {
@@ -1055,13 +1070,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression applySelfTypeCasts(JCExpression result, Type exprType,
             boolean exprBoxed, BoxingStrategy boxingStrategy, 
-            Type expectedType, final Type selfTypeParam) {
+            Type expectedType, final TypeParameter selfTypeParam) {
         if (expectedType == null || selfTypeParam == null) {
             return result;
         }
-        if (selfTypeParam.isExactly(exprType) // self-type within its own scope
+        if (selfTypeParam.getType().isExactly(exprType) // self-type within its own scope
                 || !exprType.isExactly(expectedType)) {
-            final Type castType = findTypeArgument(exprType, selfTypeParam.getDeclaration());
+            final Type castType = findTypeArgument(exprType, selfTypeParam);
             // the fact that the original expr was or not boxed doesn't mean the current result is boxed or not
             // as boxing transformations occur before this method
             boolean resultBoxed = boxingStrategy == BoxingStrategy.BOXED
@@ -2897,20 +2912,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             final Type leftSuper = getSupertype(op.getLeftTerm(), compoundType);
             leftType = leftSuper;
-            Type leftSelf = leftType.getDeclaration().getSelfType();
-            if (leftSelf != null) {
-                Type argType = leftType.getTypeArguments().get(leftSelf.getDeclaration());
-                if (argType.isSubtypeOf(leftSuper)) {
-                    // Simplify Comparable<X> to X
-                    leftType = argType;
-                }
-            }
-            else if (leftType.isComparable()) {
-                Type argType = leftType.getTypeArgumentList().get(0);
-                if (argType.isSubtypeOf(leftSuper)) {
-                    // Simplify Comparable<X> to X
-                    leftType = argType;
-                }
+            Type leftSelf = getSelfType(leftType);
+            if (leftSelf != null && leftSelf.isSubtypeOf(leftSuper)) {
+                // Simplify Comparable<X> to X
+                leftType = leftSelf;
             }
 
             // the right type always only depends on the LHS so let's not try to find it on the right side because it may
@@ -3074,12 +3079,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (optimisationStrategy.useValueTypeMethod()) {
             int flags = JT_NO_PRIMITIVES;
             if (optimisationStrategy == OptimisationStrategy.OPTIMISE_VALUE_TYPE) {
-                Type selfType = leftType.getDeclaration().getSelfType();
+                Type selfType = getSelfType(leftType);
                 if (selfType != null) {
-                    leftType = leftType.getTypeArguments().get(selfType.getDeclaration());
-                }
-                else if (leftType.isComparable()) {
-                    leftType = leftType.getTypeArgumentList().get(0);
+                    leftType = selfType;
                 }
             }
             

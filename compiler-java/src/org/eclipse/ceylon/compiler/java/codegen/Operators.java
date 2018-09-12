@@ -248,17 +248,10 @@ public class Operators {
                 if (Decl.isValueTypeDecl(leftType)) {
                     optimisationStrategy = OptimisationStrategy.OPTIMISE_VALUE_TYPE;
                 } else {
-                    Type selfType = leftType.getDeclaration().getSelfType();
+                    Type selfType = ExpressionTransformer.getSelfType(leftType);
                     if (selfType != null) {
-                        Type argType = leftType.getTypeArguments().get(selfType.getDeclaration());
-                        if (Decl.isValueTypeDecl(argType)) {
+                        if (Decl.isValueTypeDecl(selfType)) {
                             // a self type of a value type (e.g. Summable<Integer>)
-                            optimisationStrategy = OptimisationStrategy.OPTIMISE_VALUE_TYPE;
-                        }
-                    }
-                    else if (leftType.isComparable()) {
-                        Type argType = leftType.getTypeArgumentList().get(0);
-                        if (Decl.isValueTypeDecl(argType)) {
                             optimisationStrategy = OptimisationStrategy.OPTIMISE_VALUE_TYPE;
                         }
                     }
