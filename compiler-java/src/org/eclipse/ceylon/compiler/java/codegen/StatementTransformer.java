@@ -4927,7 +4927,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // TODO Support for 'case (satisfies ...)' is not implemented yet
                     return make().Exec(makeErroneous(caseItem, "compiler bug: switch/satisfies not implemented yet"));
                 } else if (caseItem instanceof Tree.MatchCase) {
-                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar,outerExpression, expectedType, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
+                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar, outerExpression, expectedType, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
                 } else {
                     return make().Exec(makeErroneous(caseItem, "compiler bug: unknown switch case clause: "+caseItem));
                 }
@@ -5128,7 +5128,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             JCExpression toTypeExpr;
             JCExpression tmpVarExpr;
-            if (isCeylonBasicType(switchType) && varDecl.getUnboxed()) {
+            if (primitiveSelector && varDecl.getUnboxed()) {
                 toTypeExpr = makeJavaType(varType);
                 tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
             }
