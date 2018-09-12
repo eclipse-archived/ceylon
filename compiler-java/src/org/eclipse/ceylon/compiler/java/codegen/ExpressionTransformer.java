@@ -714,11 +714,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // If expr type if Self<T> and expected type is T we need to cast before any unboxing
-        if (exprType.getDeclaration().getSelfType() != null
-                && expectedType != null
-                && expectedType.isExactly(exprType.getTypeArguments().get(exprType.getDeclaration().getSelfType().getDeclaration()))) {
-            result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, expectedType);
-            exprType = expectedType;
+        Type selfType = null;
+        if (expectedType != null) {
+            selfType = exprType.getDeclaration().getSelfType();
+            if (selfType != null) {
+                if (expectedType.isExactly(exprType.getTypeArguments().get(selfType.getDeclaration()))) {
+                    result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
+                            expectedType, selfType);
+                    exprType = expectedType;
+                }
+            }
+            else if (exprType.isComparable()) {
+                selfType = exprType.getDeclaration().getTypeParameters().get(0).getType();
+                if (expectedType.isExactly(exprType.getTypeArgumentList().get(0))) {
+                    result = applySelfTypeCasts(result, exprType, exprBoxed, BoxingStrategy.BOXED, 
+                            expectedType, selfType);
+                    exprType = expectedType;
+                }
+            }
         }
         // we must do the boxing after the cast to the proper type
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, exprType, boxingStrategy, expectedType);
@@ -735,7 +748,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (canCast) {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, flags);
         }
-        ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
+        ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, selfType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, exprSmall, flags);
         // Don't rely on coerced member because for SOME reason this is called
         // _after_ we reset it in transformExpression()
@@ -1038,12 +1051,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression applySelfTypeCasts(JCExpression result, Type exprType,
-            boolean exprBoxed,
-            BoxingStrategy boxingStrategy, Type expectedType) {
+            boolean exprBoxed, BoxingStrategy boxingStrategy, 
+            Type expectedType, final Type selfType) {
         if (expectedType == null) {
             return result;
         }
-        final Type selfType = exprType.getDeclaration().getSelfType();
         if (selfType != null) {
             if (selfType.isExactly(exprType) // self-type within its own scope
                     || !exprType.isExactly(expectedType)) {
