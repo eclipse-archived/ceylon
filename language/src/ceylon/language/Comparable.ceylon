@@ -64,7 +64,7 @@ see (class Comparison,
      function largest, function smallest)
 by ("Gavin")
 tagged("Comparisons")
-shared interface Comparable<in Other> 
+shared interface Comparable<Other> of Other 
         given Other satisfies Comparable<Other> {
     
     "Compares this value with the given value, returning:

@@ -67,7 +67,7 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     protected final .ceylon.language.Comparable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Comparable$impl<? super .org.eclipse.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$impl() {
+    public .ceylon.language.Comparable$impl<.org.eclipse.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$impl() {
         return $ceylon$language$Comparable$this$;
     }
     

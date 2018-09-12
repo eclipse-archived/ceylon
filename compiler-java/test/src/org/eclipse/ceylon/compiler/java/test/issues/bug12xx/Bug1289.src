@@ -380,7 +380,7 @@ class Bug1289_Foo2 implements .org.eclipse.ceylon.compiler.java.runtime.model.Re
     }
     public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.class);
 }
-class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Element>, .java.io.Serializable {
+class Bug1289_Foo3<Element extends .ceylon.language.Comparable<Element>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Element>, .java.io.Serializable {
     
     Bug1289_Foo3(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

@@ -9,5 +9,5 @@ shared class UnionSelfType_Bar()
 
 void hello(UnionSelfType_Foo|UnionSelfType_Bar uuu) {
     uuu.compare(uuu);
-    Comparable<UnionSelfType_Bar|UnionSelfType_Bar> u = uuu;
+    Comparable<UnionSelfType_Bar|UnionSelfType_Foo> u = uuu;
 }

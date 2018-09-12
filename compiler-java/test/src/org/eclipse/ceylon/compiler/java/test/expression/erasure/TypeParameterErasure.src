@@ -131,7 +131,7 @@ class TypeParameterErasure implements .org.eclipse.ceylon.compiler.java.runtime.
         return t;
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>T parameterizedWithParameterizedBounds$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<T>>T parameterizedWithParameterizedBounds$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         return (T)t;
     }
     
@@ -395,8 +395,8 @@ class TypeParameterErasure implements .org.eclipse.ceylon.compiler.java.runtime.
             return i;
         }
         
-        public final <Inner extends .ceylon.language.Ordinal<? extends Inner> & .ceylon.language.Comparable<? super Inner>>Inner parameterizedWithParameterizedBounds(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner, final Inner i, final T t) {
-            ((.ceylon.language.Comparable<? super Inner>)(.ceylon.language.Comparable)i).compare((Inner)i);
+        public final <Inner extends .ceylon.language.Ordinal<? extends Inner> & .ceylon.language.Comparable<Inner>>Inner parameterizedWithParameterizedBounds(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner, final Inner i, final T t) {
+            ((.ceylon.language.Comparable<Inner>)(.ceylon.language.Comparable)i).compare((Inner)i);
             return (Inner)i;
         }
         
@@ -473,7 +473,7 @@ class TypeParameterErasure implements .org.eclipse.ceylon.compiler.java.runtime.
         }
     }
     
-    class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<T>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         ParameterizedWithParameterizedBounds(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
             this.$reified$T = $reified$T;

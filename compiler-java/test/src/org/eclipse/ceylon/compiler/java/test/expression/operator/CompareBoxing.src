@@ -5,7 +5,7 @@ final class compareBoxing_ {
     private compareBoxing_() {
     }
     
-    static <T extends .ceylon.language.Comparable<? super T>>void compareBoxing(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i, final double f, final .java.lang.String s, final .ceylon.language.Comparable<? super .ceylon.language.Integer> intSelf, final .ceylon.language.Comparable<? super .ceylon.language.Float> floatSelf, final .ceylon.language.Comparable<? super .ceylon.language.String> stringSelf, final T t, final .ceylon.language.Comparable<? super T> tSelf) {
+    static <T extends .ceylon.language.Comparable<T>>void compareBoxing(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i, final double f, final .java.lang.String s, final .ceylon.language.Comparable<.ceylon.language.Integer> intSelf, final .ceylon.language.Comparable<.ceylon.language.Float> floatSelf, final .ceylon.language.Comparable<.ceylon.language.String> stringSelf, final T t, final .ceylon.language.Comparable<T> tSelf) {
         boolean cmp = false;
         .ceylon.language.Comparison ord = null;
         ord = .ceylon.language.Integer.compare(i, i);
