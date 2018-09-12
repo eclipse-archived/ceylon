@@ -528,8 +528,10 @@ public class TypeVisitor extends Visitor {
         if (isDeclaration) {
             Tree.StaticType type = that.getType();
             if (type!=null) {
-                type.getTypeModel()
-                    .setTypeConstructor(false);
+                Type t = type.getTypeModel();
+                if (t!=null) {
+                    t.setTypeConstructor(false);
+                }
             }
         }
     }
