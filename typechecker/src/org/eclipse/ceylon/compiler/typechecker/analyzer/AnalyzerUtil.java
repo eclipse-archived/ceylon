@@ -791,7 +791,8 @@ public class AnalyzerUtil {
             }
             else if (!unary &&
                     !supertype.getVarianceOverrides()
-                        .isEmpty()) {
+                        .isEmpty()
+                    || supertype.containsUnknowns()) {
                 node.addError(message + 
                         message(type, 
                                 " does not have a principal instantiation for '" + 
