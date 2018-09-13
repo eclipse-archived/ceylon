@@ -5115,13 +5115,14 @@ public class Type extends Reference {
             return overrides;
         }
     }
-    
+     
     public Type applyCapturedWildcards(TypedReference source) {
         return applyVarianceOverrides(this,
-                    !source.isCovariant(),
-                    !source.isContravariant(),
+                    false,//!source.isCovariant(),
+                    false,//!source.isContravariant(),
                     source.getCapturedWildcards());
     }
+    
     /**
      * Given a set of use site variance overrides, adjust 
      * the given type to account for these variances.

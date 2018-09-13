@@ -6080,12 +6080,25 @@ public class ExpressionVisitor extends Visitor {
                             + "' and '"
                             + at.asString(unit)
                             + "' do not compose");
-
                 }
                 else {
                     checkAssignable(at, paramType, a, 
                             "argument must be assignable to parameter " 
                                     + argdesc(p, pr), 2100);
+                }
+                if (pr instanceof TypedReference 
+                        && !paramRef.getCapturedWildcards()
+                                    .isEmpty()) {
+                    TypedReference paramRef2 = 
+                            pr.getTypedParameter(p);
+                    Type paramType2 = 
+                            paramType(a.getScope(), 
+                                    paramRef2, paramModel);
+                    if (!at.isSubtypeOf(paramType2)) {
+                        ((TypedReference) pr).addCapturedWildcards(
+                                paramRef.getCapturedWildcards());
+                        ie.setTypeModel(pr.getType());
+                    }
                 }
             }
         }

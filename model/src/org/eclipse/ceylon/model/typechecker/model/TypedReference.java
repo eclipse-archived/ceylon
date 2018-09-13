@@ -46,12 +46,19 @@ public class TypedReference extends Reference {
         this.declaration = declaration;
     }
     
-    Map<TypeParameter, SiteVariance> getCapturedWildcards() {
+    public Map<TypeParameter, SiteVariance> getCapturedWildcards() {
         return capturedWildcards;
     }
     
     void setCapturedWildcards(Map<TypeParameter, SiteVariance> capturedWildcards) {
         this.capturedWildcards = capturedWildcards;
+    }
+    
+    public void addCapturedWildcards(Map<TypeParameter, SiteVariance> capturedWildcards) {
+        if (this.capturedWildcards == EMPTY_VARIANCE_MAP) {
+            this.capturedWildcards = new HashMap<TypeParameter, SiteVariance>(capturedWildcards.size());
+        }
+        this.capturedWildcards.putAll(capturedWildcards);
     }
     
     public Type getType() {

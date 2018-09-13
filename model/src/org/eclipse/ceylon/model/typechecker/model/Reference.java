@@ -295,11 +295,6 @@ public abstract class Reference {
         Declaration dec = getDeclaration();
         if (dec instanceof Function) { //TODO: should we do it for classes too?
             Function func = (Function) dec;
-            Type returnType = func.getType();
-            if (returnType.occursContravariantly(tp)
-             || returnType.occursInvariantly(tp)) {
-                return false;
-            }
             ParameterList paramList = 
                     func.getFirstParameterList();
             if (paramList!=null) {
