@@ -10,7 +10,7 @@
 import ceylon.language.meta.declaration{CallableConstructorDeclaration}
 
 """A callable constructor model represents the model of a Ceylon class 
-   constructor that you can invoke and inspect
+   constructor that you can invoke and inspect.
    
    ## Callablity
    
@@ -25,9 +25,10 @@ import ceylon.language.meta.declaration{CallableConstructorDeclaration}
         }
         
         void test() {
-        Constructor<Foo,[String]> ctor = `Foo.foo`;
-        // This will print: Stef
-        print(ctor("Stef").name);
+            Constructor<Foo,[String]> ctor = `Foo.foo`;
+            // This will print: Stef
+            print(ctor("Stef").name);
+        }
         
    ## Genericity
         
