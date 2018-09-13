@@ -26,8 +26,11 @@ import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
+import org.eclipse.ceylon.model.typechecker.model.Interface;
+import org.eclipse.ceylon.model.typechecker.model.IntersectionType;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Module;
+import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
@@ -35,6 +38,7 @@ import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.TypeParameter;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
+import org.eclipse.ceylon.model.typechecker.model.UnionType;
 import org.eclipse.ceylon.model.typechecker.model.Value;
 
 public class MetamodelHelper {
@@ -50,7 +54,7 @@ public class MetamodelHelper {
                 gen.out(gen.getClAlias());
             }
         }
-        if (d instanceof org.eclipse.ceylon.model.typechecker.model.Interface) {
+        if (d instanceof Interface) {
             gen.out("OpenInterface$jsint");
         } else if (isConstructor) {
             if (TypeUtils.getConstructor(d).isValueConstructor()) {
@@ -64,9 +68,9 @@ public class MetamodelHelper {
             gen.out("OpenFunction$jsint");
         } else if (d instanceof Value) {
             gen.out("OpenValue$jsint");
-        } else if (d instanceof org.eclipse.ceylon.model.typechecker.model.IntersectionType) {
+        } else if (d instanceof IntersectionType) {
             gen.out("OpenIntersection");
-        } else if (d instanceof org.eclipse.ceylon.model.typechecker.model.UnionType) {
+        } else if (d instanceof UnionType) {
             gen.out("OpenUnion");
         } else if (d instanceof TypeParameter) {
             generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen, compilingLanguageModule);
@@ -84,8 +88,8 @@ public class MetamodelHelper {
                 ArrayList<Declaration> parents = new ArrayList<>(2);
                 Declaration pd = (Declaration)d.getContainer();
                 while (pd!=null) {
-                    parents.add(0,pd);
-                    pd = pd.isMember()?(Declaration)pd.getContainer():null;
+                    parents.add(0, pd);
+                    pd = pd.isMember() ? (Declaration)pd.getContainer() : null;
                 }
                 for (Declaration _d : parents) {
                     gen.out(gen.getNames().name(_d), ".$$.prototype.");
@@ -219,8 +223,8 @@ public class MetamodelHelper {
 
     private static void constructorLiteral(final Type ltype, final Constructor cd,
             final Tree.MetaLiteral meta, final GenerateJsVisitor gen) {
-        Class _pc = (Class)cd.getContainer();
-        if (_pc.isClassOrInterfaceMember()) {
+        Class pc = (Class)cd.getContainer();
+        if (pc.isClassOrInterfaceMember()) {
             gen.out(gen.getClAlias(), "$i$AppliedMemberClass",
                     cd.isValueConstructor() ? "Value" : "Callable",
                     "Constructor$jsint()(");
@@ -229,25 +233,30 @@ public class MetamodelHelper {
                     cd.isValueConstructor() ? "Value" : "Callable",
                     "Constructor$jsint()(");
         }
-        outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
+        outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), pc), pc.getType(), gen, false);
+        String constructorSeparator = gen.getNames().constructorSeparator(cd);
         if (cd.isValueConstructor()) {
-            gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(meta.getDeclaration()), ",");
+            gen.out(constructorSeparator, gen.getNames().name(meta.getDeclaration()), ",");
         } else {
-            gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(cd), ",");
+            gen.out(constructorSeparator, gen.getNames().name(cd), ",");
         }
         final Type mtype = meta.getTypeModel().resolveAliases();
         printTypeArguments(meta, mtype, gen, false);
-        if (ltype != null 
-                && ltype.getTypeArguments() != null 
-                && !ltype.getTypeArguments().isEmpty()) {
-            gen.out(",undefined,");
-            printTypeArguments(meta, ltype, gen, false);
+        if (ltype != null) {
+            Type qtype = ltype.getQualifyingType();
+            Map<TypeParameter, Type> typeArguments = qtype.getTypeArguments();
+            if (typeArguments != null && !typeArguments.isEmpty()) {
+                gen.out(",undefined,");
+                Map<TypeParameter, SiteVariance> varianceOverrides = 
+                        qtype.getVarianceOverrides();
+                printTypeArguments(meta, gen, false, typeArguments, varianceOverrides);
+            }
         }
         gen.out(")");
     }
 
     static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
-        final org.eclipse.ceylon.model.typechecker.model.Reference ref = that.getTarget();
+        final Reference ref = that.getTarget();
         Tree.StaticType type = that.getType();
         Type ltype = type == null ? null : type.getTypeModel().resolveAliases();
         final Declaration d = ref.getDeclaration();
@@ -361,11 +370,12 @@ public class MetamodelHelper {
                 gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
             gen.out(gen.getNames().name(d));
-            if (ltype != null 
-                    && ltype.getTypeArguments() != null 
-                    && !ltype.getTypeArguments().isEmpty()) {
-                gen.out(",a:");
-                printTypeArguments(that, ltype, gen, false);
+            if (ltype != null) {
+                Map<TypeParameter, Type> typeArguments = ltype.getTypeArguments();
+                if (typeArguments != null && !typeArguments.isEmpty()) {
+                    gen.out(",a:");
+                    printTypeArguments(that, ltype, gen, false);
+                }
             }
             gen.out("}})");
         }
@@ -378,7 +388,9 @@ public class MetamodelHelper {
 
     static void outputPathToDeclaration(final Node that, final Declaration d, final GenerateJsVisitor gen) {
         final Declaration parent = ModelUtil.getContainingDeclaration(d);
-        if (!gen.opts.isOptimize() && parent instanceof TypeDeclaration && ModelUtil.contains((Scope)parent, that.getScope())) {
+        if (!gen.opts.isOptimize() 
+                && parent instanceof TypeDeclaration 
+                && ModelUtil.contains((Scope)parent, that.getScope())) {
             gen.out(gen.getNames().self((TypeDeclaration)parent), ".");
         } else {
             Declaration _md = d;
