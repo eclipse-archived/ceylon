@@ -422,3 +422,13 @@ void nullaryFunctions() {
     YourThing(ArrayList());
     TheirThing(ArrayList());
 }
+
+class ComparableInference() {
+    interface C satisfies Comparable<C> {}
+    interface D satisfies C {}
+
+    void test<CC>({CC*} ccs, {D*} ds) given CC satisfies C {
+        ds.sort(increasing);
+        ccs.sort(increasing).sequence();
+    }
+}
