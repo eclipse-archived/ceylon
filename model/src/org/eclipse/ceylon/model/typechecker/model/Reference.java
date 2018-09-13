@@ -229,10 +229,10 @@ public abstract class Reference {
      * type arguments and wildcard capture.
      */
     public TypedReference getTypedParameterWithWildcardCapture(
-            Parameter p) {
+            Parameter p, SiteVariance variance) {
         TypedReference typedParameter = 
                 getTypedParameter(p);
-        captureWildcards(typedParameter);
+        captureWildcards(typedParameter, variance);
         return typedParameter;
     }
     
@@ -265,14 +265,17 @@ public abstract class Reference {
      * Register captured wildcards for the given parameter 
      * reference.
      */
-    private void captureWildcards(TypedReference parameter) {
+    private void captureWildcards(TypedReference parameter, SiteVariance variance) {
         Declaration declaration = getDeclaration();
         if (declaration.isJava() && declaration.isParameterized()) {
             Map<TypeParameter, SiteVariance> capturedWildcards =
                     new HashMap<TypeParameter, SiteVariance>(1);
             for (TypeParameter tp: declaration.getTypeParameters()) {
-                if (canCaptureWildcard(tp)) {
-                    capturedWildcards.put(tp, SiteVariance.OUT);
+                Type t = parameter.getDeclaration().getType();
+                if (t!=null 
+                        && t.involvesDeclaration(tp) 
+                        && canCaptureWildcard(tp)) {
+                    capturedWildcards.put(tp, variance);
                 }
             }
             parameter.setCapturedWildcards(capturedWildcards);

@@ -117,6 +117,7 @@ import org.eclipse.ceylon.model.typechecker.model.ParameterList;
 import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
+import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
@@ -6060,13 +6061,28 @@ public class ExpressionVisitor extends Visitor {
         if (paramModel!=null) {
             a.setParameter(p);
             TypedReference paramRef = 
-                    pr.getTypedParameterWithWildcardCapture(p);
+                    pr.getTypedParameter(p);
             Type paramType = 
                     paramType(a.getScope(), 
                             paramRef, paramModel);
-            Type at = a.getTypeModel();
-            if (!isTypeUnknown(at) && 
+            Type argType = a.getTypeModel();
+            if (!isTypeUnknown(argType) && 
                 !isTypeUnknown(paramType)) {
+                
+                for (SiteVariance var: SiteVariance.values()) {
+                    if (!argType.isSubtypeOf(paramType)) {
+                        TypedReference paramRef2 = 
+                                pr.getTypedParameterWithWildcardCapture(p, var);
+                        Type paramType2 = 
+                                paramType(a.getScope(), 
+                                        paramRef2, paramModel);
+                        if (argType.isSubtypeOf(paramType2)) {
+                            paramRef = paramRef2;
+                            paramType = paramType2;
+                        }
+                    }
+                }
+                
                 if (ie.getPrimary() 
                         instanceof Tree.Compose) {
                     Type ot = 
@@ -6074,31 +6090,25 @@ public class ExpressionVisitor extends Visitor {
                               .getPositionalArguments()
                               .get(1)
                               .getTypeModel();
-                    checkAssignable(at, paramType, a, 
+                    checkAssignable(argType, paramType, a, 
                             "functions of type '" 
                             + ot.asString(unit)
                             + "' and '"
-                            + at.asString(unit)
+                            + argType.asString(unit)
                             + "' do not compose");
                 }
                 else {
-                    checkAssignable(at, paramType, a, 
+                    checkAssignable(argType, paramType, a, 
                             "argument must be assignable to parameter " 
                                     + argdesc(p, pr), 2100);
                 }
+                
                 if (pr instanceof TypedReference 
                         && !paramRef.getCapturedWildcards()
                                     .isEmpty()) {
-                    TypedReference paramRef2 = 
-                            pr.getTypedParameter(p);
-                    Type paramType2 = 
-                            paramType(a.getScope(), 
-                                    paramRef2, paramModel);
-                    if (!at.isSubtypeOf(paramType2)) {
-                        ((TypedReference) pr).addCapturedWildcards(
-                                paramRef.getCapturedWildcards());
-                        ie.setTypeModel(pr.getType());
-                    }
+                    ((TypedReference) pr).addCapturedWildcards(
+                            paramRef.getCapturedWildcards());
+                    ie.setTypeModel(pr.getType());
                 }
             }
         }

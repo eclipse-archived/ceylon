@@ -1,6 +1,7 @@
 package org.eclipse.ceylon.compiler.java.test.issues.bug66xx;
 
 import java.util.List;
+import java.util.Map;
 
 public class Bug6682Java<X>{
     
@@ -18,5 +19,7 @@ public class Bug6682Java<X>{
     
     public <T> Bug6682Java<? extends List<T>> getParameterValue6(Bug6682Java<T> param){ return null; }
     public <T> Bug6682Java<? super List<T>> getParameterValue7(Bug6682Java<T> param){ return null; }
+    
+    public <T,S> Map<T,S> getParameterValues(Bug6682Java<T> p, Bug6682Java<S> q){ return null; }
     
 }

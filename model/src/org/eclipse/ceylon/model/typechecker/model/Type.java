@@ -5117,9 +5117,7 @@ public class Type extends Reference {
     }
      
     public Type applyCapturedWildcards(TypedReference source) {
-        return applyVarianceOverrides(this,
-                    false,//!source.isCovariant(),
-                    false,//!source.isContravariant(),
+        return applyVarianceOverrides(this, true, false,
                     source.getCapturedWildcards());
     }
     
