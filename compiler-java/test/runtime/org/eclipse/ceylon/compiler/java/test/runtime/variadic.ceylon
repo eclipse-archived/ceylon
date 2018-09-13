@@ -23,6 +23,6 @@ Integer defaultedVariadic(Integer a = 98, Integer b = 99, Integer* bs)
 
 @test
 void testDefaultedVariadic() {
-    Anything(Integer,Integer,Integer,Integer,Integer*) barRef = bar;
-    //assert(barRef(0, 1, 2, 3)==2);
+    Anything(Integer,Integer,Integer,Integer,Integer*) defaultedVariadicRef = defaultedVariadic;
+    //assert(defaultedVariadicRef(0, 1, 2, 3)==2);
 }
