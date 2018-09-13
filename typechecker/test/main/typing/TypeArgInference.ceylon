@@ -129,11 +129,11 @@ class TypeArgInference() {
     
     $type:"Null|TypeArgInference.A|TypeArgInference.B" acceptOneTwo(test0);
     $type:"Null|Integer|Float" acceptOneTwo(test1);
-    $type:"Null|Number<Integer>" acceptOneTwo(test2);
+    $type:"Null|Integer" acceptOneTwo(test2);
     
     $type:"Null|TypeArgInference.A|TypeArgInference.B" acceptOneOrTwo(test0);
     $type:"Null|Integer|Float" acceptOneOrTwo(test1);
-    $type:"Null|Number<Integer>" acceptOneOrTwo(test2);
+    $type:"Null|Integer" acceptOneOrTwo(test2);
     
     void higherAnything<X>(void f(X x)) {}
     higherAnything((String x) => print(x));

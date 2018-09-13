@@ -5628,5 +5628,65 @@ public class Type extends Reference {
         }
         return false;
     }
+    
+    public static List<Type> simplifyUsingSelfTypes
+            (List<Type> types) {
+        int size = types.size();
+        List<Type> result = types;
+        for (int i=0; i<types.size(); i++) {
+            Type type = types.get(i);
+            Type simple = type==null ? null :
+                type.simplifyUsingSelfTypes();
+            if (simple!=type && result==types) {
+                result = new ArrayList<>(size);
+                for (int j=0; j<i; j++) {
+                    result.add(types.get(j));
+                }
+                result.add(simple);
+            }
+        }
+        return result;
+    }
+    
+    public Type simplifyUsingSelfTypes() {
+        TypeDeclaration dec = getDeclaration();
+        if (isUnion()) {
+            List<Type> caseTypes = dec.getCaseTypes();
+            List<Type> simplified = simplifyUsingSelfTypes(caseTypes);
+            if (caseTypes!=simplified) {
+                return union(simplified, dec.getUnit());
+            }
+            else {
+                return this;
+            }
+        }
+        else if (isIntersection()) {
+            List<Type> satisfiedTypes = dec.getSatisfiedTypes();
+            List<Type> simplified = simplifyUsingSelfTypes(satisfiedTypes);
+            if (satisfiedTypes!=simplified) {
+                return canonicalIntersection(simplified, dec.getUnit());
+            }
+            else {
+                return this;
+            }
+        }
+        else {
+            Type selfType = dec.getSelfType();
+            if (selfType!=null) {
+                return getTypeArguments().get(selfType.getDeclaration());
+            }
+            Type qualifyingType = getQualifyingType();
+            Type simplifiedQualifier = qualifyingType==null ? null : 
+                qualifyingType.simplifyUsingSelfTypes();
+            List<Type> typeArgumentList = getTypeArgumentList();
+            List<Type> simplified = simplifyUsingSelfTypes(typeArgumentList);
+            if (simplifiedQualifier!=qualifyingType || typeArgumentList!=simplified) {
+                return dec.appliedType(simplifiedQualifier, typeArgumentList);
+            }
+            else {
+                return this;
+            }
+        }
+    }
 
 }

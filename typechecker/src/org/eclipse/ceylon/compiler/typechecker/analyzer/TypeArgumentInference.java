@@ -27,6 +27,7 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.union;
+import static org.eclipse.ceylon.model.typechecker.model.Type.simplifyUsingSelfTypes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -1203,9 +1204,9 @@ public class TypeArgumentInference {
                                 findUpperBounds);
                 inferredTypes.add(it);
             }
-            return constrainInferredTypes(
+            return simplifyUsingSelfTypes(constrainInferredTypes(
                     typeParameters, inferredTypes, 
-                    receiverType, reference);
+                    receiverType, reference));
         }
     }
 
@@ -1259,9 +1260,9 @@ public class TypeArgumentInference {
                         contravariant);
             inferredTypes.add(it);
         }
-        return constrainInferredTypes(
+        return simplifyUsingSelfTypes(constrainInferredTypes(
                 typeParameters, inferredTypes, 
-                receiverType, reference);
+                receiverType, reference));
     }
 
     private Type inferNullaryFunctionCallTypeArg(
@@ -1374,9 +1375,9 @@ public class TypeArgumentInference {
             inferredTypes.add(type);
         }
         
-        return constrainInferredTypes(
+        return simplifyUsingSelfTypes(constrainInferredTypes(
                 typeParameters, inferredTypes, 
-                receiverType, reference);
+                receiverType, reference));
     }
 
     private Type inferFunctionRefTypeArg(
@@ -1565,7 +1566,7 @@ public class TypeArgumentInference {
                 typeArguments.add(it);
             }
             //TODO: apply type constraints!!
-            return typeArguments;
+            return simplifyUsingSelfTypes(typeArguments);
         }
     }
     
@@ -1631,9 +1632,9 @@ public class TypeArgumentInference {
                             }
                             typeArgs.add(it);
                         }
-                        return constrainInferredTypes(
+                        return simplifyUsingSelfTypes(constrainInferredTypes(
                                 typeParams, typeArgs,
-                                receiverType, invoked);
+                                receiverType, invoked));
                     }
                 }
             }
@@ -1684,9 +1685,9 @@ public class TypeArgumentInference {
                     }
                     typeArgs.add(it);
                 }
-                return constrainInferredTypes(
+                return simplifyUsingSelfTypes(constrainInferredTypes(
                         typeParameters, typeArgs, 
-                        receiverType, invoked);
+                        receiverType, invoked));
             }
         }
         else {

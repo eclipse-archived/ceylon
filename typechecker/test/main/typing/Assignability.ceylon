@@ -445,7 +445,7 @@ class Assignability() {
     Ordinal<Integer> ii1 = +1;
     Integer ii2 = ii1 of Integer;
     Ordinal<Integer> ii3 = ii2;
-    Invariant<Ordinal<Integer>> iii1 = Invariant(ii1);
+    Invariant<Integer> iii1 = Invariant(ii1);
 //    Invariant<Integer> iii2 = iii1;
 //    Invariant<Ordinal<Integer>> iii3 = iii2;
     
