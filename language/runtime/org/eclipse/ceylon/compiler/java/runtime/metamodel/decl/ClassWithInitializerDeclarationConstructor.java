@@ -23,25 +23,20 @@ import org.eclipse.ceylon.compiler.java.metadata.Sequenced;
 import org.eclipse.ceylon.compiler.java.metadata.TypeInfo;
 import org.eclipse.ceylon.compiler.java.metadata.TypeParameter;
 import org.eclipse.ceylon.compiler.java.metadata.TypeParameters;
-import org.eclipse.ceylon.compiler.java.metadata.Variance;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.AnnotationBearing;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.FunctionalUtil;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.FunctionImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
 import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import org.eclipse.ceylon.model.typechecker.model.Class;
-import org.eclipse.ceylon.model.typechecker.model.Functional;
-
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ClassWithInitializerDeclarationConstructor;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.FunctionOrValueDeclarationImpl;
 
 import ceylon.language.Anything;
 import ceylon.language.DeprecationAnnotation$annotation$;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.SharedAnnotation$annotation$;
-import ceylon.language.ThrownExceptionAnnotation$annotation$;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
@@ -265,12 +260,11 @@ public class ClassWithInitializerDeclarationConstructor
             TypeDescriptor $reified$Result, TypeDescriptor $reified$Arguments,
             Sequential<? extends Type<? extends Object>> typeArguments) {
         // apply the given type arguments to the containing class
-        ClassDeclaration clsDecl = getContainer();
-        ceylon.language.meta.model.Class<? extends Result, ?> cls 
-                = clsDecl.<Result, Sequential<? extends java.lang.Object>>classApply(
+        ceylon.language.meta.model.Class<? extends Result, ? extends Sequential<? extends Object>> cls 
+                = getContainer().<Result, Sequential<? extends Object>>classApply(
                         $reified$Result, Nothing.NothingType, typeArguments);
         // then get the constructor from that
-        return Util.assertExists((CallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName()));
+        return Util.assertExists((CallableConstructor)((ClassImpl)cls).getDeclaredConstructorInternal($reified$Arguments, getName()));
     }
     
     @Override
@@ -291,7 +285,7 @@ public class ClassWithInitializerDeclarationConstructor
                 = getContainer().<Container, Result, Sequential<? extends Object>>memberClassApply(
                         $reified$Container, $reified$Result, Nothing.NothingType, containerType, typeArguments);
         // then get the constructor from that
-        return Util.assertExists((MemberClassCallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName()));
+        return Util.assertExists((MemberClassCallableConstructor)((MemberClassImpl)cls).getDeclaredConstructorInternal($reified$Arguments, getName()));
     }
     
     @Override

@@ -48,6 +48,7 @@ import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.FunctionModel;
+import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.ValueConstructor;
 import ceylon.language.meta.model.ValueModel;
@@ -350,6 +351,18 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             TypeDescriptor $reified$Arguments,
             @Name("name")
             String name) {
+        try {
+            return getDeclaredConstructorInternal($reified$Arguments, name);
+        }
+        catch (IncompatibleTypeException ite) {
+            return null;
+        }
+    }
+    
+    @Ignore
+    public <Arguments extends Sequential<? extends Object>> java.lang.Object getDeclaredConstructorInternal(
+            TypeDescriptor $reified$Arguments,
+            String name) {
         checkInit();
         final ceylon.language.meta.declaration.Declaration ctor = ((ClassDeclarationImpl)declaration).getConstructorDeclaration(name);
         if(ctor == null)
@@ -361,9 +374,6 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
                     declaration.declaration.getUnit(), 
                     (Functional) ctorImpl.declaration, 
                     ctorImpl.declaration.appliedReference(producedType, null));
-            if (!reifiedArguments.isSubtypeOf(argumentsType)) {
-                return null;
-            }
             if (ctor instanceof ClassWithInitializerDeclarationConstructor) {
                 TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)((ClassWithInitializerDeclarationConstructor)ctor).declaration, this.producedType);
                 Metamodel.checkReifiedTypeArgument("getDeclaredConstructor", "CallableConstructor<$1,$2>",
