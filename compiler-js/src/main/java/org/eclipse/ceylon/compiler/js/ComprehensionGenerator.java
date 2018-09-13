@@ -9,6 +9,9 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.wrapAsIterableArguments;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -69,8 +72,8 @@ class ComprehensionGenerator {
         gen.out(tail);
         gen.endBlock(); // end one more block - this one is for the function
         gen.out(",");
-        TypeUtils.printTypeArguments(that,gen, false, 
-                TypeUtils.wrapAsIterableArguments(that.getTypeModel()), 
+        printTypeArguments(that,gen, false, 
+                wrapAsIterableArguments(that.getTypeModel()), 
                 null);
         gen.out(")");
     }
@@ -320,8 +323,8 @@ class ComprehensionGenerator {
         }
         gen.endBlock();
         gen.out(",");
-        TypeUtils.printTypeArguments(that, gen, false, 
-                TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
+        printTypeArguments(that, gen, false, 
+                wrapAsIterableArguments(that.getTypeModel()),
                 null);
         gen.out(")");
     }

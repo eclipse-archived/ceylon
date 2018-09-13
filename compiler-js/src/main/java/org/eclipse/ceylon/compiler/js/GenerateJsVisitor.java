@@ -921,9 +921,7 @@ public class GenerateJsVisitor extends Visitor {
         qualify(that,aliased);
         out(names.name(aliased), "(");
         if (!pt.getTypeArguments().isEmpty()) {
-            printTypeArguments(that, this, true,
-                    pt.getTypeArguments(), 
-                    pt.getVarianceOverrides());
+            printTypeArguments(that, pt, this, true);
             out(",");
         }
         out(names.self(d), ");}");
@@ -985,14 +983,9 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             out("/*PENDIENTE NAMED ARG CLASS DECL */");
         }
-        Map<TypeParameter, Type> invargs = 
-                ext.getType().getTypeModel()
-                    .getTypeArguments();
-        if (invargs != null && !invargs.isEmpty()) {
-            printTypeArguments(that, this, true,
-                    invargs, 
-                    ext.getType().getTypeModel()
-                        .getVarianceOverrides());
+        Type type = ext.getType().getTypeModel();
+        if (type.getTypeArguments().isEmpty()) {
+            printTypeArguments(that, type, this, true);
             out(",");
         }
         out(names.self(d), ");}");
@@ -2318,7 +2311,7 @@ public class GenerateJsVisitor extends Visitor {
             out(",");
             encodeCallableArgumentsAsParameterListForRuntime(term, ct, this);
             out(",");
-            printTypeArguments(term, this, true, ct.getTypeArguments(), null);
+            printTypeArguments(term, ct, this, true);
         }
         boxUnboxEnd(t);
     }
@@ -2615,10 +2608,8 @@ public class GenerateJsVisitor extends Visitor {
                                         out("[/*VALUE Callable params ", ps.asString()+"*/],");
                                     }
                                 }
-                                printTypeArguments(expr, 
-                                        GenerateJsVisitor.this, false, 
-                                        expr.getTypeModel().getTypeArguments(),
-                                        expr.getTypeModel().getVarianceOverrides());
+                                printTypeArguments(expr, expr.getTypeModel(),
+                                        GenerateJsVisitor.this, false);
                             }
                             boxUnboxEnd(boxType);
                         }

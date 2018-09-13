@@ -9,10 +9,15 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.js;
 
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.generateDynamicCheck;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.matchTypeParametersWithArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.spreadArrayCheck;
+import static org.eclipse.ceylon.compiler.js.util.TypeUtils.typeNameOrList;
+
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -42,7 +47,7 @@ public class SequenceGenerator {
                 if (gen.isInDynamicBlock() 
                         && expr instanceof Tree.SpreadArgument
                         && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
-                    TypeUtils.spreadArrayCheck(
+                    spreadArrayCheck(
                             ((Tree.SpreadArgument)expr).getExpression(), 
                             gen);
                 } else {
@@ -59,7 +64,7 @@ public class SequenceGenerator {
         if (seqarg == null) {
             gen.out("}return ", gen.getClAlias(), "finished();},undefined,");
         }
-        TypeUtils.printTypeArguments(node, seqType, gen, false);
+        printTypeArguments(node, seqType, gen, false);
         gen.out(")");
     }
 
@@ -92,7 +97,7 @@ public class SequenceGenerator {
                         && expr.getParameter() != null 
                         && !ModelUtil.isTypeUnknown(expr.getParameter().getType())) {
                     //TODO find out how to test this, if at all possible
-                    TypeUtils.generateDynamicCheck(
+                    generateDynamicCheck(
                             ((Tree.ListedArgument)expr).getExpression(),
                             expr.getParameter().getType(), 
                             gen, false, 
@@ -139,8 +144,8 @@ public class SequenceGenerator {
             if (typeArgs != null 
                     && typeArgs.getTypeModels()!=null
                     && !typeArgs.getTypeModels().isEmpty()) {
-                TypeUtils.printTypeArguments(that, gen, true, 
-                        TypeUtils.matchTypeParametersWithArguments(
+                printTypeArguments(that, gen, true, 
+                        matchTypeParametersWithArguments(
                                 that.getDeclaration().getTypeParameters(),
                                 typeArgs.getTypeModels()),
                         null);
@@ -149,16 +154,16 @@ public class SequenceGenerator {
             }
             gen.out(",");
             if (type != null && type.isCallable()) {
-                TypeUtils.typeNameOrList(that, type.getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
+                typeNameOrList(that, type.getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
             } else {
-                TypeUtils.typeNameOrList(that, type, gen, false);
+                typeNameOrList(that, type, gen, false);
             }
             gen.out(")");
         } else {
             gen.supervisit(that);
             gen.out(".collect(function(e){return ", gen.memberAccess(that, "e"),
                     ";},{Result$collect:");
-            TypeUtils.typeNameOrList(that, type.getTypeArgumentList().get(0), gen, false);
+            typeNameOrList(that, type.getTypeArgumentList().get(0), gen, false);
             gen.out("})");
         }
     }
@@ -203,7 +208,7 @@ public class SequenceGenerator {
             gen.out("/*WARNING no Element found* /");
             elem = that.getUnit().getAnythingType();
         }
-        TypeUtils.typeNameOrList(that, elem, gen, false);
+        typeNameOrList(that, elem, gen, false);
         if (wantsIterable) {
             gen.out(",Absent$Iterable:{t:", gen.getClAlias(),
                     nonempty?"Nothing}}":"Null}}");
