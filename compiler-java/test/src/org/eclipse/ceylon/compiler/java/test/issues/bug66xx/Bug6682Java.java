@@ -3,8 +3,10 @@ package org.eclipse.ceylon.compiler.java.test.issues.bug66xx;
 import java.util.List;
 import java.util.Map;
 
-public class Bug6682Java<X>{
+class Bug6682Java<X>{
     
+    Bug6682Java(X x) {}
+        
     public <T> T getParameterValueNo1(Bug6682Java<T> param){ return null; }
     public <T> T getParameterValueNo2(Bug6682Java<T> param, T t){ return null; }
     public <T> T getParameterValueNo3(Bug6682Java<? extends T> param){ return null; }
@@ -22,4 +24,10 @@ public class Bug6682Java<X>{
     
     public <T,S> Map<T,S> getParameterValues(Bug6682Java<T> p, Bug6682Java<S> q){ return null; }
     
+}
+
+class Bug6682List<X> extends Bug6682Java<X>{
+    Bug6682List(List<X> list) {
+        super(list.get(0));
+    }
 }

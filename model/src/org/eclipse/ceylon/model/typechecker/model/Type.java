@@ -1796,7 +1796,21 @@ public class Type extends Reference {
     }
 
     public Type getType() {
-        return this;
+        if (getCapturedWildcards().isEmpty()) {
+            return this;
+        }
+        else {
+            TypeDeclaration declaration = 
+                    getDeclaration();
+            if (declaration==null) {
+                return this;
+            }
+            else {
+                return declaration.getType()
+                        .applyCapturedWildcards(this)
+                        .substitute(this);
+            }
+        }
     }
     
     /**
@@ -5116,7 +5130,7 @@ public class Type extends Reference {
         }
     }
      
-    public Type applyCapturedWildcards(TypedReference source) {
+    Type applyCapturedWildcards(Reference source) {
         return applyVarianceOverrides(this, true, false,
                     source.getCapturedWildcards());
     }

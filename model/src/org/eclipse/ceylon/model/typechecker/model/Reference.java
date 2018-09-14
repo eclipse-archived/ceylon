@@ -41,6 +41,9 @@ public abstract class Reference {
     
     protected Type qualifyingType;
     
+    private Map<TypeParameter, SiteVariance> capturedWildcards =
+            EMPTY_VARIANCE_MAP;
+    
     //cache
     private Map<TypeParameter, Type> typeArgumentsWithDefaults;
     
@@ -296,8 +299,8 @@ public abstract class Reference {
      */
     private boolean canCaptureWildcard(TypeParameter tp) {
         Declaration dec = getDeclaration();
-        if (dec instanceof Function) { //TODO: should we do it for classes too?
-            Function func = (Function) dec;
+        if (dec instanceof Functional) {
+            Functional func = (Functional) dec;
             ParameterList paramList = 
                     func.getFirstParameterList();
             if (paramList!=null) {
@@ -330,6 +333,21 @@ public abstract class Reference {
         }
         
         return false;
+    }
+    
+    Map<TypeParameter, SiteVariance> getCapturedWildcards() {
+        return capturedWildcards;
+    }
+    
+    void setCapturedWildcards(Map<TypeParameter, SiteVariance> capturedWildcards) {
+        this.capturedWildcards = capturedWildcards;
+    }
+    
+    public void addCapturedWildcards(TypedReference paramRef) {
+        if (this.capturedWildcards == EMPTY_VARIANCE_MAP) {
+            this.capturedWildcards = new HashMap<TypeParameter, SiteVariance>(capturedWildcards.size());
+        }
+        this.capturedWildcards.putAll(paramRef.getCapturedWildcards());
     }
     
     public abstract String asString();

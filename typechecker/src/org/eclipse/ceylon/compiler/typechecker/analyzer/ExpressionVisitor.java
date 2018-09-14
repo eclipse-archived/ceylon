@@ -6055,30 +6055,35 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkPositionalArgument(Parameter p, 
-            Reference pr, Tree.ListedArgument a,
+            Reference pr, Tree.ListedArgument arg,
             Tree.InvocationExpression ie) {
         FunctionOrValue paramModel = p.getModel();
         if (paramModel!=null) {
-            a.setParameter(p);
+            arg.setParameter(p);
             TypedReference paramRef = 
                     pr.getTypedParameter(p);
+            Scope scope = arg.getScope();
             Type paramType = 
-                    paramType(a.getScope(), 
-                            paramRef, paramModel);
-            Type argType = a.getTypeModel();
+                    paramType(scope, paramRef, 
+                            paramModel);
+            Type argType = arg.getTypeModel();
             if (!isTypeUnknown(argType) && 
                 !isTypeUnknown(paramType)) {
                 
-                for (SiteVariance var: SiteVariance.values()) {
-                    if (!argType.isSubtypeOf(paramType)) {
-                        TypedReference paramRef2 = 
-                                pr.getTypedParameterWithWildcardCapture(p, var);
-                        Type paramType2 = 
-                                paramType(a.getScope(), 
-                                        paramRef2, paramModel);
-                        if (argType.isSubtypeOf(paramType2)) {
-                            paramRef = paramRef2;
-                            paramType = paramType2;
+                boolean wildcardCapture = false;
+                if (pr.getDeclaration().isJava()) {
+                    for (SiteVariance var: SiteVariance.values()) {
+                        if (!argType.isSubtypeOf(paramType)) {
+                            TypedReference paramRef2 = 
+                                    pr.getTypedParameterWithWildcardCapture(p, var);
+                            Type paramType2 = 
+                                    paramType(scope, paramRef2, 
+                                            paramModel);
+                            if (argType.isSubtypeOf(paramType2)) {
+                                paramRef = paramRef2;
+                                paramType = paramType2;
+                                wildcardCapture = true;
+                            }
                         }
                     }
                 }
@@ -6090,7 +6095,7 @@ public class ExpressionVisitor extends Visitor {
                               .getPositionalArguments()
                               .get(1)
                               .getTypeModel();
-                    checkAssignable(argType, paramType, a, 
+                    checkAssignable(argType, paramType, arg, 
                             "functions of type '" 
                             + ot.asString(unit)
                             + "' and '"
@@ -6098,16 +6103,13 @@ public class ExpressionVisitor extends Visitor {
                             + "' do not compose");
                 }
                 else {
-                    checkAssignable(argType, paramType, a, 
+                    checkAssignable(argType, paramType, arg, 
                             "argument must be assignable to parameter " 
                                     + argdesc(p, pr), 2100);
                 }
                 
-                if (pr instanceof TypedReference 
-                        && !paramRef.getCapturedWildcards()
-                                    .isEmpty()) {
-                    ((TypedReference) pr).addCapturedWildcards(
-                            paramRef.getCapturedWildcards());
+                if (wildcardCapture) {
+                    pr.addCapturedWildcards(paramRef);
                     ie.setTypeModel(pr.getType());
                 }
             }
