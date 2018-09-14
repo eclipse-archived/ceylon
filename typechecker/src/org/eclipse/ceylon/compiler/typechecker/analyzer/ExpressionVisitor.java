@@ -98,6 +98,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeConstraintList;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -10574,6 +10575,16 @@ public class ExpressionVisitor extends Visitor {
         dynamic = od;
     }
     
+    boolean inTypeConstraint = false;
+    
+    @Override
+    public void visit(TypeConstraintList that) {
+        boolean oitc = inTypeConstraint;
+        inTypeConstraint = true;
+        super.visit(that);
+        inTypeConstraint = oitc;
+    }
+    
     /**
      * Checks the types of the given type arguments against
      * the type parameters of the given declaration, and
@@ -10598,7 +10609,9 @@ public class ExpressionVisitor extends Visitor {
             Node parent) {
         
         if (typeArguments!=null && dec!=null) {
-            checkVarianceAnnotations(tas, parent);
+            if (!inTypeConstraint) {
+                checkVarianceAnnotations(tas, parent);
+            }
             
             if (dec.isParameterized()) {
                 checkTypeArgumentsOfDeclaration(
