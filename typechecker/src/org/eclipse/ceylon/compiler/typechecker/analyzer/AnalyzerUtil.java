@@ -766,11 +766,12 @@ public class AnalyzerUtil {
 
     static Type checkSupertype(Type type, 
             TypeDeclaration td, Node node, String message) {
-        return checkSupertype(type, false, td, node, message);
+        return checkSupertype(type, false, false, td, node, message);
     }
     
     static Type checkSupertype(Type type, boolean unary, 
-            TypeDeclaration td, Node node, String message) {
+            boolean effectivelyContra, TypeDeclaration td, 
+            Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return null;
@@ -789,9 +790,8 @@ public class AnalyzerUtil {
                                         td.getName() + "'", 
                                 node.getUnit()));
             }
-            else if (!unary &&
-                    !supertype.getVarianceOverrides()
-                        .isEmpty()
+            else if (!hasOkWildcard(supertype, unary, 
+                                    effectivelyContra)
                     || supertype.containsUnknowns()) {
                 node.addError(message + 
                         message(type, 
@@ -801,6 +801,22 @@ public class AnalyzerUtil {
             }
             return supertype;
         }
+    }
+
+    private static boolean hasOkWildcard(Type supertype,
+            boolean unary, boolean effectivelyContra) {
+        return unary 
+            || supertype.getVarianceOverrides()
+                        .isEmpty()
+            || effectivelyContra 
+            && !supertype.isCovariant(selfType(supertype));
+    }
+
+    private static TypeParameter selfType(Type supertype) {
+        return (TypeParameter) 
+                supertype.getDeclaration()
+                        .getSelfType()
+                        .getDeclaration();
     }
 
     static void checkAssignable(Type type, 

@@ -6816,7 +6816,9 @@ public class ExpressionVisitor extends Visitor {
             Type lhst, Type rhst, 
             TypeDeclaration td, Node node, String message) {
         Type lhsst = 
-                checkSupertype(lhst, td, node, message);
+                checkSupertype(lhst, false,
+                        td==unit.getComparableDeclaration(),
+                        td, node, message);
         if (lhsst!=null) {
             Type at = lhsst.getTypeArgumentList().get(0);
             checkAssignable(rhst, at, node, message);
@@ -7094,7 +7096,7 @@ public class ExpressionVisitor extends Visitor {
         Type t = type(that);
         if (!isTypeUnknown(t)) {
             Type nt = 
-                    checkSupertype(t, true, type, 
+                    checkSupertype(t, true, false, type, 
                             that.getTerm(), 
                             "operand expression must be of correct type");
             if (nt!=null) {
