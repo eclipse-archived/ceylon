@@ -65,7 +65,7 @@ see (class Comparison,
 by ("Gavin")
 tagged("Comparisons")
 shared interface Comparable<Other> of Other 
-        given Other satisfies Comparable<Other> {
+        given Other satisfies Comparable<in Other> {
     
     "Compares this value with the given value, returning:
      
