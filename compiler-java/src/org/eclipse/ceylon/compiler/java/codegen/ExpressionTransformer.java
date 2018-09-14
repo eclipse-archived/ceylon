@@ -3185,7 +3185,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // make this call: previousValue OP RHS
                 return transformOverridableBinaryOperator(op, leftTerm, rightTerm, rightType,
                         operator.binaryOperator, 
-                        boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE, 
+                        boxResult ? 
+                                OptimisationStrategy.NONE : 
+                                OptimisationStrategy.OPTIMISE, 
                         previousValue, op.getTypeModel());
             }
         });
@@ -3207,7 +3209,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         // we can use unboxed types if both operands are unboxed
-        final boolean boxResult = op.getBinary() && !op.getUnboxed();
+        final boolean boxResult = !op.getBinary() || !op.getUnboxed();
 
         Interface compoundType = op.getBinary() ? typeFact().getBinaryDeclaration() : typeFact().getSetDeclaration();
 
@@ -3222,7 +3224,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // make this call: previousValue OP RHS
                 return transformOverridableBinaryOperator(op, leftTerm, rightTerm, rightType, 
                         operator.binaryOperator, 
-                        boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE,
+                        boxResult ? 
+                                OptimisationStrategy.NONE : 
+                                OptimisationStrategy.OPTIMISE,
                         previousValue, op.getTypeModel());
             }
         });
