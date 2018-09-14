@@ -20,6 +20,7 @@
 
 package org.eclipse.ceylon.compiler.java.codegen;
 
+import static org.eclipse.ceylon.compiler.java.codegen.CodegenUtil.isDirectAccessVariable;
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
@@ -3121,40 +3122,41 @@ public class ExpressionTransformer extends AbstractTransformer {
         return binop;
     }
 
-    //
     // Operator-Assignment expressions
 
     private Type getRightType(final Tree.Term leftTerm, final Tree.Term rightTerm, Interface compoundType) {
-        final Type leftSupertype = getSupertype(leftTerm, compoundType);
-        
-        // Normally we don't look at the RHS type because it can lead to unknown types, but if we want to extract its
-        // underlying type we have to, and we deal with any eventual unknown type. Presumably unknown types will not 
-        // have any useful underlying type anyways.
-        // Note that looking at the RHS allows us to not have the issue of using the LHS type wrongly for the RHS type 
-        // when the LHS type is Float and the RHS type is Integer with implicit Float coercion
         Type rightSupertype = getSupertype(rightTerm, compoundType);
+        Type leftSupertype = getSupertype(leftTerm, compoundType);
+        
+        // Normally we don't look at the RHS type because it can lead to unknown types, 
+        // but if we want to extract its underlying type we have to, and we deal with 
+        // any eventual unknown type. Presumably unknown types will not have any useful 
+        // underlying type anyways. Note that looking at the RHS allows us to not have 
+        // the issue of using the LHS type wrongly for the RHS type when the LHS type 
+        // is Float and the RHS type is Integer with implicit Float coercion
         if (rightSupertype == null || rightSupertype.isUnknown()) {
             // supertype could be null if, e.g. right type is Nothing
             rightSupertype = leftSupertype;
         }
-        Type rightTypeArgument = getTypeArgument(rightSupertype);
-        if (rightTypeArgument == null || rightTypeArgument.isUnknown()) {
-            rightTypeArgument = getTypeArgument(leftSupertype);
+        Type selfType = getSelfType(rightSupertype);
+        if (selfType == null || selfType.isUnknown()) {
+            selfType = getSelfType(leftSupertype);
         }
-        return getMostPreciseType(leftTerm, rightTypeArgument);
+        return getMostPreciseType(leftTerm, selfType);
     }
 
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op);
         if(operator == null){
-            return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not a supported arithmetic assignment operator");
+            return makeErroneous(op, "compiler bug: " + op.getNodeType() 
+                 + " is not a supported arithmetic assignment operator");
         }
 
         final Tree.Term leftTerm = op.getLeftTerm();
         final Tree.Term rightTerm = op.getRightTerm();
 
         // see if we can optimise it
-        if(op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
+        if(op.getUnboxed() && isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -3162,15 +3164,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         final boolean boxResult = !op.getUnboxed();
         
         // find the proper type
-        Interface compoundType = op.getUnit().getNumericDeclaration();
+        Unit unit = op.getUnit();
+        final Interface compoundType;
         if(op instanceof Tree.AddAssignOp){
-            compoundType = op.getUnit().getSummableDeclaration();
+            compoundType = unit.getSummableDeclaration();
         }else if(op instanceof Tree.MultiplyAssignOp){
-            compoundType = op.getUnit().getMultiplicableDeclaration();
+            compoundType = unit.getMultiplicableDeclaration();
         }else if(op instanceof Tree.SubtractAssignOp){
-            compoundType = op.getUnit().getInvertableDeclaration();
+            compoundType = unit.getInvertableDeclaration();
         }else if(op instanceof Tree.RemainderAssignOp){
-            compoundType = op.getUnit().getIntegralDeclaration();
+            compoundType = unit.getIntegralDeclaration();
+        }else{
+            compoundType = unit.getNumericDeclaration();
         }
         
         final Type rightType = getRightType(leftTerm, rightTerm, compoundType);
@@ -3197,24 +3202,42 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(final Tree.BitwiseAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op);
         if(operator == null){
-            return makeErroneous(op, "compiler bug: "+op.getNodeType() +" is not a supported bitwise assignment operator");
+            return makeErroneous(op, "compiler bug: " + op.getNodeType() 
+                 + " is not a supported bitwise assignment operator");
         }
 
         final Tree.Term leftTerm = op.getLeftTerm();
         final Tree.Term rightTerm = op.getRightTerm();
 
-        // see if we can optimise it
-        if(op.getBinary() && op.getUnboxed() && CodegenUtil.isDirectAccessVariable(leftTerm)){
-            return optimiseAssignmentOperator(op, operator);
+        final boolean boxResult;
+        final Interface compoundType;
+        final Type leftType;
+        final Type rightType;
+        
+        if(op.getBinary()) {
+            // see if we can optimise it
+            if(op.getUnboxed() && isDirectAccessVariable(leftTerm)){
+                return optimiseAssignmentOperator(op, operator);
+            }
+            
+            // we can use unboxed types if both operands are unboxed
+            boxResult = !op.getUnboxed();
+    
+            compoundType = typeFact().getBinaryDeclaration();
+    
+            leftType = leftTerm.getTypeModel();
+            rightType = getRightType(leftTerm, rightTerm, compoundType);
+        }
+        else {
+            // we can use unboxed types if both operands are unboxed
+            boxResult = true;
+    
+            compoundType = typeFact().getSetDeclaration();
+    
+            leftType = leftTerm.getTypeModel();
+            rightType = getSupertype(rightTerm, compoundType);
         }
         
-        // we can use unboxed types if both operands are unboxed
-        final boolean boxResult = !op.getBinary() || !op.getUnboxed();
-
-        Interface compoundType = op.getBinary() ? typeFact().getBinaryDeclaration() : typeFact().getSetDeclaration();
-
-        final Type leftType = leftTerm.getTypeModel();
-        final Type rightType = getRightType(leftTerm, rightTerm, compoundType);
         final Type resultType = getLeastPreciseType(leftTerm, rightTerm);
         
         return transformAssignAndReturnOperation(op, leftTerm, boxResult, leftType, resultType, 
@@ -3242,7 +3265,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final Tree.Term rightTerm = op.getRightTerm();
         
         // optimise if we can
-        if(CodegenUtil.isDirectAccessVariable(leftTerm)){
+        if(isDirectAccessVariable(leftTerm)){
             return optimiseAssignmentOperator(op, operator);
         }
         
@@ -3278,7 +3301,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean canOptimise = optimisationStrategy.useJavaOperator();
         
         // only fully optimise if we don't have to access the getter/setter
-        if(canOptimise && CodegenUtil.isDirectAccessVariable(expr.getTerm())){
+        if(canOptimise && isDirectAccessVariable(expr.getTerm())){
             JCExpression term = transformExpression(expr.getTerm(), BoxingStrategy.UNBOXED, expr.getTypeModel(), EXPR_WIDEN_PRIM);
             return at(expr).Unary(operator.javacOperator, term);
         }
@@ -3415,7 +3438,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Tree.Term term = expr.getTerm();
         // only fully optimise if we don't have to access the getter/setter
-        if(canOptimise && CodegenUtil.isDirectAccessVariable(term)){
+        if(canOptimise && isDirectAccessVariable(term)){
             JCExpression jcTerm = transformExpression(term, BoxingStrategy.UNBOXED, expr.getTypeModel(), EXPR_WIDEN_PRIM);
             return at(expr).Unary(operator.javacOperator, jcTerm);
         }
@@ -7620,15 +7643,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     private Type getMostPreciseType(Tree.Term term, Type defaultType) {
         // special case for interop when we're dealing with java types
         Type termType = term.getTypeModel();
-        if(!term.getSmall() && termType.getUnderlyingType() != null)
+        if(!term.getSmall() && termType.getUnderlyingType() != null) {
             return termType;
+        }
         return defaultType;
     }
     
     private Type getLeastPreciseType(Tree.Term term, Tree.Term defaultType) {
         Type termType = term.getTypeModel();
-        if(term.getSmall() || termType.getUnderlyingType() != null)
+        if(term.getSmall() || termType.getUnderlyingType() != null) {
             return defaultType.getTypeModel();
+        }
         return termType;
     }
 
