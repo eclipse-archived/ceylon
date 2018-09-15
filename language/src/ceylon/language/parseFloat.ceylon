@@ -41,7 +41,7 @@ shared Float? parseFloat(String? string)
         then result
         else null;
 
-class ParseFloatState 
+final class ParseFloatState 
         of start 
          | afterPlusMinus 
          | digitsBeforeDecimal 
