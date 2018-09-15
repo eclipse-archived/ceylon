@@ -25,5 +25,5 @@ see (interface Comparable,
      function Float.smallest)
 tagged("Comparisons")
 shared Element smallest<Element>(Element x, Element y) 
-        given Element satisfies Comparable<in Element> 
+        given Element satisfies Comparable<Element> 
         => if (x!=x || y<x) then y else x;

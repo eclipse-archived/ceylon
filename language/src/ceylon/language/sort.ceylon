@@ -20,6 +20,6 @@ shared [Element+] | []&Iterable<Element,Absent>
 sort<Element,Absent>(
         "The unsorted stream of elements."
         Iterable<Element,Absent> elements) 
-        given Element satisfies Comparable<in Element> 
+        given Element satisfies Comparable<Element> 
         given Absent satisfies Null
-        => elements.sort((x,y) => x<=>y);
+        => elements.sort(increasing);

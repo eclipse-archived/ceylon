@@ -33,12 +33,12 @@ see (interface Comparable,
 tagged("Comparisons", "Streams")
 shared native Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values) 
-        given Value satisfies Comparable<in Value>
+        given Value satisfies Comparable<Value>
         given Absent satisfies Null;
 
 shared native("js") Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values) 
-        given Value satisfies Comparable<in Value>
+        given Value satisfies Comparable<Value>
         given Absent satisfies Null {
     value it = values.iterator();
     if (!is Finished first = it.next()) {
@@ -63,7 +63,7 @@ shared native("js") Absent|Value max<Value,Absent>
 
 shared native("jvm") Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values)
-        given Value satisfies Comparable<in Value>
+        given Value satisfies Comparable<Value>
         given Absent satisfies Null {
     
     value it = values.iterator();

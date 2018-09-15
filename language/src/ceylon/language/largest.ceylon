@@ -25,5 +25,5 @@ see (interface Comparable,
      function Float.largest)
 tagged("Comparisons")
 shared Element largest<Element>(Element x, Element y) 
-        given Element satisfies Comparable<in Element> 
+        given Element satisfies Comparable<Element> 
         => if (x!=x || y>x) then y else x;
