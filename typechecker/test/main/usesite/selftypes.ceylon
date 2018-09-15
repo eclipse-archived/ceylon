@@ -1,8 +1,14 @@
 void selfTypeCoverage() {
-    Comparable<Integer> k = 1;
-    Integer kk = k of Integer;
-    Comparable<out Integer> i = 1;
-    Integer ii = i of Integer;
-    Comparable<in Integer> j = 1;
-    $error Integer jj = j of Integer;
+    
+    interface Comparable<I> of I 
+            given I satisfies Comparable<in I> {}
+    
+    class Int() satisfies Comparable<Int> {}
+    
+    Comparable<Int> k = Int();
+    Int kk = k of Int;
+    Comparable<out Int> i = Int();
+    Int ii = i of Int;
+    Comparable<in Int> j = Int();
+    $error Int jj = j of Int;
 }
