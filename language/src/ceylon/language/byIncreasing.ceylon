@@ -39,8 +39,8 @@ see (function decreasing,
      function Iterable.sort)
 tagged("Comparisons")
 since("1.2.0")
-shared Comparison increasing<Element>
-        (Comparable<Element> x, Element y)
+shared Comparison increasing<Element>(Element x, Element y)
+        given Element satisfies Comparable<Element> 
         => x<=>y;
 
 "A comparator function which orders [[entries|Entry]] by 
