@@ -752,7 +752,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     static TypeParameter getSelfTypeParam(Type exprType) {
-        Type selfTypeParam = exprType.getDeclaration().getSelfType();
+        TypeDeclaration dec = exprType.getDeclaration();
+        if (dec.isComparable()) {
+            return dec.getTypeParameters().get(0);
+        }
+        Type selfTypeParam = dec.getSelfType();
         if (selfTypeParam!=null && selfTypeParam.isTypeParameter()) {
             return (TypeParameter) selfTypeParam.getDeclaration();
         }
@@ -760,19 +764,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     static Type getSelfType(Type exprType) {
-        Type selfTypeParam = exprType.getDeclaration().getSelfType();
-        if (selfTypeParam!=null && selfTypeParam.isTypeParameter()) {
-            return exprType.getTypeArguments().get(selfTypeParam.getDeclaration());
+        TypeParameter selfTypeParam = getSelfTypeParam(exprType);
+        if (selfTypeParam!=null) {
+            return exprType.getTypeArguments().get(selfTypeParam);
         }
-//        if (exprType.getDeclaration().isParameterized()) {
-//            Type argType = exprType.getTypeArgumentList().get(0);
-//            if (argType.isSubtypeOf(exprType)) {
-//                // unfortunately X is not a self type 
-//                // of Comparable<X> and therefore does 
-//                // not cover Comparable<X>
-//                return argType;
-//            }
-//        }
         return null;
     }
 
