@@ -1,6 +1,6 @@
 package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
 
-class Bug1603<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<Element> & .ceylon.language.Summable<Element>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+class Bug1603<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element> & .ceylon.language.Summable<Element>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1603(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

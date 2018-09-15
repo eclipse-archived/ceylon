@@ -5,7 +5,7 @@ final class bug975_2_dontSort_ {
     private bug975_2_dontSort_() {
     }
     
-    static <Element extends .ceylon.language.Comparable<Element>>.ceylon.language.Sequential<? extends Element> bug975_2_dontSort(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> elements) {
+    static <Element extends .ceylon.language.Comparable<? super Element>>.ceylon.language.Sequential<? extends Element> bug975_2_dontSort(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> elements) {
         return (.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>)(.ceylon.language.Iterable)elements).sequence();
     }
 }

@@ -6,8 +6,8 @@ final class bug616_ {
     }
     
     static void bug616() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<.ceylon.language.String>> comparables = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
-        final .ceylon.language.Iterable<? extends .ceylon.language.Comparable<.ceylon.language.String>, ? extends .java.lang.Object> iterable$2 = comparables;
+        final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> comparables = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
+        final .ceylon.language.Iterable<? extends .ceylon.language.Comparable<? super .ceylon.language.String>, ? extends .java.lang.Object> iterable$2 = comparables;
         final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$1 = null;
         int i$4 = 0;
@@ -17,10 +17,10 @@ final class bug616_ {
         } else {
             length$5 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Comparable<.ceylon.language.String>> c$iterator$$6 = isTuple$3 ? null : iterable$2.iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> c$iterator$$6 = isTuple$3 ? null : iterable$2.iterator();
         loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$1 = c$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
-            final .ceylon.language.Comparable<.ceylon.language.String> c = (.ceylon.language.Comparable<.ceylon.language.String>)(.ceylon.language.Comparable)elem$1;
+            final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)(.ceylon.language.Comparable)elem$1;
             .ceylon.language.print_.print(c);
         }
     }
