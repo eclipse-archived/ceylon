@@ -522,6 +522,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `uncheckedTypeArguments`,
      `inferredNotNull`,
      `implicitNarrowing`,
+     `narrowingDisabled`
      `catchType`,
      `directiveInFinally`."
     String* warnings) 

@@ -1086,8 +1086,11 @@ public class ExpressionVisitor extends Visitor {
                 ref.addError(message, code);
             }
             else {
-                ref.addUsageWarning(Warning.syntaxDeprecation, 
-                        message);
+                Type type = ref.getTypeModel();
+                if (type==null || !type.getDeclaration().isFinal()) {
+                    ref.addUsageWarning(Warning.narrowingDisabled, 
+                            message);
+                }
             }
         }
     }
