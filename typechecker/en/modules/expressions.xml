@@ -1663,16 +1663,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>Alternatively, the expression may be an <literal>if/then/else</literal> 
             expression or another let expression.</para>
             
-            <para>A pattern list is enclosed in parentheses.</para>
-            
-            <synopsis>PatternList: "(" PatternListElement ("," PatternListElement)* ")"</synopsis>
-            
-            <para>Each element of the pattern list is a pattern, as defined in
-            <xref linkend="patterns"/>, followed by a specified expression. The
-            patterned type is the type of the specified expression.</para>
-            
-            <synopsis>PatternListElement: Pattern Specifier</synopsis>
-            
             <para>The pattern variables that occur in the pattern list are 
             considered in scope in the expression that follows the pattern
             list. Furthermore, a specified expression in the pattern list 

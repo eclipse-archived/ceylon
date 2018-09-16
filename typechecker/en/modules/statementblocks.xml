@@ -2851,15 +2851,30 @@ else "total must be less than ``bound``";</programlisting>
             <title>Destructuring statements</title>
             
             <para>A <emphasis>destructuring statement</emphasis> assigns expressions 
-            to patterns, as defined above in <xref linkend="patterns"/>.</para>
+            to patterns.</para>
             
-            <synopsis>Destructure: "let" "(" Pattern Specifier ("," Pattern Specifier)* ")" ";"</synopsis>
+            <synopsis>Destructure: "let" PatternList ";"</synopsis>
+            
+            <para>A pattern list is enclosed in parentheses.</para>
+            
+            <synopsis>PatternList: "(" PatternListElement ("," PatternListElement)* ")"</synopsis>
+            
+            <para>Each element of the pattern list is a pattern, as defined above in
+            <xref linkend="patterns"/>, followed by a specified expression. The
+            patterned type is the type of the specified expression.</para>
+            
+            <synopsis>PatternListElement: Pattern Specifier</synopsis>
             
             <para>The type of a specified expression is the patterned type of the
             corresponding pattern.</para>
             
-             <programlisting>let ([x, y] = pair, d = sqrt(x^2+y^2));</programlisting>
+            <para>The pattern variables that occur in the pattern list are 
+            considered in scope in the block containing the destructuring statement. 
+            Furthermore, a specified expression in the pattern list may refer to a 
+            pattern variable declared by an earlier element in the pattern list.</para>
             
+            <programlisting>let ([x, y] = pair, d = sqrt(x^2+y^2));</programlisting>
+             
         </section>
         
         
