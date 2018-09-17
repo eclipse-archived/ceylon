@@ -656,7 +656,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // save this before we simplify it because we lose that flag doing so
                     boolean exprIsRaw = exprType.isRaw();
                     boolean expectedTypeIsRaw = isTurnedToRaw(expectedType) && !expectedTypeIsNotRaw;
-
+                    
+                    if (forceCast 
+                            && !expectedType.isTypeParameter()
+                            && !exprType.isSubtypeOf(expectedType)
+                            && !expectedType.isSubtypeOf(exprType)) {
+                        result = make().TypeCast(syms().objectType, result);
+                    }
+                    
                     // We will need a raw cast if either the expected type or the
                     // expression type has type parameters while the other hasn't 
                     // (unless the other type is already raw)
