@@ -13,7 +13,7 @@ class Bug7361(
     shared Integer count = 0) {}
 
 @test
-void bug7362() {
+shared void bug7362() {
     ClassDeclaration decl = `Bug7362`.declaration;
     assert (exists firstConstructor = decl.constructorDeclarations().first,
         is CallableConstructorDeclaration firstConstructor);
@@ -21,7 +21,7 @@ void bug7362() {
 }
 
 @test
-void bug7361() {
+shared void bug7361() {
     ClassDeclaration decl = `Bug7361`.declaration;
     assert (exists firstConstructor = decl.constructorDeclarations().first,
         is CallableConstructorDeclaration firstConstructor);
