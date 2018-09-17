@@ -4083,7 +4083,8 @@ public class Type extends Reference {
     }
     
     private Type getUnionOfCasesInternal() {
-        Unit unit = getDeclaration().getUnit();
+        TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
         //if X is an intersection type A&B, and A is an
         //enumerated type with cases U and V, then the cases
         //of X are the intersection (U|V)&B canonicalized to
@@ -4100,38 +4101,43 @@ public class Type extends Reference {
             }
             return canonicalIntersection(list, unit);
         }
+        else if (isExactlyNothing()) {
+            return unit.getNothingType();
+        }
         else {
-            List<Type> cts = getCaseTypes();
-            if (cts==null) {
-                return narrowToUpperBounds();
+            List<Type> cases = getCaseTypes();
+            Type selfType = dec.getSelfType();
+            if (selfType!=null) {
+                //for a type like Summable<String>,
+                //form the intersection  
+                //String & Summable<String>, being
+                //careful not to throw away 
+                //information, since in certain 
+                //cases like Invertible<String>,
+                //this intersection is empty and
+                //gets reduced to Nothing
+                Type type = cases.get(0);
+                return isExactly(type) ? type :
+                    intersectionType(this,
+                        type.getUnionOfCases(),
+                        unit);
             }
-            //otherwise, if X is a union A|B, or an enumerated 
-            //type, with cases A and B, and A is an enumerated 
-            //type with cases U and V, then the cases of X are
-            //the union U|V|B
-            else {
-                //build a union of all the cases
-                TypeDeclaration d = getDeclaration();
-                if (d.getSelfType()!=null) {
-                    Type selfType = cts.get(0);
-                    if (!selfType.getDeclaration()
-                                .inherits(d)) {
-                        //an unpopulated type like
-                        //Numeric<String>
-                        return unit.getNothingType();
-                    }
-                    else {
-                        return selfType;
-                    }
-                }
+            else if (cases!=null) {
+                //f X is a union A|B, or an enumerated 
+                //type, with cases A and B, and A is 
+                //an enumerated type with cases U and V, 
+                //then the cases of X are the union U|V|B
                 List<Type> list = 
                         new ArrayList<Type>
-                            (cts.size());
-                for (Type ct: cts) {
+                            (cases.size());
+                for (Type type: cases) {
                     addToUnion(list, 
-                            ct.getUnionOfCases());
+                            type.getUnionOfCases());
                 }
                 return union(list, unit);
+            }
+            else {
+                return narrowToUpperBounds();
             }
         }
     }
