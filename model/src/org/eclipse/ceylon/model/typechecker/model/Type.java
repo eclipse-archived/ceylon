@@ -4111,14 +4111,23 @@ public class Type extends Reference {
             //the union U|V|B
             else {
                 //build a union of all the cases
+                TypeDeclaration d = getDeclaration();
+                if (d.getSelfType()!=null) {
+                    Type selfType = cts.get(0);
+                    if (!selfType.getDeclaration()
+                                .inherits(d)) {
+                        //an unpopulated type like
+                        //Numeric<String>
+                        return unit.getNothingType();
+                    }
+                    else {
+                        return selfType;
+                    }
+                }
                 List<Type> list = 
                         new ArrayList<Type>
                             (cts.size());
                 for (Type ct: cts) {
-                    if (ct.isExactly(this)) {
-                        //we hit a self type
-                        return this;
-                    }
                     addToUnion(list, 
                             ct.getUnionOfCases());
                 }
