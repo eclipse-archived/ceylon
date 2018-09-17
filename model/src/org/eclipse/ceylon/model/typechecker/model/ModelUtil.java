@@ -1287,8 +1287,6 @@ public class ModelUtil {
      * 
      * @param p the first type
      * @param q the second type
-     *        enumerated type are disjoint
-     * @param unit
      * 
      * @return true if the types are disjoint
      */

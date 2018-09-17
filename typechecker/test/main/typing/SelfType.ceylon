@@ -37,6 +37,8 @@ void test() {
 class SelfTypeEquivalence1() {
     interface Self<T> of T {}
     class X() satisfies Self<X> {}
+    $error class Y() satisfies Self<String> {}
+    $error class Z<Q>() satisfies Self<Q> {}
     interface Inv<T> {}
     Inv<Self<X>> l1 { throw; }
     Inv<X> l2 { throw; }
@@ -120,7 +122,7 @@ $error class Broken<T>() of T
 
 abstract class OkSelfTypeWithUpperBound<T>() 
         given T satisfies Object {
-    class Inner() of T {
+    $error class Inner() of T {
         shared String size = "big";
     }
     T t = Inner() of T;

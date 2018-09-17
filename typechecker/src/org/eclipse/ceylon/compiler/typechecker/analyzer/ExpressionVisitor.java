@@ -98,6 +98,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeConstraintList;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
@@ -2419,25 +2420,24 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.CaseTypes that) {
         super.visit(that);
-        if (that.getTypes().size()==1) {
-            Tree.Type type = that.getTypes().get(0);
-            Type ct = type.getTypeModel();
-            if (!isTypeUnknown(ct)) {
-                TypeDeclaration ctd = ct.getDeclaration();
-                if (ctd.isSelfType()) {
-                    TypeDeclaration td = 
-                            (TypeDeclaration) 
+        List<StaticType> types = that.getTypes();
+        if (types.size()==1) {
+            Tree.Type node = types.get(0);
+            Type caseType = node.getTypeModel();
+            if (!isTypeUnknown(caseType) 
+                    && caseType.getDeclaration()
+                            .isSelfType()) {
+                TypeDeclaration dec = 
+                        (TypeDeclaration) 
                             that.getScope();
-                    Type t = td.getType();
-                    for (Type bound: ct.getSatisfiedTypes()) {
-                        if (!t.isSubtypeOf(bound)) {
-                            type.addError("type does not satisfy upper bound of self type: '" + 
-                                    td.getName() + 
-                                    "' is not a subtype of upper bound '" + 
-                                    bound.asString(unit) + 
-                                    "' of its self type '" + 
-                                    ctd.getName() + "'");
-                        }
+                if (!dec.isAbstract()) {
+                    Type type = dec.getType();
+                    if (!caseType.isSubtypeOf(type)) {
+                        node.addError("self type is not a subtype of the this type: '" 
+                                + caseType.asString(unit)
+                                + "' is not a subtype of '" 
+                                + type.asString(unit)
+                                + "'");
                     }
                 }
             }
