@@ -3211,14 +3211,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 "setter '"+setter.getName()+"'", klass);
                         NullStatus nullPolicy = getUncheckedNullPolicy(isCeylon, setterParam.getType(), setterParam);
                         // if there's no annotation on the setter param, inherit annotations from getter
-                        if(nullPolicy == NullStatus.UncheckedNull)
+                        if(nullPolicy == NullStatus.UncheckedNull) {
                             nullPolicy = getUncheckedNullPolicy(isCeylon, value.mirror.getReturnType(), value.mirror);
-                        switch(nullPolicy){
-                        case Optional:
-                            if(!isCeylon){
-                                paramType = makeOptionalTypePreserveUnderlyingType(paramType, module);
-                            }
-                            break;
+                        }
+                        if(nullPolicy == NullStatus.Optional && !isCeylon) {
+                            paramType = makeOptionalTypePreserveUnderlyingType(paramType, module);
                         }
                         // only add the setter if it has exactly the same type as the getter
                         if(paramType.isExactly(value.getType())){
