@@ -21,6 +21,9 @@
 package org.eclipse.ceylon.compiler.java.codegen;
 
 import static org.eclipse.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
+import static org.eclipse.ceylon.compiler.java.codegen.ParameterDefinitionBuilder.explicitParameter;
+import static org.eclipse.ceylon.compiler.java.codegen.ParameterDefinitionBuilder.implicitParameter;
+import static org.eclipse.ceylon.compiler.java.codegen.ParameterDefinitionBuilder.systemParameter;
 import static org.eclipse.ceylon.langtools.tools.javac.code.Flags.ABSTRACT;
 import static org.eclipse.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static org.eclipse.ceylon.langtools.tools.javac.code.Flags.INTERFACE;
@@ -307,7 +310,7 @@ public class ClassTransformer extends AbstractTransformer {
             // which would cause a javac error about two constructors with the same sig
             // so we generate a Object... here. There's still a risk of collision though
             // when the default constructor has pl (ObjectArray).
-            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "ignored");
+            ParameterDefinitionBuilder pdb = implicitParameter(this, "ignored");
             pdb.modifiers(VARARGS);
             pdb.type(new TransformedType(make().TypeArray(make().Type(syms().objectType))));
             initBuilder.parameter(pdb);
@@ -537,7 +540,7 @@ public class ClassTransformer extends AbstractTransformer {
             mdb.reifiedTypeParameter(tp);
         }
         for (Parameter formalP : formalClass.getParameterList().getParameters()) {
-            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, formalP.getName());
+            ParameterDefinitionBuilder pdb = systemParameter(this, formalP.getName());
             pdb.sequenced(formalP.isSequenced());
             pdb.defaulted(formalP.isDefaulted());
             pdb.type(new TransformedType(makeJavaType(unrefined.getTypedParameter(formalP).getType())));
@@ -820,7 +823,7 @@ public class ClassTransformer extends AbstractTransformer {
         annoCtor.ignoreModelAnnotations();
         // constructors are never final
         annoCtor.modifiers(modifierTransformation().classFlags(klass) & ~FINAL);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, "anno");
+        ParameterDefinitionBuilder pdb = systemParameter(this, "anno");
         pdb.type(new TransformedType(makeJavaType(klass.getType(), JT_ANNOTATION), null, makeAtNonNull()));
         annoCtor.parameter(pdb);
         
@@ -881,7 +884,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     .ignoreModelAnnotations()
                                     .modifiers(PRIVATE | STATIC)
                                     .resultType(new TransformedType(makeJavaType(typeFact().getSequentialType(iteratedType)), null, makeAtNonNull()))
-                                    .parameter(ParameterDefinitionBuilder.systemParameter(this, array.getName())
+                                    .parameter(systemParameter(this, array.getName())
                                             .type(new TransformedType(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)))))
                                     .body(stmts.toList()));
                     } else if (isCeylonMetamodelDeclaration(iteratedType)) {
@@ -1327,7 +1330,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         FunctionOrValue model = param.getModel();
         JCExpression type = makeJavaType(model, param.getType(), 0);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
+        ParameterDefinitionBuilder pdb = explicitParameter(this, param);
 //        pdb.at(p);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         if (Naming.aliasConstructorParameterName(model)) {
@@ -1537,7 +1540,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     private ParameterDefinitionBuilder makeConstructorNameParameter(Constructor ctor, DeclNameFlag... flags) {
 //        Class clz = (Class)ctor.getContainer();
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, Naming.Unfix.$name$.toString());
+        ParameterDefinitionBuilder pdb = implicitParameter(this, Naming.Unfix.$name$.toString());
         pdb.ignored();
         JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, flags);
         pdb.type(new TransformedType(type, null, makeAtNullable()));
@@ -1604,7 +1607,7 @@ public class ClassTransformer extends AbstractTransformer {
         ctor.ignoreModelAnnotations();
         ctor.modifiers(PUBLIC);
         
-        ParameterDefinitionBuilder serializationPdb = ParameterDefinitionBuilder.systemParameter(this, "ignored");
+        ParameterDefinitionBuilder serializationPdb = systemParameter(this, "ignored");
         serializationPdb.modifiers(FINAL);
         serializationPdb.type(new TransformedType(make().Type(syms().ceylonSerializationType), null));
         ctor.parameter(serializationPdb);
@@ -1865,7 +1868,7 @@ public class ClassTransformer extends AbstractTransformer {
         mdb.ignoreModelAnnotations();
         mdb.modifiers(PUBLIC);
         
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.reference.toString());
+        ParameterDefinitionBuilder pdb = systemParameter(this, Unfix.reference.toString());
         pdb.modifiers(FINAL);
         pdb.type(new TransformedType(make().Type(syms().ceylonReachableReferenceType), null, makeAtNonNull()));
         mdb.parameter(pdb);
@@ -2009,12 +2012,12 @@ public class ClassTransformer extends AbstractTransformer {
         mdb.ignoreModelAnnotations();
         mdb.modifiers(PUBLIC);
         
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.reference.toString());
+        ParameterDefinitionBuilder pdb = systemParameter(this, Unfix.reference.toString());
         pdb.modifiers(FINAL);
         pdb.type(new TransformedType(make().Type(syms().ceylonReachableReferenceType), null, makeAtNonNull()));
         mdb.parameter(pdb);
         
-        ParameterDefinitionBuilder pdb2 = ParameterDefinitionBuilder.systemParameter(this, Unfix.instance.toString());
+        ParameterDefinitionBuilder pdb2 = systemParameter(this, Unfix.instance.toString());
         pdb2.modifiers(FINAL);
         pdb2.type(new TransformedType(make().Type(syms().objectType), null, makeAtNonNull()));
         mdb.parameter(pdb2);

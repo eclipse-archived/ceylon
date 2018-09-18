@@ -20,6 +20,9 @@
 
 package org.eclipse.ceylon.compiler.java.codegen;
 
+import static org.eclipse.ceylon.compiler.java.codegen.MethodDefinitionBuilder.constructor;
+import static org.eclipse.ceylon.compiler.java.codegen.MethodDefinitionBuilder.systemMethod;
+import static org.eclipse.ceylon.compiler.java.codegen.ParameterDefinitionBuilder.implicitParameter;
 import static org.eclipse.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static org.eclipse.ceylon.langtools.tools.javac.code.Flags.INTERFACE;
 import static org.eclipse.ceylon.langtools.tools.javac.code.Flags.PRIVATE;
@@ -323,7 +326,7 @@ public class ClassDefinitionBuilder
     }
     
     public MethodDefinitionBuilder addConstructor(boolean deprecated) {
-        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, deprecated);
+        MethodDefinitionBuilder constructor = constructor(gen, deprecated);
         this.constructors.append(constructor);
         return constructor;
     }
@@ -567,7 +570,7 @@ public class ClassDefinitionBuilder
         ctor.ignoreModelAnnotations();
         ctor.reifiedTypeParameters(decl.getTypeParameters());
         ctor.modifiers(decl.isShared() ? PUBLIC : 0);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
+        ParameterDefinitionBuilder pdb = implicitParameter(gen, "$this");
         pdb.type(new TransformedType(gen.makeJavaType(thisType), null, gen.makeAtNonNull()));
         // ...initialize the $this field from a ctor parameter...
         ctor.parameter(pdb);
@@ -672,7 +675,7 @@ public class ClassDefinitionBuilder
         if (isInterface()) {
             // interfaces don't have that one
         }else{
-            MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
+            MethodDefinitionBuilder method = systemMethod(gen, gen.naming.getGetTypeMethodName());
             method.modifiers(PUBLIC);
             method.resultType(new TransformedType(gen.makeTypeDescriptorType(), null, gen.makeAtNonNull()));
             method.isOverride(true);
@@ -687,7 +690,7 @@ public class ClassDefinitionBuilder
     }
 
     public ClassDefinitionBuilder addAnnotationTypeMethod(Type type){
-        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, "annotationType");
+        MethodDefinitionBuilder method = systemMethod(gen, "annotationType");
         method.modifiers(PUBLIC);
         method.resultType(new TransformedType( 
                 gen.make().TypeApply(gen.make().QualIdent(gen.syms().classType.tsym), 
@@ -711,7 +714,7 @@ public class ClassDefinitionBuilder
     }
     
     public ClassDefinitionBuilder addRefineReifiedTypeParametersMethod(java.util.List<TypeParameter> typeParameterList) {
-        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
+        MethodDefinitionBuilder method = systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
         method.modifiers(PUBLIC);
         method.ignoreModelAnnotations();
 
