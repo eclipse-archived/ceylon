@@ -98,9 +98,7 @@ final class ClassAliasCtorOther {
 @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@.org.eclipse.ceylon.compiler.java.metadata.Alias(
-        value = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
-        constructor = "other")
+@.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtorOther")
 final class ClassAliasCtorAlias {
     
     private ClassAliasCtorAlias() {

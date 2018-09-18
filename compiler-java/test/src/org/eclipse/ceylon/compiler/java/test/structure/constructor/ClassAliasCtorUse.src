@@ -47,7 +47,7 @@ final class useClassAliasCtor_ {
 @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtorDefault")
 class ClassAliasCtorDefaultSub extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
     ClassAliasCtorDefaultSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
@@ -66,7 +66,7 @@ class ClassAliasCtorDefaultSub extends .org.eclipse.ceylon.compiler.java.test.st
 @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtorQualDefault")
 class ClassAliasCtorQualDefaultSub extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
     ClassAliasCtorQualDefaultSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
@@ -85,7 +85,7 @@ class ClassAliasCtorQualDefaultSub extends .org.eclipse.ceylon.compiler.java.tes
 @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtorOther")
 class ClassAliasCtorOtherSub extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
     ClassAliasCtorOtherSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
@@ -104,7 +104,7 @@ class ClassAliasCtorOtherSub extends .org.eclipse.ceylon.compiler.java.test.stru
 @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtorAlias")
 class ClassAliasCtorAliasSub extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
     ClassAliasCtorAliasSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
@@ -125,7 +125,7 @@ class ClassAliasCtorAliasSub extends .org.eclipse.ceylon.compiler.java.test.stru
         minor = 1)
 @.org.eclipse.ceylon.compiler.java.metadata.Class(
         constructors = true,
-        extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+        extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtorAlias")
 class ClassAliasCtorAliasSub2 extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
     @.ceylon.language.SharedAnnotation$annotation$
