@@ -1182,7 +1182,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // if we found a type or a method/value we're good to go
         if (member instanceof ClassOrInterface
                 || member instanceof Constructor
-                || member instanceof Function) {
+                || member instanceof Function
+                || member instanceof TypeAlias) {
             return member;
         }
         // if it's a Value return its object type by preference, the member otherwise
