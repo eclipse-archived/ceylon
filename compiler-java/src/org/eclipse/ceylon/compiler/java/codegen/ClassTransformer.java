@@ -750,10 +750,8 @@ public class ClassTransformer extends AbstractTransformer {
         ClassAlias model = (ClassAlias)def.getDeclarationModel();
         Type aliasedClass = model.getExtendedType();
         TypeDeclaration classOrCtor = def.getClassSpecifier().getType().getDeclarationModel();
-        while (classOrCtor instanceof ClassAlias) {
-            classOrCtor = ((ClassAlias)classOrCtor).getConstructor();
-        }
-        classBuilder.annotations(makeAtAlias(aliasedClass, classOrCtor instanceof Constructor ? (Constructor)classOrCtor : null));
+        Constructor constructor = classOrCtor instanceof Constructor ? (Constructor)classOrCtor : null;
+        classBuilder.annotations(makeAtAlias(aliasedClass, constructor));
         classBuilder.isAlias(true);
         MethodDefinitionBuilder instantiator = transformClassAliasInstantiator(
                 def, model, aliasedClass);
