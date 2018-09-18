@@ -724,6 +724,12 @@ public class StructureTests extends CompilerTests {
     }
 
     @Test
+    public void testAlsMemberAlias() {
+        compareWithJavaSource("alias/MemberAlias");
+        compile("alias/MemberAliasUse.ceylon");
+    }
+
+    @Test
     public void testAlsClassAliasWithParameters() {
         compareWithJavaSource("alias/ClassAliasWithParameters");
     }
