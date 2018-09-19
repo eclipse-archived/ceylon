@@ -39,9 +39,9 @@ import org.eclipse.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Return;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Statement;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.util.NativeUtil;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree.JCAssign;
@@ -63,7 +63,9 @@ import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
 import org.eclipse.ceylon.model.typechecker.model.Interface;
 import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
+import org.eclipse.ceylon.model.typechecker.model.Package;
 import org.eclipse.ceylon.model.typechecker.model.Parameter;
+import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
@@ -292,8 +294,7 @@ public class CeylonVisitor extends Visitor {
         Value singletonModel = ctor.getDeclarationModel();
         // generate a field
         AttributeDefinitionBuilder adb = AttributeDefinitionBuilder
-        .singleton(gen,
-                singletonModel.getName(), singletonModel, false);
+        .singleton(gen, singletonModel.getName(), singletonModel, false);
         adb.modelAnnotations(gen.makeAtEnumerated());
         adb.modelAnnotations(gen.makeAtIgnore());
         adb.userAnnotations(gen.expressionGen().transformAnnotations(OutputElement.GETTER, ctor));
@@ -311,7 +312,21 @@ public class CeylonVisitor extends Visitor {
             classBuilder.defs(adb.build());
         } else if (clz.isClassMember()){
             int mods = 0;
-            if (!singletonModel.isShared()) {
+            if (singletonModel.isShared()) {
+                boolean allShared = true;
+                Scope container = clz;
+                while (container instanceof Class) {
+                    if (!((Class)container).isShared()) {
+                        allShared = false;
+                        break;
+                    }
+                    container = container.getContainer();
+                }
+                if (allShared && container instanceof Package) {
+                    mods |= PUBLIC;
+                }
+            }
+            else {
                 mods |= PRIVATE;
             }
             if (clz.isClassOrInterfaceMember() && clz.isStatic()) {
