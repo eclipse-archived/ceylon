@@ -268,8 +268,9 @@ public class Decl {
     }
 
     public static boolean isValueTypeDecl(Type type) {
-        if(type == null)
+        if (type == null) {
             return false;
+        }
         type = type.resolveAliases();
         if (type != null) {
             TypeDeclaration decl = type.getDeclaration();
