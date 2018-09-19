@@ -25,7 +25,6 @@ import java.util.List;
 import org.eclipse.ceylon.compiler.java.test.CompilerTests;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class StructureTests2 extends CompilerTests {
