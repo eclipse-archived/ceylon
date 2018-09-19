@@ -5971,26 +5971,24 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression addThisOrObjectQualifierIfRequired(
             JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
             Declaration decl) {
-        // find out the real target 
-        Declaration typeDecl;
-        if(Decl.isConstructor(decl))
-            typeDecl = ModelUtil.getConstructedClass(decl);
-        else
-            typeDecl = decl;
+        boolean constructor = Decl.isConstructor(decl);
+        // find out the real target
+        Declaration typeDecl = constructor ? ModelUtil.getConstructedClass(decl) : decl;
+        Reference target = expr.getTarget();
         if (qualExpr == null 
                 // statics are not members that can be inherited
                 && !decl.isStatic()
-                && (!Decl.isConstructor(decl) || !Decl.isConstructor(typeDecl))
+                && (constructor ? !typeDecl.isStatic() : true)
                 && typeDecl.isMember()
                 // dodge variable refinements with assert/is (these will be turned to locals
                 // and have a name mapping)
-                && expr.getTarget().getDeclaration() == decl
+                && target.getDeclaration() == decl
                 && !ModelUtil.isLocalToInitializer(typeDecl)
                 && !isWithinSuperInvocation()) {
             // First check whether the expression is captured from an enclosing scope
             TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation(expr, typeDecl);
             if (outer != null) {
-                Type targetType = expr.getTarget().getQualifyingType();
+                Type targetType = target.getQualifyingType();
                 Type declarationContainerType = ((TypeDeclaration)outer).getType();
                 // check if we need a variance cast
                 VarianceCastResult varianceCastResult = getVarianceCastResult(targetType, declarationContainerType);
@@ -6011,15 +6009,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             } else if (typeDecl.isClassOrInterfaceMember()){
                 ClassOrInterface container;
-                if(((ClassOrInterface)typeDecl.getContainer()).isAnonymous()
-                    && ((ClassOrInterface)typeDecl.getContainer()).isToplevel()) {
+                ClassOrInterface classOrInterface = 
+                        (ClassOrInterface)
+                            typeDecl.getContainer();
+                if(classOrInterface.isAnonymous()
+                    && classOrInterface.isToplevel()) {
                     // easy
-                    container = (Class)typeDecl.getContainer();
+                    container = classOrInterface;
                 }else{
                     // find the import
                     Import foundImport = statementGen().findImport(expr, decl);
                     container = (Class) foundImport.getTypeDeclaration();
                 }
+                //NOTE: this line looks completely wrong to Gavin
                 Value value = (Value)((Package)container.getContainer()).getMember(container.getName(), null, false);
                 qualExpr = make().Apply(null,
                         naming.makeName(value, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER),
