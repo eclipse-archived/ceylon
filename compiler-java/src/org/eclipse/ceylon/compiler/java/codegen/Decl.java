@@ -493,7 +493,7 @@ public class Decl {
     }
     
     public static boolean isJavaStaticOrInterfacePrimary(Tree.Term term) {
-        if (term instanceof Tree.QualifiedMemberOrTypeExpression == false)
+        if (!(term instanceof Tree.QualifiedMemberOrTypeExpression))
             return false;
         Declaration decl = ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration();
         return decl != null

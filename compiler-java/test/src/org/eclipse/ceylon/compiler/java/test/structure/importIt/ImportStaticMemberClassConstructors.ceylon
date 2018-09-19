@@ -6,5 +6,5 @@ void importStaticMemberClassConstructors() {
     value item1 = Ctor.instance;
     value item2 = Ctor.create();
     value item3 = NestedCtor.Ctor.instance;
-    //value item4 = NestedCtor.Ctor.create();
+    value item4 = NestedCtor.Ctor.create();
 }

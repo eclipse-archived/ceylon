@@ -13,5 +13,6 @@ final class importStaticMemberClassConstructors_ {
         final .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor item1 = .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.getCtor$instance();
         final .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor item2 = new .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor(.org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor$create);
         final .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor item3 = .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.getCtor$instance();
+        final .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor item4 = new .org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor(.org.eclipse.ceylon.compiler.java.test.structure.importIt.ctor.NestedCtor.Ctor$create);
     }
 }
