@@ -3953,6 +3953,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !Decl.isDefaultConstructor(superConstructor)
                     && !Decl.isJavaArrayWith(superConstructor)
                     && (!(qmep instanceof Tree.QualifiedTypeExpression)
+                            //very important here to distinguish between static ref to 
+                            //constructors of member classes, and ref to constructors of 
+                            //static classes
                             || ((Tree.QualifiedTypeExpression)qmep).getStaticMethodReference()
                             && ((Tree.QualifiedTypeExpression)qmep).getDeclaration().isStatic()
                             || !isCeylonCallable(((Tree.QualifiedTypeExpression)qmep).getPrimary().getTypeModel()))) {
@@ -5370,6 +5373,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (primary instanceof Tree.QualifiedTypeExpression) {
                     // foo.member.Ctor => foo
                     Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
+                    //very important here to distinguish between static ref to 
+                    //constructors of member classes, and ref to constructors of 
+                    //static classes
                     primary = qte.getStaticMethodReference() && qte.getDeclaration().isStatic() ? null : qte.getPrimary();
                 }
             }
