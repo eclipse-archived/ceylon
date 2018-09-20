@@ -1,1 +1,1 @@
-return this.type.container;
+return this.type;
