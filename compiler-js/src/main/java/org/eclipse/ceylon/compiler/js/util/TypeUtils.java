@@ -845,7 +845,7 @@ public class TypeUtils {
                 if (p instanceof Setter) {
                     sb.add(i, "$set");
                 }
-                final String mname = TypeUtils.modelName(p);
+                final String mname = modelName(p);
                 if (!(mname.startsWith("anon$") || mname.startsWith("anonymous#"))) {
                     sb.add(i, mname);
                     //Build the path in reverse
@@ -863,8 +863,9 @@ public class TypeUtils {
                         } else if (p instanceof Constructor || ModelUtil.isConstructor(p)) {
                             sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
                         } else { //It's a value
-                            TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
-                            sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS
+                            TypeDeclaration td = ((TypedDeclaration)p).getTypeDeclaration();
+                            sb.add(i, td!=null && td.isAnonymous() 
+                                    ? MetamodelGenerator.KEY_OBJECTS
                                     : MetamodelGenerator.KEY_ATTRIBUTES);
                         }
                     }
@@ -1133,7 +1134,7 @@ public class TypeUtils {
      * @param pt The produced type for which a name must be output.
      * @param gen The generator to use for output. */
     static void metamodelTypeNameOrList(final boolean resolveTargsFromScope, final Node node,
-            final org.eclipse.ceylon.model.typechecker.model.Package pkg,
+            final Package pkg,
             Type pt, SiteVariance useSiteVariance, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
@@ -1204,7 +1205,7 @@ public class TypeUtils {
      * intersection and tuple types.
      * @return true if output was generated, false otherwise (it was a regular type) */
     static boolean outputMetamodelTypeList(final boolean resolveTargs, final Node node,
-            final org.eclipse.ceylon.model.typechecker.model.Package pkg,
+            final Package pkg,
             Type pt, GenerateJsVisitor gen) {
         final List<Type> subs;
         if (pt.isIntersection()) {
@@ -1486,8 +1487,8 @@ public class TypeUtils {
         final StringBuilder p = new StringBuilder(d.getName());
         Scope s = d.getContainer();
         while (s != null) {
-            if (s instanceof org.eclipse.ceylon.model.typechecker.model.Package) {
-                final String pkname = ((org.eclipse.ceylon.model.typechecker.model.Package)s).getNameAsString();
+            if (s instanceof Package) {
+                final String pkname = ((Package)s).getNameAsString();
                 if (!pkname.isEmpty()) {
                     p.insert(0, "::");
                     p.insert(0, pkname);
@@ -1503,7 +1504,7 @@ public class TypeUtils {
 
     public static String modelName(Declaration d) {
         String dname = d.getName();
-        if (dname == null && d instanceof org.eclipse.ceylon.model.typechecker.model.Constructor) {
+        if (dname == null && d instanceof Constructor) {
             dname = "$def";
         }
         if (dname.startsWith("anonymous#")) {
@@ -1515,11 +1516,13 @@ public class TypeUtils {
         if (d instanceof Setter) {
             d = ((Setter)d).getGetter();
         }
-        return dname+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
+        return dname + "$" 
+            + Long.toString(Math.abs((long)d.hashCode()), 36);
     }
     
     public static boolean acceptNative(Tree.Declaration node) {
-        return node.getDeclarationModel() == null || acceptNative(node.getDeclarationModel());
+        return node.getDeclarationModel() == null 
+            || acceptNative(node.getDeclarationModel());
     }
     
     /**
@@ -1531,11 +1534,11 @@ public class TypeUtils {
      *    and no implementation for this backend 
      */
     public static boolean acceptNative(Declaration decl) {
-        return (!decl.isNative())
-                || NativeUtil.isForBackend(decl, Backend.JavaScript)
-                || isNativeExternal(decl)
-                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.JavaScript)
-                    && ModelUtil.isImplemented(decl));
+        return !decl.isNative()
+            || NativeUtil.isForBackend(decl, Backend.JavaScript)
+            || isNativeExternal(decl)
+            || NativeUtil.isHeaderWithoutBackend(decl, Backend.JavaScript)
+                && ModelUtil.isImplemented(decl);
     }
 
     public static boolean isCallable(Type t) {
@@ -1551,7 +1554,7 @@ public class TypeUtils {
      */
     public static boolean isNativeExternal(Declaration decl) {
         return decl.isNativeHeader()
-                && (decl.getOverloads() == null || decl.getOverloads().isEmpty());
+            && (decl.getOverloads() == null || decl.getOverloads().isEmpty());
     }
 
     public static List<Type> getTypes(List<Tree.StaticType> treeTypes) {
@@ -1570,22 +1573,25 @@ public class TypeUtils {
 
     public static Constructor getConstructor(Declaration d) {
         if (d instanceof Constructor) {
-            return (Constructor)d;
+            return (Constructor) d;
         }
-        if (d instanceof FunctionOrValue && ((FunctionOrValue)d).getTypeDeclaration() instanceof Constructor) {
-            return (Constructor)((FunctionOrValue)d).getTypeDeclaration();
+        if (d instanceof FunctionOrValue) {
+            TypeDeclaration td = ((FunctionOrValue) d).getTypeDeclaration();
+            if (td instanceof Constructor) {
+                return (Constructor) td;
+            }
         }
         if (d instanceof Class) {
             //Look for the default constructor
-            return ((Class)d).getDefaultConstructor();
+            return ((Class) d).getDefaultConstructor();
         }
         return null;
     }
 
     /** Tells whether the declaration is a native header with a native implementation for this backend. */
     public static boolean makeAbstractNative(Declaration d) {
-        return d.isNativeHeader() &&
-                ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null;
+        return d.isNativeHeader() 
+            && ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null;
     }
 
     public static Declaration getToplevel(Declaration d) {
@@ -1602,10 +1608,8 @@ public class TypeUtils {
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
     public static boolean isNativeJs(final Tree.Term t) {
-        if (t instanceof Tree.MemberOrTypeExpression) {
-            return isNativeJs(((Tree.MemberOrTypeExpression)t).getDeclaration());
-        }
-        return false;
+        return t instanceof Tree.MemberOrTypeExpression
+            && isNativeJs(((Tree.MemberOrTypeExpression)t).getDeclaration());
     }
 
     /** Returns true if the declaration is annotated "nativejs" */
