@@ -235,8 +235,13 @@ public class Operators {
                 Tree.Term leftTerm, Type leftType, 
                 Tree.Term rightTerm, Type rightType, AbstractTransformer gen){
             // no optimised operator returns a boxed type 
-            if(!expression.getUnboxed())
+            if(!expression.getUnboxed()) {
                 return OptimisationStrategy.NONE;
+            }
+            // for Comparable<Integer>, we can no longer always optimize 
+            if (leftType.isComparable() && !Decl.isValueTypeDecl(leftType)) {
+                return OptimisationStrategy.NONE;
+            }
             // Can we do an operator optimization?
             OptimisationStrategy optimisationStrategy;
             OptimisationStrategy left = isTermOptimisable(leftTerm, leftType, gen);

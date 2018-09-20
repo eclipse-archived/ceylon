@@ -128,6 +128,11 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     public void bug7415(){
         compile("bug71xx/bug7415.ceylon");
     }
+    
+    @Test
+    public void bug7416(){
+        compile("bug71xx/bug7416.ceylon");
+    }
 
     @Test
     public void bug7186(){

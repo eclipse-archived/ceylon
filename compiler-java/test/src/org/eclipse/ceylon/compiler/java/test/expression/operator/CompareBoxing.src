@@ -16,14 +16,14 @@ final class compareBoxing_ {
         cmp = .ceylon.language.String.smallerThan(s, s);
         ord = ((T)t).compare((T)t);
         cmp = ((T)t).smallerThan((T)t);
-        ord = .ceylon.language.Integer.compare(((.ceylon.language.Integer)intSelf).longValue(), i);
-        cmp = ((.ceylon.language.Integer)intSelf).longValue() < i;
-        ord = .ceylon.language.Float.compare(((.ceylon.language.Float)floatSelf).doubleValue(), f);
-        cmp = ((.ceylon.language.Float)floatSelf).doubleValue() < f;
-        ord = .ceylon.language.String.compare(((.ceylon.language.String)stringSelf).toString(), s);
-        cmp = .ceylon.language.String.smallerThan(((.ceylon.language.String)stringSelf).toString(), s);
-        ord = ((T)tSelf).compare((T)t);
-        cmp = ((T)tSelf).smallerThan((T)t);
+        ord = intSelf.compare(.ceylon.language.Integer.instance(i));
+        cmp = intSelf.smallerThan(.ceylon.language.Integer.instance(i));
+        ord = floatSelf.compare(.ceylon.language.Float.instance(f));
+        cmp = floatSelf.smallerThan(.ceylon.language.Float.instance(f));
+        ord = stringSelf.compare(.ceylon.language.String.instance(s));
+        cmp = stringSelf.smallerThan(.ceylon.language.String.instance(s));
+        ord = ((.ceylon.language.Comparable<? super T>)(.ceylon.language.Comparable)tSelf).compare((T)t);
+        cmp = ((.ceylon.language.Comparable<? super T>)(.ceylon.language.Comparable)tSelf).smallerThan((T)t);
         long lhs$0 = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).getFirst()).longValue();
         long rhs$1 = 0L;
         if (lhs$0 > rhs$1) {
