@@ -2804,18 +2804,30 @@ switchExpression returns [SwitchExpression term]
                   found = true;
                   break;              
                 }
-                Variable v = new Variable(null);
-                v.setType(new SyntheticVariable(null));
-                v.setIdentifier(id);
-                SpecifierExpression se = new SpecifierExpression(null);
-                Expression e = new Expression(null);
-                BaseMemberExpression bme = new BaseMemberExpression(null);
-                bme.setIdentifier(id);
-                bme.setTypeArguments( new InferredTypeArguments(null) );
-                e.setTerm(bme);
-                se.setExpression(e);
-                v.setSpecifierExpression(se);
-                mc.setVariable(v);
+                boolean narrow = true;
+                for (Expression e: el.getExpressions()) {
+                  if (e.getTerm() instanceof BaseMemberExpression) {
+                    BaseMemberExpression mex = (BaseMemberExpression) e.getTerm();
+                    if (mex.getIdentifier().getText().equals(id.getText())) {
+                      narrow = false; 
+                      break;
+                    }
+                  }
+                }
+                if (narrow) {
+                  Variable v = new Variable(null);
+                  v.setType(new SyntheticVariable(null));
+                  v.setIdentifier(id);
+                  SpecifierExpression se = new SpecifierExpression(null);
+                  Expression e = new Expression(null);
+                  BaseMemberExpression bme = new BaseMemberExpression(null);
+                  bme.setIdentifier(id);
+                  bme.setTypeArguments( new InferredTypeArguments(null) );
+                  e.setTerm(bme);
+                  se.setExpression(e);
+                  v.setSpecifierExpression(se);
+                  mc.setVariable(v);
+                }
               }
             }
           } 

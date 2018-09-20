@@ -33,7 +33,6 @@ import org.eclipse.ceylon.common.Backend;
 import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
 import org.eclipse.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -227,7 +226,7 @@ public class Singletons {
                 if(gen.outerSelf(d))gen.out(".");
             }
             gen.out(objectGetterName, ".$m$=");
-            TypeUtils.encodeForRuntime(that, d, annots, gen);
+            encodeForRuntime(that, d, annots, gen);
             gen.endLine(true);
             gen.out(names.getter(c, true), "=", objectGetterName);
             gen.endLine(true);

@@ -11,7 +11,7 @@ final class bug708_ {
     
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
@@ -76,12 +76,12 @@ class Bug708_Class<T> implements .org.eclipse.ceylon.compiler.java.runtime.model
     final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("param")
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     final .java.lang.Object param, @.org.eclipse.ceylon.compiler.java.metadata.Name("param2")
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.Object param2) {
@@ -114,7 +114,7 @@ class Bug708_Class<T> implements .org.eclipse.ceylon.compiler.java.runtime.model
     
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     private final .java.lang.Object getParam$priv$() {
         return this.param;
@@ -126,7 +126,7 @@ class Bug708_Class<T> implements .org.eclipse.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     public final .java.lang.Object getAttr() {
         return this.attr;
@@ -138,7 +138,7 @@ class Bug708_Class<T> implements .org.eclipse.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     public final .java.lang.Object getParam2() {
         return this.param2;
@@ -147,7 +147,7 @@ class Bug708_Class<T> implements .org.eclipse.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T|ceylon.language::Null|ceylon.language::String",
+            value = "T|ceylon.language::String?",
             erased = true)
     @.org.eclipse.ceylon.compiler.java.metadata.Transient
     public final .java.lang.Object getGetter() {
@@ -681,7 +681,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .org.eclipse.ceyl
     @.java.lang.Override
     @.org.eclipse.ceylon.common.Nullable
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::String|ceylon.language::Null|T",
+            value = "ceylon.language::String|T?",
             erased = true)
     public final .java.lang.Object get(@.org.eclipse.ceylon.compiler.java.metadata.Name("key")
     @.org.eclipse.ceylon.common.NonNull

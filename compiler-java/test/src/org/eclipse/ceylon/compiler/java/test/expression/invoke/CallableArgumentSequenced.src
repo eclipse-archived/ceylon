@@ -184,7 +184,7 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
             }
             
             private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.String> s) {

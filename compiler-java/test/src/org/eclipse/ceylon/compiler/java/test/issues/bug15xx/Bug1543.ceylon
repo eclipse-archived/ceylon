@@ -25,7 +25,7 @@ void bug1543(){
     }
 }
 shared interface My1543Iterable<out Element, out Absent=Null>
-        satisfies Category
+        satisfies Category<>
         given Absent satisfies Null {
 
     shared formal {Element|Other+} withLeading<Other>(

@@ -1797,7 +1797,21 @@ public class Type extends Reference {
     }
 
     public Type getType() {
-        return this;
+        if (getCapturedWildcards().isEmpty()) {
+            return this;
+        }
+        else {
+            TypeDeclaration declaration = 
+                    getDeclaration();
+            if (declaration==null) {
+                return this;
+            }
+            else {
+                return declaration.getType()
+                        .applyCapturedWildcards(this)
+                        .substitute(this);
+            }
+        }
     }
     
     /**
@@ -4070,7 +4084,8 @@ public class Type extends Reference {
     }
     
     private Type getUnionOfCasesInternal() {
-        Unit unit = getDeclaration().getUnit();
+        TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
         //if X is an intersection type A&B, and A is an
         //enumerated type with cases U and V, then the cases
         //of X are the intersection (U|V)&B canonicalized to
@@ -4087,29 +4102,43 @@ public class Type extends Reference {
             }
             return canonicalIntersection(list, unit);
         }
+        else if (isExactlyNothing()) {
+            return unit.getNothingType();
+        }
         else {
-            List<Type> cts = getCaseTypes();
-            if (cts==null) {
-                return narrowToUpperBounds();
+            List<Type> cases = getCaseTypes();
+            Type selfType = dec.getSelfType();
+            if (selfType!=null) {
+                //for a type like Summable<String>,
+                //form the intersection  
+                //String & Summable<String>, being
+                //careful not to throw away 
+                //information, since in certain 
+                //cases like Invertible<String>,
+                //this intersection is empty and
+                //gets reduced to Nothing
+                Type type = cases.get(0);
+                return isExactly(type) ? type :
+                    intersectionType(this,
+                        type.getUnionOfCases(),
+                        unit);
             }
-            //otherwise, if X is a union A|B, or an enumerated 
-            //type, with cases A and B, and A is an enumerated 
-            //type with cases U and V, then the cases of X are
-            //the union U|V|B
-            else {
-                //build a union of all the cases
+            else if (cases!=null) {
+                //f X is a union A|B, or an enumerated 
+                //type, with cases A and B, and A is 
+                //an enumerated type with cases U and V, 
+                //then the cases of X are the union U|V|B
                 List<Type> list = 
                         new ArrayList<Type>
-                            (cts.size());
-                for (Type ct: cts) {
-                    if (ct.isExactly(this)) {
-                        //we hit a self type
-                        return this;
-                    }
+                            (cases.size());
+                for (Type type: cases) {
                     addToUnion(list, 
-                            ct.getUnionOfCases());
+                            type.getUnionOfCases());
                 }
                 return union(list, unit);
+            }
+            else {
+                return narrowToUpperBounds();
             }
         }
     }
@@ -4910,6 +4939,10 @@ public class Type extends Reference {
         return getDeclaration().isByte();
     }
     
+    public boolean isComparable() {
+        return getDeclaration().isComparable();
+    }
+    
     public boolean isIterable() {
         return getDeclaration().isIterable();
     }
@@ -5049,13 +5082,12 @@ public class Type extends Reference {
             return super.collectVarianceOverrides();            
         }
     }
-    
-    public Type applyCapturedWildcards(TypedReference source) {
-        return applyVarianceOverrides(this,
-                    !source.isCovariant(),
-                    !source.isContravariant(),
+     
+    Type applyCapturedWildcards(Reference source) {
+        return applyVarianceOverrides(this, true, false,
                     source.getCapturedWildcards());
     }
+    
     /**
      * Given a set of use site variance overrides, adjust 
      * the given type to account for these variances.

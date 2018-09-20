@@ -518,7 +518,7 @@ public class TypeGenerator {
                     if (ModelUtil.contains(d, typeDecl)) {
                         gen.out("$a$,");
                     } else {
-                        printTypeArguments(that,gen, false, 
+                        printTypeArguments(that, gen, false, 
                                 extendedType.getTypeModel()
                                     .getQualifyingType()
                                     .getTypeArguments(),

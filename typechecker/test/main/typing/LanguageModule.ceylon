@@ -56,3 +56,18 @@ class LanguageModule() {
 
 $error class Dumbthing() extends Anything() {}
 $error class Numbthing() extends Null() {}
+
+class ComparableVariance() {
+    
+    class C1(shared Integer i) 
+            satisfies Comparable<C1> {
+        compare(C1 other) 
+                => i.compare(other.i);
+    }
+    
+    class C2(Integer i) extends C1(i) {}
+    
+    C2 c1 = min { C2(1), C2(2) };
+    C2 c2 = smallest(C2(1), C2(2));
+    C2[] cs = sort { C2(1), C2(2) };
+}

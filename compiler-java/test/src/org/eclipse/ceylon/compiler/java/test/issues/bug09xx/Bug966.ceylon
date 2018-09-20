@@ -21,7 +21,7 @@
 @error:"satisfies a sealed interface in a different module: 'Sequence' in 'ceylon.language'"
 shared abstract class Bug966<Element>(first, last) 
         extends Object() 
-        satisfies [Element+] & Category
+        satisfies [Element+] & Category<>
         given Element satisfies Enumerable<Element> { 
     
     shared actual Element first;

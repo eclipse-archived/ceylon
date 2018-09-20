@@ -519,6 +519,20 @@ public class TypeVisitor extends Visitor {
         inTypeLiteral = true;
         super.visit(that);
         inTypeLiteral = false;
+        boolean isDeclaration = 
+                that instanceof Tree.InterfaceLiteral
+                || that instanceof Tree.ClassLiteral
+                || that instanceof Tree.AliasLiteral
+                || that instanceof Tree.TypeParameterLiteral;
+        if (isDeclaration) {
+            Tree.StaticType type = that.getType();
+            if (type!=null) {
+                Type t = type.getTypeModel();
+                if (t!=null) {
+                    t.setTypeConstructor(false);
+                }
+            }
+        }
     }
 
     private void visitSimpleType(Tree.SimpleType that, 
@@ -1345,6 +1359,9 @@ public class TypeVisitor extends Visitor {
                         else {
                             TypeParameter tp = 
                                     (TypeParameter) ctd;
+                            if (tp.isContravariant()) {
+                                ct.addError("contravariant type parameter may not act as self type");
+                            }
                             td.setSelfType(type);
                             if (tp.isSelfType()) {
                                 ct.addError("type parameter may not act as self type for two different types");

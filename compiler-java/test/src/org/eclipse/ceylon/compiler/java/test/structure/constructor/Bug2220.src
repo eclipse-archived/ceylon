@@ -21,7 +21,7 @@ public class Bug2220 implements .org.eclipse.ceylon.compiler.java.runtime.model.
         }
         private transient Baz $instance$Baz$baz = null;
         
-        .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz getBaz$baz() {
+        public .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz getBaz$baz() {
             if ($instance$Baz$baz == null) $instance$Baz$baz = new Baz((.org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz)null);
             return $instance$Baz$baz;
         }

@@ -41,6 +41,9 @@ public abstract class Reference {
     
     protected Type qualifyingType;
     
+    private Map<TypeParameter, SiteVariance> capturedWildcards =
+            EMPTY_VARIANCE_MAP;
+    
     //cache
     private Map<TypeParameter, Type> typeArgumentsWithDefaults;
     
@@ -233,10 +236,10 @@ public abstract class Reference {
      * type arguments and wildcard capture.
      */
     public TypedReference getTypedParameterWithWildcardCapture(
-            Parameter p) {
+            Parameter p, SiteVariance variance) {
         TypedReference typedParameter = 
                 getTypedParameter(p);
-        captureWildcards(typedParameter);
+        captureWildcards(typedParameter, variance);
         return typedParameter;
     }
     
@@ -269,14 +272,17 @@ public abstract class Reference {
      * Register captured wildcards for the given parameter 
      * reference.
      */
-    private void captureWildcards(TypedReference parameter) {
+    private void captureWildcards(TypedReference parameter, SiteVariance variance) {
         Declaration declaration = getDeclaration();
         if (declaration.isJava() && declaration.isParameterized()) {
             Map<TypeParameter, SiteVariance> capturedWildcards =
                     new HashMap<TypeParameter, SiteVariance>(1);
             for (TypeParameter tp: declaration.getTypeParameters()) {
-                if (canCaptureWildcard(tp)) {
-                    capturedWildcards.put(tp, SiteVariance.OUT);
+                Type t = parameter.getDeclaration().getType();
+                if (t!=null 
+                        && t.involvesDeclaration(tp) 
+                        && canCaptureWildcard(tp)) {
+                    capturedWildcards.put(tp, variance);
                 }
             }
             parameter.setCapturedWildcards(capturedWildcards);
@@ -297,13 +303,8 @@ public abstract class Reference {
      */
     private boolean canCaptureWildcard(TypeParameter tp) {
         Declaration dec = getDeclaration();
-        if (dec instanceof Function) { //TODO: should we do it for classes too?
-            Function func = (Function) dec;
-            Type returnType = func.getType();
-            if (returnType.occursContravariantly(tp)
-             || returnType.occursInvariantly(tp)) {
-                return false;
-            }
+        if (dec instanceof Functional) {
+            Functional func = (Functional) dec;
             ParameterList paramList = 
                     func.getFirstParameterList();
             if (paramList!=null) {
@@ -338,6 +339,21 @@ public abstract class Reference {
         return false;
     }
     
+    Map<TypeParameter, SiteVariance> getCapturedWildcards() {
+        return capturedWildcards;
+    }
+    
+    void setCapturedWildcards(Map<TypeParameter, SiteVariance> capturedWildcards) {
+        this.capturedWildcards = capturedWildcards;
+    }
+    
+    public void addCapturedWildcards(TypedReference paramRef) {
+        if (this.capturedWildcards == EMPTY_VARIANCE_MAP) {
+            this.capturedWildcards = new HashMap<TypeParameter, SiteVariance>(capturedWildcards.size());
+        }
+        this.capturedWildcards.putAll(paramRef.getCapturedWildcards());
+    }
+    
     public abstract String asString();
     
     public Map<TypeParameter,Type> collectTypeArguments() {
@@ -359,6 +375,10 @@ public abstract class Reference {
                     qualifyingArguments = 
                             qualifying.collectTypeArguments();
                 }
+            }
+            else if (scope instanceof Function) {
+                //needed only by the runtime:
+                qualifyingArguments = qualifying.collectTypeArguments();
             }
             else {
                 //can be a Value in the case of a type constructor

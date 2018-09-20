@@ -183,7 +183,7 @@ native shared class NativeClassMismatch12<A>() given A satisfies Usable {}
 
 /*@error*/ native("jvm") shared class NativeClassMismatch12<B>() {}
 
-/*@error*/ native("js") shared class NativeClassMismatch12<A>() given A satisfies Category {}
+/*@error*/ native("js") shared class NativeClassMismatch12<A>() given A satisfies Category<> {}
 
 
 native class NativeClassMismatch13() {

@@ -76,9 +76,9 @@ void classLiteral<T>() given T satisfies Object {
     x = `Annotation`;
     assert(ClassLiteral.classString(x)==ClassLiteral.classString(`Annotation`));
     
-    assert("interface java.lang.annotation.Annotation"==ClassLiteral.classString(`ConstrainedAnnotation`));
-    x = `ConstrainedAnnotation`;
-    assert(ClassLiteral.classString(x)==ClassLiteral.classString(`ConstrainedAnnotation`));
+    assert("interface java.lang.annotation.Annotation"==ClassLiteral.classString(`ConstrainedAnnotation<>`));
+    x = `ConstrainedAnnotation<>`;
+    assert(ClassLiteral.classString(x)==ClassLiteral.classString(`ConstrainedAnnotation<>`));
     
     // arrays
     assert("class [Lceylon.language.String;"==ClassLiteral.classString(`ObjectArray<String>`));
@@ -131,9 +131,9 @@ void classLiteral<T>() given T satisfies Object {
     assert("class [Ljava.lang.annotation.Annotation;"==ClassLiteral.classString(`ObjectArray<Annotation>`));
     x = `ObjectArray<Annotation>`;
     assert(ClassLiteral.classString(x)==ClassLiteral.classString(`ObjectArray<Annotation>`));
-    assert("class [Ljava.lang.annotation.Annotation;"==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation>`));
-    x = `ObjectArray<ConstrainedAnnotation>`;
-    assert(ClassLiteral.classString(x)==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation>`));
+    assert("class [Ljava.lang.annotation.Annotation;"==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation<>>`));
+    x = `ObjectArray<ConstrainedAnnotation<>>`;
+    assert(ClassLiteral.classString(x)==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation<>>`));
 
     // arrays of arrays
     assert("class [[I"==ClassLiteral.classString(`ObjectArray<IntArray>`));

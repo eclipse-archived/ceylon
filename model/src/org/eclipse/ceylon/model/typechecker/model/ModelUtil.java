@@ -1287,8 +1287,6 @@ public class ModelUtil {
      * 
      * @param p the first type
      * @param q the second type
-     *        enumerated type are disjoint
-     * @param unit
      * 
      * @return true if the types are disjoint
      */
@@ -3301,13 +3299,6 @@ public class ModelUtil {
             // if it's not one of those it must be from source (Ceylon)
             return true;
         }
-    }
-    
-    /** Is the given declaration an enumerated ("singleton") constructor */
-    public static boolean isEnumeratedConstructor(Declaration dec) {
-        Constructor constructor = getConstructor(dec);
-        return constructor != null 
-            && constructor.isValueConstructor();
     }
     
     /** Is the given value the result of an enumerated ("singleton") constructor */

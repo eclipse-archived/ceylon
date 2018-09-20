@@ -418,7 +418,7 @@ public abstract class Declaration
      * @see Declaration#isClassOrInterfaceMember()
      */
     public boolean isMember() {
-            return false;
+        return false;
     }
     
     @Override

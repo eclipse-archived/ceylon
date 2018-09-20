@@ -26,8 +26,6 @@ public class TypedReference extends Reference {
     private TypedDeclaration declaration;
     private final boolean covariant;
     private final boolean contravariant;
-    private Map<TypeParameter, SiteVariance> capturedWildcards =
-            EMPTY_VARIANCE_MAP;
 
     TypedReference(boolean covariant, boolean contravariant) {
         this.covariant = covariant;
@@ -41,14 +39,6 @@ public class TypedReference extends Reference {
     
     void setDeclaration(TypedDeclaration declaration) {
         this.declaration = declaration;
-    }
-    
-    Map<TypeParameter, SiteVariance> getCapturedWildcards() {
-        return capturedWildcards;
-    }
-    
-    void setCapturedWildcards(Map<TypeParameter, SiteVariance> capturedWildcards) {
-        this.capturedWildcards = capturedWildcards;
     }
     
     public Type getType() {

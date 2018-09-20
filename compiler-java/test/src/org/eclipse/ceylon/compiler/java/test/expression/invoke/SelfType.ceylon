@@ -52,9 +52,9 @@ void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
 //@noanno
 //interface C satisfies Comparable<C|A> {}
 @noanno
-interface D satisfies Comparable<D> {}
+interface D satisfies Summable<D> {}
 @noanno
-void selfTypeTest(Comparable<D> d) {
+void selfTypeTest(Summable<D> d) {
     value temp = d of D;
     value v = print("");
     print(v of Object|Null);

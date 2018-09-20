@@ -116,8 +116,6 @@ abstract class RWTop<X, Y> implements .org.eclipse.ceylon.compiler.java.runtime.
     
     public abstract <T>T tParamErasure(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
     
-    public abstract <T extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger>T tCovBoundParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
-    
     public abstract X typeBound();
     
     public abstract X typeCovBound();
@@ -159,9 +157,6 @@ abstract class RWBottom<Z> extends .org.eclipse.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     public abstract <S>S tParamErasure(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
-    
-    @.java.lang.Override
-    public abstract <S extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger>S tCovBoundParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
     
     @.java.lang.Override
     public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber typeBound();

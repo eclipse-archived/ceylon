@@ -297,32 +297,12 @@ public class TopLevelToolTests {
         try (CapturingStdOut out = new CapturingStdOut()) {
             System.setProperty("ceylon.home", "../dist/dist");
             Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("doc", "--link=ceylon.math=foobar://baz", "ceylon.math")));
-            Assert.assertEquals(
+            Assert.assertTrue(
+                    out.getErr().trim().replace("\r", "").contains(
                     "ceylon doc: Invalid value '[ceylon.math=foobar://baz]' given for option 'link'\n"+
 "to command 'doc': Unexpected link protocol: ceylon.math=foobar://baz (allowed\n"+
-"are: http://, https://, file://)\n"+
-"\n"+
-"Usage:\n"+
-"ceylon doc [--link=<url>...] [--non-shared] [--out=<dir-or-url>] [--pass=\n"+
-"           <secret>] [--rep=<dir-or-url>...] [--source-code] [--src=<dir>...] [\n"+
-"           --sysrep=<dir-or-url>] [--user=<name>] [--] <modules...>\n"+
-"\n"+
-"--link=<url>\n"+
-"            The URL of a module repository containing documentation for\n"+
-"            external dependencies.\n"+
-"\n"+
-"            Parameter url must be one of supported protocols (http://, https://\n"+
-"            or file://). Parameter url can be prefixed with module name\n"+
-"            pattern, separated by a '=' character, determine for which external\n"+
-"            modules will be use.\n"+
-"\n"+
-"            Examples:\n"+
-"\n"+
-"            --link "+Constants.REPO_URL_CEYLON+"\n"+
-"            --link ceylon.math="+Constants.REPO_URL_CEYLON+"\n"+
-"\n"+
-"Run 'ceylon help doc' for more help", 
-        out.getErr().trim().replace("\r", ""));
+"protocols are: http://, https://, file:// or path to directory)") 
+        );
             Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
         }
     }

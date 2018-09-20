@@ -141,8 +141,9 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     }
 
     /**
-     * Construct a sequential from the given array.
-     * <li>the elements {@code start} (incluside) to 
+     * Construct a sequence from the given array.
+     * 
+     * <li>the elements {@code start} (inclusive) to 
      *     {@code argsAndVarargs.length-1} (exclusive) 
      *     are the initial elements in the returned sequential
      * <li>the last element of the given array is a Sequential, whose elements 
@@ -159,7 +160,8 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     }
     
     /**
-     * Construct a sequential from the given array and sequential.
+     * Construct a sequence from the given array and sequential.
+     * 
      * <li>the elements {@code start} (incluside) to 
      *     {@code start+length} (exclusive) 
      *     are the initial elements in the returned sequential

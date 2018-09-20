@@ -23,7 +23,7 @@ public class ModuleDescriptorReader {
     private Method moduleArtifactId;
     private Method moduleLabel;
 
-    // WARNING: this exception class name is used in org.eclipse.ceylon.ant.ModuleDescriptorReader because of FUCKED UP
+    // WARNING: this exception class name is used in org.eclipse.ceylon.ant.ModuleDescriptorReader because of 
     // classpath issues in the ant task. If you ever manage to untangle this mess: BE MY GUEST. 
     @SuppressWarnings("serial")
     public static class NoSuchModuleException extends Exception {

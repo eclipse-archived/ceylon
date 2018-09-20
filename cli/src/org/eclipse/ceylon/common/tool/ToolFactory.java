@@ -344,7 +344,7 @@ public class ToolFactory {
                     // TODO Rewrite BashCompletionTool to use a ToolModel setter.
                     // TODO BashCompletionSupport for ToolModels and Tools
 
-                    // TODO Write a proper fucking state machine for this shit.
+                    // TODO Write a proper state machine for this stuff.
                     //    i.e. Alternation, Sequence, Repetition on top of/part of the tool model
                     //      could write a visitor of that tree to generate synopses?
                     // TODO   Proper ToolModel support for subtools (getSubtoolModel())

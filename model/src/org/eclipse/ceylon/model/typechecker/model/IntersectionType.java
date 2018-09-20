@@ -146,7 +146,7 @@ public class IntersectionType extends TypeDeclaration {
             }
         }
         for (Type st: sts) {
-            if (st.isUnion()) {
+            if (st!=null && st.isUnion()) {
                 List<Type> caseTypes = st.getCaseTypes();
                 List<Type> ulist = 
                         new ArrayList<Type>

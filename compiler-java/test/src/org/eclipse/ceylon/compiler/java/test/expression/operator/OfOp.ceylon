@@ -19,10 +19,10 @@
  */
 @noanno
 abstract class OfOp() of OfOpA | OfOpB
-    satisfies Comparable<OfOp> {
+    satisfies Summable<OfOp> {
     
     void m() {
-        Comparable<OfOp> comp = nothing;
+        Summable<OfOp> comp = nothing;
         OfOp foo = comp of OfOp;
         Anything v = nothing;
         Object? x = v of Object|Null;

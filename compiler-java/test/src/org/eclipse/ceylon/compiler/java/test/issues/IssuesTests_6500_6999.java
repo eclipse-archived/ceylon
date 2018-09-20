@@ -29,18 +29,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.eclipse.ceylon.common.FileUtil;
-import org.eclipse.ceylon.common.IOUtil;
 import org.eclipse.ceylon.compiler.java.launcher.Main.ExitState;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import org.eclipse.ceylon.compiler.java.test.CompilerError;
 import org.eclipse.ceylon.compiler.java.test.CompilerTests;
 import org.eclipse.ceylon.compiler.java.test.ErrorCollector;
@@ -48,8 +45,6 @@ import org.eclipse.ceylon.javax.tools.Diagnostic.Kind;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.junit.Assume;
 import org.junit.Test;
-
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
 public class IssuesTests_6500_6999 extends CompilerTests {
 
@@ -170,6 +165,12 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     @Test
     public void testBug6660() {
         compareWithJavaSource("bug66xx/Bug6660");
+    }
+    
+    @Test
+    public void testBug6682() {
+        compile("bug66xx/Bug6682Java.java"); 
+        compile("bug66xx/Bug6682.ceylon");
     }
 
     @Test

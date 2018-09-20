@@ -2294,6 +2294,9 @@ void runTests() {
     sandbox(bug5966);
     sandbox(bug6364);
     sandbox(bug7174);
+    sandbox(bug7370);
+    sandbox(bug7361);
+    sandbox(bug7362);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);
@@ -2305,9 +2308,6 @@ void runTests() {
     sandbox(bugC1523);
     sandbox(bugC1998);
     sandbox(bugC2392);
-    sandbox(bug7370);
-    sandbox(bug7361);
-    sandbox(bug7362);
     // those were filed for the JS compiler initially
     sandbox(bugJ505);
     

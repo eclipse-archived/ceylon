@@ -19,6 +19,7 @@ public class Interface extends ClassOrInterface {
     private static final int SEQUENTIAL = 1<<4;
     private static final int CALLABLE = 1<<5;
     private static final int IDENTIFIABLE = 1<<6;
+    private static final int COMPARABLE = 1<<7;
     
     private String javaCompanionClassName;
     private Boolean companionClassNeeded;
@@ -41,6 +42,8 @@ public class Interface extends ClassOrInterface {
                         switch (name) {
                         case "Iterable":
                             code = ITERABLE; break;
+                        case "Comparable":
+                            code = COMPARABLE; break;
                         case "Empty":
                             code = EMPTY; break;
                         case "Sequence":
@@ -82,6 +85,12 @@ public class Interface extends ClassOrInterface {
     public boolean isIterable() {
         setCode();
         return code == ITERABLE;
+    }
+
+    @Override
+    public boolean isComparable() {
+        setCode();
+        return code == COMPARABLE;
     }
 
     @Override

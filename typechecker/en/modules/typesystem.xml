@@ -1445,6 +1445,9 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <itemizedlist>
                 <listitem>
+                    <para>the self type parameter must not be declared contravariant,</para>
+                </listitem>
+                <listitem>
                     <para>the self type parameter covers the declared type within the 
                     body of the declaration,</para>
                 </listitem>

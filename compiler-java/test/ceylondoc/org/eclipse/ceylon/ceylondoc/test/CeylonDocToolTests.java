@@ -1160,9 +1160,9 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<script type='text/javascript' src='.resources/rainbow.min.js'>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<pre data-language=\"ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
+                Pattern.compile("<pre><code data-language=\"ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<pre data-language=\"ceylon\">shared actual default Integer hash \\{"));
+                Pattern.compile("<pre><code data-language=\"ceylon\">shared actual default Integer hash \\{"));
     }
     
     private void assertWikiStyleLinkSyntax(File destDir, boolean includeNonShared) throws Exception {

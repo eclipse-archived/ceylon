@@ -243,7 +243,7 @@ class Test(Integer&EmptyInterface n) {
 
     void testComparisonOperators(MyNumeric&EmptyInterface p1,
                                  Test&EmptyInterface erasedTest,
-                                 Category&EmptyInterface container){
+                                 Category<>&EmptyInterface container){
         // equality operators
         variable Boolean sync;
         sync = erasedTest === erasedTest;
@@ -255,8 +255,8 @@ class Test(Integer&EmptyInterface n) {
         sync = p1 in container;
         
         // is
-        if(is Category p1){}
-        sync = p1 is Category;
+        if(is Category<> p1){}
+        sync = p1 is Category<>;
     }
 
     void testSequences<T>(MyNumeric&EmptyInterface p1,

@@ -19,7 +19,7 @@
  */
 @noanno
 void bug588() {
-    Comparable<String>[] comparables = [ "hello" ];
+    Summable<String>[] comparables = [ "hello" ];
     for (c in comparables) {
         print(c of String);
     }

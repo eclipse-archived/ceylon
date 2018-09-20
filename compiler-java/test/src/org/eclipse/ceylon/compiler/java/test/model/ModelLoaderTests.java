@@ -276,7 +276,9 @@ public class ModelLoaderTests extends CompilerTests {
             @Override
             public void finished(TaskEvent e) {
                 if(e.getKind() == Kind.ENTER){
-                    CeylonModelLoader modelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context2);
+                    CeylonModelLoader modelLoader = 
+                            (CeylonModelLoader) 
+                                CeylonModelLoader.instance(context2);
                     test.test(modelLoader);
                 }
             }

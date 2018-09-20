@@ -85,7 +85,7 @@ public class ClassWithInitializerDeclarationImpl
     @Override
     @NonNull
     public CallableConstructorDeclaration getDefaultConstructor() {
-        return Util.assertExists(new ClassWithInitializerDeclarationConstructor((org.eclipse.ceylon.model.typechecker.model.Class)declaration));
+        return new ClassWithInitializerDeclarationConstructor((org.eclipse.ceylon.model.typechecker.model.Class)declaration);
     }
     
     @TypeInfo("ceylon.language.meta.declaration::CallableConstructorDeclaration")

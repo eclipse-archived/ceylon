@@ -13,8 +13,10 @@ final class switchExpression_ {
                 {
                     .java.lang.Object sel$1 = val;
                     if (sel$1 == .ceylon.language.Boolean.instance(true)) {
+                        final boolean val$5 = ((.ceylon.language.Boolean)sel$1).booleanValue();
                         $ceylontmp$ifResult$0 = "true";
                     } else if (sel$1 == .ceylon.language.Boolean.instance(false)) {
+                        final boolean val$4 = ((.ceylon.language.Boolean)sel$1).booleanValue();
                         $ceylontmp$ifResult$0 = "false";
                     } else if (sel$1 instanceof .ceylon.language.Float) {
                         final double val$3 = ((.ceylon.language.Float)sel$1).doubleValue();
@@ -31,27 +33,27 @@ final class switchExpression_ {
         final .ceylon.language.String s2 = (
             let
             {
-                .ceylon.language.String $ceylontmp$ifResult$4;
+                .ceylon.language.String $ceylontmp$ifResult$6;
                 {
-                    .java.lang.Object sel$5 = val2;
-                    if (sel$5 == null || sel$5 instanceof .ceylon.language.String) {
-                        final .ceylon.language.String val2$7 = (.ceylon.language.String)sel$5;
-                        $ceylontmp$ifResult$4 = val2$7;
+                    .java.lang.Object sel$7 = val2;
+                    if (sel$7 == null || sel$7 instanceof .ceylon.language.String) {
+                        final .ceylon.language.String val2$9 = (.ceylon.language.String)sel$7;
+                        $ceylontmp$ifResult$6 = val2$9;
                     } else {
-                        final .java.lang.Object val2$6 = (.java.lang.Object)sel$5;
-                        $ceylontmp$ifResult$4 = .ceylon.language.String.instance("asd");
+                        final .java.lang.Object val2$8 = (.java.lang.Object)sel$7;
+                        $ceylontmp$ifResult$6 = .ceylon.language.String.instance("asd");
                     }
                 }
             }
-            returning $ceylontmp$ifResult$4;
+            returning $ceylontmp$ifResult$6;
         );
         {
-            .java.lang.Object sel$8 = val2;
-            if (sel$8 == null || sel$8 instanceof .ceylon.language.String) {
-                final .ceylon.language.String val2$10 = (.ceylon.language.String)sel$8;
-                .ceylon.language.print_.print(val2$10);
+            .java.lang.Object sel$10 = val2;
+            if (sel$10 == null || sel$10 instanceof .ceylon.language.String) {
+                final .ceylon.language.String val2$12 = (.ceylon.language.String)sel$10;
+                .ceylon.language.print_.print(val2$12);
             } else {
-                final .java.lang.Object val2$9 = (.java.lang.Object)sel$8;
+                final .java.lang.Object val2$11 = (.java.lang.Object)sel$10;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("asd"));
             }
         }
@@ -82,70 +84,53 @@ class SwitchExpressionBottom extends .org.eclipse.ceylon.compiler.java.test.stat
         super((
             let
             {
-                .ceylon.language.String $ceylontmp$ifResult$11;
+                .ceylon.language.String $ceylontmp$ifResult$13;
                 {
-                    .java.lang.Object sel$12 = val;
-                    if (sel$12 == null || sel$12 instanceof .ceylon.language.String) {
-                        final .ceylon.language.String val$14 = (.ceylon.language.String)sel$12;
-                        $ceylontmp$ifResult$11 = val$14;
+                    .java.lang.Object sel$14 = val;
+                    if (sel$14 == null || sel$14 instanceof .ceylon.language.String) {
+                        final .ceylon.language.String val$16 = (.ceylon.language.String)sel$14;
+                        $ceylontmp$ifResult$13 = val$16;
                     } else {
-                        final .java.lang.Object val$13 = (.java.lang.Object)sel$12;
-                        $ceylontmp$ifResult$11 = .ceylon.language.String.instance("asd");
+                        final .java.lang.Object val$15 = (.java.lang.Object)sel$14;
+                        $ceylontmp$ifResult$13 = .ceylon.language.String.instance("asd");
                     }
                 }
             }
-            returning $ceylontmp$ifResult$11;
+            returning $ceylontmp$ifResult$13;
         ));
         final .ceylon.language.Integer arg = null;
         final double y0 = (
             let
             {
-                double $ceylontmp$ifResult$15;
+                double $ceylontmp$ifResult$17;
                 {
-                    .ceylon.language.Integer sel$16 = arg;
-                    if (sel$16 == null) {
-                        $ceylontmp$ifResult$15 = 0.0;
-                    } else if (sel$16 != null) {
-                        final long arg$17 = ((.ceylon.language.Integer)sel$16).longValue();
-                        $ceylontmp$ifResult$15 = 1.0;
+                    .ceylon.language.Integer sel$18 = arg;
+                    if (sel$18 == null) {
+                        final .java.lang.Object arg$20 = (.java.lang.Object)sel$18;
+                        $ceylontmp$ifResult$17 = 0.0;
+                    } else if (sel$18 != null) {
+                        final long arg$19 = ((.ceylon.language.Integer)sel$18).longValue();
+                        $ceylontmp$ifResult$17 = 1.0;
                     } else {
                         .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
-                        $ceylontmp$ifResult$15 = 0.0;
+                        $ceylontmp$ifResult$17 = 0.0;
                     }
                 }
             }
-            returning $ceylontmp$ifResult$15;
+            returning $ceylontmp$ifResult$17;
         );
         final .java.lang.String y1 = (
             let
             {
-                .java.lang.String $ceylontmp$ifResult$18;
-                {
-                    .ceylon.language.Integer sel$19 = arg;
-                    if (sel$19 == null) {
-                        $ceylontmp$ifResult$18 = "null";
-                    } else if (sel$19 != null) {
-                        final long arg$20 = ((.ceylon.language.Integer)sel$19).longValue();
-                        $ceylontmp$ifResult$18 = .ceylon.language.Integer.toString(arg$20);
-                    } else {
-                        .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
-                        $ceylontmp$ifResult$18 = null;
-                    }
-                }
-            }
-            returning $ceylontmp$ifResult$18;
-        );
-        final .java.lang.Object y2 = (
-            let
-            {
-                .java.lang.Object $ceylontmp$ifResult$21;
+                .java.lang.String $ceylontmp$ifResult$21;
                 {
                     .ceylon.language.Integer sel$22 = arg;
                     if (sel$22 == null) {
-                        $ceylontmp$ifResult$21 = .ceylon.language.Float.instance(0.0);
+                        final .java.lang.Object arg$24 = (.java.lang.Object)sel$22;
+                        $ceylontmp$ifResult$21 = "null";
                     } else if (sel$22 != null) {
                         final long arg$23 = ((.ceylon.language.Integer)sel$22).longValue();
-                        $ceylontmp$ifResult$21 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$23));
+                        $ceylontmp$ifResult$21 = .ceylon.language.Integer.toString(arg$23);
                     } else {
                         .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
                         $ceylontmp$ifResult$21 = null;
@@ -154,25 +139,46 @@ class SwitchExpressionBottom extends .org.eclipse.ceylon.compiler.java.test.stat
             }
             returning $ceylontmp$ifResult$21;
         );
-        final .ceylon.language.Float y3 = (
+        final .java.lang.Object y2 = (
             let
             {
-                .ceylon.language.Float $ceylontmp$ifResult$24;
+                .java.lang.Object $ceylontmp$ifResult$25;
                 {
-                    .ceylon.language.Integer sel$25 = arg;
-                    if (sel$25 == null) {
-                        $ceylontmp$ifResult$24 = .ceylon.language.Float.instance(0.0);
-                    } else if (sel$25 != null) {
-                        final long arg$26 = ((.ceylon.language.Integer)sel$25).longValue();
-                        null;
-                        $ceylontmp$ifResult$24 = null;
+                    .ceylon.language.Integer sel$26 = arg;
+                    if (sel$26 == null) {
+                        final .java.lang.Object arg$28 = (.java.lang.Object)sel$26;
+                        $ceylontmp$ifResult$25 = .ceylon.language.Float.instance(0.0);
+                    } else if (sel$26 != null) {
+                        final long arg$27 = ((.ceylon.language.Integer)sel$26).longValue();
+                        $ceylontmp$ifResult$25 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$27));
                     } else {
                         .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
-                        $ceylontmp$ifResult$24 = null;
+                        $ceylontmp$ifResult$25 = null;
                     }
                 }
             }
-            returning $ceylontmp$ifResult$24;
+            returning $ceylontmp$ifResult$25;
+        );
+        final .ceylon.language.Float y3 = (
+            let
+            {
+                .ceylon.language.Float $ceylontmp$ifResult$29;
+                {
+                    .ceylon.language.Integer sel$30 = arg;
+                    if (sel$30 == null) {
+                        final .java.lang.Object arg$32 = (.java.lang.Object)sel$30;
+                        $ceylontmp$ifResult$29 = .ceylon.language.Float.instance(0.0);
+                    } else if (sel$30 != null) {
+                        final long arg$31 = ((.ceylon.language.Integer)sel$30).longValue();
+                        null;
+                        $ceylontmp$ifResult$29 = null;
+                    } else {
+                        .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$29 = null;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$29;
         );
     }
     

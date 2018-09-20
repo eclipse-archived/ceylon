@@ -96,7 +96,7 @@ public class MemberClassAliasTricks_Foo implements .org.eclipse.ceylon.compiler.
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo.MemberClassAliasToToplevel")
     @.org.eclipse.ceylon.compiler.java.metadata.Container(
             klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class,
             isStatic = false)

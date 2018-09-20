@@ -179,14 +179,14 @@ final class classLiteral_ {
         .ceylon.language.String rhs$53 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation.class));
         if (lhs$52.equals(rhs$53)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface java.lang.annotation.Annotation\"==ClassLiteral.classString(`ConstrainedAnnotation`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$52, rhs$53));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface java.lang.annotation.Annotation\"==ClassLiteral.classString(`ConstrainedAnnotation<>`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$52, rhs$53));
         }
         x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Interface<? extends .java.lang.annotation.Annotation>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ConstrainedAnnotation.class, .ceylon.language.Annotation.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Anything.$TypeDescriptor$));
         .ceylon.language.String lhs$54 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.org.eclipse.ceylon.compiler.java.Util.javaClassForModel(x)));
         .ceylon.language.String rhs$55 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation.class));
         if (lhs$54.equals(rhs$55)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ClassLiteral.classString(x)==ClassLiteral.classString(`ConstrainedAnnotation`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$54, rhs$55));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ClassLiteral.classString(x)==ClassLiteral.classString(`ConstrainedAnnotation<>`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$54, rhs$55));
         }
         .ceylon.language.String lhs$56 = .ceylon.language.String.instance("class [Lceylon.language.String;");
         .ceylon.language.String rhs$57 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.String[].class));
@@ -387,14 +387,14 @@ final class classLiteral_ {
         .ceylon.language.String rhs$117 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation[].class));
         if (lhs$116.equals(rhs$117)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.annotation.Annotation;\"==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation>`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$116, rhs$117));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.annotation.Annotation;\"==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation<>>`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$116, rhs$117));
         }
         x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class<? extends .java.lang.annotation.Annotation[], ? super .ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.language.ObjectArray.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ConstrainedAnnotation.class, .ceylon.language.Annotation.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Anything.$TypeDescriptor$)));
         .ceylon.language.String lhs$118 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.org.eclipse.ceylon.compiler.java.Util.javaClassForModel(x)));
         .ceylon.language.String rhs$119 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation[].class));
         if (lhs$118.equals(rhs$119)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ClassLiteral.classString(x)==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation>`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$118, rhs$119));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "ClassLiteral.classString(x)==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation<>>`)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$118, rhs$119));
         }
         .ceylon.language.String lhs$120 = .ceylon.language.String.instance("class [[I");
         .ceylon.language.String rhs$121 = .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.interop.ClassLiteral.classString(int[][].class));

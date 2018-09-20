@@ -60,15 +60,11 @@ class SwitchInlineVar implements .org.eclipse.ceylon.compiler.java.runtime.model
         {
             .ceylon.language.String sel$3 = m3helper$priv$();
             if (sel$3 == null) {
+                final .java.lang.Object b$6 = (.java.lang.Object)sel$3;
                 name = "NULL";
             } else if (sel$3 != null && sel$3.toString().equals("aap")) {
-                name = "Monkey: " + (
-                    let
-                    {
-                        .ceylon.language.String $ceylontmp$5 = sel$3;
-                    }
-                    returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.String.instance("?");
-                ).toString();
+                final .java.lang.String b$5 = ((.ceylon.language.String)sel$3).toString();
+                name = "Monkey: " + sel$3;
             } else {
                 final .java.lang.String b$4 = ((.ceylon.language.String)sel$3).toString();
                 name = b$4;

@@ -403,4 +403,10 @@ public class ConstructorTests extends CompilerTests {
         compareWithJavaSource("constructor/Bug7237");
     }
     
+    @Test
+    public void testCtorBug7376() {
+        compile("importIt/ctor/NestedCtor.ceylon"); 
+        compareWithJavaSource("importIt/ImportStaticMemberClassConstructors");
+    }
+    
 }

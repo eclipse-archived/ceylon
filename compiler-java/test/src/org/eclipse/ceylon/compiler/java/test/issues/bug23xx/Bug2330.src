@@ -11,14 +11,14 @@ final class bug2330_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y));
         }
-        final boolean lt1 = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)y).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
+        final boolean lt1 = ((.ceylon.language.Comparable)y).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
         final boolean gt1 = 5L > ((.ceylon.language.Integer)y).longValue();
         .java.lang.Object item$2;
         if ((item$2 = (Item)item) instanceof .ceylon.language.Integer) {
-            final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
+            final boolean lt = ((.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
             final boolean gt = 5L > ((.ceylon.language.Integer)item).longValue();
-            final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable)item);
-            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
+            final boolean eq = ((.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable)item);
+            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
             final boolean wthn = (
                 let
                 {
@@ -31,10 +31,10 @@ final class bug2330_ {
             .java.lang.Object item$5;
             if ((item$5 = (Item)item$3) instanceof .ceylon.language.Float) {
                 final .java.lang.Object item$21 = item$5;
-                final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$21).smallerThan((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
+                final boolean lt = ((.ceylon.language.Comparable)item$21).smallerThan((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
                 final boolean gt = 5.0 > ((.ceylon.language.Float)item$21).doubleValue();
-                final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$21).smallerThan((.ceylon.language.Comparable)item$21);
-                final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$21).compare((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
+                final boolean eq = ((.ceylon.language.Comparable)item$21).smallerThan((.ceylon.language.Comparable)item$21);
+                final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$21).compare((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
                 final boolean wthn = (
                     let
                     {
@@ -47,10 +47,10 @@ final class bug2330_ {
                 .java.lang.Object item$8;
                 if ((item$8 = (Item)item$6) instanceof .ceylon.language.Character) {
                     final .java.lang.Object item$19 = item$8;
-                    final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$19).smallerThan((.ceylon.language.Comparable).ceylon.language.Character.instance(97));
+                    final boolean lt = ((.ceylon.language.Comparable)item$19).smallerThan((.ceylon.language.Comparable).ceylon.language.Character.instance(97));
                     final boolean gt = 97 > ((.ceylon.language.Character)item$19).intValue();
-                    final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$19).smallerThan((.ceylon.language.Comparable)item$19);
-                    final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$19).compare((.ceylon.language.Comparable).ceylon.language.Character.instance('a'));
+                    final boolean eq = ((.ceylon.language.Comparable)item$19).smallerThan((.ceylon.language.Comparable)item$19);
+                    final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$19).compare((.ceylon.language.Comparable).ceylon.language.Character.instance('a'));
                     final boolean wthn = (
                         let
                         {
@@ -63,10 +63,10 @@ final class bug2330_ {
                     .java.lang.Object item$11;
                     if ((item$11 = (Item)item$9) instanceof .ceylon.language.String) {
                         final .java.lang.Object item$17 = item$11;
-                        final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$17).smallerThan((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
+                        final boolean lt = ((.ceylon.language.Comparable)item$17).smallerThan((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
                         final boolean gt = .ceylon.language.String.largerThan("a", ((.ceylon.language.String)item$17).toString());
-                        final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$17).smallerThan((.ceylon.language.Comparable)item$17);
-                        final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$17).compare((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
+                        final boolean eq = ((.ceylon.language.Comparable)item$17).smallerThan((.ceylon.language.Comparable)item$17);
+                        final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$17).compare((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
                         final boolean wthn = (
                             let
                             {
@@ -79,10 +79,10 @@ final class bug2330_ {
                         .java.lang.Object item$14;
                         if ((item$14 = (Item)item$12) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$14, $reified$X)) {
                             final .java.lang.Object item$15 = item$14;
-                            final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$15).smallerThan((.ceylon.language.Comparable)x);
+                            final boolean lt = ((.ceylon.language.Comparable)item$15).smallerThan((.ceylon.language.Comparable)x);
                             final boolean gt = ((X)x).largerThan((X)item$15);
-                            final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$15).smallerThan((.ceylon.language.Comparable)item$15);
-                            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$15).compare((.ceylon.language.Comparable)x);
+                            final boolean eq = ((.ceylon.language.Comparable)item$15).smallerThan((.ceylon.language.Comparable)item$15);
+                            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$15).compare((.ceylon.language.Comparable)x);
                             final boolean wthn = (
                                 let
                                 {
@@ -96,11 +96,10 @@ final class bug2330_ {
             }
         }
         .java.lang.Object item$25;
-        if ((item$25 = (Item)item) instanceof .ceylon.language.Integer) {
-            final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
-            final boolean gt = 5L > ((.ceylon.language.Integer)item).longValue();
-            final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable)item);
-            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
+        if ((item$25 = (Item)item) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final boolean lt = ((.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
+            final boolean eq = ((.ceylon.language.Comparable)item).smallerThan((.ceylon.language.Comparable)item);
+            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
             final boolean wthn = (
                 let
                 {
@@ -111,12 +110,11 @@ final class bug2330_ {
         } else {
             final Item item$26 = (Item)item$25;
             .java.lang.Object item$28;
-            if ((item$28 = (Item)item$26) instanceof .ceylon.language.Float) {
+            if ((item$28 = (Item)item$26) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$28, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.Float.$TypeDescriptor$))) {
                 final .java.lang.Object item$44 = item$28;
-                final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$44).smallerThan((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
-                final boolean gt = 5.9 > ((.ceylon.language.Float)item$44).doubleValue();
-                final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$44).smallerThan((.ceylon.language.Comparable)item$44);
-                final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$44).compare((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
+                final boolean lt = ((.ceylon.language.Comparable)item$44).smallerThan((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
+                final boolean eq = ((.ceylon.language.Comparable)item$44).smallerThan((.ceylon.language.Comparable)item$44);
+                final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$44).compare((.ceylon.language.Comparable).ceylon.language.Float.instance(5.0));
                 final boolean wthn = (
                     let
                     {
@@ -127,12 +125,11 @@ final class bug2330_ {
             } else {
                 final Item item$29 = (Item)item$28;
                 .java.lang.Object item$31;
-                if ((item$31 = (Item)item$29) instanceof .ceylon.language.Character) {
+                if ((item$31 = (Item)item$29) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$31, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.Character.$TypeDescriptor$))) {
                     final .java.lang.Object item$42 = item$31;
-                    final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$42).smallerThan((.ceylon.language.Comparable).ceylon.language.Character.instance(97));
-                    final boolean gt = 97 > ((.ceylon.language.Character)item$42).intValue();
-                    final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$42).smallerThan((.ceylon.language.Comparable)item$42);
-                    final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$42).compare((.ceylon.language.Comparable).ceylon.language.Character.instance('5'));
+                    final boolean lt = ((.ceylon.language.Comparable)item$42).smallerThan((.ceylon.language.Comparable).ceylon.language.Character.instance(97));
+                    final boolean eq = ((.ceylon.language.Comparable)item$42).smallerThan((.ceylon.language.Comparable)item$42);
+                    final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$42).compare((.ceylon.language.Comparable).ceylon.language.Character.instance('5'));
                     final boolean wthn = (
                         let
                         {
@@ -143,12 +140,11 @@ final class bug2330_ {
                 } else {
                     final Item item$32 = (Item)item$31;
                     .java.lang.Object item$34;
-                    if ((item$34 = (Item)item$32) instanceof .ceylon.language.String) {
+                    if ((item$34 = (Item)item$32) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$34, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, .ceylon.language.String.$TypeDescriptor$))) {
                         final .java.lang.Object item$40 = item$34;
-                        final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$40).smallerThan((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
-                        final boolean gt = .ceylon.language.String.largerThan("a", ((.ceylon.language.String)item$40).toString());
-                        final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$40).smallerThan((.ceylon.language.Comparable)item$40);
-                        final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$40).compare((.ceylon.language.Comparable).ceylon.language.String.instance("5"));
+                        final boolean lt = ((.ceylon.language.Comparable)item$40).smallerThan((.ceylon.language.Comparable).ceylon.language.String.instance("a"));
+                        final boolean eq = ((.ceylon.language.Comparable)item$40).smallerThan((.ceylon.language.Comparable)item$40);
+                        final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$40).compare((.ceylon.language.Comparable).ceylon.language.String.instance("5"));
                         final boolean wthn = (
                             let
                             {
@@ -161,10 +157,9 @@ final class bug2330_ {
                         .java.lang.Object item$37;
                         if ((item$37 = (Item)item$35) instanceof .ceylon.language.Comparable && .org.eclipse.ceylon.compiler.java.Util.isReified(item$37, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Comparable.class, $reified$X))) {
                             final .java.lang.Object item$38 = item$37;
-                            final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$38).smallerThan((.ceylon.language.Comparable)x);
-                            final boolean gt = ((X)x).largerThan((X)item$38);
-                            final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$38).smallerThan((.ceylon.language.Comparable)item$38);
-                            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item$38).compare((.ceylon.language.Comparable)x);
+                            final boolean lt = ((.ceylon.language.Comparable)item$38).smallerThan((.ceylon.language.Comparable)x);
+                            final boolean eq = ((.ceylon.language.Comparable)item$38).smallerThan((.ceylon.language.Comparable)item$38);
+                            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)item$38).compare((.ceylon.language.Comparable)x);
                             final boolean wthn = (
                                 let
                                 {

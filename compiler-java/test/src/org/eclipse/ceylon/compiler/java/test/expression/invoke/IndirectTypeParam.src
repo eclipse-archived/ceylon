@@ -137,7 +137,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 1, $param$0));
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0));
             }
             
             private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
@@ -202,7 +202,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 1, $param$0));
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0));
             }
             
             private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {

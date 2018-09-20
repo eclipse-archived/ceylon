@@ -9,13 +9,13 @@
  ********************************************************************************/
 import ceylon.language.meta.declaration{ValueConstructorDeclaration}
 
-"""A callable constructor model represents the model of a Ceylon class 
-   value constructor that you can get and inspect
+"""A value constructor model represents the model of a Ceylon class 
+   value constructor that you can get and inspect.
    
    ## Gettablity
    
    As with [[Value]] you can also get the value of a `ValueConstructor`, 
-   doing so obtains instance:
+   doing so obtains the instance:
    
         shared class Color {
             shared String hex;
@@ -28,9 +28,10 @@ import ceylon.language.meta.declaration{ValueConstructorDeclaration}
         }
         
         void test() {
-        ValueConstructor<Color> ctor = `Color.black`;
-        // This will print: #000000
-        print(ctor.get());
+            ValueConstructor<Color> ctor = `Color.black`;
+            // This will print: #000000
+            print(ctor.get());
+        }
         
    """
 since("1.2.0")

@@ -93,12 +93,12 @@ final class typeAliasWithTypeParametersMethod1_ {
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters1",
             erased = true)
     static .java.lang.Object typeAliasWithTypeParametersMethod1(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters1",
             erased = true)
     final .java.lang.Object f) {
         return f;
@@ -115,12 +115,12 @@ final class typeAliasWithTypeParametersMethod2_ {
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters2<ceylon.language::Integer>",
             erased = true)
     static .java.lang.Object typeAliasWithTypeParametersMethod2(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters2<ceylon.language::Integer>",
             erased = true)
     final .java.lang.Object f) {
         return f;
@@ -136,7 +136,7 @@ final class typeAliasWithTypeParametersMethod3_ {
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters3<T,V>")
     @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
             @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
                     value = "T",
@@ -152,7 +152,7 @@ final class typeAliasWithTypeParametersMethod3_ {
     final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, @.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters3<T,V>")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass<T> f) {
         return f;
     }
@@ -167,7 +167,7 @@ final class typeAliasWithTypeParametersMethod4_ {
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters4<T,V>")
     @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
             @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
                     value = "T",
@@ -183,7 +183,7 @@ final class typeAliasWithTypeParametersMethod4_ {
     final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, @.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParameters4<T,V>")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<V> f) {
         return f;
     }

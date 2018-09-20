@@ -106,10 +106,15 @@ class EnumSwitch implements .org.eclipse.ceylon.compiler.java.runtime.model.Reif
         {
             .java.lang.Object sel$2 = e;
             if (sel$2 == .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
+                final .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum e$8 = (.org.eclipse.ceylon.compiler.java.test.interop.JavaEnum)sel$2;
             } else if (sel$2 == .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
+                final .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum e$7 = (.org.eclipse.ceylon.compiler.java.test.interop.JavaEnum)sel$2;
             } else if (sel$2 == .java.lang.Thread.State.NEW) {
+                final .java.lang.Thread.State e$6 = (.java.lang.Thread.State)sel$2;
             } else if (sel$2 == .java.lang.Thread.State.RUNNABLE) {
+                final .java.lang.Thread.State e$5 = (.java.lang.Thread.State)sel$2;
             } else if (sel$2 == .java.lang.Thread.State.BLOCKED) {
+                final .java.lang.Thread.State e$4 = (.java.lang.Thread.State)sel$2;
             } else {
                 final .java.lang.Thread.State e$3 = (.java.lang.Thread.State)sel$2;
             }

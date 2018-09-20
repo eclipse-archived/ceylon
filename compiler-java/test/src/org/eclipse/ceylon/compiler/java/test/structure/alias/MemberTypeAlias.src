@@ -108,12 +108,12 @@ public class MemberTypeAliasClass implements .org.eclipse.ceylon.compiler.java.r
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias1",
             erased = true)
     private final .java.lang.Object classAliasMethod1$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias1",
             erased = true)
     final .java.lang.Object f) {
         return f;
@@ -121,31 +121,31 @@ public class MemberTypeAliasClass implements .org.eclipse.ceylon.compiler.java.r
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias2",
             erased = true)
     private final .java.lang.Object classAliasMethod2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias2",
             erased = true)
     final .java.lang.Object f) {
         return f;
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias3")
     private final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass classAliasMethod3$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias3")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass f) {
         return f;
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias4")
     private final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface classAliasMethod4$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAlias4")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface f) {
         return f;
     }
@@ -287,12 +287,12 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias1",
             erased = true)
     private .java.lang.Object classAliasMethod1$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias1",
             erased = true)
     final .java.lang.Object f) {
         return f;
@@ -300,31 +300,31 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias2",
             erased = true)
     private .java.lang.Object classAliasMethod2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias2",
             erased = true)
     final .java.lang.Object f) {
         return f;
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias3")
     private .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass classAliasMethod3$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias3")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass f) {
         return f;
     }
     
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias4")
     private .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface classAliasMethod4$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
     @.org.eclipse.ceylon.common.NonNull
-    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAlias4")
     final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface f) {
         return f;
     }

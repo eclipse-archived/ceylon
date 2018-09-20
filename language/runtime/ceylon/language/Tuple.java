@@ -61,8 +61,7 @@ import ceylon.language.serialization.ReachableReference;
                 arguments = {"Gavin"}),
         @Annotation("shared"),
         @Annotation("final")})
-@SatisfiedTypes({
-        "ceylon.language::Sequence<Element>"})
+@SatisfiedTypes({"[Element+]"})
 @TypeParameters({
         @TypeParameter(
                 value = "Element",
@@ -77,7 +76,7 @@ import ceylon.language.serialization.ReachableReference;
         @TypeParameter(
                 value = "Rest",
                 variance = Variance.OUT,
-                satisfies = {"ceylon.language::Sequential<Element>"},
+                satisfies = {"[Element*]"},
                 caseTypes = {},
                 defaultValue = "ceylon.language::Empty")})
 @SharedAnnotation$annotation$
@@ -348,7 +347,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language::Sequential<Element>")
+    @TypeInfo("[Element*]")
     public final ceylon.language.Sequential<? extends Element> 
     measure(@Name("from")
     @TypeInfo("ceylon.language::Integer")
@@ -398,7 +397,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language::Sequential<Element>")
+    @TypeInfo("[Element*]")
     public final ceylon.language.Sequential<? extends Element> 
     span(@Name("from") final ceylon.language.Integer from, 
          @Name("end") final ceylon.language.Integer end) {
@@ -468,7 +467,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language::Sequential<Element>")
+    @TypeInfo("[Element*]")
     public final ceylon.language.Sequential<? extends Element> 
     spanTo(@Name("to") final ceylon.language.Integer to) {
         return to.longValue() < 0 ? 
@@ -480,7 +479,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language::Sequential<Element>")
+    @TypeInfo("[Element*]")
     public final ceylon.language.Sequential<? extends Element> 
     spanFrom(@Name("from") final ceylon.language.Integer from) {
         long size = getSize();
@@ -546,7 +545,7 @@ public final class Tuple<Element, First extends Element,
     @Annotations({
         @Annotation("shared"),
         @Annotation("actual")})
-    @TypeInfo("ceylon.language::Tuple<Element,First,Rest>")
+    @TypeInfo("[Element+]")
     @Override
     @NonNull
     public Sequence<? extends Element> tuple() {

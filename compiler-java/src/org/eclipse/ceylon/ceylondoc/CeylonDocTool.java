@@ -372,7 +372,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             File moduleRepoFile = new File(moduleRepoUrl);
             if (moduleRepoFile.exists() && moduleRepoFile.isDirectory()) {
                 moduleRepoUrl = moduleRepoFile.toURI().toString();
-            } else if (moduleNamePattern == null) {
+            } else {
                 throw new IllegalArgumentException(CeylondMessages.msg("error.unexpectedLink", link));
             }
         }

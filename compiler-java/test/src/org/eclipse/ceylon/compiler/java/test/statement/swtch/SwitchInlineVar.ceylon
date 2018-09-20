@@ -54,7 +54,7 @@ class SwitchInlineVar() {
         String name;
         switch(b=m3helper()) 
         case("aap") {
-            name = "Monkey: " + (b else "?");
+            name = "Monkey: " + b;
         }
         case(null) {
             name = "NULL";

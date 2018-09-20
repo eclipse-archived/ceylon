@@ -100,6 +100,8 @@ import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.StaticType;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.TypeConstraintList;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Cancellable;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -119,6 +121,7 @@ import org.eclipse.ceylon.model.typechecker.model.ParameterList;
 import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Setter;
+import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
@@ -1086,8 +1089,11 @@ public class ExpressionVisitor extends Visitor {
                 ref.addError(message, code);
             }
             else {
-                ref.addUsageWarning(Warning.syntaxDeprecation, 
-                        message);
+                Type type = ref.getTypeModel();
+                if (type==null || !type.getDeclaration().isFinal()) {
+                    ref.addUsageWarning(Warning.narrowingDisabled, 
+                            message);
+                }
             }
         }
     }
@@ -2416,25 +2422,24 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.CaseTypes that) {
         super.visit(that);
-        if (that.getTypes().size()==1) {
-            Tree.Type type = that.getTypes().get(0);
-            Type ct = type.getTypeModel();
-            if (!isTypeUnknown(ct)) {
-                TypeDeclaration ctd = ct.getDeclaration();
-                if (ctd.isSelfType()) {
-                    TypeDeclaration td = 
-                            (TypeDeclaration) 
+        List<StaticType> types = that.getTypes();
+        if (types.size()==1) {
+            Tree.Type node = types.get(0);
+            Type caseType = node.getTypeModel();
+            if (!isTypeUnknown(caseType) 
+                    && caseType.getDeclaration()
+                            .isSelfType()) {
+                TypeDeclaration dec = 
+                        (TypeDeclaration) 
                             that.getScope();
-                    Type t = td.getType();
-                    for (Type bound: ct.getSatisfiedTypes()) {
-                        if (!t.isSubtypeOf(bound)) {
-                            type.addError("type does not satisfy upper bound of self type: '" + 
-                                    td.getName() + 
-                                    "' is not a subtype of upper bound '" + 
-                                    bound.asString(unit) + 
-                                    "' of its self type '" + 
-                                    ctd.getName() + "'");
-                        }
+                if (!dec.isAbstract()) {
+                    Type type = dec.getType();
+                    if (!caseType.isSubtypeOf(type)) {
+                        node.addError("self type is not a subtype of the this type: '" 
+                                + caseType.asString(unit)
+                                + "' is not a subtype of '" 
+                                + type.asString(unit)
+                                + "'");
                     }
                 }
             }
@@ -6056,19 +6061,39 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkPositionalArgument(Parameter p, 
-            Reference pr, Tree.ListedArgument a,
+            Reference pr, Tree.ListedArgument arg,
             Tree.InvocationExpression ie) {
         FunctionOrValue paramModel = p.getModel();
         if (paramModel!=null) {
-            a.setParameter(p);
+            arg.setParameter(p);
             TypedReference paramRef = 
-                    pr.getTypedParameterWithWildcardCapture(p);
+                    pr.getTypedParameter(p);
+            Scope scope = arg.getScope();
             Type paramType = 
-                    paramType(a.getScope(), 
-                            paramRef, paramModel);
-            Type at = a.getTypeModel();
-            if (!isTypeUnknown(at) && 
+                    paramType(scope, paramRef, 
+                            paramModel);
+            Type argType = arg.getTypeModel();
+            if (!isTypeUnknown(argType) && 
                 !isTypeUnknown(paramType)) {
+                
+                boolean wildcardCapture = false;
+                if (pr.getDeclaration().isJava()) {
+                    for (SiteVariance var: SiteVariance.values()) {
+                        if (!argType.isSubtypeOf(paramType)) {
+                            TypedReference paramRef2 = 
+                                    pr.getTypedParameterWithWildcardCapture(p, var);
+                            Type paramType2 = 
+                                    paramType(scope, paramRef2, 
+                                            paramModel);
+                            if (argType.isSubtypeOf(paramType2)) {
+                                paramRef = paramRef2;
+                                paramType = paramType2;
+                                wildcardCapture = true;
+                            }
+                        }
+                    }
+                }
+                
                 if (ie.getPrimary() 
                         instanceof Tree.Compose) {
                     Type ot = 
@@ -6076,18 +6101,22 @@ public class ExpressionVisitor extends Visitor {
                               .getPositionalArguments()
                               .get(1)
                               .getTypeModel();
-                    checkAssignable(at, paramType, a, 
+                    checkAssignable(argType, paramType, arg, 
                             "functions of type '" 
                             + ot.asString(unit)
                             + "' and '"
-                            + at.asString(unit)
+                            + argType.asString(unit)
                             + "' do not compose");
-
                 }
                 else {
-                    checkAssignable(at, paramType, a, 
+                    checkAssignable(argType, paramType, arg, 
                             "argument must be assignable to parameter " 
                                     + argdesc(p, pr), 2100);
+                }
+                
+                if (wildcardCapture) {
+                    pr.addCapturedWildcards(paramRef);
+                    ie.setTypeModel(pr.getType());
                 }
             }
         }
@@ -6792,7 +6821,9 @@ public class ExpressionVisitor extends Visitor {
             Type lhst, Type rhst, 
             TypeDeclaration td, Node node, String message) {
         Type lhsst = 
-                checkSupertype(lhst, td, node, message);
+                checkSupertype(lhst, false,
+                        td==unit.getComparableDeclaration(),
+                        td, node, message);
         if (lhsst!=null) {
             Type at = lhsst.getTypeArgumentList().get(0);
             checkAssignable(rhst, at, node, message);
@@ -7070,7 +7101,7 @@ public class ExpressionVisitor extends Visitor {
         Type t = type(that);
         if (!isTypeUnknown(t)) {
             Type nt = 
-                    checkSupertype(t, true, type, 
+                    checkSupertype(t, true, false, type, 
                             that.getTerm(), 
                             "operand expression must be of correct type");
             if (nt!=null) {
@@ -8138,6 +8169,7 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member;
             Type pt;
             Scope scope;
+            Scope container;
             if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 member = 
@@ -8145,7 +8177,7 @@ public class ExpressionVisitor extends Visitor {
                                 signature, spread, unit);
                 ambiguous = false;
                 pt = null;
-                scope = pack;
+                container = scope = pack;
             }
             else {
                 pt = primary.getTypeModel()
@@ -8154,6 +8186,7 @@ public class ExpressionVisitor extends Visitor {
                 if (d instanceof Constructor) {
                     d = d.getExtendedType().getDeclaration();
                 }
+                container = d;
                 scope = that.getScope();
                 member = 
                         getTypedMember(d, name, 
@@ -8166,11 +8199,11 @@ public class ExpressionVisitor extends Visitor {
                 if (error) {
                     if (ambiguous) {
                         that.addError("method or attribute is ambiguous: '" 
-                                + name + "' for " + container(scope));
+                                + name + "' for " + container(container));
                     }
                     else {
                         that.addError("method or attribute is not defined: '" 
-                                + name + "' in " + container(scope) 
+                                + name + "' in " + container(container) 
                                 + correction(name, scope, cancellable), 
                                 100);
                         unit.setUnresolvedReferences();
@@ -8966,6 +8999,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type;
             Type pt;
             Scope scope;
+            Scope container;
             if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 type = 
@@ -8973,7 +9007,7 @@ public class ExpressionVisitor extends Visitor {
                                 signature, spread, unit);
                 ambiguous = false;
                 pt = null;
-                scope = pack;
+                container = scope = pack;
             }
             else {
                 pt = primary.getTypeModel()
@@ -8982,6 +9016,7 @@ public class ExpressionVisitor extends Visitor {
                 if (d instanceof Constructor) {
                     d = d.getExtendedType().getDeclaration();
                 }
+                container = d;
                 scope = that.getScope();
                 type = 
                         getTypeMember(d, name, 
@@ -8994,11 +9029,11 @@ public class ExpressionVisitor extends Visitor {
                 if (error) {
                     if (ambiguous) {
                         that.addError("member type is ambiguous: '" 
-                                + name + "' for " + container(scope));
+                                + name + "' for " + container(container));
                     }
                     else {
                         that.addError("member type is not defined: '" 
-                                + name + "' in " + container(scope) 
+                                + name + "' in " + container(container) 
                                 + correction(name, scope, cancellable), 
                                 100);
                         unit.setUnresolvedReferences();
@@ -10568,6 +10603,16 @@ public class ExpressionVisitor extends Visitor {
         dynamic = od;
     }
     
+    boolean inTypeConstraint = false;
+    
+    @Override
+    public void visit(TypeConstraintList that) {
+        boolean oitc = inTypeConstraint;
+        inTypeConstraint = true;
+        super.visit(that);
+        inTypeConstraint = oitc;
+    }
+    
     /**
      * Checks the types of the given type arguments against
      * the type parameters of the given declaration, and
@@ -10592,7 +10637,9 @@ public class ExpressionVisitor extends Visitor {
             Node parent) {
         
         if (typeArguments!=null && dec!=null) {
-            checkVarianceAnnotations(tas, parent);
+            if (!inTypeConstraint) {
+                checkVarianceAnnotations(tas, parent);
+            }
             
             if (dec.isParameterized()) {
                 checkTypeArgumentsOfDeclaration(

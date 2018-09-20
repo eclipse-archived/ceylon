@@ -46,6 +46,7 @@ public enum Warning {
     zeroFloatLiteral("Literal so small it is indistinguishable from zero"), 
     hidesLanguageModifier("Import hides a language modifier"), 
     implicitNarrowing("Implicit narrowing to covering type"), 
+    narrowingDisabled("Switch narrowing disabled"), 
     catchType("Discouraged catch type"), 
     directiveInFinally("Control directives in 'finally'");
     /*

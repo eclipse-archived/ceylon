@@ -38,4 +38,4 @@ shared abstract class SelfType2<T>() of T {
 
 //shared interface A satisfies Comparable<C|A> {}
 //shared interface C satisfies Comparable<C|A> {}
-shared interface D satisfies Comparable<D> {}
+shared interface D satisfies Summable<D> {}

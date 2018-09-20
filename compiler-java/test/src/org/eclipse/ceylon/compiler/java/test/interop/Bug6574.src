@@ -78,7 +78,7 @@ public final class bug6574_ {
             @.java.lang.Override
             @.org.eclipse.ceylon.compiler.java.metadata.Ignore
             public .java.util.List<.ceylon.language.String> $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 1, $param$0));
+                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 0, $param$0));
             }
             
             private .java.util.List<.ceylon.language.String> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> arg0) {

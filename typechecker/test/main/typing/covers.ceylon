@@ -64,3 +64,25 @@ void coverageAndConstraints2<T>()
         Nothing t = nothing of String & U;
     }
 }
+
+void useSiteVarianceCoverage() {
+    interface I<T> of T {}
+    
+    void run(I<String> s) {
+        I<out Anything> s1 = s; // ok
+        I<in Nothing> s2 = s;   // ok
+        
+        value s11 = s of I<out Anything>; // error 1
+        value s22 = s of I<in Nothing>;   // error 2
+    }
+}
+
+void useSiteVarianceCoverage2() {
+    interface J {}
+    interface I<T> of T {}
+    class C() satisfies J & I<J> {}
+    class D() {}
+    
+    I<J> c = C();
+    $error D s = c of D;
+}

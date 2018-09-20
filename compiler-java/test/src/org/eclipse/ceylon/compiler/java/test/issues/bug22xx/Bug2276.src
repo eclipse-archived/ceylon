@@ -14,8 +14,10 @@ final class bug2276_accumulator_ {
                 {
                     boolean sel$1 = b;
                     if (sel$1 == true) {
+                        final boolean b$3 = sel$1;
                         $ceylontmp$ifResult$0 = 1.0;
                     } else if (sel$1 == false) {
+                        final boolean b$2 = sel$1;
                         $ceylontmp$ifResult$0 = 0.0;
                     } else {
                         .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));

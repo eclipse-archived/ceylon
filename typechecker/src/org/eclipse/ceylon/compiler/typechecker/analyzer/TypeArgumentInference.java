@@ -141,8 +141,8 @@ public class TypeArgumentInference {
                     paramType.getTypeArguments();
             Map<TypeParameter, SiteVariance> paramVariances = 
                     paramType.getVarianceOverrides();
-            if (paramType.isTypeParameter() &&
-                    paramTypeDec.equals(tp)) {
+            if (paramType.isTypeParameter() 
+                    && paramTypeDec.equals(tp)) {
                 if (tp.isTypeConstructor()) {
                     if (argType.isTypeConstructor()) {
                         return argType;
@@ -180,11 +180,11 @@ public class TypeArgumentInference {
                 TypeParameter tp2 = 
                         (TypeParameter) 
                             paramTypeDec;
-                if (!findingUpperBounds &&
+                if (!findingUpperBounds
                         //protect ourselves from revisiting
                         //this upper bound due to circularities
                         //in the upper bounds
-                        !visited.contains(tp2)) {
+                        && !visited.contains(tp2)) {
                     visited.add(tp2);
                     List<Type> sts = tp2.getSatisfiedTypes();
                     List<Type> list = 
@@ -248,8 +248,8 @@ public class TypeArgumentInference {
                         //is already a subtype of the 
                         //parameter union, so throw it away 
                         //from both unions
-                        if (!act.involvesDeclaration(tp) && //in a recursive generic function, T can get assigned to T
-                                act.substitute(argType)
+                        if (!act.involvesDeclaration(tp) //in a recursive generic function, T can get assigned to T
+                                && act.substitute(argType)
                                     .isSubtypeOf(paramType)) {
                             pt = pt.shallowMinus(act);
                             apt = apt.shallowMinus(act);

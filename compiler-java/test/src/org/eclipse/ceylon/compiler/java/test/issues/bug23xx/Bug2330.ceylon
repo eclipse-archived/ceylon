@@ -62,25 +62,25 @@ void bug2330<Item, X>(Item item, X x)
     
     if (is Comparable<Integer> item) {
         value lt = item < 5;// item has type Item&Comparable<Integer>
-        value gt = 5 > (item of Integer);
+        //value gt = 5 > (item of Integer);
         value eq = item < item;
         value cmp = item <=> 5;
         value wthn = item <= item <= 5;
     } else if (is Comparable<Float> item) {
         value lt = item < 5.0;// item has type Item&Comparable<Float>
-        value gt = 5.9 > (item of Float);
+        //value gt = 5.9 > (item of Float);
         value eq = item < item;
         value cmp = item <=> 5.0;
         value wthn = item <= item <= 5.0;
     } else if (is Comparable<Character> item) {
         value lt = item < 'a';
-        value gt = 'a' > (item of Character);
+        //value gt = 'a' > (item of Character);
         value eq = item < item;
         value cmp = item <=> '5';
         value wthn = item <= item <= '5';
     } else if (is Comparable<String> item) {
         value lt = item < "a";
-        value gt = "a" > (item of String);
+        //value gt = "a" > (item of String);
         value eq = item < item;
         value cmp = item <=> "5";
         value wthn = item <= item <= "5";
@@ -88,7 +88,7 @@ void bug2330<Item, X>(Item item, X x)
         // item has type Item&Comparable<X>
         // x has type X
         value lt = item < x;
-        value gt = x > (item of X);// HERE
+        //value gt = x > (item of X);// HERE
         value eq = item < item;
         value cmp = item <=> x;
         value wthn = item <= item <= x;

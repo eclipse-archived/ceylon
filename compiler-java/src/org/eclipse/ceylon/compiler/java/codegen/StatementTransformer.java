@@ -4927,7 +4927,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // TODO Support for 'case (satisfies ...)' is not implemented yet
                     return make().Exec(makeErroneous(caseItem, "compiler bug: switch/satisfies not implemented yet"));
                 } else if (caseItem instanceof Tree.MatchCase) {
-                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar,outerExpression, expectedType, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
+                    last = transformCaseMatch(selectorAlias, switchClause, caseClause, tmpVar, outerExpression, expectedType, (Tree.MatchCase)caseItem, last, switchExpressionType, primitiveSelector);
                 } else {
                     return make().Exec(makeErroneous(caseItem, "compiler bug: unknown switch case clause: "+caseItem));
                 }
@@ -5112,7 +5112,7 @@ public class StatementTransformer extends AbstractTransformer {
         Substitution prevSubst2 = null;
         Tree.Variable matchVar = matchCase.getVariable();
         if (matchVar!=null && !matchVar.getDeclarationModel().isDropped()) {
-         // Use the type of the variable, which is more precise than the type we test for.
+            // Use the type of the variable, which is more precise than the type we test for.
             Type varType = matchVar.getDeclarationModel().getType();
             
             String name = matchVar.getIdentifier().getText();
@@ -5126,13 +5126,45 @@ public class StatementTransformer extends AbstractTransformer {
 
             // Substitute variable with the correct type to use in the rest of the code block
             
-            JCExpression tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
             JCExpression toTypeExpr;
-            if (isCeylonBasicType(varType) && varDecl.getUnboxed() == true) {
+            JCExpression tmpVarExpr;
+            
+            
+            if (varDecl.getUnboxed()) {
+                //variable local to catch block is an unboxed type
                 toTypeExpr = makeJavaType(varType);
-                tmpVarExpr = unboxType(tmpVarExpr, varType);
-            } else {
+                if (primitiveSelector) {
+                    tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                }
+                else {
+                    //need to unbox
+                    if (switchType.isSubtypeOf(varType)) {
+                        tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                    }
+                    else {
+                        //need to cast before unboxing
+                        tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                    }
+                    tmpVarExpr = unboxType(tmpVarExpr, varType);
+                }
+            }
+            else {
+                //variable local to catch block is a boxed type
                 toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                if (primitiveSelector) {
+                    //need to box
+                    tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                    tmpVarExpr = boxType(tmpVarExpr, varType);
+                }
+                else {
+                    if (switchType.isSubtypeOf(varType)) {
+                        tmpVarExpr = at(matchCase).Ident(tmpVarName.asName());
+                    }
+                    else {
+                        //need to cast
+                        tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                    }
+                }
             }
             
             // The variable holding the result for the code inside the code block

@@ -86,7 +86,7 @@ public class PhasedUnitsModelLoader extends ReflectionModelLoader {
         Class<?> klass = null;
         try {
             klass = classLoader.loadClass(name);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException|NoClassDefFoundError e) {
             // ignore
         }
         return klass;

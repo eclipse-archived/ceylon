@@ -1416,10 +1416,14 @@ public class RefinementVisitor extends Visitor {
                             + "' of " 
                             + message(refined) 
                             + " does not satisfy: '" 
+                            + refinedTypeParam.getName()
+                            + "' of " 
+                            + message(refined) 
+                            + " is not bounded by '"
                             + bound.asString(unit) 
                             + "' ('" 
                             + refiningTypeParam.getName() 
-                            + "' should be upper bounded by '" 
+                            + "' should not be upper bounded by '" 
                             + intersectionOfSupertypes(refinedTypeParam)
                                 .substitute(args, variances)
                                 .asString(unit) 
@@ -1434,7 +1438,7 @@ public class RefinementVisitor extends Visitor {
                     refiningBound = 
                             refiningBound.substitute(
                                     substitution, null);
-                    if (refinedBound.isSubtypeOf(refiningBound)) {
+                    if (refinedBound.isExactly(refiningBound)) {
                         ok = true;
                     }
                 }
@@ -1446,11 +1450,15 @@ public class RefinementVisitor extends Visitor {
                             + message(refined) 
                             + " has upper bound which refining member type parameter '" 
                             + refiningTypeParam.getName() 
-                            + "' does not satisfy: '" 
+                            + "' does not exactly satisfy: '" 
+                            + refinedTypeParam.getName()
+                            + "' of " 
+                            + message(refined) 
+                            + " is bounded by '"
                             + bound.asString(unit) 
                             + "' ('" 
                             + refiningTypeParam.getName() 
-                            + "' should be upper bounded by '" 
+                            + "' should be upper bounded by exactly '" 
                             + intersectionOfSupertypes(refinedTypeParam)
                                 .substitute(args, variances)
                                 .asString(unit) 

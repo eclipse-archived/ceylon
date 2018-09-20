@@ -10,28 +10,30 @@ final class bug2061_ {
         {
             .ceylon.language.Boolean sel$0 = .ceylon.language.Boolean.instance(t);
             if (.ceylon.language.true_.get_().equals(sel$0)) {
-                final boolean t$1 = ((.ceylon.language.Boolean)sel$0).booleanValue();
+                final boolean t$2 = ((.ceylon.language.Boolean)sel$0).booleanValue();
             } else if (sel$0.booleanValue() == false) {
+                final boolean t$1 = ((.ceylon.language.Boolean)sel$0).booleanValue();
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         final .java.lang.String s = (
             let
             {
-                .java.lang.String $ceylontmp$ifResult$2;
+                .java.lang.String $ceylontmp$ifResult$3;
                 {
-                    .ceylon.language.Boolean sel$3 = .ceylon.language.Boolean.instance(t);
-                    if (.ceylon.language.true_.get_().equals(sel$3)) {
-                        final boolean t$4 = ((.ceylon.language.Boolean)sel$3).booleanValue();
-                        $ceylontmp$ifResult$2 = "";
-                    } else if (sel$3.booleanValue() == false) {
-                        $ceylontmp$ifResult$2 = "";
+                    .ceylon.language.Boolean sel$4 = .ceylon.language.Boolean.instance(t);
+                    if (.ceylon.language.true_.get_().equals(sel$4)) {
+                        final boolean t$6 = ((.ceylon.language.Boolean)sel$4).booleanValue();
+                        $ceylontmp$ifResult$3 = "";
+                    } else if (sel$4.booleanValue() == false) {
+                        final boolean t$5 = ((.ceylon.language.Boolean)sel$4).booleanValue();
+                        $ceylontmp$ifResult$3 = "";
                     } else {
                         .org.eclipse.ceylon.compiler.java.Util.rethrow(new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
-                        $ceylontmp$ifResult$2 = null;
+                        $ceylontmp$ifResult$3 = null;
                     }
                 }
             }
-            returning $ceylontmp$ifResult$2;
+            returning $ceylontmp$ifResult$3;
         );
     }
 }

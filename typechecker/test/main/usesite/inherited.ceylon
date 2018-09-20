@@ -58,12 +58,12 @@ $error abstract class SatisfiesOut() satisfies InvariantInterface<out Float> {}
 $error class ExtendsIn() extends InvariantClass<in Float>() {}
 $error abstract class SatisfiesIn() satisfies InvariantInterface<in Float> {}
 class WithOutTypeParameter<T>(T t) 
-$error given T satisfies InvariantInterface<out T>{
+        given T satisfies InvariantInterface<out T>{
     T tt = t.get();
     $error t.set(t);
 }
 class WithInTypeParameter<T>(T t) 
-$error given T satisfies InvariantInterface<in T>{
+        given T satisfies InvariantInterface<in T>{
     $error T tt = t.get();
     t.set(t);
 }

@@ -33,6 +33,8 @@ import org.eclipse.ceylon.model.typechecker.model.Generic;
 
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.FunctionOrValueDeclarationImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
 
 import ceylon.language.Anything;
 import ceylon.language.Iterator;
@@ -242,12 +244,11 @@ public class CallableConstructorDeclarationImpl
             TypeDescriptor $reified$Result, TypeDescriptor $reified$Arguments,
             Sequential<? extends Type<? extends Object>> typeArguments) {
         // apply the given type arguments to the containing class
-        ClassDeclaration clsDecl = getContainer();
-        ceylon.language.meta.model.Class<? extends Result, ?> cls 
-                = clsDecl.<Result, Sequential<? extends java.lang.Object>>classApply(
+        ceylon.language.meta.model.Class<? extends Result, ? extends Sequential<? extends Object>> cls 
+                = getContainer().<Result, Sequential<? extends Object>>classApply(
                         $reified$Result, Nothing.NothingType, typeArguments);
         // then get the constructor from that
-        return Util.assertExists((CallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName()));
+        return Util.assertExists((CallableConstructor)((ClassImpl)cls).getDeclaredConstructorInternal($reified$Arguments, getName()));
     }
     
     @Override
@@ -268,7 +269,7 @@ public class CallableConstructorDeclarationImpl
                 = getContainer().<Container, Result, Sequential<? extends Object>>memberClassApply(
                         $reified$Container, $reified$Result, Nothing.NothingType, containerType, typeArguments);
         // then get the constructor from that
-        return Util.assertExists((MemberClassCallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName()));
+        return Util.assertExists((MemberClassCallableConstructor)((MemberClassImpl)cls).getDeclaredConstructorInternal($reified$Arguments, getName()));
     }
     
     @Override

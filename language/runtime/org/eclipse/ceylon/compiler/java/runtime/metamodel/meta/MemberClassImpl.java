@@ -24,22 +24,15 @@ import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.TypedDeclaration;
 
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.ClassOrInterfaceImpl;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassCallableConstructorImpl;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassInitializerConstructor;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassValueConstructorImpl;
-
 import ceylon.language.AssertionError;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
-import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.Class;
 import ceylon.language.meta.model.FunctionModel;
+import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
 import ceylon.language.meta.model.ValueModel;
 
@@ -299,6 +292,18 @@ public class MemberClassImpl<Container, Type, Arguments extends Sequential<? ext
             TypeDescriptor $reified$Arguments,
             @Name("name")
             String name) {
+        try {
+            return getDeclaredConstructorInternal($reified$Arguments, name);
+        }
+        catch (IncompatibleTypeException ite) {
+            return null;
+        }
+    }
+    
+    @Ignore
+    public <Arguments extends Sequential<? extends Object>>java.lang.Object getDeclaredConstructorInternal(
+            TypeDescriptor $reified$Arguments,
+            String name) {
         checkInit();
         final ceylon.language.meta.declaration.Declaration ctor = ((ClassDeclarationImpl)declaration).getConstructorDeclaration(name);
         if(ctor == null)
@@ -309,34 +314,36 @@ public class MemberClassImpl<Container, Type, Arguments extends Sequential<? ext
                         this.$reifiedContainer, this.$reifiedType, $reified$Arguments, 
                         this);
             }
-            CallableConstructorDeclarationImpl callableCtor = (CallableConstructorDeclarationImpl)ctor;
-            // anonymous classes don't have parameter lists
-            //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
-    
-            // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
-            // implementation types to the user, such as AppliedMemberClass
-            //Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
-            //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
-            //        Variance.OUT, this.producedType, $reifiedType,
-            //        Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
-            //return new AppliedConstructor<Type,Args>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
-            org.eclipse.ceylon.model.typechecker.model.Reference reference;
-            if (callableCtor.declaration instanceof Function) {
-                reference = ((Function)callableCtor.declaration).appliedTypedReference(producedType, null);
-            } else if (callableCtor.declaration instanceof org.eclipse.ceylon.model.typechecker.model.Class) {
-                reference = ((org.eclipse.ceylon.model.typechecker.model.Class)callableCtor.declaration).appliedReference(producedType, null);
-            } else if (callableCtor.declaration instanceof org.eclipse.ceylon.model.typechecker.model.Constructor) {
-                reference = ((org.eclipse.ceylon.model.typechecker.model.Constructor)callableCtor.declaration).appliedReference(producedType, null);
-            } else {
-                throw Metamodel.newModelError("Unexpect declaration " +callableCtor.declaration);
+            else {
+                CallableConstructorDeclarationImpl callableCtor = (CallableConstructorDeclarationImpl)ctor;
+                // anonymous classes don't have parameter lists
+                //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
+        
+                // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+                // implementation types to the user, such as AppliedMemberClass
+                //Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
+                //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+                //        Variance.OUT, this.producedType, $reifiedType,
+                //        Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
+                //return new AppliedConstructor<Type,Args>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
+                org.eclipse.ceylon.model.typechecker.model.Reference reference;
+                if (callableCtor.declaration instanceof Function) {
+                    reference = ((Function)callableCtor.declaration).appliedTypedReference(producedType, null);
+                } else if (callableCtor.declaration instanceof org.eclipse.ceylon.model.typechecker.model.Class) {
+                    reference = ((org.eclipse.ceylon.model.typechecker.model.Class)callableCtor.declaration).appliedReference(producedType, null);
+                } else if (callableCtor.declaration instanceof org.eclipse.ceylon.model.typechecker.model.Constructor) {
+                    reference = ((org.eclipse.ceylon.model.typechecker.model.Constructor)callableCtor.declaration).appliedReference(producedType, null);
+                } else {
+                    throw Metamodel.newModelError("Unexpect declaration " +callableCtor.declaration);
+                }
+                return new MemberClassCallableConstructorImpl<Container,Type,Sequential<? extends java.lang.Object>>(
+                        $reifiedContainer, 
+                        this.$reifiedType,
+                        $reified$Arguments,
+                        reference, 
+                        callableCtor, 
+                        this);
             }
-            return new MemberClassCallableConstructorImpl<Container,Type,Sequential<? extends java.lang.Object>>(
-                    $reifiedContainer, 
-                    this.$reifiedType,
-                    $reified$Arguments,
-                    reference, 
-                    callableCtor, 
-                    this);
         } else if (ctor instanceof ValueConstructorDeclaration){
             ValueConstructorDeclarationImpl callableCtor = (ValueConstructorDeclarationImpl)ctor;
             //org.eclipse.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<org.eclipse.ceylon.model.typechecker.model.Type>emptyList());

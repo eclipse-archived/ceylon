@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
+import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
@@ -37,6 +38,7 @@ import org.eclipse.ceylon.model.typechecker.model.NothingType;
 import org.eclipse.ceylon.model.typechecker.model.Package;
 import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
+import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;

@@ -16,5 +16,5 @@ package org.eclipse.ceylon.model.typechecker.model;
  *
  */
 public enum SiteVariance {
-    IN, OUT
+    OUT, IN
 }

@@ -99,8 +99,10 @@ class SwitchMatch implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
         {
             .org.eclipse.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop sel$0 = fb;
             if (sel$0 == .org.eclipse.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.get_()) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ fb$2 = (.org.eclipse.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_)sel$0;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
             } else if (sel$0 == .org.eclipse.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.get_()) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ fb$1 = (.org.eclipse.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_)sel$0;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("bar"));
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -109,10 +111,12 @@ class SwitchMatch implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
     private final void onBoolean$priv$() {
         final boolean b = true;
         {
-            boolean sel$1 = b;
-            if (sel$1 == true) {
+            boolean sel$3 = b;
+            if (sel$3 == true) {
+                final boolean b$5 = sel$3;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
-            } else if (sel$1 == false) {
+            } else if (sel$3 == false) {
+                final boolean b$4 = sel$3;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -125,10 +129,10 @@ class SwitchMatch implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
     private final void onBoxedBoolean$priv$() {
         final boolean b = true;
         {
-            .ceylon.language.Boolean sel$2 = <.ceylon.language.Boolean>box$priv$(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(b));
-            if (sel$2.booleanValue() == true) {
+            .ceylon.language.Boolean sel$6 = <.ceylon.language.Boolean>box$priv$(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(b));
+            if (sel$6.booleanValue() == true) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
-            } else if (sel$2.booleanValue() == false) {
+            } else if (sel$6.booleanValue() == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -137,12 +141,15 @@ class SwitchMatch implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
     private final void onNullableType$priv$() {
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(true);
         {
-            .ceylon.language.Boolean sel$3 = b;
-            if (sel$3 == null) {
+            .ceylon.language.Boolean sel$7 = b;
+            if (sel$7 == null) {
+                final .java.lang.Object b$10 = (.java.lang.Object)sel$7;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
-            } else if (sel$3.booleanValue() == true) {
+            } else if (sel$7.booleanValue() == true) {
+                final boolean b$9 = ((.ceylon.language.Boolean)sel$7).booleanValue();
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
-            } else if (sel$3.booleanValue() == false) {
+            } else if (sel$7.booleanValue() == false) {
+                final boolean b$8 = ((.ceylon.language.Boolean)sel$7).booleanValue();
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }

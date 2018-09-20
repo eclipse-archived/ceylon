@@ -598,8 +598,10 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeAliasError() {
         testNativeErrors("NativeAliasError",
-                new CompilerError(20, "interface alias may not be marked native: 'NativeAliasError1' (add a body if a native interface was intended)"),
-                new CompilerError(25, "interface alias may not be marked native: 'NativeAliasError2' (add a body if a native interface was intended)")
+                new CompilerError(21, "native header is an alias: 'NativeAliasError1'"),
+                new CompilerError(22, "native header is an alias: 'NativeAliasError1'"),
+                new CompilerError(25, "native header is not an alias: 'NativeAliasError2'"),
+                new CompilerError(25, "missing interface body or aliased interface reference")
         );
     }
     

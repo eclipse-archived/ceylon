@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-/*@error*/ shared native interface NativeAliasError1;
-shared native ("jvm") interface NativeAliasError1 {}
-shared native ("js") interface NativeAliasError1 {}
+shared native interface NativeAliasError1;
+/*@error*/ shared native ("jvm") interface NativeAliasError1 {}
+/*@error*/ shared native ("js") interface NativeAliasError1 {}
 
 shared native interface NativeAliasError2 {}
 /*@error*/ shared native ("jvm") interface NativeAliasError2;

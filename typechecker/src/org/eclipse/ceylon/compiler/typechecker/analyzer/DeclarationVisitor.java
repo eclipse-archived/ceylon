@@ -41,6 +41,7 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isDefaultCons
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.lookupOverloadedByName;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.setVisibleScope;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.variancesAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
@@ -73,7 +74,6 @@ import org.eclipse.ceylon.model.typechecker.model.Interface;
 import org.eclipse.ceylon.model.typechecker.model.InterfaceAlias;
 import org.eclipse.ceylon.model.typechecker.model.IntersectionType;
 import org.eclipse.ceylon.model.typechecker.model.LazyType;
-import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.ModuleImportList;
 import org.eclipse.ceylon.model.typechecker.model.NamedArgumentList;
 import org.eclipse.ceylon.model.typechecker.model.Package;
@@ -159,7 +159,7 @@ public abstract class DeclarationVisitor extends Visitor {
         
         handleDeclarationAnnotations(that, model);
         
-        ModelUtil.setVisibleScope(model);
+        setVisibleScope(model);
         
         checkFormalMember(that, model);
         
@@ -183,7 +183,7 @@ public abstract class DeclarationVisitor extends Visitor {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        ModelUtil.setVisibleScope(model);
+        setVisibleScope(model);
     }
 
     private void visitArgument(Tree.Term that, 
@@ -191,7 +191,7 @@ public abstract class DeclarationVisitor extends Visitor {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        ModelUtil.setVisibleScope(model);
+        setVisibleScope(model);
     }
 
     private static boolean setModelName(Node that, 
@@ -710,6 +710,13 @@ public abstract class DeclarationVisitor extends Visitor {
             abstraction = method;
             abstraction.getOverloads()
                 .add(model);
+            if (!newMethod.isStatic()) {
+                //the method will only be 
+                //statically-importable if
+                //all its overloads are
+                //declared static
+                abstraction.setStatic(false);
+            }
             return abstraction.isActual() 
                 && !model.isActual();
         }
@@ -725,6 +732,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         .getType());
             abstraction.setName(name);
             abstraction.setShared(true);
+            abstraction.setStatic(method.isStatic()
+                    && newMethod.isStatic());
             abstraction.setActual(method.isActual());
             abstraction.setFormal(method.isFormal());
             abstraction.setDefault(method.isDefault());
@@ -2202,7 +2211,7 @@ public abstract class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(v);
         visitDeclaration(that, v, 
                 !(type instanceof Tree.SyntheticVariable));
-        ModelUtil.setVisibleScope(v);
+        setVisibleScope(v);
         
         if (type!=null) {
             type.visit(this);
@@ -2486,7 +2495,7 @@ public abstract class DeclarationVisitor extends Visitor {
             if (model instanceof ClassOrInterface) {
                 ((ClassOrInterface) model).setSealed(true);
             }
-            else if (ModelUtil.isConstructor(model)) {
+            else if (isConstructor(model)) {
                 if (model instanceof Constructor) {
                     //ignore for now
                 }
@@ -3415,7 +3424,7 @@ public abstract class DeclarationVisitor extends Visitor {
         ta.setName("Anonymous#"+fid++);
         ta.setAnonymous(true);
         visitElement(that, ta);
-        ModelUtil.setVisibleScope(ta);
+        setVisibleScope(ta);
         Scope o = enterScope(ta);
         Declaration od = beginDeclaration(ta);
         super.visit(that);

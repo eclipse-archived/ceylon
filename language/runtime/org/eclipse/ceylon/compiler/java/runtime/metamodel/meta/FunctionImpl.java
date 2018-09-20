@@ -542,9 +542,9 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
         // in theory, if our instance is the same, our containing type should be the same
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())
-                && Util.eq(instance, other.instance)
-                // so far, functions can't have use-site variance
-                && getTypeArguments().equals(other.getTypeArguments());
+            && Util.eq(instance, other.instance)
+            // so far, functions can't have use-site variance
+            && getTypeArguments().equals(other.getTypeArguments());
     }
 
 

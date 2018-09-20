@@ -268,8 +268,9 @@ public class Decl {
     }
 
     public static boolean isValueTypeDecl(Type type) {
-        if(type == null)
+        if (type == null) {
             return false;
+        }
         type = type.resolveAliases();
         if (type != null) {
             TypeDeclaration decl = type.getDeclaration();
@@ -493,7 +494,7 @@ public class Decl {
     }
     
     public static boolean isJavaStaticOrInterfacePrimary(Tree.Term term) {
-        if (term instanceof Tree.QualifiedMemberOrTypeExpression == false)
+        if (!(term instanceof Tree.QualifiedMemberOrTypeExpression))
             return false;
         Declaration decl = ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration();
         return decl != null

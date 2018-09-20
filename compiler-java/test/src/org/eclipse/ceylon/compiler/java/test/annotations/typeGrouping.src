@@ -55,7 +55,7 @@ final class typeGroupAttribute_ {
     
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
-            value = "org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupA&org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupB&org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupD|org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupA&org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupC&org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupD",
+            value = "org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupA&<org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupB|org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupC>&org.eclipse.ceylon.compiler.java.test.annotations::TypeGroupD",
             erased = true)
     public static .java.lang.Object get_() {
         if (.org.eclipse.ceylon.compiler.java.test.annotations.typeGroupAttribute_.$init$$object$) {

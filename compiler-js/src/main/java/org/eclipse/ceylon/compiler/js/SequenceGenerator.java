@@ -19,7 +19,6 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -234,7 +233,7 @@ public class SequenceGenerator {
             gen.out("/*WARNING no Element found* /");
             elem = that.getUnit().getAnythingType();
         }
-        TypeUtils.typeNameOrList(that, elem, gen, false);
+        typeNameOrList(that, elem, gen, false);
         if (wantsIterable) {
             gen.out(",Absent$Iterable:{t:", gen.getClAlias(),
                     nonempty ? "Nothing}}" : "Null}}");

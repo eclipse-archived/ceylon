@@ -2070,7 +2070,9 @@ public class Metamodel {
         org.eclipse.ceylon.model.typechecker.model.Type reifiedArguments = $reified$Arguments == null ? null : Metamodel.getProducedType($reified$Arguments);
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         if (cls.declaration instanceof ClassWithInitializerDeclarationImpl) {
-            
+            if (!callableConstructors) {
+                return empty_.get_();
+            }
             Reference producedReference = cls.declaration.declaration.appliedReference(cls.producedType, Collections.<org.eclipse.ceylon.model.typechecker.model.Type>emptyList());
             org.eclipse.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
                     cls.declaration.declaration.getUnit(), 

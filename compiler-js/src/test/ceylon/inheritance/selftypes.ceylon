@@ -3,12 +3,12 @@ import check { check }
 //interface A141 satisfies Comparable<C141|A141> {}
 //interface C141 satisfies Comparable<C141|A141> {}
 
-interface Comp141<in T> of T
+interface Comp141<T> of T
         given T satisfies Comp141<T> {
     shared formal Comparison compare(T other);
 }
 
-interface Scal141<in T> of T
+interface Scal141<T> of T
         satisfies Comp141<T> 
         given T satisfies Scal141<T> {}
 

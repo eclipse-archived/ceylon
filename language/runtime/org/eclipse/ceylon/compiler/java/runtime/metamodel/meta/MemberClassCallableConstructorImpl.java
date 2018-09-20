@@ -241,8 +241,8 @@ public class MemberClassCallableConstructorImpl<Container, Type, Arguments exten
             return false;
         MemberClassCallableConstructorImpl<?, ?, ?> other = (MemberClassCallableConstructorImpl<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
-                && getDeclaringType().equals(other.getDeclaringType())
-                && getTypeArguments().equals(other.getTypeArguments());
+            && getDeclaringType().equals(other.getDeclaringType())
+            && getTypeArguments().equals(other.getTypeArguments());
     }
 
 

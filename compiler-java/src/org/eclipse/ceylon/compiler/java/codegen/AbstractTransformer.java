@@ -3743,7 +3743,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     private String serialiseTypeSignature(Type type){
         // resolve aliases
-        type = type.resolveAliases();
+        //type = type.resolveAliases();
         return typeSerialiser.serialize(type, typeFact);
     }
     

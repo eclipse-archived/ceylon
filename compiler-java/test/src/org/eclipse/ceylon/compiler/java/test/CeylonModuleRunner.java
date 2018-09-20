@@ -134,6 +134,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             }
         } catch (RuntimeException e) {
             throw e;
+        } catch (InitializationError e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
