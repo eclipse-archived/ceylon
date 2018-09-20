@@ -10,6 +10,7 @@
 package org.eclipse.ceylon.compiler.js.util;
 
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getRealScope;
+import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
-import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Module;
 import org.eclipse.ceylon.model.typechecker.model.Package;
 import org.eclipse.ceylon.model.typechecker.model.Parameter;
@@ -283,7 +283,7 @@ public class JsIdentifierNames {
         String suffix = "";
         if (decl instanceof TypeDeclaration 
                 && (forSelf || !decl.isAnonymous())
-                && !ModelUtil.isConstructor(decl)) {
+                && !isConstructor(decl)) {
             // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
@@ -315,7 +315,7 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        if (name == null && ModelUtil.isConstructor(decl)) {
+        if (name == null && isConstructor(decl)) {
             return "$c$";
         }
         if (name.startsWith("anonymous#")) {
@@ -335,8 +335,10 @@ public class JsIdentifierNames {
                                 || decl instanceof ClassOrInterface 
                                 || decl instanceof TypeAlias);
         }
-        if (nonLocal && decl instanceof Class
-                && ((Class)decl).isAnonymous() && !forGetterSetter) {
+        if (nonLocal 
+                && decl instanceof Class
+                && ((Class)decl).isAnonymous() 
+                && !forGetterSetter) {
             // A lower-case class name belongs to an object and is not public.
             nonLocal = false;
         }
@@ -350,7 +352,7 @@ public class JsIdentifierNames {
                 // nested type
                 name += suffix;
             } else if ((!forGetterSetter 
-                        && !ModelUtil.isConstructor(decl) 
+                        && !isConstructor(decl) 
                         && reservedWords.contains(name))
                     || isJsGlobal(decl)) {
                 // JavaScript keyword or global declaration
