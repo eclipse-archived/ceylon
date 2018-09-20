@@ -134,7 +134,7 @@ final class bug2228Test_ {
     @.org.eclipse.ceylon.common.NonNull
     @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object[]")
     final .ceylon.language.Sequential<? extends .java.lang.Object> args) {
-        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Testing with ").append(((.ceylon.language.meta.model.Type<? extends T>)(.ceylon.language.meta.model.Type<? extends T>).ceylon.language.meta.typeLiteral_.typeLiteral($reified$T)).toString()).toString()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Testing with ").append(((.ceylon.language.meta.model.Type<? extends T>).ceylon.language.meta.typeLiteral_.typeLiteral($reified$T)).toString()).toString()));
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$2 = args;
         final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$1 = null;
