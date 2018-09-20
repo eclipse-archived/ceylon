@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.ceylon.compiler.js.util.JsIdentifierNames;
-import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
@@ -38,7 +37,6 @@ import org.eclipse.ceylon.model.typechecker.model.NothingType;
 import org.eclipse.ceylon.model.typechecker.model.Package;
 import org.eclipse.ceylon.model.typechecker.model.Reference;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
-import org.eclipse.ceylon.model.typechecker.model.SiteVariance;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeAlias;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
@@ -52,7 +50,7 @@ public class MetamodelHelper {
     static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, 
             final GenerateJsVisitor gen, boolean compilingLanguageModule) {
         final Package pkg = d.getUnit().getPackage();
-        final Module m = pkg.getModule();
+        final Module mod = pkg.getModule();
         final boolean isConstructor = isConstructor(d)
                 || that instanceof Tree.NewLiteral;
         if (!(d instanceof TypeParameter)) {
@@ -122,44 +120,45 @@ public class MetamodelHelper {
             gen.out("lmp$(x$,'");
         } else {
             //TODO use $ for language module as well
-            gen.out("fmp$('", m.getNameAsString(), "','", m.getVersion(), "','");
+            gen.out("fmp$('", mod.getNameAsString(), "','", mod.getVersion(), "','");
         }
         gen.out(pkg.isLanguagePackage() ? "$" : pkg.getNameAsString(), "'),");
-        if (d.isMember() || isConstructor) {
-            if (isConstructor) {
-                final Class actualClass;
-                final String constrName;
-                if (d instanceof Class) {
-                    actualClass = (Class) d;
-                    constrName = "$c$";
-                } else {
-                    actualClass = (Class) d.getContainer();
-                    if (d instanceof Constructor 
-                            && ((Constructor) d).isValueConstructor()) {
-                        constrName = names.name(
-                                actualClass.getDirectMember(d.getName(), 
-                                        null, false));
-                    } else {
-                        constrName = names.name(d);
-                    }
-                }
-                if (gen.isImported(currentPackage, actualClass)) {
-                    Module acm = 
-                            actualClass.getUnit()
-                                .getPackage()
-                                .getModule();
-                    gen.out(names.moduleAlias(acm), ".");
-                }
-                if (actualClass.isMember()) {
-                    outputPathToDeclaration(that, actualClass, gen);
-                }
-                gen.out(names.name(actualClass),
-                        names.constructorSeparator(d), constrName, ")");
-                return;
+        
+        if (isConstructor) {
+            final Class actualClass;
+            final String constrName;
+            if (d instanceof Class) {
+                actualClass = (Class) d;
+                constrName = "$c$";
             } else {
-                outputPathToDeclaration(that, d, gen);
+                Constructor c = getConstructor(d);
+                actualClass = (Class) d.getContainer();
+                constrName = 
+                        c.isValueConstructor() ? 
+                            names.name(that.getDeclaration()) : 
+                            names.name(c);
             }
+            if (gen.isImported(currentPackage, actualClass)) {
+                Module acm = 
+                        actualClass.getUnit()
+                            .getPackage()
+                            .getModule();
+                gen.out(names.moduleAlias(acm), ".");
+            }
+            if (actualClass.isMember()) {
+                outputPathToDeclaration(that, actualClass, gen);
+            }
+            gen.out(names.name(actualClass),
+                    names.constructorSeparator(d), 
+                    constrName, 
+                    ")");
+            return;
         }
+        
+        if (d.isMember()) {
+            outputPathToDeclaration(that, d, gen);
+        }
+        
         if (d instanceof Value || d.isParameter()) {
             if (!d.isMember()) gen.qualify(that, d);
             if (d.isStatic() 
@@ -297,8 +296,12 @@ public class MetamodelHelper {
         JsIdentifierNames names = gen.getNames();
         if (that instanceof Tree.NewLiteral
                 || isConstructor(d)) {
-            constructorLiteral(ref.getType(), 
-                    getConstructor(d), that, gen);            
+//            Type classType = 
+//                    ltype == null 
+//                        && container instanceof TypeDeclaration ? 
+//                    ((TypeDeclaration) container).getType() : 
+//                    ltype;
+            constructorLiteral(ref.getType(), getConstructor(d), that, gen);            
         } else if (that instanceof Tree.FunctionLiteral 
                 || d instanceof Function) {
             gen.out(gen.getClAlias(), 
