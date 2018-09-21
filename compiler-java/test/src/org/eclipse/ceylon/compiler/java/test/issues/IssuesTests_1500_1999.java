@@ -28,8 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonTokenStream;
 import org.eclipse.ceylon.compiler.java.launcher.Main;
 import org.eclipse.ceylon.compiler.java.launcher.Main.ExitState;
 import org.eclipse.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
@@ -39,13 +37,9 @@ import org.eclipse.ceylon.compiler.java.test.ErrorCollector;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncFileManager;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import org.eclipse.ceylon.compiler.java.tools.CeyloncTool;
-import org.eclipse.ceylon.compiler.typechecker.parser.CeylonLexer;
-import org.eclipse.ceylon.compiler.typechecker.parser.CeylonParser;
 import org.eclipse.ceylon.javax.tools.Diagnostic;
-import org.eclipse.ceylon.javax.tools.JavaFileObject;
 import org.eclipse.ceylon.javax.tools.Diagnostic.Kind;
-import org.eclipse.ceylon.langtools.tools.javac.util.Position;
-import org.eclipse.ceylon.langtools.tools.javac.util.Position.LineMap;
+import org.eclipse.ceylon.javax.tools.JavaFileObject;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -392,23 +386,6 @@ public class IssuesTests_1500_1999 extends CompilerTests {
 //        System.err.println("Done");
     }
 
-    private void benchmarkParse(String file) throws Exception{
-        String readSource = readFile(new File(getPackagePath(), file));
-        String source = readSource.toString();
-        char[] chars = source.toCharArray();
-        LineMap map = Position.makeLineMap(chars, chars.length, false);
-        System.err.println(map.hashCode());
-        
-        ANTLRStringStream input = new ANTLRStringStream(source);
-        CeylonLexer lexer = new CeylonLexer(input);
-
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-        CeylonParser parser = new CeylonParser(tokens);
-//        CompilationUnit cu = parser.compilationUnit();
-//        System.err.println(cu.hashCode());
-    }
-    
     @Test
     public void testBug1638() {
         compareWithJavaSource("bug16xx/Bug1638");
