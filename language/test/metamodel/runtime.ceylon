@@ -2228,9 +2228,7 @@ void runTests() {
     sandbox(bug259);
     sandbox(bug260);
     sandbox(bug263);
-    if(runtime.type != "js"){
-        sandbox(bug284);
-    }
+    sandbox(bug284);
     sandbox(bug285);
     sandbox(bug286);
     sandbox(bug300);
@@ -2273,9 +2271,7 @@ void runTests() {
     sandbox(bug694);
     sandbox(bug691);
     sandbox(bug706);
-    if(runtime.type != "js"){
-        sandbox(bug708);
-    }
+    sandbox(bug708);
     sandbox(bug711);
     sandbox(bug713);
     sandbox(bug719);

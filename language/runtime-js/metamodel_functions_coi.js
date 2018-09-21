@@ -44,7 +44,8 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
     } else if (md.mt==='c'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$m$.tp,types$3);
-      rv=AppliedMemberClass$jsint(ic, {Container$AppliedMemberClass:_cont,Type$AppliedMemberClass:ict, Arguments$AppliedMemberClass:$$$mptypes.Arguments$getClassOrInterface});
+      var _a=tupleize$params(mm.ps);
+      rv=AppliedMemberClass$jsint(ic, {Container$AppliedMemberClass:_cont,Type$AppliedMemberClass:ict, Arguments$AppliedMemberClass:_a});
     } else {
       throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
     }
