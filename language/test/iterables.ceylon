@@ -91,11 +91,11 @@ shared void testIterables() {
     check(!myEmpty.findLast((i) => i>5) exists, "findLast 3");
     check(myEmpty.fold(0, (Integer i, Integer j) => i)==0, "empty.fold");
     check(!myEmpty.reduce((Integer i, Integer j) => i) exists, "empty.reduce");
-    check(myEmpty.sort((a, b) => larger).sequence()=={}, "empty.sort");
+    check(myEmpty.sort((a, b) => larger).sequence()==[], "empty.sort");
     check(myEmpty.every((x) => true), "empty.every");
     check(!myEmpty.any((x) => true), "empty.any");
-    check(myEmpty.skip(1).sequence()=={}, "empty.skip");
-    check(myEmpty.take(1).sequence()=={}, "empty.take");
+    check(myEmpty.skip(1).sequence()==[], "empty.skip");
+    check(myEmpty.take(1).sequence()==[], "empty.take");
 
     Integer[] vacio = [];
     check(vacio.map((i) => i).empty, "empty.map");
@@ -104,15 +104,15 @@ shared void testIterables() {
     check(!vacio.findLast((i) => i>5) exists, "findLast 3");
     check(vacio.fold(0, (Integer i, Integer j) => i)==0, "empty.fold");
     check(!vacio.reduce((Integer i, Integer j) => i) exists, "empty.reduce");
-    check(vacio.sort((a, b) => larger).sequence()=={}, "empty.sort");
+    check(vacio.sort((a, b) => larger).sequence()==[], "empty.sort");
     check(vacio.every((x) => true), "empty.every");
     check(!vacio.any((x) => true), "empty.any");
-    check(vacio.skip(1).sequence()=={}, "empty.skip");
-    check(vacio.take(1).sequence()=={}, "empty.take");
+    check(vacio.skip(1).sequence()==[], "empty.skip");
+    check(vacio.take(1).sequence()==[], "empty.take");
  
     //Singleton optimized implementations 
     check(Singleton(5).map((i) => i.float).sequence()=={5.0}.sequence(), "Singleton.map");
-    check(Singleton(5).filter((i) => i>5).sequence()=={}, "Singleton.filter");
+    check(Singleton(5).filter((i) => i>5).sequence()==[], "Singleton.filter");
     check(!Singleton(5).find((i) => i>5) exists, "Singleton.find");
     check(!Singleton(5).findLast((i) => i>5) exists, "Singleton.findLast");
     check(Singleton(5).fold(0, (Integer i, Integer j) => i+j)==5, "Singleton.fold");
@@ -121,8 +121,8 @@ shared void testIterables() {
     check(Singleton(1).any((x) => x == 1), "Singleton.any");
     check(Singleton(1).every((x) => x>0), "Singleton.every");
     check(Singleton(1).skip(0).sequence()=={1}.sequence(), "Singleton.skip [1]");
-    check(Singleton(1).skip(1).sequence()=={}, "Singleton.skip [2]");
-    check(Singleton(1).skip(9).sequence()=={}, "Singleton.skip [3]");
+    check(Singleton(1).skip(1).sequence()==[], "Singleton.skip [2]");
+    check(Singleton(1).skip(9).sequence()==[], "Singleton.skip [3]");
     check(Singleton(1).take(5).sequence()=={1}.sequence(), "Singleton.take");
     check(Singleton(1).by(1).sequence()=={1}.sequence(), "Singleton.by [1]");
     check(Singleton(1).by(5).sequence()=={1}.sequence(), "Singleton.by [2]");
@@ -202,7 +202,7 @@ shared void testIterables() {
     check(Array{1,2,3,null,5}.coalesced.sequence()=={1,2,3,5}.sequence(), "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
-    check({}.coalesced=={}, "Empty.coalesced");
+    check({}.coalesced==[], "Empty.coalesced");
     //indexed
     for (k->v in (1..5).indexed) {
         check(k+1==v, "Range.indexed");
@@ -210,7 +210,7 @@ shared void testIterables() {
     check({"a", "b", "c"}.indexed.sequence()==[0->"a", 1->"b", 2->"c"], "Sequence.indexed");
     check(Array{0, 1, 2}.indexed.sequence()==[0->0, 1->1, 2->2], "Array.indexed");
     check(Singleton("A").indexed.sequence()==[0->"A"], "Singleton.indexed");
-    check({}.indexed=={}, "Empty.indexed");
+    check({}.indexed==[], "Empty.indexed");
     check({for (c in "abc") c}.indexed.sequence()==[0->'a', 1->'b', 2->'c'], "Iterable.indexed");
     check("abc".indexed.sequence()==[0->'a', 1->'b', 2->'c'], "String.indexed");
     check({1,null,2}.indexed.sequence() == [0->1,1->null,2->2], "indexed with nulls");
