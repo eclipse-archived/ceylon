@@ -29,23 +29,23 @@ shared {Element+} loop<Element>
           return [[finished]] to indicate the end of the 
           stream."
          Element|Finished next(Element element))
-    => let (start = first)
+    => let (initial = first, nxt = next)
     object satisfies {Element+} {
-        first => start;
+        first => initial;
         empty => false;
-        function nextElement(Element element)
-                => next(element);
-        iterator()
-                => object satisfies Iterator<Element> {
-            variable Element|Finished current = start;
+        iterator() => object satisfies Iterator<Element> {
+            variable Boolean started = false;
+            variable Element|Finished current = initial;
             shared actual Element|Finished next() {
-                if (!is Finished result = current) {
-                    current = nextElement(result);
-                    return result;
+                if (!started) {
+                    started = true;
+                    return initial;
                 }
-                else {
-                    return finished;
+
+                if (!is Finished curr = current) {
+                    current = nxt(curr);
                 }
+                return current;
             }
         };
     };
