@@ -74,6 +74,7 @@ import org.eclipse.ceylon.compiler.typechecker.TypeChecker;
 import org.eclipse.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.ModuleValidator;
+import org.eclipse.ceylon.compiler.typechecker.analyzer.ModuleValidator.ProgressListener;
 import org.eclipse.ceylon.compiler.typechecker.context.Context;
 import org.eclipse.ceylon.compiler.typechecker.context.PhasedUnit;
 import org.eclipse.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -85,6 +86,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Expression;
 import org.eclipse.ceylon.compiler.typechecker.util.AssertionVisitor;
 import org.eclipse.ceylon.compiler.typechecker.util.ModuleManagerFactory;
+import org.eclipse.ceylon.model.cmr.ArtifactResult;
 import org.eclipse.ceylon.model.loader.AbstractModelLoader;
 import org.eclipse.ceylon.model.typechecker.model.Annotation;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -472,15 +474,36 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         typeChecker = builder.getTypeChecker();
         
         {
-            PhasedUnits phasedUnits = typeChecker.getPhasedUnits();
+            final PhasedUnits phasedUnits = typeChecker.getPhasedUnits();
         
             phasedUnits.getModuleManager().prepareForTypeChecking();
             phasedUnits.visitModules();
             phasedUnits.getModuleManager().modulesVisited();
+	        
+            ModuleValidator moduleValidator = 
+	                new ModuleValidator(typeChecker.getContext(), typeChecker.getPhasedUnits());
+	        moduleValidator.setListener(new ProgressListener() {
+				@Override
+				public void retrievingModuleArtifactSuccess(Module module, ArtifactResult artifact) {}
+				@Override
+				public void retrievingModuleArtifactFailed(Module module, ArtifactContext artifactContext) {}
+				@Override
+				public void retrievingModuleArtifact(Module module, ArtifactContext artifactContext) {}
+				@Override
+				public void resolvingModuleArtifact(Module module, ArtifactResult artifactResult) {
+					PhasedUnitsModuleManager moduleManager = (PhasedUnitsModuleManager)phasedUnits.getModuleManager();
+					if (! (artifactResult.artifact().getName().endsWith(ArtifactContext.CAR) || 
+							artifactResult.artifact().getName().endsWith(ArtifactContext.JAR))) {
+						if ("npm".equals(artifactResult.namespace())) {
+							moduleManager.addNpmImportedModule(module.getNameAsString());
+						} else {
+							moduleManager.addSourceImportedModule(module.getNameAsString());
+						}
+					}
+				}
+			});
+	        moduleValidator.verifyModuleDependencyTree();
         }
-        ModuleValidator moduleValidator = 
-                new ModuleValidator(typeChecker.getContext(), typeChecker.getPhasedUnits());
-        moduleValidator.verifyModuleDependencyTree();
         
         AssertionVisitor av = new AssertionVisitor();
         for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {

@@ -486,6 +486,32 @@ public class CeylonDocToolTests {
     }
 
     @Test
+    public void documentWithJsOnlyImports() throws Exception {
+        String pathname = "test/ceylondoc";
+        String moduleName = "org.eclipse.ceylon.ceylondoc.test.modules.importjsonly";
+
+        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        tool.run();
+
+        File destDir = getOutputDir(tool, "org.eclipse.ceylon.ceylondoc.test.modules.importjsonly", "1.0.0");
+
+        assertFileExists(destDir, "index.html");
+    }
+
+    @Test
+    public void documentWithNpmImports() throws Exception {
+        String pathname = "test/ceylondoc";
+        String moduleName = "org.eclipse.ceylon.ceylondoc.test.modules.importnpm";
+
+        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        tool.run();
+
+        File destDir = getOutputDir(tool, "org.eclipse.ceylon.ceylondoc.test.modules.importnpm", "1.0.0");
+
+        assertFileExists(destDir, "index.html");
+    }
+
+    @Test
     public void documentDynamics() throws Exception {
         String pathname = "test/ceylondoc";
         String moduleName = "org.eclipse.ceylon.ceylondoc.test.modules.dynamics";

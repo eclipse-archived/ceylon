@@ -10,6 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-typechecker"/>
 	<classpathentry kind="lib" path="/ceylon/lib/antlr-complete-3.5.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-bootstrap"/>
-	<classpathentry kind="lib" path="/ceylon-dist/dist/repo/com/github/rjeschke/txtmark/0.13/com.github.rjeschke.txtmark-0.13.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/github/rjeschke/txtmark/0.13/com.github.rjeschke.txtmark-0.13.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
