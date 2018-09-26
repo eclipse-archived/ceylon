@@ -12,6 +12,7 @@ package ceylon.modules.bootstrap.loader;
 import java.util.Set;
 
 import org.eclipse.ceylon.model.cmr.JDKUtils;
+import org.eclipse.ceylon.model.cmr.JDKUtils.JDK;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalModuleFinder;
 import org.jboss.modules.ModuleFinder;
@@ -28,6 +29,17 @@ public class InitialModuleLoader extends ModuleLoader {
     
     @Override
     protected ModuleSpec findModule(ModuleIdentifier module) throws ModuleLoadException {
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            // unalias jdk7-8 module names if we're running on jdk9+
+            String name = module.getName();
+            String alias = JDKUtils.getJava9ModuleName(name, module.getSlot());
+            if(!name.equals(alias)) {
+                // should we leave the same version or switch to the current JDK one?
+                return ModuleSpec.buildAlias(module, 
+                        ModuleIdentifier.create(alias, JDKUtils.jdk.version)).create();
+            }
+        }
+        // skip JDK modules
         if(JDKUtils.isJDKModule(module.getName())){
             ModuleSpec.Builder builder = ModuleSpec.build(module);
             Set<String> jdkPaths = JDKUtils.getJDKPathsByModule(module.getName());

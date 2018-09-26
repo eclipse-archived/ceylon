@@ -30,6 +30,7 @@ import org.eclipse.ceylon.model.cmr.ArtifactResultType;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.eclipse.ceylon.model.cmr.ModuleScope;
 import org.eclipse.ceylon.model.cmr.RuntimeResolver;
+import org.eclipse.ceylon.model.cmr.JDKUtils.JDK;
 import org.jboss.modules.AliasModuleSpec;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
@@ -342,13 +343,17 @@ public class CeylonModuleLoader extends ModuleLoader
                     // Skip test scopes
                     if(i.moduleScope() == ModuleScope.TEST)
                         continue;
-                    final String name = i.name();
+                    String name = i.name();
 
                     // route logging to JBoss LogManager
                     if (isLogging(deps, builder, i)) {
                         continue;
                     }
 
+                    if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+                        // unalias jdk7-8 module names if we're running on jdk9+
+                        name = JDKUtils.getJava9ModuleName(name, i.version());
+                    }
                     // skip JDK modules
                     if (JDK_MODULE_NAMES.contains(name)) {
                         continue;
