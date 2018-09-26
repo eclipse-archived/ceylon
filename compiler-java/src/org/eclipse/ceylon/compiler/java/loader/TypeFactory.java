@@ -161,6 +161,10 @@ public class TypeFactory extends Unit {
         return (TypeDeclaration) getLanguageModuleDeclarationDeclaration("Declaration");
     }
     
+    public Type getGenericDeclarationType() {
+        return getType(getLanguageModuleDeclarationTypeDeclaration("GenericDeclaration"));
+    }
+
     public TypeDeclaration getAssertionErrorDeclaration() {
         return (TypeDeclaration)getLanguageModuleDeclaration("AssertionError");
     }

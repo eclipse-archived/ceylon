@@ -1600,13 +1600,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    JCExpression makeMemberValueOrFunctionDeclarationLiteral(Tree.Term expr, Declaration declaration) {
+    JCExpression makeMemberValueOrFunctionDeclarationLiteral(Tree.MemberLiteral expr, Declaration declaration) {
         // it's a member we get from its container declaration
         Scope container = declaration.getContainer();
         if(!(container instanceof ClassOrInterface))
             return makeErroneous(expr, "compiler bug: " + container + " is not a supported type parameter container");
         
         Type exprType = expr.getTypeModel().resolveAliases();
+        
         return Decl.isConstructor(declaration) ?
                 makeConstructorDeclarationLiteral(exprType, declaration) :
                 makeMemberValueOrFunctionDeclarationLiteral(exprType, declaration, true);
@@ -1643,13 +1644,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression metamodelCast = makeJavaType(classDecType, JT_NO_PRIMITIVES);
         JCExpression metamodelCall = make().TypeCast(metamodelCast, 
                         makeTypeDeclarationLiteral(classOrInterface));
-        
+                
         JCExpression memberType = makeJavaType(type);
         JCExpression reifiedMemberType = makeReifiedTypeArgument(type);
         String memberAccessor = mightBeInherited ? "getMemberDeclaration" : "getDeclaredMemberDeclaration";
         return make().Apply(List.of(memberType), 
                 makeSelect(metamodelCall, memberAccessor), 
                 List.of(reifiedMemberType, ceylonLiteral(name)));
+    }
+    
+    JCExpression makeLocalValueOrFunctionDeclarationLiteral(Declaration declaration, 
+            boolean mightBeInherited) {
+        String name = declaration.getName();
+        
+        ClassOrInterface classOrInterface = (ClassOrInterface) declaration.getContainer();
+        // use the generated class to get to the declaration literal
+        Type classDecType = typeFact().getClassOrInterfaceDeclarationType();
+        JCExpression metamodelCast = makeJavaType(classDecType, JT_NO_PRIMITIVES);
+        JCExpression metamodelCall = make().TypeCast(metamodelCast, 
+                        makeTypeDeclarationLiteral(classOrInterface));
+        
+        String memberAccessor = mightBeInherited ? "getMemberDeclaration" : "getDeclaredMemberDeclaration";
+        
+        return make().TypeCast(makeJavaType(typeFact().getGenericDeclarationType()),
+                make().Apply(null, 
+                    makeSelect(metamodelCall, memberAccessor), 
+                    List.of(makeReifiedTypeArgument(typeFact().getAnythingType()), 
+                            ceylonLiteral(name))));
     }
 
     private JCExpression makeTopLevelValueOrFunctionDeclarationLiteral(Declaration declaration) {
@@ -1799,11 +1820,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     /**
      * Makes an expression equivalent to the result of {@code `given T`} 
-     * @param node
-     * @param declaration
-     * @return
      */
-    JCExpression makeTypeParameterDeclaration(Tree.Term node,
+    JCExpression makeTypeParameterDeclaration(Tree.TypeLiteral expr,
             TypeParameter declaration) {
         Scope container = declaration.getContainer();
         if(container instanceof Declaration){
@@ -1817,12 +1835,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else if(containerDeclaration.isToplevel()) {
                 containerExpr = makeTopLevelValueOrFunctionDeclarationLiteral(containerDeclaration);
             }else{
-                containerExpr = makeMemberValueOrFunctionDeclarationLiteral(node, containerDeclaration);
+                containerExpr = makeLocalValueOrFunctionDeclarationLiteral(containerDeclaration, true);
             }
             // now it must be a ClassOrInterfaceDeclaration or a FunctionDeclaration, both of which have the method we need
-            return at(node).Apply(null, makeSelect(containerExpr, "getTypeParameterDeclaration"), List.of(ceylonLiteral(declaration.getName())));
+            return at(expr).Apply(null, makeSelect(containerExpr, "getTypeParameterDeclaration"), List.of(ceylonLiteral(declaration.getName())));
         }else{
-            return makeErroneous(node, "compiler bug: " + container + " is not a supported type parameter container");
+            return makeErroneous(expr, "compiler bug: " + container + " is not a supported type parameter container");
         }
     }
 
