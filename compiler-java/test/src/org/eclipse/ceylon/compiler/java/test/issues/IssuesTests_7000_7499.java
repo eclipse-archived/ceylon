@@ -21,6 +21,7 @@ package org.eclipse.ceylon.compiler.java.test.issues;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.eclipse.ceylon.compiler.java.test.CompilerError;
 import org.eclipse.ceylon.compiler.java.test.CompilerTests;
@@ -137,5 +138,12 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     @Test
     public void bug7186(){
         compareWithJavaSource(Arrays.asList("-ee"), "bug71xx/bug7186.src", "bug71xx/bug7186.ceylon");
+    }
+
+    @Test
+    public void bug7263() throws Throwable{
+        Assume.assumeTrue("Runs on JDK9", JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("bug72xx/bug7263/run.ceylon");
+        runInJBossModules("run", "org.eclipse.ceylon.compiler.java.test.issues.bug72xx.bug7263/1", Collections.<String>emptyList()); 
     }
 }
