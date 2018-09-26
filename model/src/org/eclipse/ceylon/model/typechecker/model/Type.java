@@ -3528,10 +3528,54 @@ public class Type extends Reference {
         return satisfiedTypes;
     }
 
+    /**
+     * Is this Type object a simple wrapper around its
+     * TypeDeclaration, contributing no type arguments
+     * held by this Type or its qualifying Type, if any?
+     * 
+     * Returns false if this Type object directly holds
+     * type arguments, or if its qualifying Type does.
+     * 
+     * Returns true for a union or intersection type, 
+     * even if the unioned or intersected types contain
+     * type arguments, or for a non-generic class or 
+     * interface type, even if the non-generic class or
+     * interface inherits generic types.
+     * 
+     * (This is only useful for internal optimization.)
+     */
     private boolean noTypeArguments() {
-        return getTypeArguments().isEmpty()
-            && (getQualifyingType()==null 
-                || getQualifyingType().noTypeArguments());
+        if (isIntersection() || isUnion()) {
+            return true;
+        }
+        else if (!getTypeArguments().isEmpty()) {
+            return false;
+        }
+        else {
+            Type qualifying = getQualifyingType();
+            if (qualifying==null) {
+                return true;
+            }
+            else if (qualifying.isIntersection()) {
+                for (Type t: qualifying.getSatisfiedTypes()) {
+                    if (!t.noTypeArguments()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (qualifying.isUnion()) {
+                for (Type t: qualifying.getCaseTypes()) {
+                    if (!t.noTypeArguments()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {
+                return qualifying.noTypeArguments();
+            }
+        }
     }
 
     public Type getExtendedType() {
