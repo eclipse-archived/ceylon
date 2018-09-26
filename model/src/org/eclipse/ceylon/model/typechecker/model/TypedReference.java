@@ -9,8 +9,6 @@
  ********************************************************************************/
 package org.eclipse.ceylon.model.typechecker.model;
 
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
-
 import java.util.List;
 import java.util.Map;
 
