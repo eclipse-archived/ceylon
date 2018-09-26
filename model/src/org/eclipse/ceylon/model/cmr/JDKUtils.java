@@ -104,6 +104,8 @@ public class JDKUtils {
         java8To9ModuleAliases.put("javax.xmldsig", "java.xml.crypto");
         java8To9ModuleAliases.put("javax.jaxws", "java.xml.ws");
         java8To9ModuleAliases.put("java.tls", "java.base");
+        // This is not true, but jdk.base is just gone, parts of which are in jdk.unsupported
+        java8To9ModuleAliases.put("oracle.jdk.base", "jdk.unsupported");
     }
 
     private static class Tuple {
