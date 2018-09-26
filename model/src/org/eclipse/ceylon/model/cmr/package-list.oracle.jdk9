@@ -1,4 +1,291 @@
-# Copy of package-list.oracle.jdk8
+# Extracted by JDKUtils.main
+
+=jdk.accessibility
+# imports public java.desktop
+# imports java.base
+com.sun.java.accessibility.util
+
+=jdk.aot
+# imports jdk.internal.vm.compiler
+# imports jdk.management
+# imports jdk.internal.vm.ci
+# imports java.base
+
+=jdk.attach
+# imports jdk.internal.jvmstat
+# imports java.base
+com.sun.tools.attach
+com.sun.tools.attach.spi
+
+=jdk.charsets
+# imports java.base
+
+=jdk.compiler
+# imports public java.compiler
+# imports java.base
+com.sun.source.doctree
+com.sun.source.tree
+com.sun.source.util
+com.sun.tools.javac
+
+=jdk.crypto.cryptoki
+# imports jdk.crypto.ec
+# imports java.base
+
+=jdk.crypto.ec
+# imports java.base
+
+=jdk.dynalink
+# imports java.logging
+# imports java.base
+jdk.dynalink
+jdk.dynalink.beans
+jdk.dynalink.linker
+jdk.dynalink.linker.support
+jdk.dynalink.support
+
+=jdk.editpad
+# imports jdk.internal.ed
+# imports java.base
+# imports java.desktop
+
+=jdk.hotspot.agent
+# imports java.datatransfer
+# imports java.scripting
+# imports java.base
+# imports java.desktop
+# imports java.rmi
+
+=jdk.httpserver
+# imports java.base
+com.sun.net.httpserver
+com.sun.net.httpserver.spi
+
+=jdk.incubator.httpclient
+# imports java.base
+jdk.incubator.http
+
+=jdk.internal.ed
+# imports java.base
+
+=jdk.internal.jvmstat
+# imports java.base
+
+=jdk.internal.le
+# imports java.base
+
+=jdk.internal.opt
+# imports java.base
+
+=jdk.internal.vm.ci
+# imports java.base
+
+=jdk.internal.vm.compiler
+# imports jdk.management
+# imports jdk.internal.vm.ci
+# imports java.instrument
+# imports java.management
+# imports jdk.unsupported
+# imports java.base
+
+=jdk.jartool
+# imports java.base
+com.sun.jarsigner
+jdk.security.jarsigner
+
+=jdk.javadoc
+# imports java.xml
+# imports public jdk.compiler
+# imports public java.compiler
+# imports java.base
+com.sun.javadoc
+com.sun.tools.doclets
+com.sun.tools.doclets.standard
+com.sun.tools.javadoc
+jdk.javadoc.doclet
+
+=jdk.jcmd
+# imports jdk.internal.jvmstat
+# imports java.base
+# imports jdk.attach
+
+=jdk.jconsole
+# imports public java.desktop
+# imports jdk.internal.jvmstat
+# imports jdk.management
+# imports java.management.rmi
+# imports java.base
+# imports public java.management
+# imports jdk.attach
+# imports java.rmi
+# imports jdk.management.agent
+com.sun.tools.jconsole
+
+=jdk.jdeps
+# imports jdk.compiler
+# imports java.compiler
+# imports java.base
+
+=jdk.jdi
+# imports jdk.jdwp.agent
+# imports java.base
+# imports jdk.attach
+com.sun.jdi
+com.sun.jdi.connect
+com.sun.jdi.connect.spi
+com.sun.jdi.event
+com.sun.jdi.request
+
+=jdk.jdwp.agent
+# imports java.base
+
+=jdk.jlink
+# imports jdk.jdeps
+# imports jdk.internal.opt
+# imports java.base
+
+=jdk.jshell
+# imports jdk.compiler
+# imports public jdk.jdi
+# imports public java.prefs
+# imports jdk.internal.ed
+# imports java.logging
+# imports jdk.internal.opt
+# imports public java.compiler
+# imports jdk.internal.le
+# imports java.base
+jdk.jshell
+jdk.jshell.execution
+jdk.jshell.spi
+jdk.jshell.tool
+
+=jdk.jsobject
+# imports java.base
+# imports java.desktop
+netscape.javascript
+
+=jdk.jstatd
+# imports jdk.internal.jvmstat
+# imports java.base
+# imports java.rmi
+
+=jdk.localedata
+# imports java.base
+
+=jdk.management
+# imports java.base
+# imports public java.management
+com.sun.management
+
+=jdk.management.agent
+# imports java.management
+# imports java.management.rmi
+# imports java.base
+
+=jdk.naming.dns
+# imports java.base
+# imports java.naming
+
+=jdk.naming.rmi
+# imports java.base
+# imports java.rmi
+# imports java.naming
+
+=jdk.net
+# imports java.base
+jdk.net
+
+=jdk.pack
+# imports java.base
+
+=jdk.policytool
+# imports jdk.security.jgss
+# imports java.security.jgss
+# imports java.logging
+# imports jdk.net
+# imports java.management
+# imports java.base
+# imports java.desktop
+# imports java.sql
+
+=jdk.rmic
+# imports jdk.javadoc
+# imports jdk.compiler
+# imports java.corba
+# imports java.base
+
+=jdk.scripting.nashorn
+# imports jdk.dynalink
+# imports java.logging
+# imports public java.scripting
+# imports java.base
+jdk.nashorn.api.scripting
+jdk.nashorn.api.tree
+
+=jdk.scripting.nashorn.shell
+# imports jdk.scripting.nashorn
+# imports java.compiler
+# imports jdk.internal.le
+# imports java.base
+# imports java.desktop
+
+=jdk.sctp
+# imports java.base
+com.sun.nio.sctp
+
+=jdk.security.auth
+# imports java.security.jgss
+# imports java.base
+# imports public java.naming
+com.sun.security.auth
+com.sun.security.auth.callback
+com.sun.security.auth.login
+com.sun.security.auth.module
+
+=jdk.security.jgss
+# imports public java.security.jgss
+# imports java.logging
+# imports java.base
+# imports java.security.sasl
+com.sun.security.jgss
+
+=jdk.unsupported
+# imports java.base
+com.sun.nio.file
+sun.misc
+sun.reflect
+
+=jdk.xml.bind
+# imports jdk.compiler
+# imports java.xml
+# imports java.logging
+# imports java.compiler
+# imports java.xml.bind
+# imports java.activation
+# imports java.base
+# imports java.desktop
+
+=jdk.xml.dom
+# imports public java.xml
+# imports java.base
+org.w3c.dom.css
+org.w3c.dom.html
+org.w3c.dom.stylesheets
+org.w3c.dom.xpath
+
+=jdk.xml.ws
+# imports java.xml.ws
+# imports java.xml
+# imports jdk.xml.bind
+# imports java.logging
+# imports java.compiler
+# imports java.xml.bind
+# imports java.base
+# imports java.rmi
+
+=jdk.zipfs
+# imports java.base
+
 
 =jdk.accessibility
 # imports shared java.desktop

@@ -1,29 +1,10 @@
-# List of JDK modules as guessed from package-list.jdk7 + new packages in Java 8:
-#
-# (added to java.base)
-# java.util.function
-# java.util.stream
-# java.time
-# java.time.chrono
-# java.time.format
-# java.time.temporal
-# java.time.zone
-#
-# (added to javax.xml)
-# org.w3c.dom.views
-#
-# see package-list.jdk7 for syntax and origin
+# Extracted by JDKUtils.main
 
 =java.activation
+# imports public java.datatransfer
 # imports java.logging
-# imports java.desktop
-# imports shared java.datatransfer
 # imports java.base
 javax.activation
-
-=java.annotations.common
-# imports java.base
-javax.annotation
 
 =java.base
 java.io
@@ -77,38 +58,8 @@ javax.security.auth.login
 javax.security.auth.spi
 javax.security.auth.x500
 javax.security.cert
-jdk
-jdk.net
-sun.misc
-sun.reflect
-
-=java.compact1
-# imports shared java.logging
-# imports shared java.scripting
-# imports java.base
-
-=java.compact2
-# imports shared java.compact1
-# imports shared java.rmi
-# imports shared java.sql
-# imports shared java.xml
-# imports java.base
-
-=java.compact3
-# imports shared java.management
-# imports shared java.naming
-# imports shared java.security.sasl
-# imports shared java.instrument
-# imports shared java.sql.rowset
-# imports shared java.prefs
-# imports shared java.xml.crypto
-# imports shared java.compiler
-# imports shared java.compact2
-# imports shared java.security.jgss
-# imports java.base
 
 =java.compiler
-# imports java.logging
 # imports java.base
 javax.annotation.processing
 javax.lang.model
@@ -118,12 +69,13 @@ javax.lang.model.util
 javax.tools
 
 =java.corba
+# imports public java.desktop
 # imports java.transaction
-# imports shared java.desktop
 # imports java.logging
-# imports shared java.rmi
-# imports java.naming
+# imports jdk.unsupported
 # imports java.base
+# imports public java.rmi
+# imports java.naming
 javax.activity
 javax.rmi
 javax.rmi.CORBA
@@ -162,12 +114,13 @@ java.awt.datatransfer
 
 =java.desktop
 # imports java.prefs
-# imports shared java.xml
-# imports shared java.datatransfer
+# imports public java.datatransfer
+# imports public java.xml
 # imports java.base
 java.applet
 java.awt
 java.awt.color
+java.awt.desktop
 java.awt.dnd
 java.awt.event
 java.awt.font
@@ -185,6 +138,7 @@ javax.imageio.event
 javax.imageio.metadata
 javax.imageio.plugins.bmp
 javax.imageio.plugins.jpeg
+javax.imageio.plugins.tiff
 javax.imageio.spi
 javax.imageio.stream
 javax.print
@@ -223,9 +177,6 @@ java.lang.instrument
 java.util.logging
 
 =java.management
-# imports java.logging
-# imports shared java.rmi
-# imports java.naming
 # imports java.base
 java.lang.management
 javax.management
@@ -235,12 +186,18 @@ javax.management.monitor
 javax.management.openmbean
 javax.management.relation
 javax.management.remote
-javax.management.remote.rmi
 javax.management.timer
 
-=java.naming
-# imports java.security.sasl
+=java.management.rmi
 # imports java.base
+# imports public java.rmi
+# imports public java.management
+# imports java.naming
+javax.management.remote.rmi
+
+=java.naming
+# imports java.base
+# imports java.security.sasl
 javax.naming
 javax.naming.directory
 javax.naming.event
@@ -267,20 +224,38 @@ javax.rmi.ssl
 javax.script
 
 =java.se
-# imports shared java.compact3
-# imports shared java.xml.bind
-# imports shared java.annotations.common
-# imports shared java.desktop
-# imports shared java.transaction
-# imports shared java.xml.ws
-# imports shared java.corba
-# imports shared java.activation
-# imports shared java.datatransfer
+# imports public java.desktop
+# imports public java.security.jgss
+# imports public java.datatransfer
+# imports public java.xml.crypto
+# imports public java.prefs
+# imports public java.compiler
 # imports java.base
+# imports public java.management.rmi
+# imports public java.instrument
+# imports public java.logging
+# imports public java.xml
+# imports public java.sql.rowset
+# imports public java.scripting
+# imports public java.rmi
+# imports public java.sql
+# imports public java.management
+# imports public java.naming
+# imports public java.security.sasl
+
+=java.se.ee
+# imports public java.transaction
+# imports public java.xml.ws
+# imports public java.se
+# imports public java.xml.bind
+# imports public java.corba
+# imports public java.xml.ws.annotation
+# imports java.base
+# imports public java.activation
 
 =java.security.jgss
-# imports java.naming
 # imports java.base
+# imports java.naming
 javax.security.auth.kerberos
 org.ietf.jgss
 
@@ -294,31 +269,31 @@ javax.security.sasl
 javax.smartcardio
 
 =java.sql
-# imports shared java.logging
-# imports shared java.xml
+# imports public java.logging
+# imports public java.xml
 # imports java.base
 java.sql
 javax.sql
 javax.transaction.xa
 
 =java.sql.rowset
-# imports shared java.naming
-# imports java.xml
-# imports shared java.sql
-# imports shared java.logging
+# imports public java.logging
 # imports java.base
+# imports public java.sql
+# imports public java.naming
 javax.sql.rowset
 javax.sql.rowset.serial
 javax.sql.rowset.spi
 
 =java.transaction
-# imports shared java.rmi
 # imports java.base
+# imports public java.rmi
 javax.transaction
 
 =java.xml
 # imports java.base
 javax.xml
+javax.xml.catalog
 javax.xml.datatype
 javax.xml.namespace
 javax.xml.parsers
@@ -346,10 +321,11 @@ org.xml.sax.helpers
 =java.xml.bind
 # imports java.logging
 # imports java.compiler
-# imports shared java.activation
-# imports java.desktop
-# imports shared java.xml
+# imports public java.xml
+# imports jdk.unsupported
 # imports java.base
+# imports java.desktop
+# imports public java.activation
 javax.xml.bind
 javax.xml.bind.annotation
 javax.xml.bind.annotation.adapters
@@ -359,7 +335,7 @@ javax.xml.bind.util
 
 =java.xml.crypto
 # imports java.logging
-# imports shared java.xml
+# imports public java.xml
 # imports java.base
 javax.xml.crypto
 javax.xml.crypto.dom
@@ -369,16 +345,16 @@ javax.xml.crypto.dsig.keyinfo
 javax.xml.crypto.dsig.spec
 
 =java.xml.ws
-# imports shared java.xml.bind
 # imports java.logging
+# imports public java.xml.bind
 # imports java.management
 # imports jdk.httpserver
-# imports java.annotations.common
-# imports shared java.activation
-# imports java.desktop
-# imports java.rmi
-# imports shared java.xml
+# imports java.xml.ws.annotation
+# imports public java.xml
+# imports jdk.unsupported
 # imports java.base
+# imports java.desktop
+# imports public java.activation
 javax.jws
 javax.jws.soap
 javax.xml.soap
@@ -391,97 +367,6 @@ javax.xml.ws.spi
 javax.xml.ws.spi.http
 javax.xml.ws.wsaddressing
 
-=javafx.base
-# imports jdk.jfr
-# imports java.desktop
+=java.xml.ws.annotation
 # imports java.base
-javafx.beans
-javafx.beans.binding
-javafx.beans.property
-javafx.beans.property.adapter
-javafx.beans.value
-javafx.collections
-javafx.collections.transformation
-javafx.event
-javafx.util
-javafx.util.converter
-
-=javafx.controls
-# imports shared javafx.base
-# imports shared javafx.graphics
-# imports java.base
-javafx.scene.chart
-javafx.scene.control
-javafx.scene.control.cell
-javafx.scene.control.skin
-
-=javafx.deploy
-# imports javafx.graphics
-# imports jdk.javaws
-# imports javafx.base
-# imports jdk.deploy
-# imports jdk.plugin
-# imports java.desktop
-# imports javafx.controls
-# imports java.base
-
-=javafx.fxml
-# imports javafx.graphics
-# imports shared javafx.base
-# imports java.scripting
-# imports java.xml
-# imports java.logging
-# imports java.base
-javafx.fxml
-
-=javafx.graphics
-# imports shared javafx.base
-# imports java.xml
-# imports java.desktop
-# imports java.base
-javafx.animation
-javafx.application
-javafx.concurrent
-javafx.css
-javafx.css.converter
-javafx.geometry
-javafx.print
-javafx.scene
-javafx.scene.canvas
-javafx.scene.effect
-javafx.scene.image
-javafx.scene.input
-javafx.scene.layout
-javafx.scene.paint
-javafx.scene.shape
-javafx.scene.text
-javafx.scene.transform
-javafx.stage
-
-=javafx.media
-# imports shared javafx.base
-# imports shared javafx.graphics
-# imports java.base
-javafx.scene.media
-
-=javafx.swing
-# imports java.datatransfer
-# imports shared java.desktop
-# imports javafx.base
-# imports shared javafx.graphics
-# imports java.base
-javafx.embed.swing
-
-=javafx.web
-# imports shared javafx.base
-# imports shared javafx.controls
-# imports java.logging
-# imports jdk.xml.dom
-# imports shared javafx.graphics
-# imports jdk.plugin
-# imports javafx.media
-# imports java.desktop
-# imports shared java.xml
-# imports java.base
-javafx.scene.web
-
+javax.annotation
