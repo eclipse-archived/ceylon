@@ -20,7 +20,11 @@ public class Java7Checker {
         if (version != null && !version.isEmpty() && elems != null && elems.length >= 1) {
             try {
                 int major = Integer.parseInt(elems[0]);
-                int minor = elems.length > 1 ? Integer.parseInt(elems[1]) : 0;
+                int minor = 0;
+                try {
+                    // text minor such as 9-Ubuntu is allowed now
+                    minor = elems.length > 1 ? Integer.parseInt(elems[1]) : 0;
+                } catch (NumberFormatException ex) {}
                 //int release = Integer.parseInt(elems[2]);
                 if (major == 1 && minor < 7) {
                     System.err.println("Your Java version is not supported: " + version);
