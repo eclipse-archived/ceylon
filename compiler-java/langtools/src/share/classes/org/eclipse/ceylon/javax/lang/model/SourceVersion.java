@@ -141,7 +141,9 @@ public enum SourceVersion {
      * Additions in this release include lambda expressions and default methods.
      * @since 1.8
      */
-    RELEASE_8;
+    RELEASE_8,
+    
+    RELEASE_9;
 
     // Note that when adding constants for newer releases, the
     // behavior of latest() and latestSupported() must be updated too.

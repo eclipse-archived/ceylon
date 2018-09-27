@@ -88,6 +88,13 @@ public enum AnnotationTarget {
         public Set<OutputElement> outputs() {
             return Collections.emptySet();
         }
+    },
+    MODULE {
+        @Override
+        public Set<OutputElement> outputs() {
+            // for now, because I don't think we can annotated java 9 module descriptors
+            return Collections.emptySet();
+        }
     };
     
     public abstract Set<OutputElement> outputs();
