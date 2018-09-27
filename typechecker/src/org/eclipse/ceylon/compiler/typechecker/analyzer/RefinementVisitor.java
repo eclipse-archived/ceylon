@@ -1767,7 +1767,7 @@ public class RefinementVisitor extends Visitor {
                 Class c = (Class) d;
                 //wow, this is amazingly fragile
                 //TODO: store a ref back to the
-                //Class in the COnstructor model
+                //Class in the Constructor model
                 if (c.getParameterList() 
                         == con.getParameterList()) {
                     return c;

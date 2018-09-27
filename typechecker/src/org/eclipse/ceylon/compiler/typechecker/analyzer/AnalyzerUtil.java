@@ -307,9 +307,9 @@ public class AnalyzerUtil {
             TypeDeclaration typeDeclaration = 
                     type.getDeclaration();
             if ((typeDeclaration instanceof Class ||
-                 typeDeclaration instanceof Constructor) &&
-                    typeDeclaration.isAnonymous() &&
-                    isNamed(name, typeDeclaration)) {
+                 typeDeclaration instanceof Constructor) 
+                    && typeDeclaration.isAnonymous() 
+                    && isNamed(name, typeDeclaration)) {
                 return typeDeclaration;
             }
         }

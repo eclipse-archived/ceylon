@@ -374,8 +374,8 @@ public class InheritanceVisitor extends Visitor {
                                 ext.getDeclaration();
                     TypeDeclaration aetd = 
                             type.getDeclaration();
-                    if (aetd instanceof Constructor &&
-                            aetd.isAbstract()) {
+                    if (aetd.isConstructor() 
+                            && aetd.isAbstract()) {
                         et.addError("extends a partial constructor: '" 
                                 + aetd.getName(unit) 
                                 + "' is declared abstract");
@@ -549,7 +549,7 @@ public class InheritanceVisitor extends Visitor {
                 if (type!=null) {
                     TypeDeclaration caseDec = 
                             type.getDeclaration();
-                    if (caseDec instanceof Constructor) {
+                    if (caseDec.isConstructor()) {
                         Scope scope = caseDec.getContainer();
                         if (scope instanceof Class) {
                             //enumerated singleton constructors
@@ -731,9 +731,9 @@ public class InheritanceVisitor extends Visitor {
                     that.getScope();
         Scope container = constructor.getContainer();
         Tree.SimpleType type = that.getType();
-        if (type!=null &&
-                constructor instanceof Constructor &&
-                container instanceof Class) {
+        if (type!=null 
+                && constructor instanceof Constructor 
+                && container instanceof Class) {
             Class containingClass = (Class) container;
             Type et = containingClass.getExtendedType();
             if (et!=null) {
@@ -854,8 +854,7 @@ public class InheritanceVisitor extends Visitor {
         if (qt!=null && td instanceof ClassOrInterface) {
             Unit unit = that.getUnit();
             TypeDeclaration d = type.getDeclaration();
-            if (d.isStatic() ||
-                    d instanceof Constructor) {
+            if (d.isStatic() || d.isConstructor()) {
                 checkExtensionOfMemberType(that, td, qt);
             }
             else {
@@ -967,8 +966,7 @@ public class InheritanceVisitor extends Visitor {
     public void visit(Tree.Constructor that) {
         super.visit(that);
         Constructor c = that.getConstructor();
-        Scope container = 
-                c.getContainer();
+        Scope container = c.getContainer();
         if (container instanceof Class) {
             Class cl = (Class) container;
             List<TypedDeclaration> caseValues = 

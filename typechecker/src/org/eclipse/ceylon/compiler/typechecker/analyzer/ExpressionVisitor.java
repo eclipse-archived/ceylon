@@ -7536,7 +7536,7 @@ public class ExpressionVisitor extends Visitor {
                     (TypeDeclaration)
                         handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
-                if (type instanceof Constructor) {
+                if (type.isConstructor()) {
                     that.addError("constructor is not visible: " 
                             + qualifiedDescription(that), 
                             400);
@@ -7711,7 +7711,6 @@ public class ExpressionVisitor extends Visitor {
             //it is a Java constructor
             //get the actual type that
             //owns the constructor
-            //Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
             Declaration at = 
                     type.getExtendedType()
                         .getDeclaration();
@@ -7750,16 +7749,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (!type.isVisible(that.getScope())) {
-                if (type instanceof Constructor) {
-                    that.addError("constructor is not visible: '" 
-                            + name + "' of " + container(container), 
-                            400);
-                }
-                else {
-                    that.addError("member type is not visible: '" 
-                            + name + "' of " + container(container), 
-                            400);
-                }
+                that.addError("member type is not visible: '" 
+                        + name + "' of " + container(container), 
+                        400);
             }
             else if (type.isPackageVisibility() 
                     && !declaredInPackage(type, unit)) {
@@ -8664,7 +8656,6 @@ public class ExpressionVisitor extends Visitor {
     private boolean checkConcreteConstructor(TypedDeclaration member,
             Tree.StaticMemberOrTypeExpression that) {
         if (member.isConstructor()) {
-            Scope container = member.getContainer();
             Constructor cons = 
                     (Constructor) 
                         member.getTypeDeclaration();
@@ -8674,7 +8665,8 @@ public class ExpressionVisitor extends Visitor {
                         + "' is abstract");
                 return false;
             }
-            else if (container instanceof Class) {
+            Scope container = member.getContainer();
+            if (container instanceof Class) {
                 Class c = (Class) container;
                 if (c.isAbstract()) {
                     that.addError("class cannot be instantiated: '" 
@@ -8699,62 +8691,35 @@ public class ExpressionVisitor extends Visitor {
     private boolean checkConcreteClass(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
-                return true;
+            return true;
         }
-        else {
-            if (type instanceof Class) {
-                Class c = (Class) type;
-                if (c.isAbstract()) {
-                    that.addError("class cannot be instantiated: '" 
-                            + type.getName(unit) 
-                            + "' is abstract");
-                    return false;
-                }
-                else if (c.getParameterList()==null) {
-                    if (!c.isAbstraction()) {
-                        that.addError("class cannot be instantiated: '" 
-                                + type.getName(unit) 
-                                + "' does not have a default constructor");
-                    }
-                    //else the parameter list is null because an
-                    //overloaded declaration could not be resolved
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            }
-            else if (type instanceof Constructor) {
-                Scope container = type.getContainer();
-                if (type.isAbstract()) {
-                    that.addError("partial constructor cannot be invoked: '" 
-                            + type.getName(unit) 
-                            + "' is abstract");
-                    return false;
-                }
-                else if (container instanceof Class) {
-                    Class c = (Class) container;
-                    if (c.isAbstract()) {
-                        that.addError("class cannot be instantiated: '" 
-                                + type.getName(unit) 
-                                + "' is a constructor for the abstract class '" 
-                                + c.getName(unit));
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-                }
-                else {
-                    return false;
-                }
-            }
-            else {
-                that.addError("type cannot be instantiated: '" 
+        else if (type instanceof Class) {
+            Class c = (Class) type;
+            if (c.isAbstract()) {
+                that.addError("class cannot be instantiated: '" 
                         + type.getName(unit) 
-                        + "' is not a class");
+                        + "' is abstract");
                 return false;
             }
+            else if (c.getParameterList()==null) {
+                if (!c.isAbstraction()) {
+                    that.addError("class cannot be instantiated: '" 
+                            + type.getName(unit) 
+                            + "' does not have a default constructor");
+                }
+                //else the parameter list is null because an
+                //overloaded declaration could not be resolved
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            that.addError("type cannot be instantiated: '" 
+                    + type.getName(unit) 
+                    + "' is not a class");
+            return false;
         }
     }
 
@@ -11271,18 +11236,16 @@ public class ExpressionVisitor extends Visitor {
     protected void checkDelegatedConstructor(
             Tree.DelegatedConstructor dc, Constructor c, 
             Node node) {
-        if (dc==null) {
-            if (c.isClassMember()) {
-                Class clazz = (Class) c.getContainer();
-                Type et = clazz.getExtendedType();
-                if (et!=null && !et.isBasic()) {
-                    TypeDeclaration superclass = 
-                            et.getDeclaration();
-                    if (superclass!=null) {
-                        node.addError("constructor must explicitly delegate to some superclass constructor: '" +
-                                clazz.getName() + "' extends '" + 
-                                superclass.getName() + "'");
-                    }
+        if (dc==null && c.isClassMember()) {
+            Class clazz = (Class) c.getContainer();
+            Type et = clazz.getExtendedType();
+            if (et!=null && !et.isBasic()) {
+                TypeDeclaration superclass = 
+                        et.getDeclaration();
+                if (superclass!=null) {
+                    node.addError("constructor must explicitly delegate to some superclass constructor: '" +
+                            clazz.getName() + "' extends '" + 
+                            superclass.getName() + "'");
                 }
             }
         }

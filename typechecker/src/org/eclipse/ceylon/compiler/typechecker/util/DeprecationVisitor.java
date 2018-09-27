@@ -31,8 +31,8 @@ public class DeprecationVisitor extends Visitor {
                     "' is annotated 'deprecated' in " +
                     module(d));
         }
-        if (d instanceof Class && 
-                that.getDirectlyInvoked()) {
+        if (d instanceof Class 
+                && that.getDirectlyInvoked()) {
             Class c = (Class) d;
             Constructor dc = c.getDefaultConstructor();
             if (dc!=null && dc.isDeprecated()) {

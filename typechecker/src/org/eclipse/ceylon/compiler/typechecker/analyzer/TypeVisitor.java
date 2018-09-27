@@ -427,7 +427,7 @@ public class TypeVisitor extends Visitor {
             else if (ci.isClassOrInterfaceMember()) {
                 ClassOrInterface oci = 
                         (ClassOrInterface) 
-                        ci.getContainer();
+                            ci.getContainer();
                 that.setTypeModel(intersectionOfSupertypes(oci));
             }
             else {
@@ -537,10 +537,13 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, 
             Type ot, TypeDeclaration dec) {
-        if (dec instanceof Constructor 
-                //in a metamodel type literal, a constructor
-                //is allowed
-                && !inTypeLiteral 
+        
+        //check this isn't a constructor name masquerading
+        //as a type name via the Class.\Iconstructor syntax
+        if (dec.isConstructor() 
+//                //in a metamodel type literal, a constructor
+//                //is allowed
+//                && !inTypeLiteral 
                 //for an extends clause or aliased class, 
                 //either a class with parameters or a 
                 //constructor is allowed
@@ -899,7 +902,7 @@ public class TypeVisitor extends Visitor {
                     TypeDeclaration dec = 
                             type.getDeclaration();
                     td.setConstructor(dec);
-                    if (dec instanceof Constructor) {
+                    if (dec.isConstructor()) {
                         if (dec.isValueConstructor()) {
                             ct.addError("aliases a value constructor");
                         }
@@ -1082,8 +1085,7 @@ public class TypeVisitor extends Visitor {
                 TypeDeclaration otd = 
                         qualifiedType.getDeclarationModel();
                 if (otd!=null) {
-                    if (otd.isStatic() || 
-                            otd instanceof Constructor) {
+                    if (otd.isStatic() || otd.isConstructor()) {
                         checkExtendedTypeExpression(outerType);
                     }
                     else {
@@ -1141,7 +1143,7 @@ public class TypeVisitor extends Visitor {
                             et.getDeclarationModel();
                     if (etd!=null && 
                             !(etd instanceof UnknownType)) {
-                        if (etd instanceof Constructor) {
+                        if (etd.isConstructor()) {
                             type = type.getExtendedType();
                             etd = etd.getExtendedType()
                                     .getDeclaration();

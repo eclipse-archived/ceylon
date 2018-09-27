@@ -17,9 +17,12 @@ class ClassContainer() {
                 = `\ImemberObject.Ctor.other`;
         print(ctorOther(other.memberObject)());
         $error:"constructor is not a type" 
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Ictor,[]> ctorCtor2;
+        MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor.\Ictor,[]> ctorCtor2;
         $error:"constructor is not a type" 
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Iother,[]> ctorOther2;
+        MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor.\Iother,[]> ctorOther2;
+        
+        $type:"ClassContainer.memberObject.Ctor" value good = memberObject.Ctor.ctor();
+        $error:"constructor is not a type" value bad = memberObject.Ctor.\Ictor();
     }
     
 }

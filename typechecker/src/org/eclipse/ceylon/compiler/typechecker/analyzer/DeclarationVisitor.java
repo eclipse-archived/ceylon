@@ -328,8 +328,8 @@ public abstract class DeclarationVisitor extends Visitor {
                                     .add(overload);
                             }
                         } 
-                        if (isAllowedToChangeModel(member) && 
-                                !hasModelInOverloads(model, 
+                        if (isAllowedToChangeModel(member) 
+                                && !hasModelInOverloads(model, 
                                         overloads)) {
                             overloads.add(model);
                             if (that instanceof Tree.ObjectDefinition) {
@@ -460,7 +460,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 }
                 ClassOrInterface c = 
                         (ClassOrInterface) 
-                        overloadFromModelLoader;
+                            overloadFromModelLoader;
                 loadedClasses.add(c);
             }
             else if (overloadFromModelLoader 
@@ -471,7 +471,7 @@ public abstract class DeclarationVisitor extends Visitor {
             }
             ClassOrInterface c = 
                     (ClassOrInterface) 
-                    overloadFromModelLoader;
+                        overloadFromModelLoader;
             loadedClasses.add(c);
         }
             else if (overloadFromModelLoader 
