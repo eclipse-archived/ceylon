@@ -89,6 +89,7 @@ public class Module
 
     public void setName(List<String> name) {
         this.name = name;
+        this.nameAsString = null;
     }
     
     public List<Package> getPackages() {
