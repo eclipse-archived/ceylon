@@ -109,7 +109,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         Member found = null;
         Member[] defaultedMethods;
-        if (freeConstructor != null && ModelUtil.isConstructor(freeConstructor.declaration)) {
+        if (freeConstructor != null && freeConstructor.declaration.isConstructor()) {
             if(MethodHandleUtil.isJavaArray(javaClass)){
                 // *Array.with constructor
                 found =  MethodHandleUtil.setupArrayWithConstructor(javaClass);

@@ -82,7 +82,7 @@ public class InvocationGenerator {
             if (dec!=null) {
                 Reference target = smote.getTarget();
                 TypeArguments typeArgs = smote.getTypeArguments();
-                if (ModelUtil.isConstructor(dec) || dec.isStatic()) {
+                if (dec.isConstructor() || dec.isStatic()) {
                     //constructor or static method
                     Type qtype = target.getQualifyingType();
                     if (qtype.getDeclaration().isParameterized()) {

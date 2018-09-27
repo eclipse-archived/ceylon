@@ -1193,7 +1193,7 @@ public class GenerateJsVisitor extends Visitor {
 
     void generateAttributeForParameter(Node node, Class d, Parameter p) {
         if (p.getDeclaration() instanceof Function 
-                && ModelUtil.isConstructor(p.getDeclaration())) {
+                && p.getDeclaration().isConstructor()) {
             return;
         }
         final FunctionOrValue pdec = p.getModel();
@@ -2222,7 +2222,7 @@ public class GenerateJsVisitor extends Visitor {
                 accessThroughGetter(decl) && !accessDirectly(decl)
                         ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) 
                         : names.name(decl);
-        if (!isConstructor && ModelUtil.isConstructor(decl)) {
+        if (!isConstructor && decl.isConstructor()) {
             sb.append(names.name((Declaration)decl.getContainer()))
               .append(names.constructorSeparator(decl));
         }

@@ -280,7 +280,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                             if (ctor.getDelegatedConstructor().getInvocationExpression().getPrimary() instanceof Tree.ExtendedTypeExpression) {
                                 Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
                                 // are we delegating to a constructor (not a supertype) of the same class (this class)?
-                                if (Decl.isConstructor(ete.getDeclaration())
+                                if (ete.getDeclaration().isConstructor()
                                         && ModelUtil.getConstructedClass(ete.getDeclaration()).equals(that.getDeclarationModel())) {
                                     // remember the delegation
                                     Constructor delegate = ModelUtil.getConstructor(ete.getDeclaration());

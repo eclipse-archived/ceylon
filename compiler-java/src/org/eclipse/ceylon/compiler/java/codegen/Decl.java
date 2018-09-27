@@ -144,7 +144,7 @@ public class Decl {
     
     public static boolean isMethodOrSharedOrCapturedParam(Declaration decl) {
         return decl instanceof Function 
-            && !isConstructor(decl)
+            && !decl.isConstructor()
             && (!((Function)decl).isParameter() 
                     || ModelUtil.isCaptured(decl));
     }
@@ -506,7 +506,7 @@ public class Decl {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Declaration decl = ((Tree.MemberOrTypeExpression)term).getDeclaration();
             return decl != null
-                && (isConstructor(decl)
+                && (decl.isConstructor()
                 || (decl instanceof Class
                         && ((Class)decl).hasConstructors()));
         } else {
@@ -673,10 +673,6 @@ public class Decl {
         return false;
     }
 
-    public static boolean isConstructor(Declaration decl) {
-        return ModelUtil.isConstructor(decl);
-    }
-    
     public static Scope getNonSkippedContainer(Declaration decl){
         if(decl instanceof Scope)
             return getNonSkippedContainer((Scope)decl);

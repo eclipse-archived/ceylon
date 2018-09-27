@@ -12,7 +12,6 @@ package org.eclipse.ceylon.model.typechecker.model;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isResolvable;
@@ -765,7 +764,7 @@ public abstract class TypeDeclaration extends Declaration
                         && isResolvable(dm) 
                         && (includeInheritedConstructors ||
 //                          !dm.isStatic() &&
-                            !isConstructor(dm))) {
+                            !dm.isConstructor())) {
                     // only accept abstractions if we 
                     // don't have a signature
                     return !dm.isAbstraction() || 

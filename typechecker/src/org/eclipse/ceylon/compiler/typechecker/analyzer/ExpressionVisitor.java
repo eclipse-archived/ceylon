@@ -71,7 +71,6 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionO
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isCompletelyVisible;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
@@ -5080,7 +5079,7 @@ public class ExpressionVisitor extends Visitor {
             if (declaration==null) {
                 return true;
             }
-            else if (isConstructor(declaration)) {
+            else if (declaration.isConstructor()) {
                 return false;
             }
             else {
@@ -7844,7 +7843,7 @@ public class ExpressionVisitor extends Visitor {
                 && member.getContainer()
                     .equals(constructorClass) 
                 && !member.isStatic() 
-                && !isConstructor(member)) {
+                && !member.isConstructor()) {
             that.addError("reference to class member from constructor extends clause");
         }
     }
@@ -8070,7 +8069,7 @@ public class ExpressionVisitor extends Visitor {
         
         Tree.Primary primary = that.getPrimary();
         if (!that.getDirectlyInvoked() 
-                && (member.isStatic() || isConstructor(member))
+                && (member.isStatic() || member.isConstructor())
                 && primary instanceof 
                     Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression smte =
@@ -8283,7 +8282,7 @@ public class ExpressionVisitor extends Visitor {
         if (error) {
             checkMemberOperator(receivingType, that);
             Tree.Primary primary = that.getPrimary();
-            if (isConstructor(member) &&
+            if (member.isConstructor() &&
                     !(primary instanceof Tree.BaseTypeExpression ||
                       primary instanceof Tree.QualifiedTypeExpression)) {
                 primary.addError("constructor reference must be qualified by a type expression");
@@ -8407,7 +8406,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
-            if (isConstructor(member)) {
+            if (member.isConstructor()) {
                 //Ceylon named constructor
                 if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
@@ -8664,7 +8663,7 @@ public class ExpressionVisitor extends Visitor {
 
     private boolean checkConcreteConstructor(TypedDeclaration member,
             Tree.StaticMemberOrTypeExpression that) {
-        if (isConstructor(member)) {
+        if (member.isConstructor()) {
             Scope container = member.getContainer();
             Constructor cons = 
                     (Constructor) 
@@ -9832,7 +9831,7 @@ public class ExpressionVisitor extends Visitor {
         if (ref instanceof Value) {
             Value val = (Value) ref;
             return !ModelUtil.isObject(val)
-                && !ModelUtil.isConstructor(val)
+                && !val.isConstructor()
                 && (ref.isToplevel() || ref.isStatic()) 
                 && !val.isVariable()
                 && !val.isTransient();
@@ -11660,7 +11659,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(unit.getFunctionDeclarationType());
         }
         else if (that instanceof Tree.NewLiteral) {
-            if (isConstructor(result)) {
+            if (result.isConstructor()) {
                 // constructors look like functions but they're 
                 // always members, they can't ever be local
             }
@@ -11677,7 +11676,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             // constructors look like functions but they're 
             // always members, they can't ever be local
-            if (!isConstructor(result)) {
+            if (!result.isConstructor()) {
                 checkNonlocal(that, result);
             }
             setMetamodelType(that, result);
@@ -11723,7 +11722,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             outerType = null;
         }
-        boolean constructor = isConstructor(result);
+        boolean constructor = result.isConstructor();
         if (result instanceof Function) {
             Function method = (Function) result;
             if (method.isAbstraction()) {

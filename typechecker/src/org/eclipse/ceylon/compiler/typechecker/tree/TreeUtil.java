@@ -9,8 +9,6 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.typechecker.tree;
 
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -658,7 +656,7 @@ public class TreeUtil {
                 Tree.QualifiedMemberExpression qme =
                         (Tree.QualifiedMemberExpression) p;
                 if (qme.getStaticMethodReference() &&
-                        isConstructor(qme.getDeclaration())) {
+                        qme.getDeclaration().isConstructor()) {
                     return true;
                 }
             }

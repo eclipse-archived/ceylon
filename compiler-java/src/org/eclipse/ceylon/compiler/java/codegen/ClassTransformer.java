@@ -1359,7 +1359,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (member != null) {
             pdb.userAnnotations(expressionGen().transformAnnotations(OutputElement.PARAMETER, member));
         } else if (p instanceof Tree.ParameterDeclaration &&
-                Decl.isConstructor(param.getDeclaration())) {
+                param.getDeclaration().isConstructor()) {
             pdb.userAnnotations(expressionGen().transformAnnotations(OutputElement.PARAMETER, ((Tree.ParameterDeclaration)p).getTypedDeclaration()));
         }
 
@@ -1578,7 +1578,7 @@ public class ClassTransformer extends AbstractTransformer {
             Value value = (Value)member;
             if (!value.isTransient()
                     && !value.isFormal()
-                    && !ModelUtil.isConstructor(value)
+                    && !value.isConstructor()
                     && ModelUtil.isCaptured(value)) {
                 return true;
             }

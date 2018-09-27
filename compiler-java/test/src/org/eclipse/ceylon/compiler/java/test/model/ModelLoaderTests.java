@@ -381,8 +381,8 @@ public class ModelLoaderTests extends CompilerTests {
             if(validDeclaration instanceof ClassOrInterface){
                 Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
                 compareClassOrInterfaceDeclarations((ClassOrInterface)validDeclaration, (ClassOrInterface)modelDeclaration);
-            } else if(Decl.isConstructor(validDeclaration)){
-                Assert.assertTrue(name+" [Constructor]", Decl.isConstructor(modelDeclaration));
+            } else if(validDeclaration.isConstructor()){
+                Assert.assertTrue(name+" [Constructor]", modelDeclaration.isConstructor());
             } else if(validDeclaration instanceof Function){
                 Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Function);
                 compareMethodDeclarations((Function)validDeclaration, (Function)modelDeclaration);

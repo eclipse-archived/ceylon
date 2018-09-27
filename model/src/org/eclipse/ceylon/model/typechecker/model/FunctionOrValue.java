@@ -49,6 +49,20 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     }
     
     @Override
+    public boolean isConstructor() {
+        return (flags&CONSTRUCTOR)!=0;
+    }
+    
+    public void setConstructor(boolean constructor) {
+        if (constructor) {
+            flags|=CONSTRUCTOR;
+        }
+        else {
+            flags&=(~CONSTRUCTOR);
+        }
+    }
+    
+    @Override
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.MEMBER;
     }

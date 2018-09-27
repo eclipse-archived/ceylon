@@ -650,7 +650,7 @@ public class Util {
 
     public static String getDeclarationName(Declaration decl) {
         String name = decl.getName();
-        if( ModelUtil.isConstructor(decl) && name == null ) {
+        if( decl.isConstructor() && name == null ) {
             name = ((TypeDeclaration)decl.getContainer()).getName();
         }
         return name;

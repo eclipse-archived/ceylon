@@ -35,6 +35,11 @@ public class Constructor extends TypeDeclaration implements Functional {
     
     private String typescriptEnum = null;
     
+    @Override
+    public boolean isConstructor() {
+        return true;
+    }
+    
     public boolean isJavaEnum() {
         return (flags&JAVA_ENUM)!=0;
     }

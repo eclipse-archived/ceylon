@@ -306,6 +306,7 @@ public class JsonPackage extends LazyPackage {
                     //It's a value constructor
                     cls.setEnumerated(true);
                     Value cv = new Value();
+                    cv.setConstructor(true);
                     cv.setName(cnst.getName());
                     cv.setType(cnst.getType());
                     cv.setContainer(cls);
@@ -321,6 +322,7 @@ public class JsonPackage extends LazyPackage {
                     cnst.addParameterList(plist);
                     plist.setNamedParametersSupported(true);
                     Function cf = new Function();
+                    cf.setConstructor(true);
                     cf.setName(cnst.getName());
                     final Type ft = cnst.appliedType(cnst.getExtendedType(), Collections.<Type>emptyList());
                     cf.setType(ft);

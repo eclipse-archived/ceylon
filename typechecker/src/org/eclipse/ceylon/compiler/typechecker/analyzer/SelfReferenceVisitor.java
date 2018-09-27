@@ -11,15 +11,14 @@ package org.eclipse.ceylon.compiler.typechecker.analyzer;
 
 import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 
 import org.eclipse.ceylon.compiler.typechecker.tree.CustomTree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
-import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Super;
+import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
 import org.eclipse.ceylon.model.typechecker.model.Scope;
@@ -198,7 +197,7 @@ public class SelfReferenceVisitor extends Visitor {
         if (member instanceof Value) {
             return inInitializer() &&
                     !inCaseTypesList &&
-                    isConstructor(member) && 
+                    member.isConstructor() && 
                     ((TypeDeclaration) member.getContainer())
                         .inherits(typeDeclaration);
         }

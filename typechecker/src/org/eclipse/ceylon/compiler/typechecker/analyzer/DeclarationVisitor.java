@@ -36,7 +36,6 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeHead
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isDefaultConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
@@ -1091,6 +1090,7 @@ public abstract class DeclarationVisitor extends Visitor {
             that.addError("constructor declaration must occur directly in the body of a class");
         }
         Function f = new Function();
+        f.setConstructor(true);
         f.setType(at);
         that.setDeclarationModel(f);
         visitDeclaration(that, f);
@@ -1161,6 +1161,7 @@ public abstract class DeclarationVisitor extends Visitor {
             that.addError("value constructor declaration must occur directly in the body of a class");
         }
         Value v = new Value();
+        v.setConstructor(true);
         v.setType(at);
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
@@ -2459,7 +2460,7 @@ public abstract class DeclarationVisitor extends Visitor {
             if (model instanceof Class) {
                 ((Class) model).setAbstract(true);
             }
-            else if (isConstructor(model)) {
+            else if (model.isConstructor()) {
                 if (model instanceof Constructor) {
                     //ignore for now
                 }
@@ -2495,7 +2496,7 @@ public abstract class DeclarationVisitor extends Visitor {
             if (model instanceof ClassOrInterface) {
                 ((ClassOrInterface) model).setSealed(true);
             }
-            else if (isConstructor(model)) {
+            else if (model.isConstructor()) {
                 if (model instanceof Constructor) {
                     //ignore for now
                 }

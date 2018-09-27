@@ -82,8 +82,8 @@ public class Parameter {
     }
     
     public boolean isDeclaredVoid() {
-        return model instanceof Function && 
-                ((Function) model).isDeclaredVoid();
+        return model instanceof Function 
+            && ((Function) model).isDeclaredVoid();
     }
     
     public String getName() {

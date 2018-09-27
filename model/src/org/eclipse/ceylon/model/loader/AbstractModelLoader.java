@@ -3433,6 +3433,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
             klass.setEnumerated(true);
             Value v = new Value();
+            v.setConstructor(true);
             v.setName(constructor.getName());
             v.setType(constructor.getType());
             v.setContainer(klass);
@@ -3449,6 +3450,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setParameters(constructor, classMirror, ctor, true, klass, false);
             klass.setConstructors(true);
             Function f = new Function();
+            f.setConstructor(true);
             f.setName(constructor.getName());
             f.setType(constructor.getType());
             f.addParameterList(constructor.getParameterList());

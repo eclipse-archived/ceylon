@@ -21,7 +21,6 @@ import static org.eclipse.ceylon.model.loader.NamingBase.getJavaBeanName;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
@@ -1220,7 +1219,7 @@ public class AnalyzerUtil {
             }
             if (that.getStaticMethodReference()) {
                 if (d.isStatic() || 
-                        isConstructor(d)) {
+                        d.isConstructor()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 
                                 that;
@@ -1237,7 +1236,7 @@ public class AnalyzerUtil {
     static String message(Declaration dec) {
         String name = dec.getName();
         if (name==null) {
-            if (isConstructor(dec)
+            if (dec.isConstructor()
                     && dec.isClassMember()) {
                 Class c = (Class) dec.getContainer();
                 return "default constructor of '" 

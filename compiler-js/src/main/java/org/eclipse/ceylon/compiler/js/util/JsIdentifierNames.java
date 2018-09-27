@@ -10,7 +10,6 @@
 package org.eclipse.ceylon.compiler.js.util;
 
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getRealScope;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -283,7 +282,7 @@ public class JsIdentifierNames {
         String suffix = "";
         if (decl instanceof TypeDeclaration 
                 && (forSelf || !decl.isAnonymous())
-                && !isConstructor(decl)) {
+                && !decl.isConstructor()) {
             // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
@@ -315,7 +314,7 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        if (name == null && isConstructor(decl)) {
+        if (name == null && decl.isConstructor()) {
             return "$c$";
         }
         if (name.startsWith("anonymous#")) {
@@ -352,7 +351,7 @@ public class JsIdentifierNames {
                 // nested type
                 name += suffix;
             } else if ((!forGetterSetter 
-                        && !isConstructor(decl) 
+                        && !decl.isConstructor() 
                         && reservedWords.contains(name))
                     || isJsGlobal(decl)) {
                 // JavaScript keyword or global declaration

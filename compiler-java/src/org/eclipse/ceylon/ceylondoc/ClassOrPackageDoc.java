@@ -213,7 +213,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             around("span class='modifiers'", getModifiers(d));
             write(" ");
 
-            if( !ModelUtil.isConstructor(d) ) {
+            if( !d.isConstructor() ) {
                 if ( !Decl.isDynamic(d) ) {
                     if( d instanceof Functional && ((Functional) d).isDeclaredVoid() ) {
                         around("span class='void'", "void");

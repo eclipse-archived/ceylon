@@ -2913,7 +2913,7 @@ public class Type extends Reference {
 
     private static boolean isConstructorOf(Declaration member, 
             Declaration parameterizedDec) {
-        return ModelUtil.isConstructor(member)
+        return member.isConstructor()
             && member.getContainer().equals(parameterizedDec);
     }
 

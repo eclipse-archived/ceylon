@@ -78,22 +78,24 @@ import org.eclipse.ceylon.model.typechecker.model.Value;
 abstract class Invocation {
 
     static boolean onValueType(AbstractTransformer gen, Tree.Term primary, Declaration primaryDeclaration) {
-        // don't use the value type mechanism for optimised Java arrays get/set invocations
         if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
             Tree.Primary qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
-            if(qmePrimary != null 
-                    && gen.isJavaArray(qmePrimary.getTypeModel())
-                    && (primaryDeclaration.getName().equals("get")
-                        || primaryDeclaration.getName().equals("set"))) {
-                return false;
-            } else {
-                return ((Tree.QualifiedMemberOrTypeExpression) primary).getMemberOperator() instanceof Tree.MemberOp
-                    && Decl.isValueTypeDecl(qmePrimary)
-                    && (CodegenUtil.isUnBoxed(qmePrimary) || gen.isJavaArray(qmePrimary.getTypeModel()));
-            }
+            return qmePrimary != null
+                && ((Tree.QualifiedMemberOrTypeExpression) primary).getMemberOperator() instanceof Tree.MemberOp
+                && Decl.isValueTypeDecl(qmePrimary)
+                && (CodegenUtil.isUnBoxed(qmePrimary) || gen.isJavaArray(qmePrimary.getTypeModel()))
+                // don't use the value type mechanism for optimised Java arrays get/set invocations
+                && !isJavaArrayGetSet(gen, primaryDeclaration, qmePrimary);
         } else {
             return false;
         }
+    }
+
+    private static boolean isJavaArrayGetSet(AbstractTransformer gen, Declaration primaryDeclaration,
+            Tree.Primary qmePrimary) {
+        String name = primaryDeclaration.getName();
+        return gen.isJavaArray(qmePrimary.getTypeModel())
+            && (name.equals("get") || name.equals("set"));
     }
     
     protected final AbstractTransformer gen;
@@ -128,7 +130,8 @@ abstract class Invocation {
             this.qmePrimary = null;
         }
         this.onValueType = onValueType(gen, primary, primaryDeclaration)
-                && (!(primary instanceof Tree.QualifiedMemberExpression) || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp));
+                && (!(primary instanceof Tree.QualifiedMemberExpression) 
+                        || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp));
     }
     
     public String toString() {
@@ -251,7 +254,7 @@ abstract class Invocation {
         JCExpression actualPrimExpr;
         if (getPrimary() instanceof Tree.QualifiedTypeExpression
                 && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression
-                && !Decl.isConstructor(getPrimaryDeclaration())) {
+                && !getPrimaryDeclaration().isConstructor()) {
             actualPrimExpr = gen.naming.makeQualifiedThis(primaryExpr);
         } else {
             actualPrimExpr = primaryExpr;
@@ -280,7 +283,7 @@ abstract class Invocation {
                 // we must be invoking a member imported from an object
                 // in which case the qualifer is needed.
             }
-            if (Decl.isConstructor(declaration)) {
+            if (declaration.isConstructor()) {
                 selector = null;
             }
         } else {
@@ -288,7 +291,7 @@ abstract class Invocation {
             if (getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
                 Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
-                if (Decl.isConstructor(declaration)) {
+                if (declaration.isConstructor()) {
                     Class constructedClass = ModelUtil.getConstructedClass(declaration);
                     if (constructedClass.isInterfaceMember()) {
                         if (Strategy.generateInstantiator(declaration)) {
@@ -313,7 +316,7 @@ abstract class Invocation {
             } else if (getPrimary() instanceof Tree.BaseMemberOrTypeExpression) {
                 Tree.BaseMemberOrTypeExpression type = (Tree.BaseMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
-                if (Decl.isConstructor(declaration)) {
+                if (declaration.isConstructor()) {
                     selector = null;
                 }
             }
@@ -408,25 +411,27 @@ abstract class Invocation {
 
     protected Constructor getConstructorFromPrimary(
             Declaration primaryDeclaration) {
-        if (Decl.isConstructor(primaryDeclaration)) {
-            primaryDeclaration = ModelUtil.getConstructor(primaryDeclaration);
+        if (primaryDeclaration==null) {
+            return null;
         }
-        if (primaryDeclaration instanceof Constructor) {
-            return (Constructor)primaryDeclaration;
-        } else if (primaryDeclaration instanceof ClassAlias) {
+        else if (primaryDeclaration.isConstructor()) {
+            return ModelUtil.getConstructor(primaryDeclaration);
+        }
+        else if (primaryDeclaration instanceof ClassAlias) {
             TypeDeclaration aliasCtor = ((ClassAlias) primaryDeclaration).getConstructor();
             while (aliasCtor instanceof ClassAlias) {
                 aliasCtor = ((ClassAlias) aliasCtor).getConstructor();
             }
             if (aliasCtor instanceof Constructor) {
-                return (Constructor)aliasCtor;
+                return (Constructor) aliasCtor;
             } else {
                 return null;
             }
-        } else if (primaryDeclaration instanceof Class
-                && ((Class)primaryDeclaration).getDefaultConstructor() != null) {
-            return ((Class)primaryDeclaration).getDefaultConstructor();
-        } else {
+        }
+        else if (primaryDeclaration instanceof Class) {
+            return ((Class) primaryDeclaration).getDefaultConstructor();
+        }
+        else {
             return null;
         }
     }
@@ -1557,11 +1562,11 @@ class NamedArgumentInvocation extends Invocation {
             }
             break;
         case OUTER:
-            if(getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration()))
+            if(getQmePrimary() != null && !getPrimaryDeclaration().isConstructor())
                 thisExpr = callVarName.makeIdent();
             break;
         case OUTER_COMPANION:
-            if (getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration())) {
+            if (getQmePrimary() != null && !getPrimaryDeclaration().isConstructor()) {
                 thisExpr = callVarName.makeIdent();
             }
             break;

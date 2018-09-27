@@ -860,7 +860,7 @@ public class TypeUtils {
                             }
                         } else if (p instanceof TypeAlias || p instanceof Setter) {
                             sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
-                        } else if (p instanceof Constructor || ModelUtil.isConstructor(p)) {
+                        } else if (p instanceof Constructor || p.isConstructor()) {
                             sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
                         } else { //It's a value
                             TypeDeclaration td = ((TypedDeclaration)p).getTypeDeclaration();
@@ -1042,7 +1042,7 @@ public class TypeUtils {
                 final TypeDeclaration std = st.getDeclaration(); //teeheehee
                 if (!first)gen.out(",");
                 first=false;
-                if (ModelUtil.isConstructor(std)) {
+                if (std.isConstructor()) {
                     if (std.isAnonymous()) {
                         //Value constructor
                         gen.out(gen.getNames().name(d), ".", gen.getNames().valueConstructorName(std));

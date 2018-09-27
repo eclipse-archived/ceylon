@@ -277,7 +277,7 @@ public abstract class BoxingVisitor extends Visitor {
         if (primary instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) primary;
-            if (Decl.isConstructor(mte.getDeclaration())) {
+            if (mte.getDeclaration().isConstructor()) {
                 Constructor ctor = ModelUtil.getConstructor(mte.getDeclaration());
                 if (Decl.isJavaObjectArrayWith(ctor)) {
                     CodegenUtil.markTypeErased(that);

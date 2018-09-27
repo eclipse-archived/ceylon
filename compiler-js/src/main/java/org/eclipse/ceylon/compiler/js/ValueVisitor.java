@@ -72,7 +72,7 @@ public class ValueVisitor extends Visitor {
                         //list does not capture a parameter
                         ((FunctionOrValue) d).setJsCaptured(true);
                     }
-                } else if (d instanceof Value && !ModelUtil.isConstructor(d) && !d.isToplevel()) {
+                } else if (d instanceof Value && !d.isConstructor() && !d.isToplevel()) {
                     ((Value) d).setJsCaptured(true);
                 }
             }

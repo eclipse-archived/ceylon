@@ -16,7 +16,6 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memb
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
@@ -152,7 +151,7 @@ public class ImportVisitor extends Visitor {
         for (Declaration dec: importedType.getMembers()) {
             if (dec.isShared() && 
                     (isStaticNonGeneric(dec, importedType) || 
-                            isConstructor(dec)) && 
+                            dec.isConstructor()) && 
                     isResolvable(dec) &&
                     !ignoredMembers.contains(dec.getName())) {
                 addWildcardImport(til, dec, importedType);
@@ -490,7 +489,7 @@ public class ImportVisitor extends Visitor {
                                 name + "' belongs to the generic type '" + 
                                 td.getName() + "'");
                     }
-                    else if (isConstructor(m)) {
+                    else if (m.isConstructor()) {
                         member.addError("illegal static import: '" + 
                                 td.getName() + "' is not a toplevel class");
                     }

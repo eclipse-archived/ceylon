@@ -89,7 +89,7 @@ class Strategy {
         if (decl.isParameter() && decl.getContainer() instanceof Declaration) {
             decl = (Declaration) decl.getContainer();
         } 
-        if (Decl.isConstructor(decl)) {
+        if (decl.isConstructor()) {
             decl = ModelUtil.getConstructedClass(decl);
         }
         
@@ -132,7 +132,7 @@ class Strategy {
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
-            && !Decl.isConstructor(decl)
+            && !decl.isConstructor()
             && !decl.isParameter()
             && !decl.isInterfaceMember()
             && !decl.isToplevel()
@@ -264,7 +264,7 @@ class Strategy {
                             && model.isMember()
                             && cls.isShared()
                             && !cls.isAnonymous());
-        } else if (Decl.isConstructor(model)) {
+        } else if (model.isConstructor()) {
             Constructor ctor = ModelUtil.getConstructor(model);
             Class cls = ModelUtil.getConstructedClass(ctor);
             return cls.isMember()
@@ -489,10 +489,10 @@ class Strategy {
     }
     
     private static List<TypeParameter> getEffectiveTypeParameters(Declaration original, Declaration decl) {
-        if (Decl.isConstructor(original)) {
+        if (original.isConstructor()) {
             original = ModelUtil.getConstructedClass(original);
         }
-        if (Decl.isConstructor(decl)) {
+        if (decl.isConstructor()) {
             decl = ModelUtil.getConstructedClass(decl);
         }
         Scope container = decl.getContainer();

@@ -15,7 +15,6 @@ import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printCollectedTypeAr
 import static org.eclipse.ceylon.compiler.js.util.TypeUtils.printTypeArguments;
 import static org.eclipse.ceylon.compiler.js.util.TypeUtils.typeNameOrList;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingDeclaration;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class MetamodelHelper {
             final GenerateJsVisitor gen, boolean compilingLanguageModule) {
         final Package pkg = d.getUnit().getPackage();
         final Module mod = pkg.getModule();
-        final boolean isConstructor = isConstructor(d)
+        final boolean isConstructor = d.isConstructor()
                 || that instanceof Tree.NewLiteral;
         if (!(d instanceof TypeParameter)) {
             gen.out(compilingLanguageModule ? 
@@ -295,7 +294,7 @@ public class MetamodelHelper {
 
         JsIdentifierNames names = gen.getNames();
         if (that instanceof Tree.NewLiteral
-                || isConstructor(d)) {
+                || d.isConstructor()) {
 //            Type classType = 
 //                    ltype == null 
 //                        && container instanceof TypeDeclaration ? 

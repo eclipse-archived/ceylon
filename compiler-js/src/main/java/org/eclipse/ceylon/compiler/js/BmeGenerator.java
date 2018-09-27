@@ -68,7 +68,7 @@ public class BmeGenerator {
                return;
             }
             
-            if (ModelUtil.isConstructor(decl)) {
+            if (decl.isConstructor()) {
                 Constructor cd = getConstructor(decl);
                 Declaration cdc = (Declaration)cd.getContainer();
                 if (!gen.qualify(bme, cd)) {
@@ -269,7 +269,7 @@ public class BmeGenerator {
             }
             if (dynamic) {
                 gen.out(".", that.getIdentifier().getText());
-            } else if (ModelUtil.isConstructor(d)) {
+            } else if (d.isConstructor()) {
                 gen.out(gen.getNames().constructorSeparator(d),
                         gen.getNames().name(d));
             } else {
@@ -373,7 +373,7 @@ public class BmeGenerator {
             FunctionHelper.generateCallable(that, null, gen);
         } else if (that.getStaticMethodReference() && d!=null) {
             if (d instanceof Value 
-                    && ModelUtil.isConstructor(d)) {
+                    && d.isConstructor()) {
                 Constructor cnst = (Constructor)
                         ((Value)d).getTypeDeclaration();
                 String tse = cnst.getTypescriptEnum();

@@ -1517,7 +1517,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression typeCall = makeTypeLiteralCall(containerType, false, expr.getTypeModel());
             // make sure we cast it to ClassOrInterface
             String metatypeName;
-            if (Decl.isConstructor(declaration)) {
+            if (declaration.isConstructor()) {
                 Class constructedClass = ModelUtil.getConstructedClass(declaration);
                 Declaration container = getDeclarationContainer(constructedClass);
                 metatypeName = constructedClass.isToplevel() || !(container instanceof TypeDeclaration) ? 
@@ -1536,7 +1536,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression reifiedContainerExpr = makeReifiedTypeArgument(containerType);
             
             // make a raw call and cast
-            if (Decl.isConstructor(declaration)) {
+            if (declaration.isConstructor()) {
                 Type callableType = producedReference.getFullType();
                 /*JCExpression reifiedArgumentsExpr;
                 if (Decl.isEnumeratedConstructor(Decl.getConstructor(declaration))) {
@@ -1608,7 +1608,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Type exprType = expr.getTypeModel().resolveAliases();
         
-        return Decl.isConstructor(declaration) ?
+        return declaration.isConstructor() ?
                 makeConstructorDeclarationLiteral(exprType, declaration) :
                 makeMemberValueOrFunctionDeclarationLiteral(exprType, declaration, true);
     }
@@ -3697,7 +3697,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
                 && !(primary instanceof Tree.QualifiedTypeExpression)
-                && (!(primary instanceof Tree.QualifiedMemberExpression) || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp))
+                && (!(primary instanceof Tree.QualifiedMemberExpression) 
+                        || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp))
                 && Invocation.onValueType(this, primary, primaryDeclaration) 
                 && transformedPrimary != null) {
             result.add(new ExpressionAndType(transformedPrimary.expr,
@@ -4473,7 +4474,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
             }else{
-                if (Decl.isConstructor(classType.getDeclaration())) {
+                if (classType.getDeclaration().isConstructor()) {
                     classType = classType.getExtendedType();
                 }
                 JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
@@ -4686,7 +4687,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(builder.getNode());
             JCExpression expr = null;
             Scope outerDeclaration;
-            if (Decl.isConstructor(primaryDeclaration)) {
+            if (primaryDeclaration.isConstructor()) {
                 outerDeclaration= builder.getPrimaryDeclaration().getContainer().getContainer();
             } else {
                 outerDeclaration= builder.getPrimaryDeclaration().getContainer();
@@ -4992,7 +4993,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             ((TypedDeclaration)member),
                             expectedTypeIfCoerced).build();
                 }
-            } else if (Decl.isConstructor(member)) {
+            } else if (member.isConstructor()) {
                 Reference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
                         gen(), 
@@ -5330,7 +5331,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // only useful for the typechecker resolving
             
             Tree.Primary primary = expr.getPrimary();
-            if (Decl.isConstructor(exprDec)) {
+            if (exprDec.isConstructor()) {
 //                Constructor ctor = Decl.getConstructor(expr.getDeclaration());
                 if (primary instanceof Tree.BaseMemberExpression) {
                     // foo.member.Ctor => foo
@@ -5968,7 +5969,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression addThisOrObjectQualifierIfRequired(
             JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
             Declaration decl) {
-        boolean constructor = Decl.isConstructor(decl);
+        boolean constructor = decl.isConstructor();
         // find out the real target
         Declaration typeDecl = constructor ? ModelUtil.getConstructedClass(decl) : decl;
         Reference target = expr.getTarget();
@@ -8316,7 +8317,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             sb.append("I").append(decl.getName());
         } else if (decl instanceof TypeAlias) {
             sb.append("A").append(decl.getName());
-        } else if (Decl.isConstructor(decl)) {
+        } else if (decl.isConstructor()) {
             sb.append("c").append(decl.getName());
         } else if (decl instanceof Value) {
             sb.append("V").append(decl.getName());

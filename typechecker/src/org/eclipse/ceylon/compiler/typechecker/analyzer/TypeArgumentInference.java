@@ -22,7 +22,6 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeArgumentsAsMap;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
@@ -835,7 +834,7 @@ public class TypeArgumentInference {
     private static Type getDeclaringSupertype(
             Type qualifyingType,
             Declaration invoked) {
-        if (isConstructor(invoked)) {
+        if (invoked.isConstructor()) {
             Scope container = invoked.getContainer();
             if (container instanceof Declaration) {
                 invoked = (Declaration) container;

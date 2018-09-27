@@ -2900,7 +2900,7 @@ public class ModelUtil {
                 }
                 else if (dec instanceof Constructor
                         && nat instanceof FunctionOrValue
-                        && isConstructor(nat)) {
+                        && nat.isConstructor()) {
                     // In case of constructors we make sure we return the same
                     // type of declaration we were called with
                     nat = getConstructor(nat);
@@ -3243,29 +3243,14 @@ public class ModelUtil {
         return type;
     }
 
-    public static boolean isConstructor(Declaration member) {
-        if (member instanceof Constructor) {
-            return true;
-        }
-        else if (member instanceof FunctionOrValue) {
-            FunctionOrValue fov = (FunctionOrValue) member;
-            return fov.getTypeDeclaration() 
-                    instanceof Constructor;
-        }
-        else {
-            return false;
-        }
-    }
-    
     public static Constructor getConstructor(Declaration member) {
         if (member instanceof Constructor) {
             return (Constructor) member;
         }
         else if (member instanceof FunctionOrValue) {
             FunctionOrValue fov = (FunctionOrValue) member;
-            TypeDeclaration td = fov.getTypeDeclaration();
-            if (td instanceof Constructor) {
-                return (Constructor) td;                
+            if (fov.isConstructor()) {
+                return (Constructor) fov.getTypeDeclaration();                
             }
             else {
                 return null;
@@ -3277,14 +3262,12 @@ public class ModelUtil {
     }
     
     public static Class getConstructedClass(Declaration classOrCtor) {
-        if (classOrCtor instanceof FunctionOrValue &&
-                ((FunctionOrValue)classOrCtor).getTypeDeclaration() instanceof Constructor) {
-            classOrCtor = ((FunctionOrValue)classOrCtor).getTypeDeclaration();
-        }
-        if (classOrCtor instanceof Constructor) {
-            return (Class)classOrCtor.getContainer();
+        if (classOrCtor==null) {
+            return null;
+        } else if (classOrCtor.isConstructor()) {
+            return (Class) classOrCtor.getContainer();
         } else if (classOrCtor instanceof Class) {
-            return (Class)classOrCtor;
+            return (Class) classOrCtor;
         } else {
             return null;
         }

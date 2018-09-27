@@ -118,6 +118,10 @@ public abstract class Declaration
             flags&=(~DYNAMIC);
         }
     }
+    
+    public boolean isConstructor() {
+        return false;
+    }
 
     String toStringName() {
         String name = getName();

@@ -14,7 +14,6 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.mess
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
@@ -695,7 +694,7 @@ public class TypeHierarchyVisitor extends Visitor {
             for (Declaration member: declaration.getMembers()) {
                 if (!(member instanceof FunctionOrValue ||
                       member instanceof Class) || 
-                    isConstructor(member) ||
+                    member.isConstructor() ||
                     member.isStatic() ||
                     isAbstraction(member)) {
                     continue;
@@ -759,7 +758,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 for (Declaration d: std.getMembers()) {
                     if (d.isShared() 
                             && !d.isStatic() 
-                            && !isConstructor(d) 
+                            && !d.isConstructor() 
                             && !isOverloadedVersion(d) 
                             && isResolvable(d) 
                             && !errors.contains(d.getName())) {

@@ -145,7 +145,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         for (Declaration m : klass.getMembers()) {
             if (tool.shouldInclude(m)) {
-                if (ModelUtil.isConstructor(m)) {
+                if (m.isConstructor()) {
                     addTo(constructors, m);
                 } else if (m instanceof Value) {
                     addTo(attributes, (Value)m);

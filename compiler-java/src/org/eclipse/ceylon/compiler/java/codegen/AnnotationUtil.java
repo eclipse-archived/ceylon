@@ -306,7 +306,7 @@ public class AnnotationUtil {
             interopTargets = null;
         }
         if (useSite instanceof Declaration) {
-            if (ModelUtil.isConstructor((Declaration)useSite)) {
+            if (((Declaration)useSite).isConstructor()) {
                 if (useSite instanceof Functional) {
                     return target == OutputElement.CONSTRUCTOR;
                 } else if (useSite instanceof Value) {

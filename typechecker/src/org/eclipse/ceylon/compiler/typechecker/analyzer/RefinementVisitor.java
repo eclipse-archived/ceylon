@@ -32,7 +32,6 @@ import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isObject;
@@ -167,7 +166,7 @@ public class RefinementVisitor extends Visitor {
             boolean member = 
                     dec.isClassOrInterfaceMember() &&
                     dec.isShared() &&
-                    !isConstructor(dec) &&
+                    !dec.isConstructor() &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!            
             if (member) {
                 checkMember(that, dec);
@@ -1687,7 +1686,7 @@ public class RefinementVisitor extends Visitor {
         }
         
         if (isOverloadedVersion(dec)) {
-            if (isConstructor(dec)) {
+            if (dec.isConstructor()) {
                 checkOverloadedAnnotation(that, dec);
                 checkOverloadedParameters(that, dec);
             }
@@ -1727,7 +1726,7 @@ public class RefinementVisitor extends Visitor {
             }
         }
         
-        if (isConstructor(dec) && dec.isShared()) {
+        if (dec.isConstructor() && dec.isShared()) {
             Scope container = dec.getContainer();
             if (container instanceof Class) {
                 Class clazz = (Class) container;
@@ -1737,7 +1736,7 @@ public class RefinementVisitor extends Visitor {
                             .getMember(name, null, false);
                 if (member!=null && 
                         member.isShared() &&
-                        !isConstructor(member)) {
+                        !member.isConstructor()) {
                     Declaration supertype = 
                             (Declaration) 
                                 member.getContainer();

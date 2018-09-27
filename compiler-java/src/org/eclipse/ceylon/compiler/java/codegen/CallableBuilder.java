@@ -345,7 +345,7 @@ public class CallableBuilder {
                 && !ModelUtil.getConstructedClass((Declaration)methodClassOrCtor).isToplevel()
                 && qmte.getPrimary() instanceof Tree.QualifiedTypeExpression
                 ;
-        boolean hasOuter = !(Decl.isConstructor((Declaration)methodClassOrCtor)
+        boolean hasOuter = !(((Declaration)methodClassOrCtor).isConstructor()
                 && gen.getNumParameterLists(typeModel) == 1);
         if (!hasOuter) {
             type = typeModel;
@@ -368,7 +368,7 @@ public class CallableBuilder {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
         boolean needsCast = false;
-        if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
+        if (((Declaration)methodClassOrCtor).isConstructor()) {
             Constructor ctor = ModelUtil.getConstructor((Declaration)methodClassOrCtor);
             Class cls = ModelUtil.getConstructedClass(ctor);
             if (Strategy.generateInstantiator(ctor)) {
@@ -414,7 +414,7 @@ public class CallableBuilder {
             callBuilder.argument(reifiedArgument.expression);
         }
         
-        if (Decl.isConstructor((Declaration)methodClassOrCtor)
+        if (((Declaration)methodClassOrCtor).isConstructor()
                 && !Decl.isDefaultConstructor(ModelUtil.getConstructor((Declaration)methodClassOrCtor))
                 && !Decl.isJavaArrayWith((Constructor)methodClassOrCtor)) {
             // invoke the param class ctor
@@ -430,7 +430,7 @@ public class CallableBuilder {
         }
         // Need to worry about boxing for Function and FunctionalParameter 
         if (methodClassOrCtor instanceof TypedDeclaration
-                && !Decl.isConstructor((Declaration)methodClassOrCtor)) {
+                && !((Declaration)methodClassOrCtor).isConstructor()) {
             // use the method return type since the function is actually applied
             Type returnType = gen.getReturnTypeOfCallable(type);
             innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 

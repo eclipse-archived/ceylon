@@ -19,7 +19,6 @@ import static org.eclipse.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.mess
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static org.eclipse.ceylon.compiler.typechecker.tree.TreeUtil.isSelfReference;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
-import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static org.eclipse.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 
 import java.util.ArrayList;
@@ -334,7 +333,7 @@ public class SpecificationVisitor extends Visitor {
             else if (parameter!=null) {
                 Declaration paramDec =
                         parameter.getDeclaration();
-                if (isConstructor(paramDec) 
+                if (paramDec.isConstructor() 
                         && !declaration.isStatic() 
                         && paramDec.getContainer()
                             .equals(declaration.getContainer())) {
@@ -409,7 +408,7 @@ public class SpecificationVisitor extends Visitor {
         return declarationSection 
             || declaration.isToplevel()
             || !inDelegatedContructor 
-                && isConstructor(declaration);
+                && declaration.isConstructor();
     }
     
     @Override

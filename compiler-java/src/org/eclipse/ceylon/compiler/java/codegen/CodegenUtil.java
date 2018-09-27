@@ -448,7 +448,7 @@ public class CodegenUtil {
                     if (primary instanceof Tree.ExtendedTypeExpression) {
                         Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)primary;
                         // are we delegating to a constructor (not a supertype) of the same class (this class)?
-                        if (Decl.isConstructor(ete.getDeclaration())
+                        if (ete.getDeclaration().isConstructor()
                                 && ModelUtil.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
                             return true;
                         }

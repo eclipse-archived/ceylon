@@ -5421,7 +5421,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
             return ModelUtil.isCeylonDeclaration((TypeDeclaration) declaration);
-        }else if(Decl.isConstructor(declaration)){
+        }else if(declaration.isConstructor()){
             // Java constructors don't support reified type arguments
             return ModelUtil.isCeylonDeclaration(ModelUtil.getConstructor(declaration));
         }else if(declaration instanceof Function){

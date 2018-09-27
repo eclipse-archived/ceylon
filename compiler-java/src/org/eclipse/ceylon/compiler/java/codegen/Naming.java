@@ -19,6 +19,8 @@
  */
 package org.eclipse.ceylon.compiler.java.codegen;
 
+import static org.eclipse.ceylon.compiler.java.codegen.CodegenUtil.getTopmostRefinedDeclaration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,10 +38,10 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
 import org.eclipse.ceylon.langtools.tools.javac.code.Type;
 import org.eclipse.ceylon.langtools.tools.javac.code.TypeTag;
-import org.eclipse.ceylon.langtools.tools.javac.tree.TreeMaker;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
 import org.eclipse.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import org.eclipse.ceylon.langtools.tools.javac.tree.TreeMaker;
 import org.eclipse.ceylon.langtools.tools.javac.util.Context;
 import org.eclipse.ceylon.langtools.tools.javac.util.Name;
 import org.eclipse.ceylon.langtools.tools.javac.util.Names;
@@ -332,7 +334,7 @@ public class Naming extends NamingBase implements LocalId {
         }
         private boolean isCeylonTypeDecl() {
             return decl instanceof TypeDeclaration 
-                    && ModelUtil.isCeylonDeclaration((TypeDeclaration)decl);
+                && ModelUtil.isCeylonDeclaration((TypeDeclaration)decl);
         }
         final void selectAppended() {
             String name = sb.toString();
@@ -675,25 +677,21 @@ public class Naming extends NamingBase implements LocalId {
 
 
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
-        if (Decl.isConstructor(decl)) {
-            Constructor constructor = ModelUtil.getConstructor(decl);
-            if (Decl.isDefaultConstructor(constructor)) {
-                return compoundName(ModelUtil.getConstructedClass(constructor).getName(), param.getName());
-            } else {
-                return compoundName(ModelUtil.getConstructedClass(constructor).getName(), decl.getName(), param.getName());
-            }
-        } else if (decl instanceof Function) {
-            if(decl.isAnonymous())
-                return prefixName(Prefix.$default$, param.getName());
-            return compoundName(((Function) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
-        } else if (decl instanceof ClassOrInterface ) {
-            if (decl.isToplevel() || ModelUtil.isLocalNotInitializer(decl)) {
-                return prefixName(Prefix.$default$, param.getName());
-            } else {
-                return prefixName(Prefix.$default$, decl.getName() , param.getName());
-            }
-        } else if (decl == null) {
+        if (decl == null) {
             return prefixName(Prefix.$default$, param.getName());
+        } else if (decl.isConstructor()) {
+            Constructor constructor = ModelUtil.getConstructor(decl);
+            return Decl.isDefaultConstructor(constructor) ? 
+                    compoundName(ModelUtil.getConstructedClass(constructor).getName(), param.getName()) : 
+                    compoundName(ModelUtil.getConstructedClass(constructor).getName(), decl.getName(), param.getName());
+        } else if (decl instanceof Function) {
+            return decl.isAnonymous() ? 
+                    prefixName(Prefix.$default$, param.getName()) : 
+                    compoundName(((Function) decl).getName(), getTopmostRefinedDeclaration(param.getModel()).getName());
+        } else if (decl instanceof ClassOrInterface ) {
+            return decl.isToplevel() || ModelUtil.isLocalNotInitializer(decl) ? 
+                    prefixName(Prefix.$default$, param.getName()) : 
+                    prefixName(Prefix.$default$, decl.getName() , param.getName());
         } else {
             // Should never happen (for now at least)
             return null;

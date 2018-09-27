@@ -77,7 +77,7 @@ public class MethodImpl<Container, Type, Arguments extends Sequential<? extends 
         org.eclipse.ceylon.model.typechecker.model.Functional method = (org.eclipse.ceylon.model.typechecker.model.Functional)appliedFunction.getDeclaration();
         List<Parameter> parameters = method.getFirstParameterList().getParameters();
         List<org.eclipse.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
-        this.parameterTypes = ModelUtil.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        this.parameterTypes = declaration.declaration.isConstructor()  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
 
     @Override
