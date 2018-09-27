@@ -507,8 +507,10 @@ public class Metamodel {
         // if we use the language module loader it will be a LocalModuleLoader which doesn't know about the
         // module repos specified on the command-line.
         // no loading required for these
-        if(JDKUtils.isJDKModule(declaration.getNameAsString())
-                || JDKUtils.isOracleJDKModule(declaration.getNameAsString()))
+        String name = declaration.getNameAsString();
+        if(JDKUtils.isJDKModule(name)
+                || JDKUtils.isOracleJDKModule(name)
+                || JDKUtils.isPreJava9ModuleNameOnJava9(name, declaration.getVersion()))
             return;
         try {
             // Stef: this can fail, in particular is the TCCCL is that of a bootstrap module CL since we can't override those
@@ -516,7 +518,7 @@ public class Metamodel {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             if(contextClassLoader instanceof CeylonModuleClassLoader) {
                 // this will return null for bootstrap modules
-                String modname = ModuleUtil.makeModuleName(namespace, declaration.getNameAsString(), null);
+                String modname = ModuleUtil.makeModuleName(namespace, name, null);
                 CeylonModuleClassLoader newModuleClassLoader = ((CeylonModuleClassLoader) contextClassLoader).loadModule(modname, declaration.getVersion());
             
                 // if we can force it loaded, let's do
@@ -536,7 +538,7 @@ public class Metamodel {
                                 throw Metamodel.newModelError("Interrupted");
                             }
                             if(tries-- < 0)
-                                throw Metamodel.newModelError("JBoss modules failed to make module available: "+declaration.getNameAsString() + "/" + declaration.getVersion());
+                                throw Metamodel.newModelError("JBoss modules failed to make module available: "+name + "/" + declaration.getVersion());
                         }
                     }
                 }

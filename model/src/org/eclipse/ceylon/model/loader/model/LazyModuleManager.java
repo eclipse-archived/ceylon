@@ -41,11 +41,19 @@ public abstract class LazyModuleManager extends ModuleManager {
         if(version != null
                 // We can't use the model loader at this point since it has not been initialised yet,
                 // and it doesn't matter which JdkProvider we use as JDK modules still need that fix
-                && (JDKUtils.isJDKModule(nameAsString) || JDKUtils.isOracleJDKModule(nameAsString))){
+                && (JDKUtils.isJDKModule(nameAsString) || JDKUtils.isOracleJDKModule(nameAsString)
+                        || JDKUtils.isPreJava9ModuleNameOnJava9(nameAsString, version))){
             if(JDKUtils.jdk.providesVersion(version)){
                 module.setAvailable(true);
                 module.setJava(true);
                 module.setNativeBackends(Backend.Java.asSet());
+                if(JDKUtils.isPreJava9ModuleNameOnJava9(nameAsString, version)) {
+                    String newName = JDKUtils.getJava9ModuleName(nameAsString, version);
+                    if(newName != null) {
+                        module.setName(splitModuleName(newName));
+                        module.setVersion(JDKUtils.jdk.version);
+                    }
+                }
             }
         }
     }

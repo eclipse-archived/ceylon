@@ -349,4 +349,18 @@ public class JDKUtils {
         }
         return name;
     }
+
+    public static boolean isPreJava9ModuleNameOnJava9(String name, String version) {
+        return jdk.providesVersion(JDK.JDK9.version)
+                && isPreJava9ModuleName(name, version);
+    }
+    
+    public static boolean isPreJava9ModuleName(String name, String version) {
+        // we can't check if it's a JDK module name because that'd only work for JDK<9, since
+        // it's not a Java 9 module name, so when running on Java 9 it would not match
+        if(JDK.JDK9.isLowerVersion(version)){
+            return getJava9ModuleNameFromEarlier(name) != null;
+        }
+        return false;
+    }
 }

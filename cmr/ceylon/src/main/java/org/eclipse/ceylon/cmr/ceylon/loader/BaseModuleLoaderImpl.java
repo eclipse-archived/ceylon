@@ -38,6 +38,7 @@ import org.eclipse.ceylon.common.ModuleUtil;
 import org.eclipse.ceylon.common.Versions;
 import org.eclipse.ceylon.model.cmr.ArtifactResult;
 import org.eclipse.ceylon.model.cmr.Exclusion;
+import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.eclipse.ceylon.model.cmr.ModuleScope;
 import org.eclipse.ceylon.model.loader.JdkProvider;
 
@@ -177,7 +178,8 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 }
             }
             // skip JDK modules
-            if(jdkProvider.isJDKModule(name))
+            if(jdkProvider.isJDKModule(name)
+                    || JDKUtils.isPreJava9ModuleNameOnJava9(name, version))
                 return true; // consider them loaded
             ModuleGraph.Module loadedModule = moduleGraph.findModule(name);
             if(loadedModule != null){

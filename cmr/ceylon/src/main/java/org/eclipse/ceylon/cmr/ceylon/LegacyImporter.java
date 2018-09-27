@@ -510,6 +510,8 @@ public class LegacyImporter {
                 feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_VERSION, dep);
             
             Usage usage = null;
+            if(JDKUtils.isPreJava9ModuleNameOnJava9(name, version))
+                name = JDKUtils.getJava9ModuleName(name, version);
             if (jdkProvider.isJDKModule(name)) {
                 usage = scanner.removeMatchingJdkClasses(name);
             } else {
