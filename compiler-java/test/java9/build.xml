@@ -1,4 +1,4 @@
-<project name="Java 8 jar" default="jar" basedir=".">
+<project name="Java 9 jar" default="jar" basedir=".">
     
     <property name="classes.dir" value="classes"/>
     <property name="sources.dir" value="src"/>
@@ -14,7 +14,7 @@
 
     <target name="jar" depends="classes">
         <mkdir dir="${mlib.dir}"/>
-        <exec executable="jar">
+        <exec executable="${java.home}/bin/jar">
             <arg value="--create"/>
             <arg value="--file"/>
             <arg value="${jar.file}"/>

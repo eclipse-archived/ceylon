@@ -6,4 +6,4 @@ Just build the jar (using Java 9):
 
 And install it:
 
-    $ ceylon import-jar --descriptor module.properties com.ceylon.java9/123 mbli/java9.jar
+    $ ceylon import-jar --descriptor module.properties com.ceylon.java9/123 mlib/java9.jar
