@@ -24,5 +24,4 @@ native("jvm")
 suppressWarnings("importsOtherJdk", "suppressesNothing")
 module org.eclipse.ceylon.compiler.java.test.annotations "1.2.3" {
     import java.base "7";
-    import javax.xml "7";
 }

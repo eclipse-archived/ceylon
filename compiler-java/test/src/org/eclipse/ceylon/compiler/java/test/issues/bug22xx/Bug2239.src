@@ -12,9 +12,10 @@ class Bug2239 implements .org.eclipse.ceylon.compiler.java.runtime.model.Reified
     @.org.eclipse.ceylon.common.NonNull
     private .java.lang.String em;
     
-    @.javax.annotation.PostConstruct
+    @.java.lang.SuppressWarnings("a")
     @.ceylon.language.LateAnnotation$annotation$
     @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.lang::String")
     private final .java.lang.String getEm$priv$() {
         if (this.em != null) {
             return this.em;
@@ -23,10 +24,11 @@ class Bug2239 implements .org.eclipse.ceylon.compiler.java.runtime.model.Reified
         }
     }
     
-    @.javax.annotation.PostConstruct
+    @.java.lang.SuppressWarnings("a")
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     private final void setEm$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("em")
     @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.lang::String")
     final .java.lang.String em) {
         if (this.em == null) {
             this.em = em;

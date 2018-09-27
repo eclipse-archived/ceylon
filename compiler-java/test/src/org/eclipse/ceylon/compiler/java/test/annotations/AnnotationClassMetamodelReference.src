@@ -359,7 +359,7 @@ public final class obj_ implements .java.io.Serializable, .org.eclipse.ceylon.co
         @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:org.eclipse.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference_callsite.PX"),
         @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.3.4-SNAPSHOT:ceylon.language:meta"),
         @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.3.4-SNAPSHOT:ceylon.language:"),
-        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::7:javax.xml:.org.w3c.dom"),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::7:java.base:.java.lang"),
         @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.3.4-SNAPSHOT:ceylon.language"),
         @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:org.eclipse.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference")})
 @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotations$({

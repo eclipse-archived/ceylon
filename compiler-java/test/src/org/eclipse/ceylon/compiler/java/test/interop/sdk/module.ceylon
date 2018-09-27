@@ -23,7 +23,6 @@ module org.eclipse.ceylon.compiler.java.test.interop.sdk "1" {
     import javax.xml "7";
     import java.desktop "7";
     import oracle.jdk.httpserver "7";
-    import javax.annotation "7";
     import java.management "7";
     import ceylon.interop.java "1.3.4-SNAPSHOT";
     import javax.inject "1";

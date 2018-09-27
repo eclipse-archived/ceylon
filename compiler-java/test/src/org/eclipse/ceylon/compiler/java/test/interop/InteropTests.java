@@ -510,6 +510,7 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testAnnotationInteropQualifiedEnum(){
+        Assume.assumeFalse("Runs on <JDK9", JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK9.version));
         compareWithJavaSource("AnnotationInteropQualifiedEnum");
     }
     
@@ -662,7 +663,7 @@ public class InteropTests extends CompilerTests {
         Assume.assumeTrue("Runs on JDK9", JDKUtils.jdk == JDKUtils.JDK.JDK9);
         assertErrors(new String[]{"java9/user/runError.ceylon", "java9/user/package.ceylon"}, 
                 Arrays.asList("-out", destDir, "-rep", "test/java9/modules"), null, 
-                new CompilerError(1, "imported package is not shared: 'com.ceylon.java9.internal'"));
+                new CompilerError(1, "imported package is not visible: package 'com.ceylon.java9.internal' is not shared by module 'com.ceylon.java9'"));
 
         ErrorCollector c = new ErrorCollector();
         assertCompilesOk(c, getCompilerTask(Arrays.asList("-out", destDir, "-rep", "test/java9/modules"), c,
@@ -687,6 +688,7 @@ public class InteropTests extends CompilerTests {
                 new ModuleWithArtifact("org.eclipse.ceylon.compiler.java.test.interop.java9.user", "1"),
                 new ModuleWithArtifact("com.ceylon.java9", "123", "test/java9/modules", "jar"));
 
+        // FIXME: this only works with a distrib build with module descriptors
         assertEquals(0, runInJava9(new String[]{destDir, "test/java9/modules", "../dist/dist/repo"}, 
                 new ModuleSpec(null, "org.eclipse.ceylon.compiler.java.test.interop.java9.user", "1"), 
                 Collections.<String>emptyList()));
@@ -935,7 +937,11 @@ public class InteropTests extends CompilerTests {
         compile("packageannotations/AnnotateJavaPackage.ceylon", "packageannotations/package.ceylon");
         synchronized(RUN_LOCK){
             String main = "org.eclipse.ceylon.compiler.java.test.interop.packageannotations.AnnotateJavaPackage";
-            try (URLClassLoader classLoader = getClassLoader(main, new ModuleWithArtifact("org.eclipse.ceylon.compiler.java.test.interop.packageannotations", "1"))) {
+            try (URLClassLoader classLoader = getClassLoader(main, 
+                    new ModuleWithArtifact("org.eclipse.ceylon.compiler.java.test.interop.packageannotations", "1"),
+                    new ModuleWithArtifact("javax.xml.bind:jaxb-api", "2.2.12", 
+                            // we can do this because it will be resolved by the module descriptor
+                            new File(System.getProperty("user.home")+"/.m2/repository/javax/xml/bind/jaxb-api/2.2.12/jaxb-api-2.2.12.jar")))) {
                 java.lang.Class<?> c = java.lang.Class.forName("org.eclipse.ceylon.compiler.java.test.interop.packageannotations.IntegerAdaptor", false, classLoader);
                 java.lang.Package p = c.getPackage();
                 java.lang.Class ac = java.lang.Class.forName("javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters", false, classLoader);

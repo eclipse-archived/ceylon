@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import javax.annotation { generated }
+import java.lang { suppressWarnings }
 
-shared void bug2037(p1, generated({"by me"}) String p2) {
-    generated({"by me"}) String p1;
+shared void bug2037(p1, suppressWarnings({"by me"}) String p2) {
+    suppressWarnings({"by me"}) String p1;
 }
 
-shared class Bug2037(p1, generated({"by me"}) String p2) {
-    generated({"by me"}) String p1;
-    equals(generated({"by me"}) Object other) => false;
+shared class Bug2037(p1, suppressWarnings({"by me"}) String p2) {
+    suppressWarnings({"by me"}) String p1;
+    equals(suppressWarnings({"by me"}) Object other) => false;
 }

@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import javax.annotation { generated__FIELD }
+import java.lang { gen = suppressWarnings__FIELD }
 
 shared class Bug2252(){
     suppressWarnings("unusedDeclaration")
-    generated__FIELD({"a"})
+    gen({"a"})
     Integer? id = null;
 }

@@ -264,9 +264,10 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             // Add a warning if we're using a lower JDK than the one we're running on
             // FIXME: this does not work for JDK9 or Android
             if(JDKUtils.jdk.isLowerVersion(version)){
-                definition.addUsageWarning(Warning.importsOtherJdk, "You import JDK7, which is provided by the JDK8 you are running on, but"+
-                        " we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on"+
-                        " JDK8 classes or methods.", Backend.Java);
+                definition.addUsageWarning(Warning.importsOtherJdk, "You import an earlier JDK ("+version+"), which is provided by the current JDK ("+
+                        JDKUtils.jdk.version+") you are running on, but"+
+                        " we cannot check that you are not using any of the current JDK-specific classes or methods. Upgrade your import to the current JDK if you depend on"+
+                        " the current JDK classes or methods.", Backend.Java);
             }
         }
     }

@@ -740,6 +740,12 @@ public abstract class CompilerTests {
             this.version = version;
             this.file = getModuleArchive(module,version, repo, extension);
         }
+
+        public ModuleWithArtifact(String module, String version, File file) {
+            this.module = module;
+            this.version = version;
+            this.file = file;
+        }
     }
     
     public static ArtifactResult makeArtifactResult(final File file) {
@@ -1201,7 +1207,9 @@ public abstract class CompilerTests {
         if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
             pb.environment().put("JAVA_OPTS", "--add-exports java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
                     +" --add-exports java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
-                    +" --add-exports java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
+                    +" --add-exports java.xml/com.sun.xml.internal.stream=ALL-UNNAMED"
+                    +" --add-exports java.base/jdk.internal.reflect=ALL-UNNAMED"
+                    +" -Djboss.modules.system.pkgs=jdk.internal.reflect");
         }
         Process p = pb.start();
         return p.waitFor();
@@ -1215,15 +1223,17 @@ public abstract class CompilerTests {
             jigsawTool.setOut(mlib);
             jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
             jigsawTool.setModules(Arrays.asList(module.getName()));
+            jigsawTool.initialize(null);
             jigsawTool.run();
 
             ArrayList<String> a = new ArrayList<String>();
             String java = System.getProperty("java.home")+"/bin/java";
             a.add(java);
-            a.add("-modulepath");
+            a.add("--module-path");
             a.add(mlib.getAbsolutePath());
             a.add("-m");
-            a.add(Module.LANGUAGE_MODULE_NAME);
+            // FIXME: if we build the dist with module descriptors we can remove the class file
+            a.add("org.eclipse.ceylon.java.main/org.eclipse.ceylon.compiler.java.runtime.Main2");
             a.add(module.toString());
             a.addAll(moduleArgs);
             System.err.println(a);

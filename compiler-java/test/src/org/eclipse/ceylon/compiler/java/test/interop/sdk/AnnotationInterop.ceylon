@@ -1,13 +1,3 @@
-import javax.annotation{generated, 
-    postConstruct, 
-    preDestroy, 
-    resource,
-    Resource {
-        AuthenticationType{
-            application=\iAPPLICATION
-        }
-    }
-}
 import java.lang {
     JString=String,
     JBoolean=Boolean,
@@ -17,7 +7,8 @@ import java.lang {
             neww=\iNEW,
             blocked=\iBLOCKED
         }
-    }
+    },
+    generated = suppressWarnings
 }
 import java.util.jar {
     JarFile
@@ -77,11 +68,7 @@ javaAnnotationOnEveryTarget__TYPE
 javaAnnotationOnEveryTarget__CONSTRUCTOR
 class AnnotationInterop() {
     
-    resource{
-        name="tom";
-        authenticationType=application;
-        type=`class AnnotationInterop`;
-    }
+    generated({"a"})
     javaAnnotationDefaultTarget__FIELD
     javaAnnotationDefaultTarget__GETTER
     javaAnnotationDefaultTarget__SETTER
@@ -90,12 +77,12 @@ class AnnotationInterop() {
     javaAnnotationOnEveryTarget__SETTER
     shared variable String tom = "";
     
+    generated({"a"})
     javaAnnotationDefaultTarget
     javaAnnotationOnEveryTarget
-    postConstruct
     shared void afterConstrution() {}
     
-    preDestroy
+    generated({"a"})
     shared void beforeDestruction() {}
     
     shared void method(javaAnnotationDefaultTarget__PARAMETER

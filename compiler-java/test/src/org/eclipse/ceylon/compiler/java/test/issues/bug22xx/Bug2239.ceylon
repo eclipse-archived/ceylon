@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import javax.annotation { ... }
+import java.lang { ... }
 
 class Bug2239() {
-    postConstruct__SETTER
-    postConstruct__GETTER
+    suppressWarnings__SETTER({"a"})
+    suppressWarnings__GETTER({"a"})
     late String em;
 
     late String notCaptured;

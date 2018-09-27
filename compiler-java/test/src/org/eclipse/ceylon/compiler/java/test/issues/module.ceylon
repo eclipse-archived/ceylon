@@ -22,7 +22,6 @@ module org.eclipse.ceylon.compiler.java.test.issues "1" {
     import java.base "7";
     import java.desktop "7";
     import java.logging "7";
-    import javax.annotation "7";
     import ceylon.math "1.3.4-SNAPSHOT";
     import ceylon.io "1.3.4-SNAPSHOT";
 }

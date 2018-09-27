@@ -36,6 +36,7 @@ import org.eclipse.ceylon.compiler.java.tools.CeyloncTool;
 import org.eclipse.ceylon.javax.tools.JavaFileObject;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -440,16 +441,23 @@ public class MiscTests extends CompilerTests {
 
     @Test
     public void testOracleJDKModules(){
-        Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.base"));
-        Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.desktop"));
-        Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.httpserver"));
-        Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.tools.base")); // last one
+        if(JDKUtils.jdk.providesVersion("9")) {
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("jdk.javadoc"));
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("jdk.httpserver"));
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("jdk.zipfs")); // last one
+        } else {
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.base"));
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.desktop"));
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.httpserver"));
+            Assert.assertTrue(JDKUtils.isOracleJDKModule("oracle.jdk.tools.base")); // last one
+        }
         Assert.assertFalse(JDKUtils.isOracleJDKModule("oracle.jdk.stef"));
         Assert.assertFalse(JDKUtils.isOracleJDKModule("jdk.base"));
     }
 
     @Test
     public void testOracleJDKPackages(){
+        Assume.assumeFalse(JDKUtils.jdk.providesVersion("9"));
         Assert.assertTrue(JDKUtils.isOracleJDKAnyPackage("com.oracle.net"));
         Assert.assertTrue(JDKUtils.isOracleJDKAnyPackage("com.sun.awt"));
         Assert.assertTrue(JDKUtils.isOracleJDKAnyPackage("com.sun.imageio.plugins.bmp"));

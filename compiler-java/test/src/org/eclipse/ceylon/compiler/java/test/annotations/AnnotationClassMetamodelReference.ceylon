@@ -50,7 +50,7 @@ annotationClassMetamodelReference(`given X`)
 // annotationClassMetamodelReference(`package`)
 annotationClassMetamodelReference(`package ceylon.language.meta`)
 annotationClassMetamodelReference(`package ceylon.language`)
-annotationClassMetamodelReference(`package org.w3c.dom`)
+annotationClassMetamodelReference(`package java.lang`)
 // annotationClassMetamodelReference(`module`)
 annotationClassMetamodelReference(`module ceylon.language`)
 annotationClassMetamodelReferenceLiteral

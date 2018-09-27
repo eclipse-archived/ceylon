@@ -16,9 +16,6 @@ package org.eclipse.ceylon.compiler.java.test.annotations;
                         name = "java.base",
                         version = "7"),
                 @.org.eclipse.ceylon.compiler.java.metadata.Import(
-                        name = "javax.xml",
-                        version = "7"),
-                @.org.eclipse.ceylon.compiler.java.metadata.Import(
                         name = "ceylon.language",
                         version = "1.3.4-SNAPSHOT")},
         nativeBackends = {"jvm"})
@@ -36,5 +33,4 @@ final class $module_ {
     private $module_() {
     }
     public static final .java.lang.String java$base = null;
-    public static final .java.lang.String javax$xml = null;
 }

@@ -23,9 +23,7 @@ module org.eclipse.ceylon.compiler.java.test.interop "1" {
     import javax.xml "7";
     import java.desktop "7";
     import oracle.jdk.httpserver "7";
-    import javax.annotation "7";
     import java.management "7";
-//    import ceylon.interop.java "1.3.4";
     import javax.inject "1";
     import maven:"javax.validation:validation-api" "1.1.0.Final";
     import maven:"javax.ws.rs:javax.ws.rs-api" "2.0.1";

@@ -295,12 +295,12 @@ public class IssuesTests_2000_2499 extends CompilerTests {
 
     @Test
     public void testBug2136() {
-        if(JDKUtils.jdk == JDK.JDK8){
+        if(JDKUtils.jdk != JDK.JDK7){
             assertErrors("bug21xx/Bug2136",
-                    new CompilerError(Kind.WARNING, null, 22, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."),
-                    new CompilerError(Kind.WARNING, null, 23, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."),
-                    new CompilerError(Kind.WARNING, null, 24, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."),
-                    new CompilerError(Kind.WARNING, null, 25, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."),
+                    new CompilerError(Kind.WARNING, null, 22, "You import an earlier JDK (7), which is provided by the current JDK ("+JDKUtils.jdk.version+") you are running on, but we cannot check that you are not using any of the current JDK-specific classes or methods. Upgrade your import to the current JDK if you depend on the current JDK classes or methods."),
+                    new CompilerError(Kind.WARNING, null, 23, "You import an earlier JDK (7), which is provided by the current JDK ("+JDKUtils.jdk.version+") you are running on, but we cannot check that you are not using any of the current JDK-specific classes or methods. Upgrade your import to the current JDK if you depend on the current JDK classes or methods."),
+                    new CompilerError(Kind.WARNING, null, 24, "You import an earlier JDK (7), which is provided by the current JDK ("+JDKUtils.jdk.version+") you are running on, but we cannot check that you are not using any of the current JDK-specific classes or methods. Upgrade your import to the current JDK if you depend on the current JDK classes or methods."),
+//                    new CompilerError(Kind.WARNING, null, 25, "You import an earlier JDK (7), which is provided by the current JDK ("+JDKUtils.jdk.version+") you are running on, but we cannot check that you are not using any of the current JDK-specific classes or methods. Upgrade your import to the current JDK if you depend on the current JDK classes or methods."),
                     new CompilerError(Kind.WARNING, null, 20, "imported declaration is deprecated: 'StringBufferInputStream' is annotated 'deprecated' in 'java.base' '\"7\"'"),
                     new CompilerError(Kind.WARNING, null, 22, "type is deprecated: 'StringBufferInputStream' is annotated 'deprecated' in 'java.base' '\"7\"'"));
         }else{

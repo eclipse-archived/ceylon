@@ -1,6 +1,6 @@
 package org.eclipse.ceylon.compiler.java.test.interop.sdk;
 
-@.javax.annotation.Generated({
+@.java.lang.SuppressWarnings({
         "Some",
         "code generator name"})
 @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationPrimitives(
@@ -64,10 +64,7 @@ class AnnotationInterop implements .org.eclipse.ceylon.compiler.java.runtime.mod
     AnnotationInterop() {
         this.tom = "";
     }
-    @.javax.annotation.Resource(
-            name = "tom",
-            type = .org.eclipse.ceylon.compiler.java.test.interop.sdk.AnnotationInterop.class,
-            authenticationType = .javax.annotation.Resource.AuthenticationType.APPLICATION)
+    @.java.lang.SuppressWarnings("a")
     @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationDefaultTarget
     @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationOnEveryTarget
     private .java.lang.String tom;
@@ -86,14 +83,14 @@ class AnnotationInterop implements .org.eclipse.ceylon.compiler.java.runtime.mod
         this.tom = tom;
     }
     
+    @.java.lang.SuppressWarnings("a")
     @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationDefaultTarget
     @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationOnEveryTarget
-    @.javax.annotation.PostConstruct
     @.ceylon.language.SharedAnnotation$annotation$
     public final void afterConstrution() {
     }
     
-    @.javax.annotation.PreDestroy
+    @.java.lang.SuppressWarnings("a")
     @.ceylon.language.SharedAnnotation$annotation$
     public final void beforeDestruction() {
     }
@@ -201,11 +198,11 @@ class CPAnnoTest2 implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
         super();
     }
     
-    @.javax.annotation.Generated("by you")
+    @.java.lang.SuppressWarnings("by you")
     @.ceylon.language.SharedAnnotation$annotation$
     public CPAnnoTest2(@.org.eclipse.ceylon.compiler.java.metadata.Name("x")
     @.org.eclipse.ceylon.common.NonNull
-    @.javax.annotation.Generated("by me")
+    @.java.lang.SuppressWarnings("by me")
     final .java.lang.String x$param$) {
     }
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
@@ -227,7 +224,7 @@ class CPAnnoTest2 implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
     public CPAnnoTest2(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
     .org.eclipse.ceylon.compiler.java.test.interop.sdk.CPAnnoTest2.other_ $name$, @.org.eclipse.ceylon.compiler.java.metadata.Name("x")
     @.org.eclipse.ceylon.common.NonNull
-    @.javax.annotation.Generated("by me")
+    @.java.lang.SuppressWarnings("by me")
     final .java.lang.String x$param$) {
     }
     
@@ -248,7 +245,7 @@ final class bug2103_ {
     private bug2103_() {
     }
     
-    @.javax.annotation.Generated(.java.util.jar.JarFile.MANIFEST_NAME)
+    @.java.lang.SuppressWarnings(.java.util.jar.JarFile.MANIFEST_NAME)
     static void bug2103() {
     }
 }
