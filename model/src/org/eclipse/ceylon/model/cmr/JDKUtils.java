@@ -94,7 +94,6 @@ public class JDKUtils {
     private static Map<String,String> java8To9ModuleAliases = new HashMap<>();
     
     static{
-        java8To9ModuleAliases.put("javax.annotation", "java.annotation.common");
         java8To9ModuleAliases.put("java.auth", "java.security.sasl");
         java8To9ModuleAliases.put("java.auth.kerberos", "java.security.jgss");
         java8To9ModuleAliases.put("java.jdbc", "java.sql");
@@ -106,6 +105,7 @@ public class JDKUtils {
         java8To9ModuleAliases.put("java.tls", "java.base");
         // This is not true, but jdk.base is just gone, parts of which are in jdk.unsupported
         java8To9ModuleAliases.put("oracle.jdk.base", "jdk.unsupported");
+        java8To9ModuleAliases.put("oracle.jdk.httpserver", "jdk.httpserver");
     }
 
     private static class Tuple {
