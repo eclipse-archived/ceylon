@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.eclipse.ceylon.cmr.api.ArtifactContext;
 import org.eclipse.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import org.eclipse.ceylon.compiler.typechecker.context.PhasedUnits;
 import org.eclipse.ceylon.model.cmr.ArtifactResult;
@@ -95,8 +96,10 @@ public class PhasedUnitsModelLoader extends ReflectionModelLoader {
     @Override
     public void addModuleToClassPath(final Module module, ArtifactResult artifact) {
         // don't add the same module more than once
-        if(artifact == null || !modulesAddedToClassPath.add(module))
+        if(artifact == null || !modulesAddedToClassPath.add(module)
+        		|| "npm".equals(artifact.namespace())) {
             return;
+        }
         File file = artifact.artifact();
         // do not load classes from it if it's the language module, since it's already in our ClassLoader and
         // that would create multiple instances of the same class 

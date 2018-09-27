@@ -17,3 +17,4 @@ test/trace/org/eclipse/ceylon/compiler/java/test/trace/**/*.class
 test/trace/org/eclipse/ceylon/compiler/java/test/trace/*.class
 .ceylon/config.old
 hs_err_pid*
+node_modules/
