@@ -17,8 +17,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver-aether"/>
-	<classpathentry kind="src" path="/ceylon-module-resolver-javascript"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver-webdav"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/ceylon-module-resolver-aether"/>
+	<classpathentry exported="true" kind="src" path="/ceylon-module-resolver-javascript"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/ceylon-module-resolver-webdav"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
