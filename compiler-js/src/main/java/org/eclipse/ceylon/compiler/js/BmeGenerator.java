@@ -33,7 +33,6 @@ import org.eclipse.ceylon.model.typechecker.model.Declaration;
 import org.eclipse.ceylon.model.typechecker.model.Function;
 import org.eclipse.ceylon.model.typechecker.model.Functional;
 import org.eclipse.ceylon.model.typechecker.model.Generic;
-import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Module;
 import org.eclipse.ceylon.model.typechecker.model.Package;
 import org.eclipse.ceylon.model.typechecker.model.Parameter;
