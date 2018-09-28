@@ -18,6 +18,7 @@ import org.eclipse.ceylon.compiler.js.loader.MetamodelGenerator;
 import org.eclipse.ceylon.compiler.js.util.TypeUtils;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import org.eclipse.ceylon.model.typechecker.model.Class;
 import org.eclipse.ceylon.model.typechecker.model.Constructor;
 import org.eclipse.ceylon.model.typechecker.model.Declaration;
@@ -442,20 +443,23 @@ public class FunctionHelper {
             gen.out("};};return ", gen.getClAlias(), "f3$(0,", name, ");");
         }
         Type tupleFromParameterList() {
-            if (params.getParameters().isEmpty()) {
+            List<Parameter> parameters = params.getParameters();
+            if (parameters.isEmpty()) {
                 return n.getUnit().getEmptyType();
             }
-            List<Type> types = new ArrayList<>(params.getParameters().size());
+            List<Type> types = new ArrayList<>(parameters.size());
             int firstDefaulted=-1;
             int count = 0;
-            for (Tree.Parameter p : params.getParameters()) {
+            for (Tree.Parameter p : parameters) {
                 types.add(p.getParameterModel().getType());
                 if (p.getParameterModel().isDefaulted())firstDefaulted=count;
                 count++;
             }
+            org.eclipse.ceylon.model.typechecker.model.Parameter lastParam = 
+                    parameters.get(parameters.size()-1).getParameterModel();
             return n.getUnit().getTupleType(types,
-                    params.getParameters().get(params.getParameters().size()-1).getParameterModel().isSequenced(),
-                    params.getParameters().get(params.getParameters().size()-1).getParameterModel().isAtLeastOne(),
+                    lastParam.isSequenced(),
+                    lastParam.isAtLeastOne(),
                     firstDefaulted);
         }
     }
