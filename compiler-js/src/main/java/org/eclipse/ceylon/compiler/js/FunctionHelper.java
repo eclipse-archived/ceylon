@@ -527,30 +527,44 @@ public class FunctionHelper {
     static void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name,
             final GenerateJsVisitor gen) {
         final Declaration d = that.getDeclaration();
-        if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
-            //it's a static method ref
+        Tree.Primary primary = that.getPrimary();
+        if (primary instanceof Tree.BaseTypeExpression) {
+            //it's a static method or constructor ref
+            Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression) primary;
             if (name == null) {
                 name = gen.memberAccess(that, "");
             }
             if (d.isConstructor()) {
                 Constructor cd = TypeUtils.getConstructor(d);
-                final boolean hasTargs = BmeGenerator.hasTypeArguments(
-                        (Tree.BaseTypeExpression) that.getPrimary());
+                final boolean hasTargs = BmeGenerator.hasTypeArguments(bte);
+                boolean directlyInvoked = that.getDirectlyInvoked();
                 if (hasTargs) {
-                    if (that.getDirectlyInvoked()) {
-                        gen.out(gen.qualifiedPath(that, cd), gen.getNames().constructorSeparator(cd),
+                    if (directlyInvoked) {
+                        gen.out(gen.qualifiedPath(that, cd), 
+                                gen.getNames().constructorSeparator(cd),
                                 gen.getNames().name(cd));
                     } else {
                         BmeGenerator.printGenericMethodReference(gen,
-                                (Tree.BaseTypeExpression) that.getPrimary(), "0",
-                                gen.qualifiedPath(that, cd) + gen.getNames().constructorSeparator(cd) +
-                                        gen.getNames().name(cd));
+                                bte, "0",
+                                gen.qualifiedPath(that, cd) 
+                                    + gen.getNames().constructorSeparator(cd) 
+                                    + gen.getNames().name(cd));
                     }
                 } else {
-                    gen.qualify(that, cd);
-                    gen.out(gen.getNames().name(cd));
-                    if (cd.isValueConstructor()) {
-                        gen.out("()");
+                    if (directlyInvoked || cd.isValueConstructor()
+                            || bte.getDeclaration().isToplevel()) {
+                        gen.qualify(that, cd);
+                        gen.out(gen.getNames().name(cd));
+                        if (cd.isValueConstructor()) {
+                            gen.out("()");
+                        }
+                    }
+                    else {
+                        String var = gen.createRetainedTempVar();
+                        String exp = gen.memberAccess(that, var);
+                        String who = gen.getMember(bte, null) ;
+                        gen.out("(", var, "=", who);
+                        gen.out(",", gen.getClAlias(), "f3$(", var, ",", exp, "))");
                     }
                 }
             } else if (d.isStatic()) {
@@ -573,20 +587,19 @@ public class FunctionHelper {
         }
         String primaryVar = gen.createRetainedTempVar();
         gen.out("(", primaryVar, "=");
-        that.getPrimary().visit(gen);
-        if (!(that.getStaticMethodReferencePrimary() && !that.getDeclaration().isConstructor())) {
+        primary.visit(gen);
+        if (!that.getStaticMethodReferencePrimary() || d.isConstructor()) {
             gen.out(",");
-            final String member = (name == null) ? gen.memberAccess(that, primaryVar) : (primaryVar+"."+name);
-            if (that.getDeclaration() instanceof Function
-                    && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            final String member = name == null ? gen.memberAccess(that, primaryVar) : primaryVar+"."+name;
+            if (d instanceof Function && d.isParameterized()) {
                 //Function ref with type parameters
                 BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
             } else {
-                if (that.getUnit().isOptionalType(that.getPrimary().getTypeModel())) {
-                    gen.out(gen.getClAlias(), "f3$(", primaryVar, ",", gen.getClAlias(),
-                            "nn$(", primaryVar, ")?", member, ":null)");
+                gen.out(gen.getClAlias(), "f3$(", primaryVar, ",");
+                if (that.getUnit().isOptionalType(primary.getTypeModel())) {
+                    gen.out(gen.getClAlias(), "nn$(", primaryVar, ")?", member, ":null)");
                 } else {
-                    gen.out(gen.getClAlias(), "f3$(", primaryVar, ",", member, ")");
+                    gen.out(member, ")");
                 }
             }
         }
