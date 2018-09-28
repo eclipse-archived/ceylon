@@ -703,6 +703,9 @@ public class TypeParser {
                     if(qualifyingDeclaration instanceof FunctionOrValueInterface)
                         qualifyingDeclaration = ((FunctionOrValueInterface)qualifyingDeclaration).getUnderlyingDeclaration();
                     newDeclaration = AbstractModelLoader.getDirectMember((Scope) qualifyingDeclaration, part.name);
+                    if (newDeclaration==null) {
+                        newDeclaration = qualifyingDeclaration.getMember(part.name, null, false);
+                    }
                 }
                 if(newDeclaration == null)
                     throw new ModelResolutionException("Failed to resolve inner type or declaration "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
