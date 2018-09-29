@@ -41,7 +41,7 @@ class SingletonCtorDelegation implements .org.eclipse.ceylon.compiler.java.runti
         this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_, x$param$, y$param$);
     }
     
-    private static final class origin_ {
+    static final class origin_ {
         
         origin_() {
         }
@@ -59,7 +59,7 @@ class SingletonCtorDelegation implements .org.eclipse.ceylon.compiler.java.runti
         return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin;
     }
     
-    private static final class oneone_ {
+    static final class oneone_ {
         
         oneone_() {
         }
@@ -123,7 +123,7 @@ class SingletonCtorAbstractDelegation implements .org.eclipse.ceylon.compiler.ja
         this.y = y$param$;
     }
     
-    private static final class origin_ {
+    static final class origin_ {
         
         origin_() {
         }
@@ -141,7 +141,7 @@ class SingletonCtorAbstractDelegation implements .org.eclipse.ceylon.compiler.ja
         return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin;
     }
     
-    private static final class oneone_ {
+    static final class oneone_ {
         
         oneone_() {
         }

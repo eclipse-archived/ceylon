@@ -42,7 +42,7 @@ public class CtorDelegationWithDp implements .org.eclipse.ceylon.compiler.java.r
         this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, name$param$);
     }
     
-    private static final class foo_ {
+    public static final class foo_ {
         
         foo_() {
         }
@@ -60,7 +60,7 @@ public class CtorDelegationWithDp implements .org.eclipse.ceylon.compiler.java.r
         return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo;
     }
     
-    private static final class bar_ {
+    public static final class bar_ {
         
         bar_() {
         }

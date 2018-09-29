@@ -2,7 +2,7 @@ package org.eclipse.ceylon.compiler.java.test.structure.constructor;
 
 class Bug2234Sample implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    private static final class foo_ {
+    static final class foo_ {
         
         foo_() {
         }

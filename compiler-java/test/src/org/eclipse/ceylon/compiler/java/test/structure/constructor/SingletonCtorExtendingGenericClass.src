@@ -14,7 +14,7 @@ class SingletonCtorExtendingGenericClass<Element> implements .org.eclipse.ceylon
 }
 class SingletonCtorExtendingGenericClass_Sub extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass<.ceylon.language.String> implements .java.io.Serializable {
     
-    private static final class bar_ {
+    static final class bar_ {
         
         bar_() {
         }

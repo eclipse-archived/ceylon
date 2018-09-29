@@ -40,7 +40,7 @@ class SingletonCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.
         }
     }
     
-    private static final class one_ {
+    static final class one_ {
         
         one_() {
         }
@@ -58,7 +58,7 @@ class SingletonCtors implements .org.eclipse.ceylon.compiler.java.runtime.model.
         return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one;
     }
     
-    private static final class two_ {
+    static final class two_ {
         
         two_() {
         }

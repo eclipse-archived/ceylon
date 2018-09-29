@@ -270,7 +270,7 @@ class JavaIoSerializableCtors implements .org.eclipse.ceylon.compiler.java.runti
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("foo")
-    private static final class foo_ {
+    static final class foo_ {
         
         foo_() {
         }
@@ -301,7 +301,7 @@ class JavaIoSerializableCtors implements .org.eclipse.ceylon.compiler.java.runti
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("bar")
-    private static final class bar_ {
+    static final class bar_ {
         
         bar_() {
         }
@@ -357,7 +357,7 @@ class JavaIoSerializableValueCtors implements .org.eclipse.ceylon.compiler.java.
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("foo")
-    private static final class foo_ {
+    static final class foo_ {
         
         foo_() {
         }
@@ -388,7 +388,7 @@ class JavaIoSerializableValueCtors implements .org.eclipse.ceylon.compiler.java.
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("bar")
-    private static final class bar_ {
+    static final class bar_ {
         
         bar_() {
         }
@@ -646,7 +646,7 @@ class JavaIoSerializableQuoting implements .org.eclipse.ceylon.compiler.java.run
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
-    private static final class val_ {
+    static final class val_ {
         
         val_() {
         }

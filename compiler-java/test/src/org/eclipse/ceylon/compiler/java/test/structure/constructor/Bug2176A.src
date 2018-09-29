@@ -2,7 +2,7 @@ package org.eclipse.ceylon.compiler.java.test.structure.constructor;
 
 class Bug2176A implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    private static final class true_ {
+    static final class true_ {
         
         true_() {
         }
@@ -19,7 +19,7 @@ class Bug2176A implements .org.eclipse.ceylon.compiler.java.runtime.model.Reifie
         return .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176A.$true;
     }
     
-    private static final class false_ {
+    static final class false_ {
         
         false_() {
         }

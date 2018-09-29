@@ -210,7 +210,7 @@ class JavaBoxesCCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.
         return this.y == null ? null : .ceylon.language.Integer.instance(this.y.longValue());
     }
     
-    private static final class get_ {
+    static final class get_ {
         
         get_() {
         }

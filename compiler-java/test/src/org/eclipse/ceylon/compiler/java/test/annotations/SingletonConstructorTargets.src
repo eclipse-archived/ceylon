@@ -2,7 +2,7 @@ package org.eclipse.ceylon.compiler.java.test.annotations;
 
 class SingletonConstructorTargets implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    private static final class fieldAnnotated_ {
+    static final class fieldAnnotated_ {
         
         fieldAnnotated_() {
         }
@@ -20,7 +20,7 @@ class SingletonConstructorTargets implements .org.eclipse.ceylon.compiler.java.r
         return .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated;
     }
     
-    private static final class methodAnnotated_ {
+    static final class methodAnnotated_ {
         
         methodAnnotated_() {
         }
@@ -38,7 +38,7 @@ class SingletonConstructorTargets implements .org.eclipse.ceylon.compiler.java.r
         return .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated;
     }
     
-    private static final class constructorAnnotated_ {
+    static final class constructorAnnotated_ {
         
         constructorAnnotated_() {
         }

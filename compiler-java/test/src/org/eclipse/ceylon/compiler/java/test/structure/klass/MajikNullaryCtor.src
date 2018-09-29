@@ -473,7 +473,7 @@ class MajikNullaryCtorValueCtor implements .org.eclipse.ceylon.compiler.java.run
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
-    private static final class val_ {
+    static final class val_ {
         
         val_() {
         }
@@ -531,7 +531,7 @@ class MajikNullaryCtorValueCtorAndDefault implements .org.eclipse.ceylon.compile
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
-    private static final class val_ {
+    static final class val_ {
         
         val_() {
         }
@@ -610,7 +610,7 @@ class MajikNullaryCtorValueCtorAndCallable implements .org.eclipse.ceylon.compil
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
-    private static final class val_ {
+    static final class val_ {
         
         val_() {
         }

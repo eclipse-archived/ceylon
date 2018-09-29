@@ -47,7 +47,7 @@ class Bug2299 implements .org.eclipse.ceylon.compiler.java.runtime.model.Reified
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("_ROOT")
-    private static final class _ROOT_ {
+    static final class _ROOT_ {
         
         _ROOT_() {
         }

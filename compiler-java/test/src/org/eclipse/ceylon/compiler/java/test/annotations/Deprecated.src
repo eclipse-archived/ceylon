@@ -122,7 +122,7 @@ public class DeprecatedMembers implements .org.eclipse.ceylon.compiler.java.runt
     public DeprecatedMembers(.org.eclipse.ceylon.compiler.java.test.annotations.DeprecatedMembers.named_ $name$, final .java.lang.String s$param$) {
     }
     
-    private static final class val_ {
+    public static final class val_ {
         
         val_() {
         }

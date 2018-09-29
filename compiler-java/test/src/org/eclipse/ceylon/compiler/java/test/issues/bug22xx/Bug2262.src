@@ -2,7 +2,7 @@ package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
 
 class Bug2262 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    private static final class bar_ {
+    static final class bar_ {
         
         bar_() {
         }

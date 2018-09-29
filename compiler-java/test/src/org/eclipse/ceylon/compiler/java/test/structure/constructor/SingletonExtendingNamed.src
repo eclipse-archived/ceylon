@@ -24,7 +24,7 @@ class SingletonExtendingNamed implements .org.eclipse.ceylon.compiler.java.runti
 }
 class SingletonExtendingNamed_Bar extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed implements .java.io.Serializable {
     
-    private static final class bar_ {
+    static final class bar_ {
         
         bar_() {
         }

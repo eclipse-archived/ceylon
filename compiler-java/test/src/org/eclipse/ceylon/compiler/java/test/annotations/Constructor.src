@@ -161,7 +161,7 @@ class Constructor implements .org.eclipse.ceylon.compiler.java.runtime.model.Rei
             minor = 1)
     @.org.eclipse.ceylon.compiler.java.metadata.Ignore
     @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
-    private static final class val_ {
+    static final class val_ {
         
         val_() {
         }
