@@ -91,9 +91,9 @@ shared deprecated</programlisting>
             <para>Operator expressions, member expressions, self references, anonymous
             functions, comprehensions, and string templates are not permitted in an 
             annotation argument. Every base expression in an annotation argument must be 
-            a value reference to an anonymous class instance of an enumerated type, or 
-            must occur in a direct instantiation expression, as defined in
-            <xref linkend="directinvocations"/>, for an annotation type.</para>
+            a value reference to an anonymous class instance or value constructor of an 
+            enumerated type, or must occur in a direct instantiation expression, as 
+            defined in <xref linkend="directinvocations"/>, for an annotation type.</para>
             
             <para>A named argument to an annotation may not be an inline function, value,
             or anonymous class.</para>
@@ -137,7 +137,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>an enumerated type whose cases are all anonymous classes,
-                    such as <literal>Boolean</literal>,</para>
+                    such as <literal>Boolean</literal>, or whose cases are all value
+                    constructors,</para>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
@@ -170,9 +171,9 @@ shared deprecated</programlisting>
             anonymous functions, comprehensions, and string templates are not permitted in 
             the definition of an annotation constructor. Every base expression in the body 
             of an annotation constructor must be a reference to a parameter of the annotation 
-            constructor or to an anonymous class instance of an enumerated type, or must occur 
-            in a direct instantiation expression, as defined in
-            <xref linkend="directinvocations"/>, for an annotation type.</para>
+            constructor or to an anonymous class instance or value constructor of an 
+            enumerated type, or must occur in a direct instantiation expression, as defined 
+            in <xref linkend="directinvocations"/>, for an annotation type.</para>
             
             <para>A named argument appearing in the definition of an annotation constructor
             may not be an inline function, value, or anonymous class.</para>
@@ -216,7 +217,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>an enumerated type whose cases are all anonymous classes,
-                    such as <literal>Boolean</literal>,</para>
+                    such as <literal>Boolean</literal>, or whose cases are all value 
+                    constructors,</para>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
