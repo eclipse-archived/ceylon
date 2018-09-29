@@ -92,8 +92,8 @@ public class AnnotationModelVisitor extends Visitor {
     
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
-                && def instanceof Function
-                && def.isAnnotation();
+            && def instanceof Function
+            && def.isAnnotation();
     }
 
     public static boolean isAnnotationClass(Tree.ClassOrInterface def) {
@@ -101,8 +101,8 @@ public class AnnotationModelVisitor extends Visitor {
     }
 
     public static boolean isAnnotationClass(Declaration declarationModel) {
-        return (declarationModel instanceof Class)
-                && declarationModel.isAnnotation();
+        return declarationModel instanceof Class
+            && declarationModel.isAnnotation();
     }
     
     /*protected void checkForCycle(Node node, final Declaration decl, final AnnotationInvocation invocation, Set<Declaration> s) {
@@ -239,7 +239,7 @@ public class AnnotationModelVisitor extends Visitor {
                     && (((Tree.BaseMemberExpression)term).getDeclaration().equals(t)
                         || ((Tree.BaseMemberExpression)term).getDeclaration().equals(f)
                         || ((Tree.BaseMemberExpression)term).getDeclaration().isParameter()
-                        || Decl.isAnonCaseOfEnumeratedType((Tree.BaseMemberExpression)term)))) {
+                        || Decl.isAnnotatableCase((Tree.BaseMemberExpression)term)))) {
                 checkingDefaults = true;
                 
                 super.visit(d);
@@ -448,10 +448,11 @@ public class AnnotationModelVisitor extends Visitor {
             return BooleanLiteralAnnotationTerm.FACTORY;
         } else if (iteratedType.isFloat()) {
             return FloatLiteralAnnotationTerm.FACTORY;
-        } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+        } else if (Decl.isAnnotatableCaseType(iteratedType)) {
             return ObjectLiteralAnnotationTerm.FACTORY;
         } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
-            err.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"), Backend.Java);
+            err.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " 
+            		+ (checkingDefaults ? "defaulted parameters" : "arguments"), Backend.Java);
             return null;
         } else if (iteratedType.isSubtypeOf(((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("Declaration")).getType())) {
             return DeclarationLiteralAnnotationTerm.FACTORY;
@@ -507,7 +508,7 @@ public class AnnotationModelVisitor extends Visitor {
                         && elements == null) {
                     // If we're dealing with an iterable, empty means empty collection, not object
                     endCollection(startCollection(bme), bme);
-                } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
+                } else if (Decl.isAnnotatableCase(bme)) {
                     LiteralAnnotationTerm argument = new ObjectLiteralAnnotationTerm(bme.getTypeModel());
                     appendLiteralArgument(bme, argument);
                 } else {

@@ -453,7 +453,7 @@ public class Decl {
             && ((Value)decl).isParameter();
     }
     
-    public static boolean isEnumeratedTypeWithAnonCases(Type parameterType) {
+    public static boolean isAnnotatableCaseType(Type parameterType) {
         if (parameterType.isBoolean()) {
             return false;
         }
@@ -461,36 +461,24 @@ public class Decl {
             return false;
         }
         for (Type type : parameterType.getCaseTypes()) {
-            if (!type.isClass() || !type.getDeclaration().isAnonymous()) {
+            TypeDeclaration typedec = type.getDeclaration();
+			if (!typedec.isValueConstructor() && !typedec.isObjectClass()) {
                 return false;
             }
         }
         return true;
     }
     
-    public static boolean isAnonCaseOfEnumeratedType(Tree.BaseMemberExpression term) {
-        return isAnonCaseOfEnumeratedType(term.getDeclaration());
+    public static boolean isAnnotatableCase(Tree.MemberOrTypeExpression term) {
+        Declaration dec = term.getDeclaration();
+		return isAnonObject(dec)
+    		|| isValueConstructor(dec);
     }
-    public static boolean isAnonCaseOfEnumeratedType(Declaration decl) {
     
-        if (isBooleanTrue(decl) || isBooleanFalse(decl)) {
-            return false;
-        }
-        if (decl instanceof Value) {
-            Type type = ((Value) decl).getType();
-            if (type.isClass() && type.getDeclaration().isAnonymous()) {
-                if (isEnumeratedTypeWithAnonCases(type.getExtendedType())) {
-                    return true;
-                }
-                for (Type s : type.getSatisfiedTypes()) {
-                    if (isEnumeratedTypeWithAnonCases(s)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-        
+    public static boolean isAnonObject(Declaration decl) {
+        return !isBooleanTrue(decl) && !isBooleanFalse(decl)
+    		&& decl instanceof Value
+    		&& ((Value)decl).getTypeDeclaration().isObjectClass();
     }
     
     public static boolean isJavaStaticOrInterfacePrimary(Tree.Term term) {
@@ -709,7 +697,7 @@ public class Decl {
 
     public static boolean isValueConstructor(Declaration member) {
         return member instanceof Value
-            && ((Value)member).getTypeDeclaration() instanceof Constructor;
+            && ((Value)member).getTypeDeclaration().isValueConstructor();
     }
     
     public static boolean isDynamic(Declaration decl) {

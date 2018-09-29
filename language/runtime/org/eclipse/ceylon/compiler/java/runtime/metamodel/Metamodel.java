@@ -39,12 +39,14 @@ import org.eclipse.ceylon.compiler.java.language.ObjectArray;
 import org.eclipse.ceylon.compiler.java.language.ObjectArrayIterable;
 import org.eclipse.ceylon.compiler.java.language.ShortArray;
 import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.ConstructorName;
 import org.eclipse.ceylon.compiler.java.metadata.Ignore;
 import org.eclipse.ceylon.compiler.java.metadata.Name;
 import org.eclipse.ceylon.compiler.java.metadata.Variance;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ClassOrInterfaceDeclarationImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ClassWithConstructorsDeclarationImpl;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ClassWithInitializerDeclarationImpl;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.NestableDeclarationImpl;
@@ -73,6 +75,7 @@ import org.eclipse.ceylon.model.cmr.ArtifactResult;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.eclipse.ceylon.model.cmr.RuntimeResolver;
 import org.eclipse.ceylon.model.loader.ModelLoader.DeclarationType;
+import org.eclipse.ceylon.model.loader.NamingBase.Unfix;
 import org.eclipse.ceylon.model.loader.NamingBase;
 import org.eclipse.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import org.eclipse.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
@@ -1427,12 +1430,21 @@ public class Metamodel {
         return Util.<T>sequentialWrapper($reifiedElement, (T[])array);
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "deprecation" })
     public static <T> T parseEnumerationReference(java.lang.Class<T> klass) {
-        ClassOrInterfaceDeclarationImpl decl = (ClassOrInterfaceDeclarationImpl)getOrCreateMetamodel(klass);
-        String getterName = NamingBase.getGetterName(decl.declaration);
+    	Class<?> cla;
+    	String name;
+    	if (klass.isAnnotationPresent(ConstructorName.class)) {
+			cla = klass.getEnclosingClass();
+    		name = NamingBase.getGetterName(cla.getSimpleName() + "$" + klass.getAnnotation(ConstructorName.class).value());
+    	}
+    	else {
+    		cla = klass;
+    		name = NamingBase.name(NamingBase.Unfix.get_);
+    	}
+        
         try {
-            java.lang.reflect.Method method = klass.getDeclaredMethod(getterName);
+            java.lang.reflect.Method method = cla.getDeclaredMethod(name);
             method.setAccessible(true);
             return (T)method.invoke(null);
         } catch (RuntimeException e) {

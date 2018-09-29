@@ -1771,16 +1771,18 @@ public abstract class AbstractTransformer implements Transformation {
     static final int JT_ANNOTATION = 1 << 12;
     /** Generates the Java type of the companion class of the given class */
     static final int JT_ANNOTATIONS = 1 << 13;
+    
+    static final int JT_ANNOTATION_ARG = 1 << 14;
 
     /** Do not resolve aliases, useful if we want a class literal pointing to the alias class itself. */
-    static final int JT_CLASS_LITERAL = 1 << 14;
+    static final int JT_CLASS_LITERAL = 1 << 15;
     
     /** For use when generating a narrower type for a refinement, for example when the
      * parameter of an overriding method is of type T<U|V> while the original was T<E>
      */
     static final int JT_NARROWED = __JT_FULL_TYPE;
     
-    static final int JT_IS = 1 << 15;
+    static final int JT_IS = 1 << 16;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -1915,7 +1917,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(type == null || type.isUnknown())
             return make().Erroneous();
         
-        if (type.isConstructor()) {
+        if ((flags & JT_ANNOTATION_ARG) == 0 && type.isConstructor()) {
             type = type.getExtendedType();
         }
         
@@ -2076,7 +2078,7 @@ public abstract class AbstractTransformer implements Transformation {
             }else if(typeDeclaration.isNamed()){ // avoid anonymous types which may pretend that they have a qualifying type
                 Reference oldType = qType;
                 qType = qType.getQualifyingType();
-                if(qType != null && qType.getDeclaration() instanceof ClassOrInterface == false){
+                if(qType != null && !(qType.getDeclaration() instanceof ClassOrInterface)){
                     // sometimes the typechecker throws qualifying intersections at us and
                     // we can't make anything of them, since some members may be unrelated to
                     // the qualified declaration. This happens with "extends super.Foo()"

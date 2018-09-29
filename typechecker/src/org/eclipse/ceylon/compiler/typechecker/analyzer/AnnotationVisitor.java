@@ -95,7 +95,8 @@ public class AnnotationVisitor extends Visitor {
         else {
             for (Type ct: cts) {
                 if (!ct.getDeclaration()
-                        .isObjectClass()) {
+                        .isObjectClass()
+                    && !ct.isConstructor()) {
                     return false;
                 }
             }
@@ -232,16 +233,17 @@ public class AnnotationVisitor extends Visitor {
                 Declaration d = bme.getDeclaration();
                 if (a!=null && d!=null && d.isParameter()) {
                     FunctionOrValue mv = (FunctionOrValue) d;
-                    Parameter p = 
-                            mv.getInitializerParameter();
+                    Parameter p = mv.getInitializerParameter();
                     if (!p.getDeclaration().equals(a)) {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
                 }
                 else if (d instanceof Value &&
                         (((Value) d).isEnumValue() || 
-                         ((Value) d).getTypeDeclaration()
-                             .isObjectClass())) {
+                		((Value) d).getTypeDeclaration()
+                    		.isValueConstructor() ||
+                		((Value) d).getTypeDeclaration()
+                            .isObjectClass())) {
                     //ok
                 }
                 else if (d != null && d.isStatic()) {
@@ -255,7 +257,13 @@ public class AnnotationVisitor extends Visitor {
                 Tree.QualifiedMemberExpression qme = 
                         (Tree.QualifiedMemberExpression) term;
                 Declaration d = qme.getDeclaration();
-                if (d!=null && !d.isStatic()) {
+                if (d instanceof Value &&
+                        (((Value) d).isEnumValue() || 
+                		((Value) d).getTypeDeclaration()
+                    		.isValueConstructor())) {
+                    //ok
+                } 
+                else if (d!=null && !d.isStatic()) {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
                     
                 }

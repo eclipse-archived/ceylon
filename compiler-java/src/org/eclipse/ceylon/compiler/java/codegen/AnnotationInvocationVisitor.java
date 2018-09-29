@@ -507,9 +507,9 @@ class AnnotationInvocationVisitor extends Visitor {
         if (exprGen.isBooleanTrue(term.getDeclaration())
                 || exprGen.isBooleanFalse(term.getDeclaration())) {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
-        } else if (Decl.isAnonCaseOfEnumeratedType(term)
+        } else if (Decl.isAnnotatableCase(term)
                 && !exprGen.isJavaEnumType(term.getTypeModel())) {
-            append(exprGen.makeClassLiteral(term.getTypeModel()));
+            append(exprGen.makeClassLiteral(term.getTypeModel(), AbstractTransformer.JT_ANNOTATION_ARG));
         } else if (anno.isInterop()) {
             if (exprGen.isJavaEnumType(term.getTypeModel())) {
                 // A Java enum
@@ -524,7 +524,10 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public void visit(Tree.MemberOrTypeExpression term) {
         // Metamodel reference
-        if (anno.isInterop()) {
+    	if (Decl.isAnnotatableCase(term)
+                && !exprGen.isJavaEnumType(term.getTypeModel())) {
+            append(exprGen.makeClassLiteral(term.getTypeModel(), AbstractTransformer.JT_ANNOTATION_ARG));
+        } else if (anno.isInterop()) {
             Declaration decl = term.getDeclaration();
             if (decl instanceof ClassOrInterface) {
                 append(exprGen.naming.makeQualIdent(

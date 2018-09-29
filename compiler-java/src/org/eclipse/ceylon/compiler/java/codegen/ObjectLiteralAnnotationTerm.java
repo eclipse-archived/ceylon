@@ -43,11 +43,11 @@ public class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     @Override
     public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.makeClassLiteral(value);
+        return exprGen.makeClassLiteral(value, AbstractTransformer.JT_ANNOTATION_ARG);
     }
     @Override
     public org.eclipse.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, org.eclipse.ceylon.langtools.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtObjectExprs(exprGen.make().NewArray(null,  null, AbstractTransformer.upcastExprList(value)));
+        return exprGen.makeAtObjectExprs(exprGen.make().NewArray(null, null, AbstractTransformer.upcastExprList(value)));
     }
     @Override
     public String toString() {

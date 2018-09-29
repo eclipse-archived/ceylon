@@ -901,7 +901,7 @@ public class ClassTransformer extends AbstractTransformer {
                         argExpr = makeMetamodelInvocation("parseMetamodelReferences", 
                                 List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
                                 List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
-                    } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+                    } else if (Decl.isAnnotatableCaseType(iteratedType)) {
                         argExpr = makeMetamodelInvocation("parseEnumerationReferences", 
                                 List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
                                 List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
@@ -917,7 +917,7 @@ public class ClassTransformer extends AbstractTransformer {
                     argExpr = makeMetamodelInvocation("parseMetamodelReference", 
                                 List.<JCExpression>of(annoAttr), 
                                 List.<JCExpression>of(makeJavaType(parameterType, JT_TYPE_ARGUMENT)));
-                } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
+                } else if (Decl.isAnnotatableCaseType(parameterType)) {
                     argExpr = makeMetamodelInvocation("parseEnumerationReference", 
                             List.<JCExpression>of(annoAttr), 
                             null);
@@ -1096,14 +1096,18 @@ public class ClassTransformer extends AbstractTransformer {
                 defaultLiteral = makeBoolean(false);
             } else if (typeFact().isEmptyType(bme.getTypeModel())) {
                 defaultLiteral = make().NewArray(null, null, List.<JCExpression>nil());
-            } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
-                defaultLiteral = makeClassLiteral(bme.getTypeModel());
+            } else if (Decl.isAnnotatableCase(bme)) {
+                defaultLiteral = makeClassLiteral(bme.getTypeModel(), AbstractTransformer.JT_ANNOTATION_ARG);
             } else {
                 defaultLiteral = make().Literal(bme.getDeclaration().getQualifiedNameString());
             }
         } else if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression)term;
-            defaultLiteral = make().Literal(mte.getDeclaration().getQualifiedNameString());
+            if (Decl.isAnnotatableCase(mte)) {
+                defaultLiteral = makeClassLiteral(mte.getTypeModel(), AbstractTransformer.JT_ANNOTATION_ARG);
+            } else {
+            	defaultLiteral = make().Literal(mte.getDeclaration().getQualifiedNameString());
+            }
         } else if (term instanceof Tree.SequenceEnumeration) {
             Tree.SequenceEnumeration seq = (Tree.SequenceEnumeration)term;
             SequencedArgument sequencedArgument = seq.getSequencedArgument();
@@ -1139,7 +1143,7 @@ public class ClassTransformer extends AbstractTransformer {
             type = makeJavaType(parameterType.withoutUnderlyingType(), JT_ANNOTATION);
         } else if (isMetamodelReference(parameterType)) {
             type = make().Type(syms().stringType);
-        } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
+        } else if (Decl.isAnnotatableCaseType(parameterType)) {
             type = makeJavaClassTypeBounded(parameterType);
         } else if (typeFact().isIterableType(parameterType)) {
             Type iteratedType = typeFact().getIteratedType(parameterType);
@@ -1149,7 +1153,7 @@ public class ClassTransformer extends AbstractTransformer {
             } else if (isMetamodelReference(iteratedType)) {
                 JCExpression scalarType = make().Type(syms().stringType);
                 type = make().TypeArray(scalarType);
-            } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+            } else if (Decl.isAnnotatableCaseType(iteratedType)) {
                 JCExpression scalarType = makeJavaClassTypeBounded(iteratedType);
                 type = make().TypeArray(scalarType);
             }
@@ -4219,16 +4223,17 @@ public class ClassTransformer extends AbstractTransformer {
             defaultValue = make().NewArray(null, null, List.<JCExpression>nil());
         }
         MethodDefinitionBuilder mdb = method(this, parameterModel.getModel(), Naming.NA_ANNOTATION_MEMBER);
-        if (isMetamodelReference(parameterModel.getType())
+        Type paramType = parameterModel.getType();
+		if (isMetamodelReference(paramType)
                 || 
-                (typeFact().isIterableType(parameterModel.getType())
-                && isMetamodelReference(typeFact().getIteratedType(parameterModel.getType())))) {
+                (typeFact().isIterableType(paramType)
+                && isMetamodelReference(typeFact().getIteratedType(paramType)))) {
             mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtDeclarationReferenceType), 
                     List.<JCExpression>nil())));
-        } else if (Decl.isEnumeratedTypeWithAnonCases(parameterModel.getType())
+        } else if (Decl.isAnnotatableCaseType(paramType)
                 || 
-                (typeFact().isIterableType(parameterModel.getType())
-                        && Decl.isEnumeratedTypeWithAnonCases(typeFact().getIteratedType(parameterModel.getType())))) {
+                (typeFact().isIterableType(paramType)
+                        && Decl.isAnnotatableCaseType(typeFact().getIteratedType(paramType)))) {
             mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtEnumerationReferenceType), 
                     List.<JCExpression>nil())));
         }
@@ -6094,11 +6099,13 @@ public class ClassTransformer extends AbstractTransformer {
             classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
             classMods |= FINAL;
             if (toplevel) {
-                classMods |= PRIVATE | STATIC;
+                classMods |= STATIC;
+                if (clz.isShared()) {
+                	classMods |= PUBLIC;
+                }
             } else if (memberOfToplevel) {
                 if (!Decl.isAncestorLocal(ctor)) {
                     classMods |= STATIC;
-                    
                 }
                 if (!ctor.isShared()) {
                     classMods |= PRIVATE;
