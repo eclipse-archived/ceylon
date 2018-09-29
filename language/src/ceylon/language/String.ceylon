@@ -726,7 +726,7 @@ shared native final class String
     shared native Comparison compareIgnoringCase(String other)
             => compareCorresponding(this, other,
                 (x, y) => charsEqualIgnoringCase(x, y) 
-                        then equal 
+                        then Comparison.equal 
                         else x.lowercased <=> y.lowercased);
     
     "Determines if this string is longer than the given

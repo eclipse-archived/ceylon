@@ -9,8 +9,8 @@
  ********************************************************************************/
 "A single comparator function which delegates to each of the 
  given [[comparator functions|comparators]] in turn, 
- returning the first result of [[smaller]] or [[larger]] if 
- any, or returning [[equal]] otherwise.
+ returning the first result of [[Comparison.smaller]] or 
+ [[Comparison.larger]] if any, or returning [[equal]] otherwise.
  
  Consider the following type:
  
@@ -22,7 +22,7 @@
      people.sort(comparing(byDecreasing(Person.age), byIncreasing(Person.name)))
  
  If no `comparators` are given, the resulting comparator
- always returns `equal`.
+ always returns `Comparison.equal`.
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
@@ -36,11 +36,11 @@ shared Comparison comparing<in Value>(Comparison(Value,Value)* comparators)
             (Value x, Value y) {
     for (compare in comparators) {
         value comparison = compare(x, y);
-        if (comparison != equal) {
+        if (comparison != Comparison.equal) {
             return comparison;
         }
     }
     else {
-        return equal;
+        return Comparison.equal;
     }
 }

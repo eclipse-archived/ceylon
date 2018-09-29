@@ -164,13 +164,13 @@ void switchit(XXX<String> x) {
 
 Integer fib(Integer n) {
     switch (n<=>0)
-    case (equal) {
+    case (Comparison.equal) {
         return 1;
     }
-    case (larger) {
+    case (Comparison.larger) {
         return n*fib(n-1);
     }
-    case (smaller) {
+    case (Comparison.smaller) {
         throw;
     }
 }

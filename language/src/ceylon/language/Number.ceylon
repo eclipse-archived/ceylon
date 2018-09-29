@@ -101,16 +101,16 @@ shared interface Number<Other> of Other
     
     "Compares this number with the given number, returning:
      
-     - [[larger]], if the [[difference|minus]] `this-other`
-       between the numbers is [[positive]],
-     - [[smaller]], if the difference `this-other` between 
-       the numbers is [[negative]], or
-     - [[equal]] otherwise."
+     - [[Comparison.larger]], if the [[difference|minus]] 
+       `this-other` between the numbers is [[positive]],
+     - [[Comparison.smaller]], if the difference 
+       `this-other` between the numbers is [[negative]], or
+     - [[Comparison.equal]] otherwise."
     shared actual default Comparison compare(Other other) 
             => let (diff = this - other)
-                if (diff.positive) then larger
-           else if (diff.negative) then smaller
-           else equal;
+                if (diff.positive) then Comparison.larger
+           else if (diff.negative) then Comparison.smaller
+           else Comparison.equal;
     
 }
 

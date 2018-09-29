@@ -397,9 +397,9 @@ shared native final class Float
             "if either this value, the given value, or both 
              are [[undefined]]")
     shared actual native Comparison compare(Float other)
-            =>   if (this < other) then smaller
-            else if (this > other) then larger
-            else equal;
+            =>   if (this < other) then Comparison.smaller
+            else if (this > other) then Comparison.larger
+            else Comparison.equal;
     
     shared actual native Float negated;
     

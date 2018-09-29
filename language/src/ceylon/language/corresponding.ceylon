@@ -72,16 +72,17 @@ shared Boolean corresponding<First,Second>
  
  - the result of the given comparison for the earliest pair
    of corresponding elements whose comparison does not 
-   evaluate to [[equal]], or, otherwise, if every comparison 
-   of corresponding pairs of elements produces `equal`,
- - [[smaller]], if the first stream produces fewer elements 
-   than the second stream, 
- - [[larger]], if the first stream produces more elements 
-   than the second stream, or
- - [[equal]] if the two streams produce the same number of 
-   elements.
+   evaluate to [[Comparison.equal]], or, otherwise, if every 
+   comparison of corresponding pairs of elements produces 
+   `equal`,
+ - [[Comparison.smaller]], if the first stream produces fewer 
+   elements than the second stream, 
+ - [[Comparison.larger]], if the first stream produces more 
+   elements than the second stream, or
+ - [[Comparison.equal]] if the two streams produce the same 
+   number of elements.
  
- If both streams are empty, return `equal`.
+ If both streams are empty, return `Comparison.equal`.
  
  For example:
  
@@ -93,7 +94,7 @@ shared Boolean corresponding<First,Second>
      compareCorresponding({ 1, 2, 3 }, 1:4)
             ((i, j) => i<=>j)
  
- both evaluate to `smaller`."
+ both evaluate to `Comparison.smaller`."
 see (function corresponding)
 tagged("Comparisons", "Streams")
 since("1.3.0")
@@ -110,7 +111,7 @@ shared Comparison compareCorresponding<First,Second>
         value second = secondIter.next();
         if (!is Finished first, !is Finished second) {
             value comp = comparing(first, second);
-            if (comp!=equal) {
+            if (comp!=Comparison.equal) {
                 return comp;
             }
         }
@@ -118,10 +119,10 @@ shared Comparison compareCorresponding<First,Second>
             value firstFinished = first is Finished;
             value secondFinished = second is Finished;
             return if (firstFinished && !secondFinished) 
-                    then smaller
+                    then Comparison.smaller
               else if (!firstFinished && secondFinished) 
-                    then larger
-              else equal;
+                    then Comparison.larger
+              else Comparison.equal;
         }
     }
 }

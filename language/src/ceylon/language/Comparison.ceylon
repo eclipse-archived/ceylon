@@ -12,27 +12,50 @@
 see (interface Comparable)
 by ("Gavin")
 tagged("Comparisons")
-shared abstract class Comparison(shared actual String string) 
+shared class Comparison 
         of larger | smaller | equal {
+	
+    shared actual String string;
+    
+    "The value is exactly equal to the given value."
+    since("1.4.0")
+    shared new equal {
+        string => "equal";
+    }
+    
+    "The value is smaller than the given value."
+    since("1.4.0")
+    shared new smaller {
+        string => "smaller";
+    }
+    
+    "The value is larger than the given value."
+    since("1.4.0")
+    shared new larger {
+        string => "larger";
+    }
+    
     "The reversed value of this comparison."
     since("1.2.0")
-    shared formal Comparison reversed;
+    shared Comparison reversed
+    		=> switch (this)
+    		case (equal) equal
+    		case (smaller) larger
+    		case (larger) smaller;
+
 }
 
 "The value is exactly equal to the given value."
 tagged("Comparisons")
-shared object equal extends Comparison("equal") {
-    reversed => this;
-}
+deprecated("Use [[Comparison.equal]]")
+shared Comparison equal => Comparison.equal;
 
 "The value is smaller than the given value."
 tagged("Comparisons")
-shared object smaller extends Comparison("smaller") {
-    reversed => larger;
-}
+deprecated("Use [[Comparison.smaller]]")
+shared Comparison smaller => Comparison.smaller;
 
 "The value is larger than the given value."
 tagged("Comparisons")
-shared object larger extends Comparison("larger") {
-    reversed => smaller;
-}
+deprecated("Use [[Comparison.larger]]")
+shared Comparison larger => Comparison.larger;

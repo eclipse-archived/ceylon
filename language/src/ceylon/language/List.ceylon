@@ -246,9 +246,9 @@ shared interface List<out Element=Anything>
     shared actual default 
     List<Element> repeat(Integer times)
             => switch (times<=>1) 
-            case (smaller) []
-            case (equal) this
-            case (larger) Repeat(times);
+            case (Comparison.smaller) []
+            case (Comparison.equal) this
+            case (Comparison.larger) Repeat(times);
     
     shared default actual 
     Element? find(

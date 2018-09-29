@@ -80,9 +80,9 @@ class Tuple<out Element, out First, out Rest = []>
     shared actual native 
     Element? getFromFirst(Integer index) 
             => switch (index <=> 0)
-            case (smaller) null
-            case (equal) first
-            case (larger) rest.getFromFirst(index - 1);
+            case (Comparison.smaller) null
+            case (Comparison.equal) first
+            case (Comparison.larger) rest.getFromFirst(index - 1);
     
     "The last element of this tuple."
     shared actual native 

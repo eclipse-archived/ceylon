@@ -5,7 +5,7 @@ shared void bug536() {
     assert(type(true).string == "ceylon.language::true");
     assert(type(false).string == "ceylon.language::false");
     assert(type(null).string == "ceylon.language::null");
-    assert(type(larger).string == "ceylon.language::larger");
+    assert(type(larger).string == "ceylon.language::Comparison");
     assert(type(1).string == "ceylon.language::Integer");
     assert(type(1.0).string == "ceylon.language::Float");
     assert(type(runtime).string == "ceylon.language::runtime");

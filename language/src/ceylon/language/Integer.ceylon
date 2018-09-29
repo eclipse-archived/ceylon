@@ -291,13 +291,13 @@ shared native final class Integer
     
     "Compare this integer with the given integer, returning:
      
-     - `smaller`, if `this < other`,
-     - `larger`, if `this > other`, or
-     - `equal`, if `this == other`."
+     - `Comparison.smaller`, if `this < other`,
+     - `Comparison.larger`, if `this > other`, or
+     - `Comparison.equal`, if `this == other`."
     shared actual native Comparison compare(Integer other)
-            =>   if (this < other) then smaller
-            else if (this > other) then larger
-            else equal;
+            =>   if (this < other) then Comparison.smaller
+            else if (this > other) then Comparison.larger
+            else Comparison.equal;
     
     function indexInRange(Integer index)
             => 0 <= index < runtime.integerAddressableSize;

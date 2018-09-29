@@ -126,9 +126,9 @@ shared sealed interface Sequence<out Element=Anything>
      the [[empty sequence|empty]] if `times<=0`."
     shared default actual Element[] repeat(Integer times) 
             => switch (times<=>1) 
-            case (smaller) []
-            case (equal) this
-            case (larger) Repeat(times);
+            case (Comparison.smaller) []
+            case (Comparison.equal) this
+            case (Comparison.larger) Repeat(times);
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;

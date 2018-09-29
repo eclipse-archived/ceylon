@@ -22,8 +22,8 @@ seq("aToplevelAttribute 2")
 see(`value aToplevelGetterSetter`,
     `module ceylon.language`,
     `package ceylon.language.meta.declaration`)
-enumerated(larger)
-enumeratedVariadic(larger, equal, smaller)
+enumerated(Comparison.larger)
+enumeratedVariadic(Comparison.larger, Comparison.equal, Comparison.smaller)
 shared String aToplevelAttribute = "";
 
 "aToplevelGetter"
@@ -263,4 +263,4 @@ class MetamodelRefs(
     shared String parameter) {
 }
 
-class AnotherClass(seq("foo") shared void f(), enumerated(smaller) shared Integer g) {}
+class AnotherClass(seq("foo") shared void f(), enumerated(Comparison.smaller) shared Integer g) {}

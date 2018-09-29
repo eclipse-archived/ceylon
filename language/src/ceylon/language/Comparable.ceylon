@@ -26,13 +26,13 @@
    produce an instance of [[Comparison]].
    
        switch (x<=>y)
-       case (equal) {
+       case (Comparison.equal) {
            print("same same");
        }
-       case (smaller) {
+       case (Comparison.smaller) {
            print("x smaller");
        }
-       case (larger) {
+       case (Comparison.larger) {
            print("y smaller");
        }
    
@@ -45,8 +45,9 @@
    - `x==y`
    
    (These possibilities are expressed by the enumerated
-   instances [[smaller]], [[larger]], and [[equal]] of
-   `Comparison`.)
+   instances [[smaller|Comparison.smaller]], 
+   [[larger|Comparison.larger]], and 
+   [[equal|Comparison.equal]] of `Comparison`.)
    
    The order imposed by `Comparable` is sometimes called the
    _natural order_ of a type, to reflect the fact that any
@@ -69,12 +70,12 @@ shared interface Comparable<in Other>
     
     "Compares this value with the given value, returning:
      
-     - [[larger]], if this value is strictly larger than the 
-       given value,
-     - [[smaller]], if this value is strictly smaller than 
-       the given value, or
-     - [[equal]], if this value is [[equal|equals]] to the 
-       given value.
+     - [[Comparison.larger]], if this value is strictly 
+       larger than the given value,
+     - [[Comparison.smaller]], if this value is strictly 
+       smaller than the given value, or
+     - [[Comparison.equal]], if this value is exactly 
+       [[equal|equals]] to the given value.
      
      For any two values `x` and `y` such that the expression
      `x.compare(y)` is well-typed, the expression may be
@@ -95,24 +96,24 @@ shared interface Comparable<in Other>
      given value."
     since("1.1.0")
     shared default Boolean largerThan(Other other)
-            => compare(other)===larger; 
+            => compare(other)===Comparison.larger; 
     
     "Determines if this value is strictly smaller than the 
      given value."
     since("1.1.0")
     shared default Boolean smallerThan(Other other)
-            => compare(other)===smaller; 
+            => compare(other)===Comparison.smaller; 
     
     "Determines if this value is larger than or equal to the 
      given value."
     since("1.1.0")
     shared default Boolean notSmallerThan(Other other)
-            => !compare(other)===smaller; 
+            => !compare(other)===Comparison.smaller; 
     
     "Determines if this value is smaller than or equal to 
      the given value."
     since("1.1.0")
     shared default Boolean notLargerThan(Other other)
-            => !compare(other)===larger; 
+            => !compare(other)===Comparison.larger; 
     
 }

@@ -809,7 +809,7 @@ shared interface Iterable<out Element=Anything,
      For any nonempty stream `it`, and comparator function 
      `c`, `it.max(c)` evaluates to the first element of `it` 
      such that for every element `e` of `it`, 
-     `c(e, it.max(c)) != larger`.
+     `c(e, it.max(c)) != Comparison.larger`.
      
      Note that the toplevel functions [[ceylon.language::max]]
      and [[ceylon.language::min]] may be used to find the  
@@ -827,7 +827,7 @@ shared interface Iterable<out Element=Anything,
         if (!is Finished first = it.next()) {
             variable value max = first;
             while (!is Finished val = it.next()) {
-                if (comparing(val,max)==larger) {
+                if (comparing(val,max)==Comparison.larger) {
                     max = val;
                 }
             }
