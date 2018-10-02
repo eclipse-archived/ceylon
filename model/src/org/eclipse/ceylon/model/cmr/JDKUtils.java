@@ -106,6 +106,7 @@ public class JDKUtils {
         // This is not true, but jdk.base is just gone, parts of which are in jdk.unsupported
         java8To9ModuleAliases.put("oracle.jdk.base", "jdk.unsupported");
         java8To9ModuleAliases.put("oracle.jdk.httpserver", "jdk.httpserver");
+        java8To9ModuleAliases.put("oracle.jdk.sctp", "jdk.sctp");
     }
 
     private static class Tuple {

@@ -1,4 +1,7 @@
 # Extracted by JDKUtils.main
+# BEWARE:
+# You need to manually add the sun.reflect.annotation package to the jdk.unsupported module
+
 
 =jdk.accessibility
 # imports public java.desktop
@@ -254,6 +257,7 @@ com.sun.security.jgss
 com.sun.nio.file
 sun.misc
 sun.reflect
+sun.reflect.annotation
 
 =jdk.xml.bind
 # imports jdk.compiler
