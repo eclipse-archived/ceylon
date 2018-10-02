@@ -1,0 +1,24 @@
+<module xmlns="urn:jboss:module:1.0" name="com.sun.xml.bind.jaxb-impl" slot="2.3.0.1">
+    <resources>
+        <resource-root path="com.sun.xml.bind.jaxb-impl-2.3.0.1.jar"/>
+    </resources>
+
+    <dependencies>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="javax.xml.bind" slot="2.3.0" export="true"/>
+        <module name="javax.activation" slot="1.2.0" export="true"/>
+        <module name="com.sun.xml.bind.jaxb-core" slot="2.3.0.1" export="true"/>
+    </dependencies>
+
+    <exports>
+        <!-- Uses external libs -->
+        <exclude path="com/sun/xml/bind/v2/runtime/unmarshaller/FastInfosetConnector$CharSequenceImpl*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/unmarshaller/FastInfosetConnector*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/unmarshaller/StAXStreamConnector*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/unmarshaller/StAXExConnector*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/output/XMLStreamWriterOutput*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/output/FastInfosetStreamWriterOutput*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/output/FastInfosetStreamWriterOutput$AppData*"/>
+        <exclude path="com/sun/xml/bind/v2/runtime/output/StAXExStreamWriterOutput*"/>
+    </exports>
+</module>

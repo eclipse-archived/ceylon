@@ -1,0 +1,11 @@
+<module xmlns="urn:jboss:module:1.0" name="com.sun.xml.bind.jaxb-core" slot="2.3.0.1">
+    <resources>
+        <resource-root path="com.sun.xml.bind.jaxb-core-2.3.0.1.jar"/>
+    </resources>
+
+    <dependencies>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="javax.xml.bind" slot="2.3.0" export="true"/>
+    </dependencies>
+    
+</module>

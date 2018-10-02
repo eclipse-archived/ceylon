@@ -3,5 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/ceylon/aether/3.3.9/org.eclipse.ceylon.aether-3.3.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ceylon-runtime/dist/repo/javax/xml/bind/2.3.0/javax.xml.bind-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ceylon-runtime/dist/repo/com/sun/xml/bind/jaxb-impl/2.3.0.1/com.sun.xml.bind.jaxb-impl-2.3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ceylon-runtime/dist/repo/com/sun/xml/bind/jaxb-core/2.3.0.1/com.sun.xml.bind.jaxb-core-2.3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ceylon-runtime/dist/repo/javax/activation/1.2.0/javax.activation-1.2.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

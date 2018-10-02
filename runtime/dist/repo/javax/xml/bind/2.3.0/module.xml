@@ -1,0 +1,10 @@
+<module xmlns="urn:jboss:module:1.0" name="javax.xml.bind" slot="2.3.0">
+    <resources>
+        <resource-root path="javax.xml.bind-2.3.0.jar"/>
+    </resources>
+
+    <dependencies>
+        <module name="java.base" slot="7" export="true"/>
+    </dependencies>
+    
+</module>
