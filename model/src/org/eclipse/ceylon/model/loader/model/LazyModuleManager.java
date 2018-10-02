@@ -16,6 +16,7 @@ import org.eclipse.ceylon.common.Backend;
 import org.eclipse.ceylon.common.Backends;
 import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.eclipse.ceylon.model.loader.AbstractModelLoader;
+import org.eclipse.ceylon.model.typechecker.model.ModelUtil;
 import org.eclipse.ceylon.model.typechecker.model.Module;
 import org.eclipse.ceylon.model.typechecker.model.ModuleImport;
 import org.eclipse.ceylon.model.typechecker.util.ModuleManager;
@@ -31,6 +32,14 @@ public abstract class LazyModuleManager extends ModuleManager {
         super();
     }
 
+    @Override
+    public Module getOrCreateModule(List<String> moduleName, String version) {
+        String name = ModelUtil.formatPath(moduleName);
+        if(JDKUtils.isPreJava9ModuleNameOnJava9(name, version))
+            moduleName = splitModuleName(JDKUtils.getJava9ModuleName(name, version));
+        return super.getOrCreateModule(moduleName, version);
+    }
+    
     protected void setupIfJDKModule(LazyModule module) {
         // Make sure that the java modules are set up properly.
         // Bad jdk versions will not be made available and the module validator
@@ -47,13 +56,6 @@ public abstract class LazyModuleManager extends ModuleManager {
                 module.setAvailable(true);
                 module.setJava(true);
                 module.setNativeBackends(Backend.Java.asSet());
-                if(JDKUtils.isPreJava9ModuleNameOnJava9(nameAsString, version)) {
-                    String newName = JDKUtils.getJava9ModuleName(nameAsString, version);
-                    if(newName != null) {
-                        module.setName(splitModuleName(newName));
-                        module.setVersion(JDKUtils.jdk.version);
-                    }
-                }
             }
         }
     }
