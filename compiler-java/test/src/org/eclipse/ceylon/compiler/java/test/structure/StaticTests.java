@@ -23,6 +23,8 @@ import java.util.Arrays;
 
 import org.eclipse.ceylon.compiler.java.test.CompilerError;
 import org.eclipse.ceylon.compiler.java.test.CompilerTests;
+import org.eclipse.ceylon.model.cmr.JDKUtils;
+import org.junit.Assume;
 import org.junit.Test;
 
 public class StaticTests extends CompilerTests {
@@ -73,16 +75,19 @@ public class StaticTests extends CompilerTests {
 
     @Test
     public void testStaticMembers() {
+        Assume.assumeTrue("Runs on JDK8+", JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK8.version));
         compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "attribute/StaticMembers.src", "attribute/StaticMembers.ceylon");
     }
     
     @Test
     public void testStaticObjectMethod() {
+        Assume.assumeTrue("Runs on JDK8+", JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK8.version));
         compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "klass/StaticObjectMethod.src", "klass/StaticObjectMethod.ceylon");
     }
 
     @Test
     public void testStaticInterfaceMethods() {
+        Assume.assumeTrue("Runs on JDK8+", JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK8.version));
         assertErrors("klass/StaticInterfaceMethods",
                 Arrays.asList("-target", "7", "-source", "7"),
                 null,

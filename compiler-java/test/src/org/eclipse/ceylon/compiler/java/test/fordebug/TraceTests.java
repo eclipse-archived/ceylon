@@ -25,6 +25,7 @@ import org.eclipse.ceylon.compiler.java.test.fordebug.Tracer.HandlerResult;
 import org.eclipse.ceylon.compiler.java.test.fordebug.Tracer.MethodEntry;
 import org.eclipse.ceylon.compiler.java.test.fordebug.Tracer.MethodExit;
 import org.eclipse.ceylon.compiler.java.test.fordebug.Tracer.Step;
+import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,6 +35,7 @@ public class TraceTests extends DebuggerTests {
     @BeforeClass
     public static void checkPreConditions() {
         Assume.assumeTrue(allowNetworkTests());
+        Assume.assumeTrue("Runs on JDK8+", JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK8.version));
     }
     
     @Override
