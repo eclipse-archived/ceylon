@@ -1143,6 +1143,9 @@ public abstract class CompilerTests {
         __redirected.__JAXPRedirected.restorePlatformFactory();
 
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../dist/dist");
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            System.setProperty("jboss.modules.system.pkgs", "jdk.internal.reflect");
+        }
 
         int exit = -1;
         // make sure the class loader is cleaned up
