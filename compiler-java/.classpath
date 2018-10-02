@@ -20,7 +20,7 @@
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-cli"/>
-	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.3.4-SNAPSHOT.car"/>
+	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.3.4-SNAPSHOT.car" sourcepath="/ceylon.language"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-tools"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-bootstrap"/>
 	<classpathentry kind="output" path="build/classes"/>
