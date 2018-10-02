@@ -1445,8 +1445,8 @@ public class ModelLoaderTests extends CompilerTests {
                 CompilerError.warning(26, "declaration is deprecated: 'ceylonDeprecated10' is annotated 'deprecated' in 'org.eclipse.ceylon.compiler.java.test.model' '\"1\"'"),
                 CompilerError.warning(28, "declaration is deprecated: 'ceylonDeprecated11' is annotated 'deprecated' in 'org.eclipse.ceylon.compiler.java.test.model' '\"1\"'")
         ));
-        if (System.getProperty("java.version").startsWith("1.8.")) {
-            expected.add(CompilerError.warning(3, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."));
+        if (JDKUtils.jdk.providesVersion("8")) {
+            expected.add(CompilerError.warning(3, "You import an earlier JDK (7), which is provided by the current JDK ("+JDKUtils.jdk.version+") you are running on, but we cannot check that you are not using any of the current JDK-specific classes or methods. Upgrade your import to the current JDK if you depend on the current JDK classes or methods."));
         }
         assertErrors("ceylondeprecatedtest", true, expected.toArray(new CompilerError[expected.size()]));
     }
