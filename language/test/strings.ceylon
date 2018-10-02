@@ -152,7 +152,7 @@ shared void strings() {
     check(!hello.longerThan(5), "string longer than 3");
     check(("  " + hello + "\n").trimmed==hello, "string trim");
     check((" \t\n\{#000B}\f\r\{#001C}\{#001D}\{#001E}\{#001F}" + hello).trimmed==hello, "string trim (explicit)");
-    check(("\{#0020}\{#1680}\{#180E}" +
+    check(("\{#0020}\{#1680}" +
            "\{#2000}\{#2001}\{#2002}\{#2003}\{#2004}\{#2005}" + 
            "\{#2006}\{#2008}\{#2009}\{#200A}" + 
            "\{#205F}\{#3000}" + hello).trimmed==hello, "string trim (General category: Space separator - {non-breaking space})");
