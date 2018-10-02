@@ -13,7 +13,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -40,10 +39,6 @@ import org.eclipse.ceylon.model.typechecker.model.Scope;
 import org.eclipse.ceylon.model.typechecker.model.Type;
 import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
 import org.eclipse.ceylon.model.typechecker.model.Value;
-
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.FunctionOrValueDeclarationImpl;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.SetterDeclarationImpl;
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.decl.ValueDeclarationImpl;
 
 import ceylon.language.Anything;
 import ceylon.language.meta.declaration.OpenType;
@@ -331,8 +326,8 @@ public class ValueDeclarationImpl
                         (org.eclipse.ceylon.model.typechecker.model.ClassAlias)container)
                         .getParameterAnnotations();
             } else if(container instanceof org.eclipse.ceylon.model.typechecker.model.Class){
-                // FIXME: pretty sure that's wrong because of synthetic params. See ReflectionMethod.getParameters
-                parameterAnnotations = Reflection.findConstructor(Metamodel.getJavaClass((org.eclipse.ceylon.model.typechecker.model.Class)container)).getParameterAnnotations();
+                parameterAnnotations = Reflection.getParameterAnnotations(
+                        Reflection.findConstructor(Metamodel.getJavaClass((org.eclipse.ceylon.model.typechecker.model.Class)container)));
             }else{
                 throw Metamodel.newModelError("Unsupported parameter container");
             }

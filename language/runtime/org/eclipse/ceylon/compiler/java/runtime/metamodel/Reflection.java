@@ -9,14 +9,18 @@
  ********************************************************************************/
 package org.eclipse.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import org.eclipse.ceylon.compiler.java.metadata.Ignore;
 import org.eclipse.ceylon.model.loader.NamingBase;
 import org.eclipse.ceylon.model.typechecker.model.ClassAlias;
-
-import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
 public class Reflection {
 
@@ -151,4 +155,64 @@ public class Reflection {
         return best;
     }
 
+    public static Annotation[][] getParameterAnnotations(Member methodOrConstructor) {
+        Type[] javaParameters;
+        Annotation[][] annotations;
+        int parameterCount;
+        if(methodOrConstructor instanceof Method){
+            javaParameters = ((Method)methodOrConstructor).getGenericParameterTypes();
+            annotations = ((Method)methodOrConstructor).getParameterAnnotations();
+            // only getParameterTypes always reliably include synthetic parameters for constructors
+            parameterCount = ((Method)methodOrConstructor).getParameterTypes().length;
+        }else{
+            javaParameters = ((Constructor<?>)methodOrConstructor).getGenericParameterTypes();
+            annotations = ((Constructor<?>)methodOrConstructor).getParameterAnnotations();
+            // only getParameterTypes always reliably include synthetic parameters for constructors
+            parameterCount = ((Constructor<?>)methodOrConstructor).getParameterTypes().length;
+        }
+        int start = 0;
+        if(methodOrConstructor instanceof Constructor){
+            // enums will always add two synthetic parameters (string and int) and always be static so none more
+            Class<?> declaringClass = methodOrConstructor.getDeclaringClass();
+            if(declaringClass.isEnum())
+                start = 2;
+            // inner classes will always add a synthetic parameter to the constructor, unless they are static
+            // FIXME: local and anonymous classes may add more but we don't know how to find out
+            else if((declaringClass.isMemberClass()
+                        || declaringClass.isAnonymousClass()
+                        // if it's a local class its container method must not be static
+                        || (declaringClass.isLocalClass() && !isStaticLocalContainer(declaringClass)))
+                    && !Modifier.isStatic(declaringClass.getModifiers()))
+                start = 1;
+        }
+        
+        // some compilers will only include non-synthetic parameters in getGenericParameterTypes(), so we need to know if
+        // we have less, we should subtract synthetic parameters
+        int parametersOffset = javaParameters.length != parameterCount ? -start : 0;
+        // if at least one parameter is annotated, java reflection will only include non-synthetic parameters in 
+        // getParameterAnnotations(), so we need to know if we have less, we should subtract synthetic parameters
+        int annotationsOffset = annotations.length != parameterCount ? -start : 0;
+        
+        // we have synthetic parameters first (skipped with start), then regular params, then synthetic captured params
+        
+        // if we have any synthetic params, remove them from the count, except the ones from the start
+        // this makes sure we don't consider synthetic captured params
+        if(javaParameters.length != parameterCount)
+            parameterCount = javaParameters.length + start;
+        else if(annotations.length != parameterCount) // better luck with annotations?
+            parameterCount = annotations.length + start;
+
+        // skip synthetic parameters
+        Annotation[][] ret = new Annotation[parameterCount-start][];
+        System.arraycopy(annotations, start+annotationsOffset, ret, 0, parameterCount-start);
+        return ret;
+    }
+
+    public static boolean isStaticLocalContainer(Class<?> klass) {
+        Constructor<?> enclosingConstructor = klass.getEnclosingConstructor();
+        if(enclosingConstructor != null)
+            return Modifier.isStatic(enclosingConstructor.getModifiers());
+        Method enclosingMethod = klass.getEnclosingMethod();
+        return Modifier.isStatic(enclosingMethod.getModifiers());
+    }
 }
