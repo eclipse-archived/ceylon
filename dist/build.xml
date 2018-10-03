@@ -624,7 +624,7 @@ Use this when NOT doing a release!">
     </target>
 
     <taskdef resource="aQute/bnd/ant/taskdef.properties"
-          classpath="${base.path}/biz.aQute.bnd-2.3.0.jar"/>
+          classpath="${base.path}/biz.aQute.bnd-4.0.0.jar"/>
 
     <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
         <classpath>
@@ -889,7 +889,10 @@ Use this when NOT doing a release!">
                         <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
                     </then>
                 </if>
-                <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}" unless:set="jigsaw">
+            	<!-- Required by JBoss Modules having a multi-release jar: https://github.com/bndtools/bnd/issues/2227 -->
+            	<echo file="${bundleDefinitionFile}" append="true">-fixupmessages: "Classes found in the wrong directory.*"</echo>
+                <bndwrap exceptions="true" force="true"  
+                	jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}" unless:set="jigsaw">
                 </bndwrap>
                 <delete file="${bundleDefinitionFile}"/>
             </then>

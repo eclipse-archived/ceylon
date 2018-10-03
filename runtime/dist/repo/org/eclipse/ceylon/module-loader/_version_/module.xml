@@ -36,7 +36,7 @@
         <module name="org.eclipse.ceylon.common" slot="@ceylon-version@"/>
         <module name="org.eclipse.ceylon.model" slot="@ceylon-version@"/>
         <module name="org.eclipse.ceylon.module-resolver" slot="@ceylon-version@" export="true" services="export"/>
-        <module name="org.jboss.modules" slot="1.4.4.Final" optional="true"/>
+        <module name="org.jboss.modules" slot="1.8.6.Final" optional="true"/>
         <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

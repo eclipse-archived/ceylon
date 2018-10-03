@@ -165,7 +165,7 @@ public class Versions {
     /*@NEW_VERSION_BINARY@*/
     
     // Dependencies that end up in code
-    public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.4.4.Final";
+    public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.8.6.Final";
     public static final String DEPENDENCY_JANDEX_VERSION = "2.0.0.Final";
     public static final String DEPENDENCY_LOGMANAGER_VERSION = "2.0.3.Final";
 

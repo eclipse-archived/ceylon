@@ -7,7 +7,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.8.6.Final/org.jboss.modules-1.8.6.Final.jar" sourcepath="/ceylon/debug/jboss-modules-1.4.4.Final-sources.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

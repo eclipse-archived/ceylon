@@ -40,7 +40,7 @@
         <module name="org.eclipse.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="org.eclipse.ceylon.module-resolver" slot="@ceylon-version@" export="true" services="export"/>
         <module name="org.eclipse.ceylon.tool.provider" slot="@ceylon-version@"/>
-        <module name="org.jboss.modules" slot="1.4.4.Final" export="true"/>
+        <module name="org.jboss.modules" slot="1.8.6.Final" export="true"/>
         <module name="org.jboss.logmanager" slot="2.0.3.Final"/>
         <module name="java.base" slot="7" export="true"/>
         <module name="java.compiler" slot="7"/>

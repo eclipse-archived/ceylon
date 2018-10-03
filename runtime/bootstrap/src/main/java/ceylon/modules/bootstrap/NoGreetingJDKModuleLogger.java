@@ -9,6 +9,8 @@
  ********************************************************************************/
 package ceylon.modules.bootstrap;
 
+import java.net.URL;
+
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
@@ -96,5 +98,15 @@ public class NoGreetingJDKModuleLogger implements ModuleLogger {
     @Override
     public void providerUnloadable(String name, ClassLoader loader) {
         forward.providerUnloadable(name, loader);
+    }
+
+    @Override
+    public void jaxpClassLoaded(Class<?> jaxpClass, Module module) {
+        forward.jaxpClassLoaded(jaxpClass, module);
+    }
+
+    @Override
+    public void jaxpResourceLoaded(URL resourceURL, Module module) {
+        forward.jaxpResourceLoaded(resourceURL, module);
     }
 }
