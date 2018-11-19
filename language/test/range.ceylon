@@ -61,4 +61,11 @@ shared void testRange() {
     check((1..3)[1...]==2..3, "range span from");
     check((1..3)[1:1]==2..2, "range measure");
     
+    check(2 in (1..2)|(4..5), "range union");
+    check(!3 in (1..2)|(4..5), "range union");
+    check(4 in (1..2)|(4..5), "range union");
+    
+    check((1..2)|(4..5) == set{1,2,4,5}, "range union");
+    check((1..3)&(3..5) == set{3}, "range intersection");
+    
 }

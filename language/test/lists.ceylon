@@ -184,9 +184,6 @@ shared void lists() {
     
     mappedArraySequence();
     
-    check((1..2)|(4..5) == set{1,2,4,5}, "union");
-    check((1..3)&(3..5) == set{3}, "intersection");
-    
 }
 
 shared void mappedArraySequence() {

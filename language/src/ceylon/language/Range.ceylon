@@ -88,4 +88,66 @@ class Range<Element>()
     "Returns the range itself, since a range cannot contain 
      duplicate elements."
     shared actual Range<Element> distinct => this;
+    
+    shared actual 
+    Set<Element|Other&Object> union<Other>
+            (Collection<Other> collection) 
+            => switch (collection) 
+            case (Range<Element>) Union<Element>(this, collection) 
+            case (Union<Element>) Union<Element>(this, *collection.ranges) 
+            else super.union(collection);
+    
+}
+
+class Union<Element>(ranges) 
+        satisfies Set<Element> 
+        given Element satisfies Enumerable<Element> {
+	
+	shared Range<Element>+ ranges;
+	
+	function small(Range<Element> r) 
+			=> r.increasing then r.first else r.last;
+	function large(Range<Element> r) 
+			=> r.increasing then r.last else r.first;
+	
+	function before(Element x, Element y)
+	        => x.offsetSign(y)<0;
+	
+	value minval = ranges.fold(small(ranges.first), 
+		(p, r) => let (q=small(r))
+		if (before(p,q)) then p else q);
+	value maxval = ranges.fold(large(ranges.first), 
+		(p, r) => let (q=large(r))
+		if (before(p,q)) then q else p);
+    
+    iterator() => object satisfies Iterator<Element> {
+        variable value current = minval;
+        shared actual Element|Finished next() {
+            if (before(maxval, current)) {
+                return finished;
+            }
+            value result = current;
+            while (!before(maxval, current)) {
+                current = current.successor;
+                if (current in outer) {
+                    break;
+                }
+            }
+            return result;
+        }
+    };
+    
+    contains(Object element) => ranges.any((r) => element in r);
+    
+    shared actual 
+    Set<Element|Other&Object> union<Other>
+            (Collection<Other> collection) 
+            => switch (collection) 
+            case (Range<Element>) Union<Element>(*ranges.withTrailing(collection))
+            case (Union<Element>) Union<Element>(*ranges.append(collection.ranges)) 
+            else super.union(collection);
+    
+    equals(Object that) => (super of Set<Object>).equals(that);
+    hash => (super of Set<Object>).hash;
+    
 }

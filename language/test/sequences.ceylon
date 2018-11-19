@@ -576,4 +576,11 @@ shared void sequences() {
     assert (is String[4] split);
     check(split == ["foo", "bar", "baz", "qux"], "tuple()");
     
+    check(2 in [1,2]|[4,5], "sequence union");
+    check(!3 in [1,2]|[4,5], "sequence union");
+    check(4 in [1,2]|[4,5], "sequence union");
+    
+    check([1,2]|[4,5] == set{1,2,4,5}, "sequence union");
+    check([1,2,3]&[3,4,5] == set{3}, "sequence intersection");
+    
 }
