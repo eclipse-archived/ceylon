@@ -3672,5 +3672,24 @@ public final class String
         return value.lastIndexOf(string, start);
     }
     
+    @Override @Ignore
+    public <Other> Set union(TypeDescriptor td, Collection<? extends Other> set) {
+    	return $ceylon$language$Collection$impl().union(td, set);
+    }
+
+    @Override @Ignore
+    public <Other> Set intersection(TypeDescriptor td, Collection<? extends Other> set) {
+    	return $ceylon$language$Collection$impl().intersection(td, set);
+    }
+
+    @Override @Ignore
+    public <Other> Set complement(TypeDescriptor td, Collection<? extends Other> set) {
+    	return $ceylon$language$Collection$impl().complement(td, set);
+    }
+
+    @Override @Ignore
+    public <Other> Set exclusiveUnion(TypeDescriptor td, Collection<? extends Other> set) {
+    	return $ceylon$language$Collection$impl().exclusiveUnion(td, set);
+    }
 
 }

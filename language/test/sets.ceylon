@@ -88,7 +88,7 @@ class SetTest<Element>(Element* element) extends Object()
     shared actual Boolean empty { return elems.empty; }
     shared actual SetTest<Element> clone() { return this; }
     shared actual Iterator<Element> iterator() { return elems.iterator(); }
-    shared actual Set<Element|Other> union<Other>(Set<Other> set)
+    shared actual Set<Element|Other> union<Other>(Collection<Other> set)
                 given Other satisfies Object {
         value sb = ArrayBuilder<Element|Other>();
         sb.appendAll(elems);
@@ -101,11 +101,11 @@ class SetTest<Element>(Element* element) extends Object()
         }
         return SetTest(*sb.sequence());
     }
-    shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
+    shared actual Set<Element&Other> intersection<Other>(Collection<Other> set)
                 given Other satisfies Object {
         return nothing;
     }
-    shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
+    shared actual Set<Element|Other> exclusiveUnion<Other>(Collection<Other> set)
                 given Other satisfies Object {
         value sb = ArrayBuilder<Element|Other>();
         for (e in elems) {
@@ -124,7 +124,7 @@ class SetTest<Element>(Element* element) extends Object()
         }
         return SetTest(*sb.sequence());
     }
-    shared actual Set<Element> complement<Other>(Set<Other> set)
+    shared actual Set<Element> complement<Other>(Collection<Other> set)
                 given Other satisfies Object {
         value sb = ArrayBuilder<Element>();
         for (e in elems) {

@@ -81,76 +81,6 @@ shared interface Set<out Element=Object>
     defaultNullElements<Default>(Default defaultValue)
             given Default satisfies Object => this;
     
-    "Returns a new `Set` containing all the elements of this 
-     set and all the elements of the given `Set`.
-     
-     For example:
-     
-         set { \"hello\", \"world\" } | set { 1, 2, \"hello\" }
-     
-     Produces the set `{ \"hello\", \"world\", 1, 2 }` of 
-     type `Set<String|Integer>`.
-     
-     Note that it is possible for two sets of disjoint 
-     element type to be considered to have elements in 
-     common. For example, since \`1==1.0\` 
-     [[evaluates to true|Integer.equals]], 
-     the expression 
-     
-         set { 1 } | set { 1.0 }
-     
-     produces the set `{ 1 }`."
-    shared default 
-    Set<Element|Other> union<Other>(Set<Other> set)
-            given Other satisfies Object 
-            => package.set(chain(set));
-    
-    "Returns a new `Set` containing only the elements that 
-     are present in both this set and the given `Set` and 
-     that are instances of the intersection `Element&Other` 
-     of the element types of the two sets.
-     
-     For example:
-     
-         set { \"hello\", \"world\" } & set { 1, 2, \"hello\" }
-     
-     Produces the set `{ \"hello\" }` of type `Set<String>`.
-     
-     Note that, according to this definition, and even 
-     though `1==1.0` [[evaluates to true|Integer.equals]], 
-     the expression
-     
-         set { 1 } & set { 1.0 }
-     
-     produces the empty set `{}`."
-    shared default 
-    Set<Element&Other> intersection<Other>(Set<Other> set)
-            given Other satisfies Object
-            => package.set(filter((e) => e in set)
-                    .narrow<Other>());
-    
-    "Returns a new `Set` containing all the elements in this 
-     set that are not contained in the given `Set`.
-     
-     For example:
-     
-         set { \"hello\", \"world\" } ~ set { 1, 2, \"hello\" }
-     
-     Produces the set `{ \"world\" }` of type `Set<String>`."
-    shared default 
-    Set<Element> complement<Other>(Set<Other> set)
-            given Other satisfies Object 
-            => package.set(filter((e) => !e in set));
-    
-    "Returns a new `Set` containing only the elements 
-     contained in either this set or the given `Set`, but no 
-     element contained in both sets."
-    shared default 
-    Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
-            given Other satisfies Object 
-            => package.set(filter((e) => !e in set)
-                    .chain(set.filter((e) => !e in this)));
-    
     "Two `Set`s are considered equal if they have the same 
      size and if every element of the first set is also an 
      element of the second set, as determined by 
@@ -238,7 +168,7 @@ shared object emptySet
         extends Object() 
         satisfies Set<Nothing> {
     
-    shared actual 
+    /*shared actual 
     Set<Other> union<Other>(Set<Other> set)
             given Other satisfies Object
             => set;
@@ -256,7 +186,7 @@ shared object emptySet
     shared actual 
     Set<Nothing> complement<Other>(Set<Other> set)
             given Other satisfies Object
-            => this;
+            => this;*/
     
     subset(Set<> set) => true;
     superset(Set<> set) => set.empty;

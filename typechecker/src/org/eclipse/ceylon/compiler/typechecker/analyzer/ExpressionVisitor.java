@@ -6947,17 +6947,17 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             Type ot = unit.getObjectType();
             checkAssignable(lhst, 
-                    unit.getSetType(ot), 
+                    unit.getCollectionType(ot), 
                     that.getLeftTerm(), 
                     "set operand expression must be a set");
             checkAssignable(rhst, 
-                    unit.getSetType(ot), 
+                    unit.getCollectionType(ot), 
                     that.getRightTerm(), 
                     "set operand expression must be a set");
             Type lhset = 
-                    unit.getSetElementType(lhst);
+                    unit.getCollectionElementType(lhst);
             Type rhset = 
-                    unit.getSetElementType(rhst);
+                    unit.getCollectionElementType(rhst);
             Type et;
             if (that instanceof Tree.IntersectionOp) {
                 et = intersectionType(rhset, lhset, unit);
@@ -7308,6 +7308,13 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = term.getTypeModel();
         return lhst==null 
             || lhst.resolveAliases().getDeclaration()
+                .inherits(unit.getCollectionDeclaration());
+    }
+
+    private boolean interpretAsSetAssignmentOperator(Tree.Term term) {
+        Type lhst = term.getTypeModel();
+        return lhst==null 
+            || lhst.resolveAliases().getDeclaration()
                 .inherits(unit.getSetDeclaration());
     }
 
@@ -7428,7 +7435,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Term leftTerm = that.getLeftTerm();
         assign(leftTerm);
         super.visit(that);
-        if (interpretAsSetOperator(leftTerm)) {
+        if (interpretAsSetAssignmentOperator(leftTerm)) {
             visitSetAssignmentOperator(that);
         }
         else {

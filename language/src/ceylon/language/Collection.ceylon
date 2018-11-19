@@ -248,6 +248,77 @@ shared interface Collection<out Element=Anything>
         };
     }
     
+    "Returns a new [[Set]] containing all the elements of 
+     this collection together with all the elements of the 
+     given collection.
+     
+     For example:
+     
+     set { \"hello\", \"world\" } | set { 1, 2, \"hello\" }
+     
+     Produces the set `{ \"hello\", \"world\", 1, 2 }` of 
+     type `Set<String|Integer>`.
+     
+     Note that it is possible for two collections of disjoint 
+     element type to be considered to have elements in common. 
+     For example, since \`1==1.0\` 
+     [[evaluates to true|Integer.equals]], the expression 
+     
+         set { 1 } | set { 1.0 }
+     
+     produces the set `{ 1 }`."
+    shared default 
+    Set<Element|Other> union<Other>(Collection<Other> set)
+            given Other satisfies Object 
+            => package.set(chain(set).coalesced);
+    
+    "Returns a new [[Set]] containing only the elements that 
+     are present in both this collection and the given 
+     collection and that are instances of the intersection 
+     `Element&Other` of the element types of the two 
+     collections.
+     
+     For example:
+     
+         set { \"hello\", \"world\" } & set { 1, 2, \"hello\" }
+     
+     Produces the set `{ \"hello\" }` of type `Set<String>`.
+     
+     Note that, according to this definition, and even 
+     though `1==1.0` [[evaluates to true|Integer.equals]], 
+     the expression
+     
+         set { 1 } & set { 1.0 }
+     
+     produces the empty set `{}`."
+    shared default 
+    Set<Element&Other> intersection<Other>(Collection<Other> set)
+            given Other satisfies Object
+            => package.set(coalesced.filter((e) => e in set)
+                .narrow<Other>());
+    
+    "Returns a new [[Set]] containing only the elements of this 
+     collection that are not present in the given collection.
+     
+     For example:
+     
+         set { \"hello\", \"world\" } ~ set { 1, 2, \"hello\" }
+     
+     Produces the set `{ \"world\" }` of type `Set<String>`."
+    shared default 
+    Set<Element> complement<Other>(Collection<Other> set)
+            given Other satisfies Object 
+            => package.set(coalesced.filter((e) => !e in set));
+    
+    "Returns a new [[Set]] containing only the elements present 
+     in either this collection or the given collection that are 
+     not present in both collections."
+    shared default 
+    Set<Element|Other> exclusiveUnion<Other>(Collection<Other> set)
+            given Other satisfies Object 
+            => package.set(coalesced.filter((e) => !e in set)
+                .chain(set.coalesced.filter((e) => !e in this)));
+    
 }
 
 "Used by [[Collection.permutations]] to group nulls together."

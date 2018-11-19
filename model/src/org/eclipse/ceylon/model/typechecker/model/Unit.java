@@ -1446,6 +1446,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return appliedType(getSetDeclaration(), et);
     }
 
+    public Type getCollectionType(Type et) {
+        return appliedType(getCollectionDeclaration(), et);
+    }
+
     /**
      * Returns a Type corresponding to {@code Iterator<T>}
      * @param et The Type corresponding to {@code T}
@@ -1597,6 +1601,17 @@ public class Unit implements LanguageModuleProvider, ImportScope {
 
     public Type getSetElementType(Type type) {
         Type st = type.getSupertype(getSetDeclaration());
+        if (st!=null && 
+                st.getTypeArguments().size()==1) {
+            return st.getTypeArgumentList().get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Type getCollectionElementType(Type type) {
+        Type st = type.getSupertype(getCollectionDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);

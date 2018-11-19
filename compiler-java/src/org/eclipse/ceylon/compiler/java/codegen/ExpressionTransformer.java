@@ -2854,7 +2854,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return transformOverridableBinaryOperator(op, typeFact().getBinaryDeclaration()).build();
         }
         else {
-            Interface sd = typeFact().getSetDeclaration();
+            Interface sd = typeFact().getCollectionDeclaration();
             Type leftType = getSupertype(op.getLeftTerm(), sd);
             Type rightType = getSupertype(op.getRightTerm(), sd);
             return transformOverridableBinaryOperator(op, leftType, rightType).build();

@@ -12,7 +12,6 @@ package ceylon.language;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 import static org.eclipse.ceylon.compiler.java.Util.toInt;
-import static org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -42,6 +41,7 @@ import org.eclipse.ceylon.compiler.java.metadata.TypeParameters;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType;
 import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
 import org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable;
 
@@ -1127,7 +1127,8 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object,ceylon.language::Null>")
     public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
-        return new CoalescedArrayIterable(intersection($reifiedElement, Object.$TypeDescriptor$));
+        return new CoalescedArrayIterable(
+                TypeDescriptor.intersection($reifiedElement, Object.$TypeDescriptor$));
     }
     
     @Ignore
@@ -3270,6 +3271,26 @@ public final class Array<Element>
             Callable<? extends Result> arg1) {
         // TODO Auto-generated method stub
         return $ceylon$language$List$impl().mapElements(arg0, arg1);
+    }
+    
+    @Override @Ignore
+    public <Other> Set union(TypeDescriptor td, Collection<? extends Other> set) {
+        return $ceylon$language$Collection$impl().union(td, set);
+    }
+
+    @Override @Ignore
+    public <Other> Set intersection(TypeDescriptor td, Collection<? extends Other> set) {
+        return $ceylon$language$Collection$impl().intersection(td, set);
+    }
+
+    @Override @Ignore
+    public <Other> Set complement(TypeDescriptor td, Collection<? extends Other> set) {
+        return $ceylon$language$Collection$impl().complement(td, set);
+    }
+
+    @Override @Ignore
+    public <Other> Set exclusiveUnion(TypeDescriptor td, Collection<? extends Other> set) {
+        return $ceylon$language$Collection$impl().exclusiveUnion(td, set);
     }
 
 }

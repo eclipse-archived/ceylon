@@ -24,7 +24,7 @@ shared class LazySet<out Element>(elems)
     
     iterator() => elems.iterator();
     
-    shared actual Set<Element|Other> union<Other>(Set<Other> set)
+    shared actual Set<Element|Other> union<Other>(Collection<Other> set)
             given Other satisfies Object {
         value elems = { for (e in this) if (!e in set) e }.chain(set);
         object union 
@@ -35,7 +35,7 @@ shared class LazySet<out Element>(elems)
         return union;
     }
     
-    shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
+    shared actual Set<Element&Other> intersection<Other>(Collection<Other> set)
             given Other satisfies Object {
         value elems = { for (e in this) if (is Other e, e in set) e };
         object intersection 
@@ -46,7 +46,7 @@ shared class LazySet<out Element>(elems)
         return intersection;
     }
     
-    shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
+    shared actual Set<Element|Other> exclusiveUnion<Other>(Collection<Other> set)
             given Other satisfies Object {
         value hereNotThere = { for (e in elems) if (!e in set) e };
         value thereNotHere = { for (e in set) if (!e in this) e };
@@ -61,7 +61,7 @@ shared class LazySet<out Element>(elems)
         return exclusiveUnion;
     }
     
-    shared actual Set<Element> complement<Other>(Set<Other> set)
+    shared actual Set<Element> complement<Other>(Collection<Other> set)
             given Other satisfies Object {
         value elems = { for (e in this) if (!e in set) e };
         object complement 
