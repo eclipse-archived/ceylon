@@ -88,53 +88,53 @@ class SetTest<Element>(Element* element) extends Object()
     shared actual Boolean empty { return elems.empty; }
     shared actual SetTest<Element> clone() { return this; }
     shared actual Iterator<Element> iterator() { return elems.iterator(); }
-    shared actual Set<Element|Other> union<Other>(Collection<Other> set)
-                given Other satisfies Object {
-        value sb = ArrayBuilder<Element|Other>();
-        sb.appendAll(elems);
+    shared actual Set<Element|Other&Object> union<Other>(Collection<Other> set) {
+        value ab = ArrayBuilder<Element|Other&Object>();
+        ab.appendAll(elems);
         for (e in set) {
-            for (e2 in elems) {
-                if (e2 == e) { break; }
-            } else {
-                sb.append(e);
+            if (exists e) {
+                for (e2 in elems) {
+                    if (e2 == e) { break; }
+                } else {
+                    ab.append(e);
+                }
             }
         }
-        return SetTest(*sb.sequence());
+        return SetTest(*ab.sequence());
     }
-    shared actual Set<Element&Other> intersection<Other>(Collection<Other> set)
-                given Other satisfies Object {
+    shared actual Set<Element&Other&Object> intersection<Other>(Collection<Other> set) {
         return nothing;
     }
-    shared actual Set<Element|Other> exclusiveUnion<Other>(Collection<Other> set)
-                given Other satisfies Object {
-        value sb = ArrayBuilder<Element|Other>();
+    shared actual Set<Element|Other&Object> exclusiveUnion<Other>(Collection<Other> set) {
+        value ab = ArrayBuilder<Element|Other&Object>();
         for (e in elems) {
             for (e2 in set) {
-                if (e2 == e) { break; }
+                if (exists e2, e2 == e) { break; }
             } else {
-                sb.append(e);
+                ab.append(e);
             }
         }
         for (e in set) {
-            for (e2 in elems) {
-                if (e2 == e) { break; }
-            } else {
-                sb.append(e);
+            if (exists e) {
+                for (e2 in elems) {
+                    if (e2 == e) { break; }
+                } else {
+                    ab.append(e);
+                }
             }
         }
-        return SetTest(*sb.sequence());
+        return SetTest(*ab.sequence());
     }
-    shared actual Set<Element> complement<Other>(Collection<Other> set)
-                given Other satisfies Object {
-        value sb = ArrayBuilder<Element>();
+    shared actual Set<Element> complement<Other>(Collection<Other> set) {
+        value ab = ArrayBuilder<Element>();
         for (e in elems) {
             for (e2 in set) {
-                if (e2 == e) { break; }
+                if (exists e2, e2 == e) { break; }
             } else {
-                sb.append(e);
+                ab.append(e);
             }
         }
-        return SetTest(*sb.sequence());
+        return SetTest(*ab.sequence());
     }
 }
 

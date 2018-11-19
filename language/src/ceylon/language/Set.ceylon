@@ -22,12 +22,6 @@
  
  The [[emptySet]] is a `Set` with no elements.
  
- Sets may be the subject of the binary union, intersection, 
- and complement operators `|`, `&`, and `~`.
- 
-     value greetingsInWords = words & greetings;
-     value allWords = words | greetings;
- 
  An implementation of `Set` may compare elements for 
  equality using [[Object.equals]] or [[Comparable.compare]]."
 tagged("Collections")
@@ -76,6 +70,8 @@ shared interface Set<out Element=Object>
     }
     
     distinct => this;
+    
+    coalesced => this;
     
     shared actual {Element*} 
     defaultNullElements<Default>(Default defaultValue)

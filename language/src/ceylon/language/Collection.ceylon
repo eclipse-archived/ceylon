@@ -30,7 +30,17 @@
  Equality for `Map`s and `Set`s has a quite different
  definition to equality for `List`s. Instances of two 
  different kinds of collection are never equal&mdash;for
- example, a `Map` is never equal to a `List`."
+ example, a `Map` is never equal to a `List`.
+ 
+ `Collection`s may be the subject of the binary union, 
+ intersection, and complement operators `|`, `&`, and `~`.
+ These operators always produce [[Set]]s.
+ 
+     value greetingsInWords = words & greetings;
+     value allWords = words | greetings;
+ 
+ Since a set may not contain the value [[null]], these 
+ operations eliminate `null` elements."
 see (interface List, interface Map, interface Set)
 tagged("Collections")
 shared interface Collection<out Element=Anything>
@@ -248,9 +258,9 @@ shared interface Collection<out Element=Anything>
         };
     }
     
-    "Returns a new [[Set]] containing all the elements of 
-     this collection together with all the elements of the 
-     given collection.
+    "Returns a new [[Set]] containing all the non-null
+     elements of this collection together with all the 
+     non-null elements of the given collection.
      
      For example:
      
@@ -259,24 +269,23 @@ shared interface Collection<out Element=Anything>
      Produces the set `{ \"hello\", \"world\", 1, 2 }` of 
      type `Set<String|Integer>`.
      
-     Note that it is possible for two collections of disjoint 
-     element type to be considered to have elements in common. 
-     For example, since \`1==1.0\` 
+     Note that it is possible for two collections of 
+     disjoint element type to be considered to have 
+     elements in common. For example, since \`1==1.0\` 
      [[evaluates to true|Integer.equals]], the expression 
      
          set { 1 } | set { 1.0 }
      
      produces the set `{ 1 }`."
     shared default 
-    Set<Element|Other> union<Other>(Collection<Other> set)
-            given Other satisfies Object 
+    Set<<Element|Other>&Object> union<Other>(Collection<Other> set)
             => package.set(chain(set).coalesced);
     
-    "Returns a new [[Set]] containing only the elements that 
-     are present in both this collection and the given 
-     collection and that are instances of the intersection 
-     `Element&Other` of the element types of the two 
-     collections.
+    "Returns a new [[Set]] containing only the non-null
+     elements that are present in both this collection and 
+     the given collection and that are instances of the 
+     intersection `Element&Other` of the element types of 
+     the two collections.
      
      For example:
      
@@ -292,13 +301,13 @@ shared interface Collection<out Element=Anything>
      
      produces the empty set `{}`."
     shared default 
-    Set<Element&Other> intersection<Other>(Collection<Other> set)
-            given Other satisfies Object
+    Set<Element&Other&Object> intersection<Other>(Collection<Other> set)
             => package.set(coalesced.filter((e) => e in set)
                 .narrow<Other>());
     
-    "Returns a new [[Set]] containing only the elements of this 
-     collection that are not present in the given collection.
+    "Returns a new [[Set]] containing only the non-null 
+     elements of this collection that are not present in 
+     the given collection.
      
      For example:
      
@@ -306,16 +315,14 @@ shared interface Collection<out Element=Anything>
      
      Produces the set `{ \"world\" }` of type `Set<String>`."
     shared default 
-    Set<Element> complement<Other>(Collection<Other> set)
-            given Other satisfies Object 
+    Set<Element&Object> complement<Other>(Collection<Other> set)
             => package.set(coalesced.filter((e) => !e in set));
     
-    "Returns a new [[Set]] containing only the elements present 
-     in either this collection or the given collection that are 
-     not present in both collections."
+    "Returns a new [[Set]] containing only the non-null 
+     elements present in either this collection or the given 
+     collection that are not present in both collections."
     shared default 
-    Set<Element|Other> exclusiveUnion<Other>(Collection<Other> set)
-            given Other satisfies Object 
+    Set<<Element|Other>&Object> exclusiveUnion<Other>(Collection<Other> set)
             => package.set(coalesced.filter((e) => !e in set)
                 .chain(set.coalesced.filter((e) => !e in this)));
     

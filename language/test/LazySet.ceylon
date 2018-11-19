@@ -24,49 +24,44 @@ shared class LazySet<out Element>(elems)
     
     iterator() => elems.iterator();
     
-    shared actual Set<Element|Other> union<Other>(Collection<Other> set)
-            given Other satisfies Object {
-        value elems = { for (e in this) if (!e in set) e }.chain(set);
+    shared actual Set<Element|Other&Object> union<Other>(Collection<Other> set) {
+        value elems = { for (e in this) if (!e in set) e }.chain(set.coalesced);
         object union 
-                extends LazySet<Element|Other>(elems) {
-            shared actual Boolean contains(Object key) 
+                extends LazySet<Element|Other&Object>(elems) {
+            contains(Object key) 
                     => key in set || key in this;
         }
         return union;
     }
     
-    shared actual Set<Element&Other> intersection<Other>(Collection<Other> set)
-            given Other satisfies Object {
+    shared actual Set<Element&Other&Object> intersection<Other>(Collection<Other> set) {
         value elems = { for (e in this) if (is Other e, e in set) e };
         object intersection 
-                extends LazySet<Element&Other>(elems) {
-            shared actual Boolean contains(Object key) 
+                extends LazySet<Element&Other&Object>(elems) {
+            contains(Object key) 
                     => key in set && key in this;
         }
         return intersection;
     }
     
-    shared actual Set<Element|Other> exclusiveUnion<Other>(Collection<Other> set)
-            given Other satisfies Object {
+    shared actual Set<Element|Other&Object> exclusiveUnion<Other>(Collection<Other> set) {
         value hereNotThere = { for (e in elems) if (!e in set) e };
-        value thereNotHere = { for (e in set) if (!e in this) e };
+        value thereNotHere = { for (e in set) if (exists e, !e in this) e };
         object exclusiveUnion 
-                extends LazySet<Element|Other>
+                extends LazySet<Element|Other&Object>
                 (hereNotThere.chain(thereNotHere)) {
-            shared actual Boolean contains(Object key) {
-                Boolean inThis = key in this;
-                return key in set then !inThis else inThis;
-            }
+            contains(Object key) 
+                    => let (inThis = key in this, inThat = key in set) 
+                	inThat && !inThis || inThis && !inThat;
         }
         return exclusiveUnion;
     }
     
-    shared actual Set<Element> complement<Other>(Collection<Other> set)
-            given Other satisfies Object {
+    shared actual Set<Element> complement<Other>(Collection<Other> set) {
         value elems = { for (e in this) if (!e in set) e };
         object complement 
                 extends LazySet<Element>(elems) {
-            shared actual Boolean contains(Object key) 
+            contains(Object key) 
                     => !key in set && key in this;
         }
         return complement;

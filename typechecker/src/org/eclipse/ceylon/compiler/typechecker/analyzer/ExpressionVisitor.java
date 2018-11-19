@@ -6967,7 +6967,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 et = unionType(rhset, lhset, unit);
-            }            
+            }
+            et = unit.getDefiniteType(et);
             that.setTypeModel(unit.getSetType(et));
         }
     }
