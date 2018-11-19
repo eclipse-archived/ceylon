@@ -26,45 +26,32 @@ shared class LazySet<out Element>(elems)
     
     shared actual Set<Element|Other&Object> union<Other>(Collection<Other> set) {
         value elems = { for (e in this) if (!e in set) e }.chain(set.coalesced);
-        object union 
-                extends LazySet<Element|Other&Object>(elems) {
-            contains(Object key) 
-                    => key in set || key in this;
-        }
-        return union;
+        return object extends LazySet<Element|Other&Object>(elems) {
+            contains(Object key) => key in set || key in this;
+        };
     }
     
     shared actual Set<Element&Other&Object> intersection<Other>(Collection<Other> set) {
         value elems = { for (e in this) if (is Other e, e in set) e };
-        object intersection 
-                extends LazySet<Element&Other&Object>(elems) {
-            contains(Object key) 
-                    => key in set && key in this;
-        }
-        return intersection;
+        return object extends LazySet<Element&Other&Object>(elems) {
+            contains(Object key) => key in set && key in this;
+        };
     }
     
     shared actual Set<Element|Other&Object> exclusiveUnion<Other>(Collection<Other> set) {
         value hereNotThere = { for (e in elems) if (!e in set) e };
         value thereNotHere = { for (e in set) if (exists e, !e in this) e };
-        object exclusiveUnion 
-                extends LazySet<Element|Other&Object>
+        return object extends LazySet<Element|Other&Object>
                 (hereNotThere.chain(thereNotHere)) {
-            contains(Object key) 
-                    => let (inThis = key in this, inThat = key in set) 
-                	inThat && !inThis || inThis && !inThat;
-        }
-        return exclusiveUnion;
+            contains(Object key) => key in this != key in set;
+        };
     }
     
     shared actual Set<Element> complement<Other>(Collection<Other> set) {
         value elems = { for (e in this) if (!e in set) e };
-        object complement 
-                extends LazySet<Element>(elems) {
-            contains(Object key) 
-                    => !key in set && key in this;
-        }
-        return complement;
+        return object extends LazySet<Element>(elems) {
+            contains(Object key) => !key in set && key in this;
+        };
     }
     
     equals(Object that) => (super of Set<Element>).equals(that);
