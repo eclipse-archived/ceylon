@@ -705,7 +705,16 @@ Use this when NOT doing a release!">
         </loadproperties>
         
         <xmlproperty file="${module.descriptor.file}" />
-        <property name="Bundle-SymbolicName" value="${module(name)}"/>
+        <property name="moduleName" value="${module(name)}"/>
+        <if>
+            <not><isset property="${module(name)}"/></not>
+            <then>
+                <property name="newBundleSymbolicName" value="${module(name)}"/>
+            </then>
+            <else>
+                <property name="newBundleSymbolicName" value="${Bundle-SymbolicName}"/>
+            </else>
+        </if>
         <if>
             <not><isset property="Bundle-Version"/></not>
             <then><property name="Bundle-Version" value="${module(slot)}"/></then>
@@ -798,7 +807,7 @@ Use this when NOT doing a release!">
                                         <equals arg1="@{moduleName}" arg2="java.tls"/>
                                         <equals arg1="@{moduleName}" arg2="java.management"/>
                                         <and>
-                                            <equals arg1="${Bundle-SymbolicName}" arg2="org.eclipse.ceylon.model"/>
+                                            <equals arg1="${newBundleSymbolicName}" arg2="org.eclipse.ceylon.model"/>
                                             <equals arg1="@{moduleName}" arg2="ceylon.language"/>
                                         </and>
                                     </or>
@@ -857,7 +866,7 @@ Use this when NOT doing a release!">
                 </if>
             -->
                 <tempfile property="bundleDefinitionFile"/>
-                <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
+                <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${newBundleSymbolicName}${line.separator}</echo>
                 <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${newBundleVersion}${line.separator}</echo>
                 <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *;version="${Bundle-Version}"${line.separator}</echo>
                 <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
@@ -898,6 +907,7 @@ Use this when NOT doing a release!">
                 <jar destfile="${module.jar}.bnd.jar" filesetmanifest="merge">
                     <zipfileset src="${module.jar}" includes="**"/>
                     <manifest>
+                        <attribute name="Bundle-SymbolicName" value="${newBundleSymbolicName}"/>
                         <attribute name="Bundle-Version" value="${newBundleVersion}"/>
                     </manifest>
                 </jar>
