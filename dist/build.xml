@@ -687,10 +687,11 @@ Use this when NOT doing a release!">
         <antcall target="sha1sum" if:set="module.sha1">
             <param name="file" value="${module.jar}" />
         </antcall>
-
+<!--
         <delete file="${module.jar}.original" failonerror="false" deleteonexit="true"/>
         <delete file="${module.jar}.bnd.jar" failonerror="false" deleteonexit="true"/>
         <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
+-->
     </target>
 
     <target name="addRequiredOSGIHeaders" depends="ceylondefs">
