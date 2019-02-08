@@ -903,7 +903,7 @@ Use this when NOT doing a release!">
                 <delete file="${bundleDefinitionFile}"/>
             </then>
             <else>
-                <echo>Reusing existing OSGI metadata for ${module.jar}</echo>
+                <echo>Reusing existing OSGI metadata for ${module.jar} - Name = ${newBundleSymbolicName} - Version = ${newBundleVersion}</echo>
                 <jar destfile="${module.jar}.bnd.jar" filesetmanifest="merge">
                     <zipfileset src="${module.jar}" includes="**"/>
                     <manifest>
