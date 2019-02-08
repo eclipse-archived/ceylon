@@ -657,8 +657,8 @@ Use this when NOT doing a release!">
         <antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
         <echo>Adding module descriptor for ${module.descriptor.file} to ${module.jar}</echo>
         <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
-        <move file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" />
-        <delete file="${module.jar}" />
+        <move file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" verbose="true" />
+        <delete file="${module.jar}" verbose="true"/>
         <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
             <zipfileset dir="${module.dir}" 
                             includes="module.xml"
@@ -666,7 +666,7 @@ Use this when NOT doing a release!">
             <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
             <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF" unless:set="jigsaw"/>
         </jar>
-        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
+        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true" verbose="true"/>
         
         <property file="../common/common-build.properties" />
         <path id="compiler.classpath">
