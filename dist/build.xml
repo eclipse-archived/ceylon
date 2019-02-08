@@ -658,6 +658,7 @@ Use this when NOT doing a release!">
         <echo>Adding module descriptor for ${module.descriptor.file} to ${module.jar}</echo>
         <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
         <move file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" />
+        <delete file="${module.jar}" />
         <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
             <zipfileset dir="${module.dir}" 
                             includes="module.xml"
