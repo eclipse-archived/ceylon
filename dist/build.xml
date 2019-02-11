@@ -659,14 +659,14 @@ Use this when NOT doing a release!">
         <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
         <copy file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" verbose="true" />
         <delete file="${module.jar}" verbose="true"/>
-        <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
+        <jar destfile="${module.jar}" if:set="module.jar" filesetmanifest="merge">
             <zipfileset dir="${module.dir}" 
                             includes="module.xml"
                             fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
             <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
             <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF" unless:set="jigsaw"/>
         </jar>
-        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true" verbose="true"/>
+<!--        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true" verbose="true"/> -->
         
         <property file="../common/common-build.properties" />
         <path id="compiler.classpath">
@@ -688,9 +688,9 @@ Use this when NOT doing a release!">
         <antcall target="sha1sum" if:set="module.sha1">
             <param name="file" value="${module.jar}" />
         </antcall>
-<!--
         <delete file="${module.jar}.original" failonerror="false" deleteonexit="true"/>
         <delete file="${module.jar}.bnd.jar" failonerror="false" deleteonexit="true"/>
+<!--
         <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
 -->
     </target>
