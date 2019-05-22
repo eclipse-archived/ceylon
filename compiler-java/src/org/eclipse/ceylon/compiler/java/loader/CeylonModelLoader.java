@@ -827,7 +827,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
             MethodSymbol descriptorSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
             if(descriptorSymbol != null){
-                // make sure we don't treat ignored shit like impl accessors as SAM
+                // make sure we don't treat ignored stuff like impl accessors as SAM
                 if(isIgnored(descriptorSymbol))
                     return null;
                 String name = descriptorSymbol.getSimpleName().toString();

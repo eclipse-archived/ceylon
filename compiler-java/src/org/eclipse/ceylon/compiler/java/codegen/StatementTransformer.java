@@ -5706,7 +5706,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         SyntheticName alias = naming.alias(that.getIdentifier().getText());
         Substitution subst = naming.addVariableSubst(newValue, alias.getName());
-        // FIXME: this is rubbish, but the same rubbish from assert. it's most likely wrong there too
+        // FIXME: this is wrong , but the same as assert. it's most likely wrong there too
         Scope scope = that.getScope().getScope();
         while (scope instanceof ConditionScope) {
             scope = scope.getScope();

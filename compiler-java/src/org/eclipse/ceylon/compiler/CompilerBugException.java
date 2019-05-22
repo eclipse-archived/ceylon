@@ -50,7 +50,7 @@ public class CompilerBugException extends FatalToolError {
             // Codegen used erroneous
             message = "Codegen Assertion";
         } else if (exitState.nonCeylonErrorCount > 0) {
-            // Codegen generated crap which javac rejected
+            // Codegen generated stuff which javac rejected
             message = "Codegen Error";
         } else {
             // javac screwed up

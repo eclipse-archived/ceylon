@@ -1389,7 +1389,7 @@ public class CallableBuilder {
          * <li>uses the declared parameters {@code $param$0}, {@code $param$1}, ...,
          * <li>if the declared target parameter is sequenced collects all remaining 
          *     parameters into a sequential target argument.
-         * <li>TODO Does some other shit
+         * <li>TODO Does some other stuff
          * </ol>
          */
         protected final void case3(final int arity, ListBuffer<JCStatement> stmts,
@@ -1572,7 +1572,7 @@ public class CallableBuilder {
          *     so long as the parameter is not sequenced.
          * <li>if the declared target parameter is sequenced collects all remaining 
          *     parameters into a sequential target argument.
-         * <li>TODO Does some other shit
+         * <li>TODO Does some other stuff
          * <li>Calls {@code AbstractCallable.$spreadVarargs$} to construct a 
          * Sequential argument from the remaining parameters.
          * </ol>

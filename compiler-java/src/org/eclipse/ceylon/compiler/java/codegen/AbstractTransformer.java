@@ -4946,7 +4946,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // look up the containers
                     declaration = enclosingDeclaration;
                 }else{
-                    // that's fucked up
+                    // that's broken
                     break;
                 }
                 // go up every containing typed declaration
@@ -4993,7 +4993,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // look up the containers
                     declaration = enclosingDeclaration;
                 }else{
-                    // that's fucked up
+                    // that's broken
                     break;
                 }
                 // go up every containing typed declaration
@@ -5537,7 +5537,7 @@ public abstract class AbstractTransformer implements Transformation {
     private JCExpression makeReifiedTypeArgumentResolved(Type pt, boolean qualified, 
             TypeArgumentAccessor typeArgumentAccessor, boolean wantsRaw) {
         if(pt.isUnion()){
-            // FIXME: refactor this shite
+            // FIXME: refactor this
             List<JCExpression> typeTestArguments = List.nil();
             java.util.List<Type> typeParameters = pt.getCaseTypes();
             if(typeParameters.size() == 2){
@@ -5776,7 +5776,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // must be in scope, recurse
                     return hasTypeArguments(((TypeDeclaration) enclosingDeclaration).getType());
                 }else{
-                    // that's fucked up
+                    // that's broken
                     break;
                 }
                 // go up every containing typed declaration
