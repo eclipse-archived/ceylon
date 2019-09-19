@@ -429,6 +429,7 @@ public class AnnotationVisitor extends Visitor {
                 that.addError("annotation class must directly extend 'Basic'");
             }
         }
+        if(that.getParameterList()!=null)
         for (Tree.Parameter pn: 
                 that.getParameterList().getParameters()) {
             checkAnnotationParameter(c, pn);

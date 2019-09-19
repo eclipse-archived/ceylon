@@ -146,4 +146,8 @@ public class IssuesTests_7000_7499 extends CompilerTests {
         compile("bug72xx/bug7263/run.ceylon");
         runInJBossModules("run", "org.eclipse.ceylon.compiler.java.test.issues.bug72xx.bug7263/1", Collections.<String>emptyList()); 
     }
+	@Test
+	public void bug7441() {
+		assertErrors("bug74xx/bug7441",Collections.emptyList(), null,new CompilerError(8, "illegal annotation parameter type: 'Anything'") );
+	}
 }
