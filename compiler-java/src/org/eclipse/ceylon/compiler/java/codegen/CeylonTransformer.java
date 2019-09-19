@@ -222,29 +222,32 @@ public class CeylonTransformer extends AbstractTransformer {
                 // only do it for Bootstrap where we control the annotations, because it's so dodgy ATM
                 if(wantedDeclaration == WantedDeclaration.Annotation){
                     ListBuffer<JCTree> body = new ListBuffer<JCTree>();
-                    for(Tree.Parameter param : ((Tree.ClassDefinition)decl).getParameterList().getParameters()){
-                        String name;
-                        
-                        JCExpression type = make().TypeArray(make().Type(syms().stringType));
-                        if(param instanceof Tree.InitializerParameter)
-                            name = ((Tree.InitializerParameter)param).getIdentifier().getText();
-                        else if(param instanceof Tree.ParameterDeclaration){
-                            Tree.TypedDeclaration typedDeclaration = ((Tree.ParameterDeclaration)param).getTypedDeclaration();
-                            name = typedDeclaration.getIdentifier().getText();
-                            type = getAnnotationTypeFor(typedDeclaration.getType());
-                        }else
-                            name = "ERROR";
-                        JCMethodDecl method
-                            = make().MethodDef(make().Modifiers(Flags.PUBLIC), names().fromString(name), 
-                                type,
-                                List.<JCTypeParameter>nil(), 
-                                List.<JCVariableDecl>nil(),
-                                List.<JCExpression>nil(), 
-                                null, 
-                                null);
-                        body.append(method);
-                    }
-                    return body.toList();
+                    Tree.ClassDefinition classDefiniton=(Tree.ClassDefinition)decl;
+                    if(classDefiniton.getParameterList()!=null) {
+	                    for(Tree.Parameter param : classDefiniton.getParameterList().getParameters()){
+	                        String name;
+	                        
+	                        JCExpression type = make().TypeArray(make().Type(syms().stringType));
+	                        if(param instanceof Tree.InitializerParameter)
+	                            name = ((Tree.InitializerParameter)param).getIdentifier().getText();
+	                        else if(param instanceof Tree.ParameterDeclaration){
+	                            Tree.TypedDeclaration typedDeclaration = ((Tree.ParameterDeclaration)param).getTypedDeclaration();
+	                            name = typedDeclaration.getIdentifier().getText();
+	                            type = getAnnotationTypeFor(typedDeclaration.getType());
+	                        }else
+	                            name = "ERROR";
+	                        JCMethodDecl method
+	                            = make().MethodDef(make().Modifiers(Flags.PUBLIC), names().fromString(name), 
+	                                type,
+	                                List.<JCTypeParameter>nil(), 
+	                                List.<JCVariableDecl>nil(),
+	                                List.<JCExpression>nil(), 
+	                                null, 
+	                                null);
+	                        body.append(method);
+	                    }
+	                    return body.toList();
+	                }
                 }
                 if(wantedDeclaration == WantedDeclaration.AnnotationSequence){
                     String name = Naming.toplevelClassName("", decl);
