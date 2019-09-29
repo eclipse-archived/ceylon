@@ -90,6 +90,10 @@ public class Errors {
         return declarationVisitor.getRecoveryPlan(node);
     }
 
+    public HasErrorException getFirstExpressionErrorAndMarkBrokenness(Tree.AnonymousAnnotation node) {
+    	 return annotateBrokenness(expressionVisitor.getFirstErrorMessage(node));
+    }
+    
     /**
      * Visit the given tree of expressions returning the first error found, 
      * or null if the tree is free of errors.
