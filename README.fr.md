@@ -16,6 +16,8 @@ interopérer avec du code nativement écrit pour cette plate-forme.
 
 Pour en savoir plus sur Ceylon, rendez vous sur <http://ceylon-lang.org>.
 
+Pour lire ceci dans d'autres langues : [`English`](/README.md).
+
 ## Disposition de la distribution
 
 
