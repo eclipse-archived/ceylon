@@ -16,6 +16,8 @@ it may interoperate with native code written for that platform.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
+Read this in other languages: [`français`](/README.fr.md)
+
 ## Distribution layout
 
 - `cmr`                 - *Ceylon Module Resolver* module
