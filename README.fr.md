@@ -3,7 +3,7 @@
 Ceci est la version 1.3.4-SNAPSHOT _"You'll Thank Me Later"_ de l'outil 
 de commande Ceylon. Il s'agit d'une version de production de la plateforme.
 
-Ceylon est un langage de programmation moderne, modulaire et statiquement typé. 
+Ceylon est un langage de programmation moderne, modulaire et statiquement typé,
 pour les machines virtuelles Java et JavaScript. Le langage se caractérise par
 une syntaxe flexible et très lisible, un système de typage statique unique et d'une 
 élégance hors du commun, une architecture de modules puissante et d'excellents outils,
