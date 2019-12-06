@@ -9,7 +9,8 @@ une syntaxe flexible et très lisible, un système de typage statique unique et 
 élégance hors du commun, une architecture de modules puissante et d'excellents outils,
 incluant entre autre un superbe IDE basé sur Eclipse.
 
-Ceylon permet le développement de modules multi-plateformes qui s'éxecute de manière
+Ceylon permet le développement de modules multi-plateformes qui s'exécutent de manière
+```
 portative dans les deux environements de machines virtuelles. Alternativement, un
 module de Ceylon peut cibler l'une ou l'autre plate-forme, auquel cas il peut 
 interopérer avec du code nativement écrit pour cette plate-forme.
