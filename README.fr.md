@@ -50,7 +50,7 @@ Le code source est disponible sur GitHub:
 
 ## Problèmes
 
-Des Bugs et suggestions peuvent être rapporté dans le suivi des problèmes de GitHub.
+Des Bugs et suggestions peuvent être rapportés dans le suivi des problèmes de GitHub.
 
 <http://github.com/ceylon/ceylon/issues>
 
