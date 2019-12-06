@@ -18,7 +18,7 @@ Pour en savoir plus sur Ceylon, rendez vous sur <http://ceylon-lang.org>.
 
 Pour lire ceci dans d'autres langues : [`English`](/README.md).
 
-## Disposition de la distribution
+## Composition de la distribution
 
 
 - `cmr`                 - *Ceylon Module Resolver* module
