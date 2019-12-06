@@ -56,7 +56,7 @@ Des Bugs et suggestions peuvent être rapporté dans le suivi des problèmes de 
 
 ## Systèmes sur lesquels Ceylon fonctionne
 
-Puisque Ceylon fonctionne sur la JVM il devrait fonctionner sur toutes les plates-formes
+Puisque Ceylon fonctionne sur la JVM il devrait fonctionner sur toutes les plateformes
 qui supporte une JVM compatible avec Java 7 ou 8. Cependant, nous avons testé les plateformes
 suivantes pour nous assurer qu'elles fonctionnent :
 
