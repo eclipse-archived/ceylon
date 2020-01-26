@@ -1,0 +1,18 @@
+[submodule "ceylon"]
+	path = ceylon
+	url = https://github.com/eclipse/ceylon.git
+[submodule "ceylon-sdk"]
+	path = ceylon-sdk
+	url = https://github.com/eclipse/ceylon-sdk.git
+[submodule "ceylon-ide-eclipse"]
+	path = ceylon-ide-eclipse
+	url = https://github.com/eclipse/ceylon-ide-eclipse.git
+[submodule "ceylon.formatter"]
+	path = ceylon.formatter
+	url = https://github.com/eclipse/ceylon.formatter.git
+[submodule "ceylon-ide-common"]
+	path = ceylon-ide-common
+	url = https://github.com/eclipse/ceylon-ide-common
+[submodule "ceylon.tool.converter.java2ceylon"]
+	path = ceylon.tool.converter.java2ceylon
+	url = https://github.com/eclipse/ceylon.tool.converter.java2ceylon.git

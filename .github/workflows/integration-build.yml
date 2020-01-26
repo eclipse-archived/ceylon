@@ -1,0 +1,44 @@
+name: integration-build
+
+on: [push]
+
+jobs:
+  build:
+    name: Java ${{ matrix.java }}/${{ matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: ['8']
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+    - name: Checkout submodules
+      shell: bash
+      run: |
+        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+        git submodule sync --recursive
+        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: Cache Maven repository
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+            ${{ runner.os }}-maven-
+    - name: Set up Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - name: Build
+      run: ./build.sh
+    - name: Copy test results
+      if: failure()
+      run: ./copyTestResults.sh
+    - name: Upload artifacts
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+        name: ceylon-build-artifacts
+        path: build/artifacts
+
