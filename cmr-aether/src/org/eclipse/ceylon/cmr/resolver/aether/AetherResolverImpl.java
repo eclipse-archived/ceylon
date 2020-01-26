@@ -179,7 +179,7 @@ public class AetherResolverImpl implements AetherResolver {
         // set up remote repos
         List<RemoteRepository> repos = new ArrayList<>();
         
-        RemoteRepository central = new RemoteRepository.Builder( "central", "default", "http://repo1.maven.org/maven2/" ).build();
+        RemoteRepository central = new RemoteRepository.Builder( "central", "default", "https://repo1.maven.org/maven2/" ).build();
         repos.add(central);
         
         Set<String> activeProfiles = new HashSet<>();
