@@ -306,7 +306,7 @@ Use this when NOT doing a release!">
 
     <target name="defcurrentcommit">
         <if>
-            <available file="../.git" type="dir"/>
+            <available file="../.git"/>
             <then>
                 <exec executable="git" failonerror="yes" outputproperty="currentcommit">
                     <arg value="rev-parse"/>
