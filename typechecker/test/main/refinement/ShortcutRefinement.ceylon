@@ -406,7 +406,9 @@ class WithShortcutAssignment()
     Float float = method(1.0);
 }
 
-$error class WithShortcutRefinement()
+// fixme when named "WithShortcutRefinement", tests pass on mac but not linux
+//$error class WithShortcutRefinement()
+$error class WithShortcutRefinement2()
         satisfies WithGenericFormal {
     
     $error method<X,Y>(X something) 
