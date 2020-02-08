@@ -40,6 +40,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.eclipse.ceylon.common.Constants;
 import org.eclipse.ceylon.compiler.java.test.CompilerTests;
+import org.eclipse.ceylon.compiler.java.test.RunSingleThreaded;
 import org.eclipse.ceylon.launcher.Bootstrap;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -51,6 +52,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+@RunSingleThreaded
 public class BootstrapTests {
 
     private static File distZip;
