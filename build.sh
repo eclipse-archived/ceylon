@@ -65,6 +65,7 @@ echo "----------------------------------------"
 (cd ceylon-sdk && ant publish ide-quick)
 
 (cd ceylon && ant test-quick)
+(cd ceylon-sdk && ant test-jvm)
 #(cd ceylon-sdk && ant test-quick)
 
 (cd ceylon.formatter && ant publish ide-quick)
