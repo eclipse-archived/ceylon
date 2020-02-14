@@ -36,9 +36,8 @@ export PATH="$CEYLON_HOME/bin:$PATH"
 
 # Set Java OPTS
 
-# Avoid java.lang.OutOfMemoryError: Direct buffer memory from
-# "io.undertow.server.XnioByteBufferPool.<init>(XnioByteBufferPool.java:42)"
-# when running sdk tests
-export JAVA_OPTS="-Djdk.nio.maxCachedBufferSize=262144"
+# avoid java.lang.OutOfMemoryError: Direct buffer memory running sdk tests
+# ceylon test test.ceylon.http.client test.ceylon.http.server
+export JAVA_OPTS="-Xmx2g"
 unset ANT_OPTS
 
