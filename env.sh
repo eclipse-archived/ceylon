@@ -34,7 +34,11 @@ export PATH="$ANT_HOME/bin:$PATH"
 export CEYLON_HOME="$APP_HOME/ceylon/dist/dist"
 export PATH="$CEYLON_HOME/bin:$PATH"
 
-# Clear Java OPTS
-unset JAVA_OPTS
+# Set Java OPTS
+
+# Avoid java.lang.OutOfMemoryError: Direct buffer memory from
+# "io.undertow.server.XnioByteBufferPool.<init>(XnioByteBufferPool.java:42)"
+# when running sdk tests
+export JAVA_OPTS="-Djdk.nio.maxCachedBufferSize=262144"
 unset ANT_OPTS
 
