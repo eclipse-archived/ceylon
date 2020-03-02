@@ -135,7 +135,8 @@
     <!-- Rule to build compiler classes from their Java sources -->
     <target name="compiler.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
+            <classpath location="${antjar.lib}" />
             <compilerarg value="-XDignore.symbol.file" />
             <exclude name="**/Java7Checker.java" />
             <exclude name="org/eclipse/ceylon/ant/**" />
@@ -155,7 +156,8 @@
             <include name="org/eclipse/ceylon/ant/**" />
             <include name="org/eclipse/ceylon/launcher/**" />
         </delete>
-        <javac srcdir="${javac.src}:${ceylonc.src}:${common.src}:${bootstrap.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.6" source="1.6" includeantruntime="true">
+        <javac srcdir="${javac.src}:${ceylonc.src}:${common.src}:${bootstrap.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.6" source="1.6" includeantruntime="false">
+            <classpath location="${antjar.lib}" />
             <include name="**/Java7Checker.java" />
             <include name="org/eclipse/ceylon/tools/Tool.java" />
             <include name="org/eclipse/ceylon/tools/Plugin.java" />

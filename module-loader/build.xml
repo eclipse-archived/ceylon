@@ -94,7 +94,8 @@
     <!-- Rule to build module loader from their Java sources -->
     <target name="module-loader.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${module-loader.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="module-loader.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+        <javac srcdir="${module-loader.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="module-loader.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
+            <classpath location="${antjar.lib}" />
             <include name="org/eclipse/**" />
         </javac>
     </target>

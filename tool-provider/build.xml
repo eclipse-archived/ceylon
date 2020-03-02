@@ -111,7 +111,8 @@
     <!-- Rule to build tool provider from their Java sources -->
     <target name="tool.provider.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${tool.provider.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="tool.provider.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+        <javac srcdir="${tool.provider.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="tool.provider.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
+            <classpath location="${antjar.lib}" />
             <compilerarg value="-XDignore.symbol.file" />
             <include name="org/eclipse/**" />
         </javac>

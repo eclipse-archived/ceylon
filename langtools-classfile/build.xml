@@ -79,7 +79,8 @@
     <!-- Rule to build langtools classfile from their Java sources -->
     <target name="classfile.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${classfile.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classfile.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+        <javac srcdir="${classfile.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classfile.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
+            <classpath location="${antjar.lib}" />
             <compilerarg value="-XDignore.symbol.file" />
             <include name="org/eclipse/**" />
         </javac>

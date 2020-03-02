@@ -93,7 +93,8 @@
     <!-- Rule to build Java main classes from their Java sources -->
     <target name="java.main.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${java.main.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="java.main.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+        <javac srcdir="${java.main.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="java.main.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
+            <classpath location="${antjar.lib}" />
             <compilerarg value="-XDignore.symbol.file" />
             <include name="org/eclipse/**" />
         </javac>
