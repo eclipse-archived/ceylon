@@ -32,6 +32,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -39,6 +40,7 @@ import java.util.zip.ZipEntry;
 import org.eclipse.ceylon.compiler.java.launcher.Main.ExitState;
 import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import org.eclipse.ceylon.compiler.java.test.CompilerError;
+import org.eclipse.ceylon.compiler.java.test.CompilerError.Classification;
 import org.eclipse.ceylon.compiler.java.test.CompilerTests;
 import org.eclipse.ceylon.compiler.java.test.ErrorCollector;
 import org.eclipse.ceylon.javax.tools.Diagnostic.Kind;
@@ -441,4 +443,13 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     public void testBug6997() throws Throwable {
         compareWithJavaSource("bug69xx/Bug6997");
     }
+	@Test
+	public void testBug6763() {
+		assertErrors("bug67xx/Bug6763", Collections.emptyList(), null,
+				new CompilerError(
+						Kind.ERROR,"Bug6763",1,
+						"illegal escape sequence: '\\i' is not a recognized escape sequence",
+						Classification.FRONTEND)
+				);
+	}
 }

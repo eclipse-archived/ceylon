@@ -8146,14 +8146,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         annotationSet.put(annotationClass, list.append(annotation));
     }
 
-
     public void transformAnonymousAnnotation(Tree.AnonymousAnnotation annotation, Map<Class, ListBuffer<JCAnnotation>> annos) {
-        Type docType = ((TypeDeclaration)typeFact().getLanguageModuleDeclaration("DocAnnotation")).getType();
-        JCAnnotation docAnnotation = at(annotation).Annotation(
-                makeJavaType(docType,  JT_ANNOTATION), 
-                List.<JCExpression>of(make().Assign(naming.makeUnquotedIdent("description"),
-                        transform(annotation.getStringLiteral()))));
-        putAnnotation(annos, docAnnotation, (Class)docType.getDeclaration());
+		HasErrorException firstExpressionErrorAndMarkBrokenness = errors().getFirstExpressionErrorAndMarkBrokenness(annotation);
+        if (firstExpressionErrorAndMarkBrokenness == null) {
+			Type docType = ((TypeDeclaration) typeFact().getLanguageModuleDeclaration("DocAnnotation")).getType();
+			JCAnnotation docAnnotation = at(annotation).Annotation(makeJavaType(docType, JT_ANNOTATION),
+					List.<JCExpression>of(make().Assign(naming.makeUnquotedIdent("description"),
+							transform(annotation.getStringLiteral()))));
+			putAnnotation(annos, docAnnotation, (Class) docType.getDeclaration());
+		}
     }
     
     public JCExpression makeMetaLiteralStringLiteralForAnnotation(Tree.MetaLiteral literal) {

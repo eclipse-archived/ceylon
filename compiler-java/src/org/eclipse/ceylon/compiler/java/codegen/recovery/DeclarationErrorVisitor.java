@@ -29,6 +29,7 @@ import org.eclipse.ceylon.compiler.typechecker.tree.Message;
 import org.eclipse.ceylon.compiler.typechecker.tree.Node;
 import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
 import org.eclipse.ceylon.compiler.typechecker.tree.Visitor;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
 import org.eclipse.ceylon.model.loader.model.LazyClass;
 import org.eclipse.ceylon.model.loader.model.LazyInterface;
 import org.eclipse.ceylon.model.typechecker.model.Class;
@@ -109,7 +110,6 @@ class DeclarationErrorVisitor extends Visitor {
      */
     private void planAccordingToErrors(Node that) {
         List<Message> errors = that.getErrors();
-        
         for(Message message : errors){
             if(isError(that, message)) {
                 TransformationPlan plan;
@@ -165,6 +165,11 @@ class DeclarationErrorVisitor extends Visitor {
         } else {
             return !(message instanceof UsageWarning);
         }
+    }
+    
+    @Override
+    public void visit(AnonymousAnnotation that) {
+    	// don't go there
     }
     
     @Override
